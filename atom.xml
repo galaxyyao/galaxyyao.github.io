@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Galaxy</title>
+  
+  <subtitle>姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://galaxyyao.github.io/"/>
+  <updated>2019-09-18T13:50:44.950Z</updated>
+  <id>https://galaxyyao.github.io/</id>
+  
+  <author>
+    <name>姚皓(Hao Yao)</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Maven-组织内部项目统一配置DistributionManagement</title>
+    <link href="https://galaxyyao.github.io/2019/09/18/Maven-%E7%BB%84%E7%BB%87%E5%86%85%E9%83%A8%E9%A1%B9%E7%9B%AE%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AEDistributionManagement/"/>
+    <id>https://galaxyyao.github.io/2019/09/18/Maven-组织内部项目统一配置DistributionManagement/</id>
+    <published>2019-09-17T16:00:00.000Z</published>
+    <updated>2019-09-18T13:50:44.950Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Maven" scheme="https://galaxyyao.github.io/tags/Maven/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>持续集成-Jenkins离线安装与配置</title>
+    <link href="https://galaxyyao.github.io/2019/08/14/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/"/>
+    <id>https://galaxyyao.github.io/2019/08/14/持续集成-Jenkins离线安装与配置/</id>
+    <published>2019-08-13T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="持续集成" scheme="https://galaxyyao.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"/>
+    
+      <category term="CI" scheme="https://galaxyyao.github.io/tags/CI/"/>
+    
+      <category term="Jenkins" scheme="https://galaxyyao.github.io/tags/Jenkins/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-没有必要的varchar(255)长度及存储汉字问题汇总</title>
+    <link href="https://galaxyyao.github.io/2019/07/30/MySQL-%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E7%9A%84varchar-255-%E9%95%BF%E5%BA%A6%E5%8F%8A%E5%AD%98%E5%82%A8%E6%B1%89%E5%AD%97%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/"/>
+    <id>https://galaxyyao.github.io/2019/07/30/MySQL-没有必要的varchar-255-长度及存储汉字问题汇总/</id>
+    <published>2019-07-29T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="数据库" scheme="https://galaxyyao.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+      <category term="MySQL" scheme="https://galaxyyao.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>前端-通过自定义协议URI Scheme,点击Chrome中的链接打开IE</title>
+    <link href="https://galaxyyao.github.io/2019/07/11/%E5%89%8D%E7%AB%AF-%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AEURI-Scheme-%E7%82%B9%E5%87%BBChrome%E4%B8%AD%E7%9A%84%E9%93%BE%E6%8E%A5%E6%89%93%E5%BC%80IE/"/>
+    <id>https://galaxyyao.github.io/2019/07/11/前端-通过自定义协议URI-Scheme-点击Chrome中的链接打开IE/</id>
+    <published>2019-07-10T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="IE" scheme="https://galaxyyao.github.io/tags/IE/"/>
+    
+      <category term="Windows" scheme="https://galaxyyao.github.io/tags/Windows/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-13-Kubernetes实战-静态网站部署优化2-InitContainer</title>
+    <link href="https://galaxyyao.github.io/2019/07/04/%E5%AE%B9%E5%99%A8-13-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%962-InitContainer/"/>
+    <id>https://galaxyyao.github.io/2019/07/04/容器-13-Kubernetes实战-静态网站部署优化2-InitContainer/</id>
+    <published>2019-07-03T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+      <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+      <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-12-Kubernetes实战-静态网站部署优化1:ConfigMap,Secret与TLS</title>
+    <link href="https://galaxyyao.github.io/2019/07/03/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/"/>
+    <id>https://galaxyyao.github.io/2019/07/03/容器-12-Kubernetes实战-静态网站部署优化1-ConfigMap-Secret与TLS/</id>
+    <published>2019-07-02T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+      <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+      <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-11-Kubernetes实战-Ingress与Traefik</title>
+    <link href="https://galaxyyao.github.io/2019/06/27/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/"/>
+    <id>https://galaxyyao.github.io/2019/06/27/容器-11-Kubernetes实战-Ingress与Traefik/</id>
+    <published>2019-06-26T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+      <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+      <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-10-Kubernetes实战-Service</title>
+    <link href="https://galaxyyao.github.io/2019/06/26/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/"/>
+    <id>https://galaxyyao.github.io/2019/06/26/容器-10-Kubernetes实战-Service/</id>
+    <published>2019-06-25T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+      <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+      <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为</title>
+    <link href="https://galaxyyao.github.io/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/"/>
+    <id>https://galaxyyao.github.io/2019/06/25/容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为/</id>
+    <published>2019-06-24T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+      <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+      <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-8-Kubernetes实战-k8s核心概念之Node,Pod与Deployment</title>
+    <link href="https://galaxyyao.github.io/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/"/>
+    <id>https://galaxyyao.github.io/2019/06/24/容器-8-Kubernetes实战-k8s核心概念之Node-Pod与Deployment/</id>
+    <published>2019-06-23T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+      <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+      <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-7-Kubernetes实战-私有仓库和打包镜像</title>
+    <link href="https://galaxyyao.github.io/2019/06/18/%E5%AE%B9%E5%99%A8-7-Kubernetes%E5%AE%9E%E6%88%98-%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93%E5%92%8C%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F/"/>
+    <id>https://galaxyyao.github.io/2019/06/18/容器-7-Kubernetes实战-私有仓库和打包镜像/</id>
+    <published>2019-06-17T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+      <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+      <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Nginx-替换response header中的Content-Disposition值</title>
+    <link href="https://galaxyyao.github.io/2019/06/17/Nginx-%E6%9B%BF%E6%8D%A2response%20header%E4%B8%AD%E7%9A%84Content-Disposition%E5%80%BC/"/>
+    <id>https://galaxyyao.github.io/2019/06/17/Nginx-替换response header中的Content-Disposition值/</id>
+    <published>2019-06-16T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Nginx" scheme="https://galaxyyao.github.io/tags/Nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-6-Kubernetes实战-POC目标</title>
+    <link href="https://galaxyyao.github.io/2019/06/13/%E5%AE%B9%E5%99%A8-6-Kubernetes%E5%AE%9E%E6%88%98-POC%E7%9B%AE%E6%A0%87/"/>
+    <id>https://galaxyyao.github.io/2019/06/13/容器-6-Kubernetes实战-POC目标/</id>
+    <published>2019-06-12T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+      <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+      <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-5-kubeadm部署Kubernetes1.14.2集群踩坑记</title>
+    <link href="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/"/>
+    <id>https://galaxyyao.github.io/2019/05/29/容器-5-kubeadm部署Kubernetes1-14-2集群踩坑记/</id>
+    <published>2019-05-28T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+      <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+      <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-4-Docker的意义</title>
+    <link href="https://galaxyyao.github.io/2019/05/27/%E5%AE%B9%E5%99%A8-4-Docker%E7%9A%84%E6%84%8F%E4%B9%89/"/>
+    <id>https://galaxyyao.github.io/2019/05/27/容器-4-Docker的意义/</id>
+    <published>2019-05-26T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+      <category term="docker" scheme="https://galaxyyao.github.io/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-3-Cgroups的计划经济</title>
+    <link href="https://galaxyyao.github.io/2019/05/25/%E5%AE%B9%E5%99%A8-3-Cgroups%E7%9A%84%E8%AE%A1%E5%88%92%E7%BB%8F%E6%B5%8E/"/>
+    <id>https://galaxyyao.github.io/2019/05/25/容器-3-Cgroups的计划经济/</id>
+    <published>2019-05-24T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+      <category term="docker" scheme="https://galaxyyao.github.io/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-2-Docker存储引擎</title>
+    <link href="https://galaxyyao.github.io/2019/05/24/%E5%AE%B9%E5%99%A8-2-Docker%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/"/>
+    <id>https://galaxyyao.github.io/2019/05/24/容器-2-Docker存储引擎/</id>
+    <published>2019-05-23T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+      <category term="docker" scheme="https://galaxyyao.github.io/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>crontab ntpdate同步失败与Linux环境变量</title>
+    <link href="https://galaxyyao.github.io/2019/05/23/crontab-ntpdate%E5%90%8C%E6%AD%A5%E5%A4%B1%E8%B4%A5%E4%B8%8ELinux%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/"/>
+    <id>https://galaxyyao.github.io/2019/05/23/crontab-ntpdate同步失败与Linux环境变量/</id>
+    <published>2019-05-22T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Linux" scheme="https://galaxyyao.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-1-Namespace：楚门的世界</title>
+    <link href="https://galaxyyao.github.io/2019/05/17/%E5%AE%B9%E5%99%A8-1-Namespace%EF%BC%9A%E6%A5%9A%E9%97%A8%E7%9A%84%E4%B8%96%E7%95%8C/"/>
+    <id>https://galaxyyao.github.io/2019/05/17/容器-1-Namespace：楚门的世界/</id>
+    <published>2019-05-16T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+      <category term="docker" scheme="https://galaxyyao.github.io/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>重复的Sequence序列和MyBatis缓存</title>
+    <link href="https://galaxyyao.github.io/2019/05/13/%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/"/>
+    <id>https://galaxyyao.github.io/2019/05/13/重复的Sequence序列和MyBatis缓存/</id>
+    <published>2019-05-12T16:00:00.000Z</published>
+    <updated>2019-08-27T06:53:02.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="https://galaxyyao.github.io/tags/Java/"/>
+    
+      <category term="MyBatis" scheme="https://galaxyyao.github.io/tags/MyBatis/"/>
+    
+  </entry>
+  
+</feed>

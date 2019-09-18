@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>重复的Sequence序列和MyBatis缓存 | Galaxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1. 问题起因Java应用的某个功能里有个循环，每个循环中调用MyBatis的SQL来获取Oracle的序列Sequence，然后把序列值填充到实体中，调用jpa的save方法将实体保存到数据库。取序列号的sql没啥特殊的： 1select seq_name.nextval from dual  但实际保存到数据库的时候，发现所有循环保存的实体的序列值都相同。   2. 问题分析首先排除了Orac">
+<meta name="keywords" content="Java,MyBatis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重复的Sequence序列和MyBatis缓存">
+<meta property="og:url" content="https://galaxyyao.github.io/2019/05/13/重复的Sequence序列和MyBatis缓存/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="1. 问题起因Java应用的某个功能里有个循环，每个循环中调用MyBatis的SQL来获取Oracle的序列Sequence，然后把序列值填充到实体中，调用jpa的save方法将实体保存到数据库。取序列号的sql没啥特殊的： 1select seq_name.nextval from dual  但实际保存到数据库的时候，发现所有循环保存的实体的序列值都相同。   2. 问题分析首先排除了Orac">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://galaxyyao.github.io/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/mybatis-cache.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/Relationship-of-MyBatis3-components.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/Relationship-of-MyBatis-Spring-components.png">
+<meta property="og:updated_time" content="2019-08-27T06:53:02.414Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重复的Sequence序列和MyBatis缓存">
+<meta name="twitter:description" content="1. 问题起因Java应用的某个功能里有个循环，每个循环中调用MyBatis的SQL来获取Oracle的序列Sequence，然后把序列值填充到实体中，调用jpa的save方法将实体保存到数据库。取序列号的sql没啥特殊的： 1select seq_name.nextval from dual  但实际保存到数据库的时候，发现所有循环保存的实体的序列值都相同。   2. 问题分析首先排除了Orac">
+<meta name="twitter:image" content="https://galaxyyao.github.io/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/mybatis-cache.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <meta name="google-site-verification" content="onMzvVgg9qnaiFKW7EcQC6gzA0ej7lTIxjfrSreaVyI">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Galaxy</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://galaxyyao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-重复的Sequence序列和MyBatis缓存" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/13/重复的Sequence序列和MyBatis缓存/" class="article-date">
+  <time datetime="2019-05-12T16:00:00.000Z" itemprop="datePublished">2019-05-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      重复的Sequence序列和MyBatis缓存
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-问题起因"><a href="#1-问题起因" class="headerlink" title="1. 问题起因"></a>1. 问题起因</h2><p>Java应用的某个功能里有个循环，每个循环中调用MyBatis的SQL来获取Oracle的序列Sequence，然后把序列值填充到实体中，调用jpa的save方法将实体保存到数据库。<br>取序列号的sql没啥特殊的：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> seq_name.nextval <span class="keyword">from</span> dual</span><br></pre></td></tr></table></figure>
+
+<p>但实际保存到数据库的时候，发现所有循环保存的实体的序列值都相同。  </p>
+<h2 id="2-问题分析"><a href="#2-问题分析" class="headerlink" title="2. 问题分析"></a>2. 问题分析</h2><p>首先排除了Oracle数据库的问题。从<a href="https://stackoverflow.com/questions/12104407/oracle-sequence-transactionality" target="_blank" rel="noopener">这篇stackoverflow的回答</a>，可以看到Oracle的序列实现是考虑很周到的。并发/Oracle部署方式/回滚都不会使序列重复。那么疑点就落在了MyBatis上。  </p>
+<p>以MyBatis为关键字，从网上能找到一些解答，例如如下这篇回答：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">（该问题的原因）是因为其每次都会去取一级缓存中的值。</span><br><span class="line">1.拿出@Transactional，就不会出错。</span><br><span class="line">2.加上useCache=&quot;false&quot; flushCache=&quot;true&quot;,不保存在二级缓存中，并清空缓存</span><br><span class="line">3.mybatis.configuration.localCacheScope=STATEMENT,修改一级缓存的作用域</span><br><span class="line">4.mybatis.configuration.cacheEnabled = false,禁用一级和二级缓存</span><br></pre></td></tr></table></figure>
+
+<p>原因找到的没错：的确是MyBatis的一级缓存导致的。但你可能会疑惑：这4点都要做么？还是只做其中1-2点就有用了？从这篇解答的表述和后面的分析很容易就可以看到，作者对Mybatis的理解还是一团浆糊，并没有真正搞懂原理。<br>所以我们先从原理开始讲。  </p>
+<h2 id="3-MyBatis缓存的原理"><a href="#3-MyBatis缓存的原理" class="headerlink" title="3. MyBatis缓存的原理"></a>3. MyBatis缓存的原理</h2><h4 id="一级缓存与二级缓存"><a href="#一级缓存与二级缓存" class="headerlink" title="一级缓存与二级缓存"></a>一级缓存与二级缓存</h4><p>正如大多数持久层框架一样，MyBatis 同样提供了一级缓存和二级缓存。<br>一级缓存还有个别名Local Cache（本地缓存）。我觉得这个比较容易引起歧义，好像二级缓存就不放在本地了一样。事实上不管一级缓存还是二级缓存都是默认以HashMap的形式保存在本地内存Heap里的（虽然二级缓存也可以通过扩展保存到Memcached上）。<br>一级缓存必定开启不能关闭，二级缓存默认不开启。<br>一级缓存和二级缓存的差别在于作用域：  </p>
+<ul>
+<li>一级缓存默认基于SqlSession，可配置为基于Statement</li>
+<li>二级缓存基于namespace，即可以跨SqlSession</li>
+</ul>
+<p>如果开启二级缓存的话，先从二级缓存中查询，没有命中的话再查询一级缓存。流程图可以参考下图：<br><img src="/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/mybatis-cache.png" alt="mybatis缓存流程"></p>
+<h4 id="缓存命中的机制判断"><a href="#缓存命中的机制判断" class="headerlink" title="缓存命中的机制判断"></a>缓存命中的机制判断</h4><p>每个查询都会生成一个CacheKey对象。CacheKey对象包含了MappedStatement的Id、SQL的offset、SQL的limit、SQL本身以及SQL中的参数。<br>全部匹配的Cache才会走缓存。</p>
+<h4 id="MyBatis-Spring中缓存与事务的关系"><a href="#MyBatis-Spring中缓存与事务的关系" class="headerlink" title="MyBatis Spring中缓存与事务的关系"></a>MyBatis Spring中缓存与事务的关系</h4><p>上面那段中的Statement和namespace没有什么特别需要解释的，看Mapper文件就可以了解。关于SqlSession可能需要解释一下。<br>我们项目中引用的是mybatis-spring-boot-starter的1.3.2版本。从<a href="https://github.com/mybatis/spring-boot-starter/blob/1.3.x/pom.xml" target="_blank" rel="noopener">源代码</a>可以看到是基于mybatis 3.4.6和mybatis-spring 1.3.2版本。除了上述介绍的MyBatis 3的原理之外，还允许MyBatis参与到Spring的事务管理中。<br>原始的MyBatis 3的组件关系图如下：<br><img src="/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/Relationship-of-MyBatis3-components.png" alt="mybatis 3组件关系"><br>MyBatis Spring的组件关系图如下：<br><img src="/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/Relationship-of-MyBatis-Spring-components.png" alt="mybatis Spring组件关系">  </p>
+<p>MyBatis Spring中增加的SqlSessionTemplate是MyBatis Spring的核心。这个类负责管理MyBatis的SqlSession。从<a href="https://github.com/mybatis/spring/blob/1e1bf2a73b375118015e9926f99160d66332c21d/src/main/java/org/mybatis/spring/SqlSessionTemplate.java#L427" target="_blank" rel="noopener">源代码</a>中可以看到，如果如果Sql Session是在一个事务中，MyBatis不会急着提交。    </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">SqlSession sqlSession = getSqlSession(SqlSessionTemplate.<span class="keyword">this</span>.sqlSessionFactory,</span><br><span class="line">    SqlSessionTemplate.<span class="keyword">this</span>.executorType, SqlSessionTemplate.<span class="keyword">this</span>.exceptionTranslator);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  Object result = method.invoke(sqlSession, args);</span><br><span class="line">  <span class="keyword">if</span> (!isSqlSessionTransactional(sqlSession, SqlSessionTemplate.<span class="keyword">this</span>.sqlSessionFactory)) &#123;</span><br><span class="line">    <span class="comment">// force commit even on non-dirty sessions because some databases require</span></span><br><span class="line">    <span class="comment">// a commit/rollback before calling close()</span></span><br><span class="line">    sqlSession.commit(<span class="keyword">true</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而getSqlSession方法中有Spring的TransactionSynchronizationManager参与，增加一次sessionHolder的引用计数。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SqlSessionHolder holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);</span><br><span class="line"></span><br><span class="line">SqlSession session = sessionHolder(executorType, holder);</span><br><span class="line"><span class="keyword">if</span> (session != <span class="keyword">null</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> session;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行完关闭sqlsession的方法也会判断如果holder的引用计数减光了，那么就直接关闭session；如果还有引用计数，就只是减少引用计数，不关闭session。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">closeSqlSession</span><span class="params">(SqlSession session, SqlSessionFactory sessionFactory)</span> </span>&#123;</span><br><span class="line">  notNull(session, NO_SQL_SESSION_SPECIFIED);</span><br><span class="line">  notNull(sessionFactory, NO_SQL_SESSION_FACTORY_SPECIFIED);</span><br><span class="line"></span><br><span class="line">  SqlSessionHolder holder = (SqlSessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);</span><br><span class="line">  <span class="keyword">if</span> ((holder != <span class="keyword">null</span>) &amp;&amp; (holder.getSqlSession() == session)) &#123;</span><br><span class="line">    LOGGER.debug(() -&gt; <span class="string">"Releasing transactional SqlSession ["</span> + session + <span class="string">"]"</span>);</span><br><span class="line">    holder.released();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    LOGGER.debug(() -&gt; <span class="string">"Closing non transactional SqlSession ["</span> + session + <span class="string">"]"</span>);</span><br><span class="line">    session.close();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们在Spring Bean的public方法上加了@Transactional注解，那么就会判断会话在事务中。<br>所以在没有加事务的情况下，Mapper每次请求数据库，都会创建一个SqlSession，并在请求结束后关闭该SqlSession；如果加了事务，则会在事务里复用同一个SqlSession。（这里简化了一点逻辑，事实上还会进行executionType等的判断）<br>之后做验证的时候也可以发现，如果我们循环获取序列的service方法上没有加@Transactional，那么每次获取的序列号是不同的，log里打印了多次请求的sql；而加上@Transactional，那么获取的序列号就是相同的，log里也只打印了一次请求sql。</p>
+<h4 id="缓存存储与刷新的机制"><a href="#缓存存储与刷新的机制" class="headerlink" title="缓存存储与刷新的机制"></a>缓存存储与刷新的机制</h4><p>缓存最底层的实现类是PerpetualCache类（Perpetual的意思是“永恒的”）。可以通过<a href="https://github.com/mybatis/mybatis-3/blob/master/src/main/java/org/apache/ibatis/cache/impl/PerpetualCache.java" target="_blank" rel="noopener">源代码</a>看到它的实现非常简单：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PerpetualCache</span> <span class="keyword">implements</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> String id;</span><br><span class="line">  <span class="keyword">private</span> Map&lt;Object, Object&gt; cache = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>通过装饰器模式，在PerpetualCache类的基础上增加了日志、序列化、线程安全、清理等功能。装饰链如下：<br>SynchronizedCache -&gt; LoggingCache -&gt; SerializedCache -&gt; LruCache -&gt; PerpetualCache<br>缓存默认最大容量1024（参见<a href="https://github.com/mybatis/mybatis-3/blob/master/src/main/java/org/apache/ibatis/annotations/CacheNamespace.java" target="_blank" rel="noopener">源代码</a>），使用LRU算法自动清理。<br>在缓存作用域上调用任何修改语句（insert/update/delete）都会清空缓存，比较简单粗暴。  </p>
+<h2 id="4-MyBatis缓存的特点"><a href="#4-MyBatis缓存的特点" class="headerlink" title="4. MyBatis缓存的特点"></a>4. MyBatis缓存的特点</h2><h4 id="MyBatis缓存的优点"><a href="#MyBatis缓存的优点" class="headerlink" title="MyBatis缓存的优点"></a>MyBatis缓存的优点</h4><p>默认配置下的MyBatis缓存的作用比较有限，只会对同一事务中多次执行的同一SQL有优化效果。<br>我们现在框架中的获取当前用户/获取权限/获取数据字典等经常被调用的方法，如果没有使用Spring Cache的话，至少MyBatis会避免一个方法查询100次数据库。</p>
+<h4 id="MyBatis缓存的坑"><a href="#MyBatis缓存的坑" class="headerlink" title="MyBatis缓存的坑"></a>MyBatis缓存的坑</h4><p>还是那句听起来像玩笑话的名言：“计算机科学只存在两个难题：缓存失效和命名。”<br>如果将MyBatis的一级缓存配置改为Statement级别，或开启MyBatis的二级缓存，问题就来了。  </p>
+<p><strong>问题1：占用的内存大小</strong><br>如果我们在进行大数据量查询的时候没有加上分页条件，那么庞大的结果集会占用了大量内存，而且无法及时释放。</p>
+<p><strong>问题2：缓存失效的触发</strong><br>使statement或namespace里的缓存失效，只有两种方法：</p>
+<ul>
+<li>触发LRU算法</li>
+<li>在同一个应用上执行insert/update/delete</li>
+<li>重启应用<br>如果我们使用了分布式部署，在某一个节点上更新了数据，其他节点是不会得知数据有变更。</li>
+</ul>
+<p><strong>问题3：MyBatis+JPA的脏数据隐患</strong><br>我们现在使用的规范是单表情况下使用JPA进行CRUD，多表联合查询使用MyBatis。<br>即使使用的是session级别的一级缓存，如果在同一个方法里包含了“MyBatis查询+JPA更新+MyBatis查询”三个步骤的逻辑，那么最后一个查询得到的就是更新前的结果。<br>当然这个问题可以靠良好的代码规范部分解决，即“一个方法做一件事”。换句话说，不在一个方法里即做更新又做查询。</p>
+<p>即使不使用JPA，全部用MyBatis来做CRUD，使用二级缓存也会有隐患。如果某个多表查询使用到的某几张表不在同一个namespace下，那么当这些表里的数据进行了修改，也会引发脏数据问题。</p>
+<h2 id="5-我们场景下最终采取的方案"><a href="#5-我们场景下最终采取的方案" class="headerlink" title="5. 我们场景下最终采取的方案"></a>5. 我们场景下最终采取的方案</h2><p>从上述MyBatis的隐患可以看到，在我们分布式部署+使用JPA做单表CRUD的技术方案下，不适用开启statement级别的一级缓存，也不适宜开启二级缓存。  </p>
+<p>现在我们回过来看之前的那个解答：<br><strong>拿出@Transactional，就不会出错：</strong><br>【不完全对】<br>这样的确可以解决问题，但不采用事务会引入其他风险。倒洗澡水连带着把孩子也倒掉了。  </p>
+<p><strong>加上useCache=”false” flushCache=”true”,不保存在二级缓存中，并清空缓存</strong><br>【不完全对】<br>这两个参数的含义可以看<a href="http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html" target="_blank" rel="noopener">官方文档</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flushCache	将其设置为 true 后，只要语句被调用，都会导致本地缓存和二级缓存被清空，默认值：false。</span><br><span class="line">useCache	将其设置为 true 后，将会导致本条语句的结果被二级缓存缓存起来，默认值：对 select 元素为 true。</span><br></pre></td></tr></table></figure>
+
+<p>我们不使用二级缓存，所以useCache可以不用加。只需要加flushCache=”true”就可以了。  </p>
+<p><strong>mybatis.configuration.localCacheScope=STATEMENT,修改一级缓存的作用域</strong><br>【不对】<br>如果将一级缓存改为statement级别，获取sequence的语句还是会命中缓存，问题依然会存在。</p>
+<p><strong>mybatis.configuration.cacheEnabled = false,禁用一级和二级缓存</strong><br>【不对】<br>从<a href="https://github.com/mybatis/mybatis-3/blob/385155b0924bb8e9314705223586fa488759b7cb/src/main/java/org/apache/ibatis/session/Configuration.java#L596" target="_blank" rel="noopener">源代码</a>可以看到，cacheEnabled只控制CachingExecutor，即只能关闭二级缓存。而二级缓存本来就是默认关闭的。所以这么改毫无意义。</p>
+<h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><p>所以对于我们的场景的最终结论是：在获取序列的SQL语句的XML上，增加flushCache=”true”。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>MyBatis组件关系的架构图就是从这个博客里拿的，感谢日本同僚。虽然也只看得懂图。。。<br><a href="https://terasolunaorg.github.io/guideline/5.0.0.RELEASE/ja/ArchitectureInDetail/DataAccessMyBatis3.html" target="_blank" rel="noopener">データベースアクセス（MyBatis3編）</a>  </p>
+<p>作者写了很多的demo，结合源代码把MyBatis缓存讲得很透彻。<br><a href="https://tech.meituan.com/2018/01/19/mybatis-cache.html" target="_blank" rel="noopener">聊聊MyBatis缓存机制 - 美团技术团队</a>  </p>
+<p>MyBatis的官方文档<br><a href="http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html#cache" target="_blank" rel="noopener">mybatis – MyBatis 3 | XML 映射文件</a><br><a href="http://www.mybatis.org/spring/zh/transactions.html" target="_blank" rel="noopener">mybatis-spring – MyBatis-Spring | 事务</a></p>
+<p>本文永久链接 [ <a href="https://galaxyyao.github.io/2019/05/13/重复的Sequence序列和MyBatis缓存/">https://galaxyyao.github.io/2019/05/13/重复的Sequence序列和MyBatis缓存/</a> ]</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/05/13/重复的Sequence序列和MyBatis缓存/" data-id="ck0pbql9j002wsgfdv0bcvhp3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MyBatis/">MyBatis</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/05/17/容器-1-Namespace：楚门的世界/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          容器-1-Namespace：楚门的世界
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/03/29/分布式配置中心-2-Spring-Cloud-Config评估/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">分布式配置中心 - 2. Spring Cloud Config评估</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/容器/">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/持续集成/">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 14px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/Spring-Cloud/" style="font-size: 12px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 16px;">docker</a> <a href="/tags/k8s/" style="font-size: 18px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18px;">kubernetes</a> <a href="/tags/容器/" style="font-size: 20px;">容器</a> <a href="/tags/持续集成/" style="font-size: 12px;">持续集成</a> <a href="/tags/数据库/" style="font-size: 10px;">数据库</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/09/18/Maven-组织内部项目统一配置DistributionManagement/">Maven-组织内部项目统一配置DistributionManagement</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/14/持续集成-Jenkins离线安装与配置/">持续集成-Jenkins离线安装与配置</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/30/MySQL-没有必要的varchar-255-长度及存储汉字问题汇总/">MySQL-没有必要的varchar(255)长度及存储汉字问题汇总</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/11/前端-通过自定义协议URI-Scheme-点击Chrome中的链接打开IE/">前端-通过自定义协议URI Scheme,点击Chrome中的链接打开IE</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/04/容器-13-Kubernetes实战-静态网站部署优化2-InitContainer/">容器-13-Kubernetes实战-静态网站部署优化2-InitContainer</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 姚皓(Hao Yao)<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-138096218-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-138096218-1');
+</script>
+  </div>
+</body>
+</html>
