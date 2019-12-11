@@ -7,22 +7,22 @@
   
   <title>Java-Feign+服务注册的多环境方案 | Galaxy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="微服务的开发模式下，联调和服务注册一旦涉及多个环境（开发/SIT/UAT），就会变得有些复杂。本文总结一下我们在此问题上尝试过的几个workaround，以及最终推荐的方案。 1. 背景以下描述的案例中，将我们所拥有的服务精简为三个：  pabem-um：用户微服务 pabem-ent：企业微服务 pabem-bi：BI微服务pabem-ent会调用pabem-um；pabem-bi会调用pabe">
+  <meta name="description" content="微服务的开发模式下，联调和服务注册一旦涉及多个环境（开发/SIT/UAT），就会变得有些复杂。本文总结一下我们在此问题上尝试过的几个workaround，以及最终推荐的方案。 1. 背景以下描述的案例中，将我们所拥有的服务精简为三个：  um：用户微服务 ent：企业微服务 bi：BI微服务ent会调用um；bi会调用ent和um。网络环境分成办公网段和开发环境网段。办公网段可以访问开发环境网段，">
 <meta name="keywords" content="Java,Spring Cloud,Feign">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java-Feign+服务注册的多环境方案">
 <meta property="og:url" content="https://galaxyyao.github.io/2019/12/09/Java-Feign-服务注册的多环境方案/index.html">
 <meta property="og:site_name" content="Galaxy">
-<meta property="og:description" content="微服务的开发模式下，联调和服务注册一旦涉及多个环境（开发/SIT/UAT），就会变得有些复杂。本文总结一下我们在此问题上尝试过的几个workaround，以及最终推荐的方案。 1. 背景以下描述的案例中，将我们所拥有的服务精简为三个：  pabem-um：用户微服务 pabem-ent：企业微服务 pabem-bi：BI微服务pabem-ent会调用pabem-um；pabem-bi会调用pabe">
+<meta property="og:description" content="微服务的开发模式下，联调和服务注册一旦涉及多个环境（开发/SIT/UAT），就会变得有些复杂。本文总结一下我们在此问题上尝试过的几个workaround，以及最终推荐的方案。 1. 背景以下描述的案例中，将我们所拥有的服务精简为三个：  um：用户微服务 ent：企业微服务 bi：BI微服务ent会调用um；bi会调用ent和um。网络环境分成办公网段和开发环境网段。办公网段可以访问开发环境网段，">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://galaxyyao.github.io/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-1.jpg">
 <meta property="og:image" content="https://galaxyyao.github.io/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-2.jpg">
 <meta property="og:image" content="https://galaxyyao.github.io/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/service-registration-workaround-1.jpg">
 <meta property="og:image" content="https://galaxyyao.github.io/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-probem.jpg">
-<meta property="og:updated_time" content="2019-12-10T02:17:57.454Z">
+<meta property="og:updated_time" content="2019-12-11T03:40:10.572Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java-Feign+服务注册的多环境方案">
-<meta name="twitter:description" content="微服务的开发模式下，联调和服务注册一旦涉及多个环境（开发/SIT/UAT），就会变得有些复杂。本文总结一下我们在此问题上尝试过的几个workaround，以及最终推荐的方案。 1. 背景以下描述的案例中，将我们所拥有的服务精简为三个：  pabem-um：用户微服务 pabem-ent：企业微服务 pabem-bi：BI微服务pabem-ent会调用pabem-um；pabem-bi会调用pabe">
+<meta name="twitter:description" content="微服务的开发模式下，联调和服务注册一旦涉及多个环境（开发/SIT/UAT），就会变得有些复杂。本文总结一下我们在此问题上尝试过的几个workaround，以及最终推荐的方案。 1. 背景以下描述的案例中，将我们所拥有的服务精简为三个：  um：用户微服务 ent：企业微服务 bi：BI微服务ent会调用um；bi会调用ent和um。网络环境分成办公网段和开发环境网段。办公网段可以访问开发环境网段，">
 <meta name="twitter:image" content="https://galaxyyao.github.io/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-1.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
@@ -100,23 +100,23 @@
         <p>微服务的开发模式下，联调和服务注册一旦涉及多个环境（开发/SIT/UAT），就会变得有些复杂。本文总结一下我们在此问题上尝试过的几个workaround，以及最终推荐的方案。</p>
 <h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h1><p>以下描述的案例中，将我们所拥有的服务精简为三个：</p>
 <ul>
-<li>pabem-um：用户微服务</li>
-<li>pabem-ent：企业微服务</li>
-<li>pabem-bi：BI微服务<br>pabem-ent会调用pabem-um；pabem-bi会调用pabem-ent和pabem-um。<br>网络环境分成办公网段和开发环境网段。办公网段可以访问开发环境网段，但开发环境网段无法访问办公网段。<br>三个微服务都被打包成镜像，以单副本Pod的形式部署在K8S云的开发环境节点上。<br>服务注册使用Nacos，网关路由使用的是Zuul。  </li>
+<li>um：用户微服务</li>
+<li>ent：企业微服务</li>
+<li>bi：BI微服务<br>ent会调用um；bi会调用ent和um。<br>网络环境分成办公网段和开发环境网段。办公网段可以访问开发环境网段，但开发环境网段无法访问办公网段。<br>三个微服务都被打包成镜像，以单副本Pod的形式部署在K8S云的开发环境节点上。<br>服务注册使用Nacos，网关路由使用的是Zuul。  </li>
 </ul>
 <p><img src="/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-1.jpg" alt="部署环境">  </p>
 <h1 id="2-单环境内部请求流程"><a href="#2-单环境内部请求流程" class="headerlink" title="2. 单环境内部请求流程"></a>2. 单环境内部请求流程</h1><p>如果只考虑SIT环境，整个服务注册+请求的处理流程可以简单描述如下：  </p>
 <ol>
-<li>pabem-um-sit服务（pabem-um的sit环境，下同）启动，将自己的service ip注册到Nacos服务端</li>
-<li>pabem-ent-sit服务启动，将自己的service ip注册到Nacos服务端</li>
-<li>前端web对<a href="http://pabem-cloud-dev.szd-caas.paic.com.cn/api/pabem-ent-sit" target="_blank" rel="noopener">http://pabem-cloud-dev.szd-caas.paic.com.cn/api/pabem-ent-sit</a> 的某个接口发起请求</li>
+<li>um-sit服务（um的sit环境，下同）启动，将自己的service ip注册到Nacos服务端</li>
+<li>ent-sit服务启动，将自己的service ip注册到Nacos服务端</li>
+<li>前端web对http://域名/api/ent-sit 的某个接口发起请求</li>
 <li>通过K8S Ingress的域名映射，找到了Zuul应用</li>
-<li>Zuul向Nacos查询pabem-ent-sit的地址，得到ip：172.1.56.5。这个是pabem-ent-sit的service内部ip</li>
-<li>Zuul将请求转给pabem-ent-sit的service，Pod里的pabem-ent-sit容器中的应用接收到请求，开始处理</li>
-<li>pabem-ent-sit容器在处理过程中需要解析token，于是向Zuul请求pabem-um-sit</li>
-<li>Zuul向Nacos查询pabem-um-sit的地址，得到ip：172.1.56.8。这个是pabem-um-sit的service内部ip</li>
-<li>Zuul将请求转给pabem-um-sit。pabem-um处理完token，返回用户信息</li>
-<li>pabem-ent-sit处理结束，将结果返回给Zuul</li>
+<li>Zuul向Nacos查询ent-sit的地址，得到ip：172.0.0.2。这个是ent-sit的service内部ip</li>
+<li>Zuul将请求转给ent-sit的service，Pod里的ent-sit容器中的应用接收到请求，开始处理</li>
+<li>ent-sit容器在处理过程中需要解析token，于是向Zuul请求um-sit</li>
+<li>Zuul向Nacos查询um-sit的地址，得到ip：172.0.0.1。这个是um-sit的service内部ip</li>
+<li>Zuul将请求转给um-sit。um处理完token，返回用户信息</li>
+<li>ent-sit处理结束，将结果返回给Zuul</li>
 <li>Zuul将结果转给前端web，流程结束</li>
 </ol>
 <p><img src="/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-2.jpg" alt="单环境内部请求流程">  </p>
@@ -125,21 +125,21 @@
 <li>联调会串服务</li>
 <li>无法和测试环境的服务联通</li>
 </ul>
-<h2 id="3-1-串服务"><a href="#3-1-串服务" class="headerlink" title="3.1 串服务"></a>3.1 串服务</h2><p>假设Alice和Bob都在开发pabem-ent，服务名都是pabem-ent-dev。于是Nacos记录了两个服务注册信息。<br>Cathy想和Alice联调。但如果Cathy配置调用的服务id也是pabem-ent-dev，请求就有一定几率会飘到Bob那里。那么很可能会发生Cathy的请求返回的结果不稳定，时对时错。  </p>
-<p>一种解决方案就是每个人在本地将自己的spring.application.name改为“服务名-姓名”，例如：pabem-ent-alice。  </p>
+<h2 id="3-1-串服务"><a href="#3-1-串服务" class="headerlink" title="3.1 串服务"></a>3.1 串服务</h2><p>假设Alice和Bob都在开发ent，服务名都是ent-dev。于是Nacos记录了两个服务注册信息。<br>Cathy想和Alice联调。但如果Cathy配置调用的服务id也是ent-dev，请求就有一定几率会飘到Bob那里。那么很可能会发生Cathy的请求返回的结果不稳定，时对时错。  </p>
+<p>一种解决方案就是每个人在本地将自己的spring.application.name改为“服务名-姓名”，例如：ent-alice。  </p>
 <p><img src="/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/service-registration-workaround-1.jpg" alt="服务注册-workaround-1">  </p>
 <p>但这个方案也存在问题：很容易在提交代码的时候误提交了自己的个人配置。Git里这个配置文件修改频繁，一看log就是服务名从Alice改为Bob，然后又被改会Alice。<br>如果只是这个问题，还有办法可以搞定，例如将服务名放到环境变量等。下一个问题是真正具有阻碍性的。  </p>
 <h2 id="无法和测试环境的服务联通"><a href="#无法和测试环境的服务联通" class="headerlink" title="无法和测试环境的服务联通"></a>无法和测试环境的服务联通</h2><p>在办公网段开发过程中，会发现无法调通SIT的微服务。<br>究其原因，这个是由于办公网段无法访问到service内部ip导致的。  </p>
 <p><img src="/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-probem.jpg" alt="服务注册-问题">  </p>
-<p>办公网段pabem-ent-dev尝试调用pabem-um-sit服务的流程如下：</p>
+<p>办公网段ent-dev尝试调用um-sit服务的流程如下：</p>
 <ul>
-<li>pabem-um-sit服务启动，将自己的service ip（172.1.56.8）注册到Nacos服务端</li>
-<li>本地的pabem-ent-dev启动，将自己的ip（10.28.0.1）注册到Nacos服务端</li>
-<li>pabem-ent-dev通过name（pabem-um-sit）发起请求，向Nacos服务端查询pabem-um-sit的地址</li>
-<li>Nacos服务端返回172.1.56.8</li>
-<li>pabem-ent-dev尝试请求172.1.56.8，但由于这个地址是K8S的内部地址，外部无法访问，所以请求失败</li>
+<li>um-sit服务启动，将自己的service ip（172.0.0.1）注册到Nacos服务端</li>
+<li>本地的ent-dev启动，将自己的ip（10.0.0.1）注册到Nacos服务端</li>
+<li>ent-dev通过name（um-sit）发起请求，向Nacos服务端查询um-sit的地址</li>
+<li>Nacos服务端返回172.0.0.1</li>
+<li>ent-dev尝试请求172.0.0.1，但由于这个地址是K8S的内部地址，外部无法访问，所以请求失败</li>
 </ul>
-<p>一个解决方案就是每个人自己本地也起一个pabem-um的服务，假设服务名为pabem-um-alice。然后将请求的服务名也改为同样的服务名。<br>这样当发起请求时，Nacos会返回本机的地址，自然请求就可以成功了。<br>但这个解决方案除了和上个解决方案有同样的问题（容易误提交自己的个人配置）之外，也会导致每个人开发过程中都需要启动一堆依赖的微服务。姑且不说开发机的性能压力，也容易因为没有及时更新依赖服务的代码，导致联调出错。  </p>
+<p>一个解决方案就是每个人自己本地也起一个um的服务，假设服务名为um-alice。然后将请求的服务名也改为同样的服务名。<br>这样当发起请求时，Nacos会返回本机的地址，自然请求就可以成功了。<br>但这个解决方案除了和上个解决方案有同样的问题（容易误提交自己的个人配置）之外，也会导致每个人开发过程中都需要启动一堆依赖的微服务。姑且不说开发机的性能压力，也容易因为没有及时更新依赖服务的代码，导致联调出错。  </p>
 <h1 id="4-解决方案"><a href="#4-解决方案" class="headerlink" title="4. 解决方案"></a>4. 解决方案</h1><h2 id="4-1-解决方案一：在容器之外再部署一套微服务"><a href="#4-1-解决方案一：在容器之外再部署一套微服务" class="headerlink" title="4.1 解决方案一：在容器之外再部署一套微服务"></a>4.1 解决方案一：在容器之外再部署一套微服务</h2><p>既然service的内部ip地址无法被办公网段访问，那么另外以非容器方式在ECS上另外部署一套dev环境，就可以解决网络访问的问题。<br>但这个解决方案不完美：</p>
 <ul>
 <li>没有解决个人配置的问题</li>
@@ -149,14 +149,14 @@
 <h2 id="4-2-【推荐】解决方案二：不使用name方式访问，使用域名-ip方式"><a href="#4-2-【推荐】解决方案二：不使用name方式访问，使用域名-ip方式" class="headerlink" title="4.2 【推荐】解决方案二：不使用name方式访问，使用域名/ip方式"></a>4.2 【推荐】解决方案二：不使用name方式访问，使用域名/ip方式</h2><p>需要同时避免串服务和个人配置这两个看起来互相冲突的问题，看起来只有放弃通过服务name方式调用，改为url调用。<br>通过Feign可以简化调用的代码。只要在<code>@FeignClient</code>的参数里配置了url，就会优先使用url。范例如下：  </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient</span>(name = <span class="string">"jsonPlaceHolderClient"</span>, url = <span class="string">"$&#123;feign-client.json-place-holder.url&#125;"</span></span><br><span class="line">        , contextId = <span class="string">"JsonPlaceHolderClient"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">JsonPlaceHolderClient</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span>(value = <span class="string">"/posts"</span>)</span><br><span class="line">    <span class="function">List&lt;Post&gt; <span class="title">getPosts</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(value = <span class="string">"/posts/&#123;postId&#125;"</span>)</span><br><span class="line">    <span class="function">Post <span class="title">getPostById</span><span class="params">(@PathVariable(<span class="string">"postId"</span>)</span> Long postId)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>在<code>application-dev.yml</code>配置文件中，<code>feign-client.json-place-holder.url</code>可以默认填写为sit测试环境的地址。这样如果只是作为基础服务来调用（例如用户服务），就不需要在本地启动了。同样以办公网段pabem-ent-dev调用pabem-um-sit服务的流程作为范例：</p>
+<p>在<code>application-dev.yml</code>配置文件中，<code>feign-client.json-place-holder.url</code>可以默认填写为sit测试环境的地址。这样如果只是作为基础服务来调用（例如用户服务），就不需要在本地启动了。同样以办公网段ent-dev调用um-sit服务的流程作为范例：</p>
 <ul>
-<li>pabem-um-sit服务启动，将自己的service ip（172.1.56.8）注册到Nacos服务端</li>
-<li>本地开发机的pabem-ent-dev启动</li>
-<li>pabem-ent-dev通过域名<a href="http://pabem-cloud-dev.szd-caas.paic.com.cn/api/pabem-um-sit，对um的某个接口发起请求" target="_blank" rel="noopener">http://pabem-cloud-dev.szd-caas.paic.com.cn/api/pabem-um-sit，对um的某个接口发起请求</a></li>
-<li>Zuul收到请求，向Nacos查询pabem-um-sit的地址，得到ip：172.1.56.8。这个是pabem-um-sit的service内部ip</li>
-<li>Zuul将请求转给pabem-um-sit的service，Pod里的pabem-um-sit容器中的应用接收到请求，开始处理</li>
-<li>pabem-um-sit容器中的应用处理请求完毕，返回结果给Zuul</li>
+<li>um-sit服务启动，将自己的service ip（172.0.0.1）注册到Nacos服务端</li>
+<li>本地开发机的ent-dev启动</li>
+<li>ent-dev通过域名http://域名/api/um-sit，对um的某个接口发起请求</li>
+<li>Zuul收到请求，向Nacos查询um-sit的地址，得到ip：172.0.0.1。这个是um-sit的service内部ip</li>
+<li>Zuul将请求转给um-sit的service，Pod里的um-sit容器中的应用接收到请求，开始处理</li>
+<li>um-sit容器中的应用处理请求完毕，返回结果给Zuul</li>
 <li>Zuul将结果转给本地开发机<br>和K8S的Service不同，Ingress是可以被容器外访问到的，所以网络连通性上也没有任何问题。  </li>
 </ul>
 <p>如果是需要本机服务联调或与其他开发进行联调，只需要将url改为localhost或其他开发的ip即可。这样就等同于不涉及服务注册的直连。<br>提交的时候把这个临时改动revert回来，就不会将个人配置提交到代码仓库了。  </p>
@@ -174,7 +174,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/12/09/Java-Feign-服务注册的多环境方案/" data-id="ck3z8jodn003h7gfd3uocn6oa" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/12/09/Java-Feign-服务注册的多环境方案/" data-id="ck40r6xdn0039h4fdi6i3e7fh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Feign/">Feign</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Cloud/">Spring Cloud</a></li></ul>
