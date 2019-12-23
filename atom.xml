@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://galaxyyao.github.io/"/>
-  <updated>2019-12-11T03:40:10.572Z</updated>
+  <updated>2019-12-23T13:02:49.261Z</updated>
   <id>https://galaxyyao.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Java-从FeignClient的Ambiguous mapping报错,重温RequestMapping原理</title>
+    <link href="https://galaxyyao.github.io/2019/12/23/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/"/>
+    <id>https://galaxyyao.github.io/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/</id>
+    <published>2019-12-22T16:00:00.000Z</published>
+    <updated>2019-12-23T13:02:49.261Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="https://galaxyyao.github.io/tags/Java/"/>
+    
+      <category term="Spring" scheme="https://galaxyyao.github.io/tags/Spring/"/>
+    
+  </entry>
   
   <entry>
     <title>Java-Feign+服务注册的多环境方案</title>
@@ -527,30 +553,6 @@
       <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
     
       <category term="docker" scheme="https://galaxyyao.github.io/tags/docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>crontab ntpdate同步失败与Linux环境变量</title>
-    <link href="https://galaxyyao.github.io/2019/05/23/crontab-ntpdate%E5%90%8C%E6%AD%A5%E5%A4%B1%E8%B4%A5%E4%B8%8ELinux%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/"/>
-    <id>https://galaxyyao.github.io/2019/05/23/crontab-ntpdate同步失败与Linux环境变量/</id>
-    <published>2019-05-22T16:00:00.000Z</published>
-    <updated>2019-08-27T06:53:02.414Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Linux" scheme="https://galaxyyao.github.io/tags/Linux/"/>
     
   </entry>
   

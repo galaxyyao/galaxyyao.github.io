@@ -71,6 +71,91 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-容器-10-Kubernetes实战-Service" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/26/容器-10-Kubernetes实战-Service/" class="article-date">
+  <time datetime="2019-06-25T16:00:00.000Z" itemprop="datePublished">2019-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/26/容器-10-Kubernetes实战-Service/">容器-10-Kubernetes实战-Service</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Deployment只是保证了支撑服务的Pod的数量，但是没有解决如何访问这些服务的问题。一个Pod只是一个运行服务的实例，随时可能在一个节点上停止，在另一个节点以一个新的IP启动一个新的Pod。因此不能以确定的IP和端口号提供服务。<br>要稳定地提供服务，需要服务发现和负载均衡能力。服务发现是一个微服务中很基础的概念，即当服务提供者网络发生变化时，服务消费者能及时获得最新的位置信息。对于k8s来说，服务提供者就是Pod，提供服务发现能力的是Service。   </p>
+<p>Service和Deployment分别负责Pod的部署和访问策略，互不相关。<br><img src="/images/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/k8s-deployment-service.png" alt="Kubernetes Service与Deployment">   </p>
+<h1 id="Service-YAML"><a href="#Service-YAML" class="headerlink" title="Service YAML"></a>Service YAML</h1><p>一个简单的Service YAML模板如下：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">&lt;endpoint-name&gt;</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - port:</span> <span class="string">&lt;port&gt;</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">&lt;port-name&gt;</span></span><br><span class="line"><span class="attr">    targetPort:</span> <span class="string">&lt;target-port-number&gt;</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    app:</span> <span class="string">&lt;app-name&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到它是由selector.app来选择需要暴露的Pod。spec.ports.port是service对外暴露的端口，而targetPort是Pod的端口。默认使用TCP协议。<br>对于我们的POC的网站，service YAML定义如下：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">poc-web-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - port:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">web</span></span><br><span class="line"><span class="attr">    targetPort:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    app:</span> <span class="string">poc-web</span></span><br></pre></td></tr></table></figure>
+
+<p>当我们查看已部署的service的时候，可以看到该service对应的ip：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 poc]# kubectl get service -o wide</span><br><span class="line">NAME              TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE     SELECTOR</span><br><span class="line">hostnames         ClusterIP   10.99.149.202   &lt;none&gt;        80/TCP    14d     app=hostnames</span><br><span class="line">kubernetes        ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP   28d     &lt;none&gt;</span><br><span class="line">poc-web-service   ClusterIP   10.110.52.238   &lt;none&gt;        80/TCP    4m43s   app=poc-web</span><br></pre></td></tr></table></figure>
+
+<p>我们通过curl就可以访问到页面内容了。  </p>
+<p>甚至YAML中selector也不是必须的。可以额外定义一个映射到外部ip/域名+端口的EndPoint，然后将Service指向这个EndPoint。这个特性我理解是类似于对集群内的反向代理。如果有一个服务在测试环境调用集群内服务，生产环境调用集群外服务，只需要在service里定义两套namespace或env的label就可以解决了。    </p>
+<h1 id="kube-proxy"><a href="#kube-proxy" class="headerlink" title="kube-proxy"></a>kube-proxy</h1><p>每个Pod有自己独一无二的ip。但当一组Pod组成了一个Service对外提供服务时，只能保持一个ip对外。当我们请求这个ip时，Kubernetes需要将我们的请求相对平均地分发给每个Pod。<br>这个听上去像什么？没错，就是虚ip（virtual ip） + 反向代理（reverse proxy）。Kubernetes中为service提供虚ip + 反向代理的就是kube-proxy。<br>kube-proxy有三种实现方式：</p>
+<ul>
+<li>userspace</li>
+<li>iptables</li>
+<li>ipvs<br>iptables是当前版本的默认。从名称上就可以猜到是通过在宿主机上设置iptables规则来实现的。由于是内核态，所以性能比用户态的userspace方式高。但节点和Pod多了之后刷新iptables规则就变成了瓶颈。所以待ipvs成熟后应该会改为ipvs。  </li>
+</ul>
+<h1 id="发布服务"><a href="#发布服务" class="headerlink" title="发布服务"></a>发布服务</h1><p>Service可以通过type属性，以不同的方式对外发布服务，包括：</p>
+<ul>
+<li>ClusterIP</li>
+<li>NodePort</li>
+<li>LoadBalancer</li>
+<li>ExternalName</li>
+</ul>
+<h3 id="ClusterIP"><a href="#ClusterIP" class="headerlink" title="ClusterIP"></a>ClusterIP</h3><p>这是不指定type时的默认方式。暴露为一个集群内部的ip，只能在集群内部访问。这个也是我们POC采用的方式。<br><img src="/images/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/k8s-service-clusterip.png" alt="Kubernetes Service ClusterIP">  </p>
+<h3 id="NodePort"><a href="#NodePort" class="headerlink" title="NodePort"></a>NodePort</h3><p>通过NAT的方式，在选定的数个节点上以IP形式暴露。可以通过那几个宿主机节点中的任意一个的ip+端口访问。该模式经常用于外部还有一个独立的负载均衡服务的时候使用。<br><img src="/images/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/k8s-service-nodeport.png" alt="Kubernetes Service NodePort">  </p>
+<p>如果我们现在就急不可待想从集群外访问看一下，就可以稍微改一下配置，加一个type: NodePort。    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 poc]# kubectl get service</span><br><span class="line">NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE</span><br><span class="line">kubernetes              ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP        28d</span><br><span class="line">poc-web-service         NodePort    10.105.188.12   &lt;none&gt;        80:30611/TCP   24s</span><br></pre></td></tr></table></figure>
+
+<p>如果没有指定端口的话，会随机分配一个30000-32767之间的端口。查好被分配的端口，然后就可以通过http://任意一个Worker节点的ip:30611/ 访问我们的网站了。<br>可以自己通过nodePort参数指定固定端口。但如果不在30000-32767的范围，就会报错：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The Service &quot;poc-web-service&quot; is invalid: spec.ports[0].nodePort: Invalid value: 80: provided port is not in the valid range. The range of valid ports is 30000-32767</span><br></pre></td></tr></table></figure>
+
+<p>为什么是任何一个Worker节点的ip都可以有效，是因为分为两种情况：  </p>
+<ul>
+<li>Pod在该宿主机节点上</li>
+<li>Pod不在该宿主机节点上<br>如果Pod在该节点上，那么没问题IP包直接给Pod。如果不再该节点上，节点之间会做SNAT，即原地址转换。IP包会由接收到的节点转给带有Pod的宿主机节点。  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">          client</span><br><span class="line">            \ ^</span><br><span class="line">             \ \</span><br><span class="line">              v \</span><br><span class="line">  node 1 &lt;--- node 2</span><br><span class="line">   | ^   SNAT</span><br><span class="line">   | |   ---&gt;</span><br><span class="line">   v |</span><br><span class="line">endpoint</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="LoadBalancer"><a href="#LoadBalancer" class="headerlink" title="LoadBalancer"></a>LoadBalancer</h3><p>借用外部云服务的负载均衡能力，暴露一个固定的ip。使用公有云服务基本使用该方式。<br><img src="/images/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/k8s-service-loadbalancer.png" alt="Kubernetes Service LoadBalancer">  </p>
+<h3 id="ExternalName"><a href="#ExternalName" class="headerlink" title="ExternalName"></a>ExternalName</h3><p>通过一个固定的CNAME记录暴露，kube-dns 1.7版本之后的特性，方便实现上文提到的无selector Service。  </p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>Kubernetes Service的官方文档<br><a href="https://kubernetes.io/zh/docs/concepts/services-networking/service/" target="_blank" rel="noopener">Service - Kubernetes</a><br><a href="https://kubernetes.io/docs/tutorials/kubernetes-basics/expose/expose-intro/" target="_blank" rel="noopener">Using a Service to Expose Your App - Kubernetes</a>  </p>
+<p>ExternalName的一些范例<br><a href="https://akomljen.com/kubernetes-tips-part-1/" target="_blank" rel="noopener">Kubernetes Tips - Part 1</a></p>
+<p>各种service type的更详细介绍<br><a href="https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.1/manage_network/kubernetes_types.html" target="_blank" rel="noopener">Kubernetes service types</a></p>
+<p>本文永久链接 [ <a href="https://galaxyyao.github.io/2019/06/26/容器-10-Kubernetes实战-Service/">https://galaxyyao.github.io/2019/06/26/容器-10-Kubernetes实战-Service/</a> ]</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/06/26/容器-10-Kubernetes实战-Service/" data-id="ck4ig9ukp000ds4fdi7m5fpqf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/06/25/容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为/" class="article-date">
@@ -157,7 +242,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/06/25/容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为/" data-id="ck40r6xdk0034h4fd0uyb7kd0" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/06/25/容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为/" data-id="ck4ig9uml003ds4fdmdg7xjbk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -284,7 +369,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/06/24/容器-8-Kubernetes实战-k8s核心概念之Node-Pod与Deployment/" data-id="ck40r6xdo003ch4fdruwfq0ix" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/06/24/容器-8-Kubernetes实战-k8s核心概念之Node-Pod与Deployment/" data-id="ck4ig9umk003bs4fd9wreguyr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -371,7 +456,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/06/18/容器-7-Kubernetes实战-私有仓库和打包镜像/" data-id="ck40r6xce000xh4fd2xdvtn5r" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/06/18/容器-7-Kubernetes实战-私有仓库和打包镜像/" data-id="ck4ig9ukk000as4fdwkgcthhk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -470,7 +555,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/06/17/Nginx-替换response header中的Content-Disposition值/" data-id="ck40r6xdj0032h4fdohubbxir" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/06/17/Nginx-替换response header中的Content-Disposition值/" data-id="ck4ig9umj0039s4fd1oa8tgk1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
@@ -548,7 +633,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/06/13/容器-6-Kubernetes实战-POC目标/" data-id="ck40r6xcc000vh4fdr0myxt52" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/06/13/容器-6-Kubernetes实战-POC目标/" data-id="ck4ig9uki0009s4fdtja2zin2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -852,7 +937,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/05/29/容器-5-kubeadm部署Kubernetes1-14-2集群踩坑记/" data-id="ck40r6xe30042h4fd7dv49wyl" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/05/29/容器-5-kubeadm部署Kubernetes1-14-2集群踩坑记/" data-id="ck4ig9un30043s4fdwh81qxck" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -907,7 +992,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/05/27/容器-4-Docker的意义/" data-id="ck40r6xcb000uh4fdgpg17jm8" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/05/27/容器-4-Docker的意义/" data-id="ck4ig9ukg0006s4fdi0mmmpz2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -988,7 +1073,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/05/25/容器-3-Cgroups的计划经济/" data-id="ck40r6xca000sh4fdmdromqjq" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/05/25/容器-3-Cgroups的计划经济/" data-id="ck4ig9ukn000cs4fd2kvfx6xp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -1079,104 +1164,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/05/24/容器-2-Docker存储引擎/" data-id="ck40r6xdh002zh4fdr2iiua8o" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/05/24/容器-2-Docker存储引擎/" data-id="ck4ig9umh0036s4fdaqdw86i3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-crontab-ntpdate同步失败与Linux环境变量" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/05/23/crontab-ntpdate同步失败与Linux环境变量/" class="article-date">
-  <time datetime="2019-05-22T16:00:00.000Z" itemprop="datePublished">2019-05-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/23/crontab-ntpdate同步失败与Linux环境变量/">crontab ntpdate同步失败与Linux环境变量</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="问题症状与解决方法"><a href="#问题症状与解决方法" class="headerlink" title="问题症状与解决方法"></a>问题症状与解决方法</h1><p>Oracle服务器由于无法上外网，所以做了个crontab的定时任务，每天定时和内部的一台ntp服务器同步。但没过两周，时间又不准了，差了近10秒。<br>首先排除了这个时间差是在凌晨同步完后的几小时内造成的。以“ntpdate crontab”作为关键字<a href="https://codingstandards.iteye.com/blog/1611790" target="_blank" rel="noopener">搜索</a>，很容易找到了原因：坑爹的crontab重置了PATH环境变量，所以执行ntpdate命令的时候报“command not found”。<br>解决方法也很简单：通过whereis ntpdate的命令查出ntpdate的位置，改为完整路径调用，即“/usr/sbin/ntpdate”。另外作为以防万一，也将同步间隔从1天缩小到1小时。  </p>
-<p>为了避免下次栽坑，我们需要知道crontab到底设置了哪些PATH环境变量。<br>通过“vi /etc/crontab”打开文件，可以看到如下的内容：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">SHELL=/bin/bash</span><br><span class="line">PATH=/sbin:/bin:/usr/sbin:/usr/bin</span><br><span class="line">MAILTO=root</span><br><span class="line"></span><br><span class="line"># For details see man 4 crontabs</span><br><span class="line"></span><br><span class="line"># Example of job definition:</span><br><span class="line"># .---------------- minute (0 - 59)</span><br><span class="line"># |  .------------- hour (0 - 23)</span><br><span class="line"># |  |  .---------- day of month (1 - 31)</span><br><span class="line"># |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...</span><br><span class="line"># |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat</span><br><span class="line"># |  |  |  |  |</span><br><span class="line"># *  *  *  *  * user-name  command to be executed</span><br></pre></td></tr></table></figure>
-
-<p>可以看到PATH里明明是包含/usr/sbin，也就是ntpdate的路径。那么为什么依然会报“/bin/sh: ntpdate command not found”的错误？<br>（另外一个疑点是看起来是用/bin/bash执行的，为什么报/bin/sh）  </p>
-<h1 id="crontab-≠-crontab"><a href="#crontab-≠-crontab" class="headerlink" title="crontab ≠ crontab"></a>crontab ≠ crontab</h1><p>这里是比较容易混淆的地方：</p>
-<ul>
-<li>crontab -e是<strong>用户任务调度</strong>的命令</li>
-<li>/etc/crontab是<strong>系统任务调度</strong>的配置文件</li>
-</ul>
-<h3 id="用户任务调度"><a href="#用户任务调度" class="headerlink" title="用户任务调度"></a>用户任务调度</h3><p>每个用户可以通过crontab -e创建自己的定时任务调度。创建的任务会放到/var/spool/cron/{用户名}的文件里。<br>系统在启动的时候会由/etc/init.d启动crond守护进程（<a href="crond(8">参考资料</a>: daemon to execute scheduled commands - Linux man page<br><a href="https://linux.die.net/man/8/crond)）。crond会将/var/spool/cron目录下的crontab文件载入内存，并在每分钟检查是否有需要执行的任务。（我怀疑就是这个机制导致Linux的定时任务的最小间隔是分钟而不是秒。crond的任务如果执行完没关闭的话，会残留下来很多crond进程。如果任务写得有问题的话可能会把进程数都吃光，导致无法ssh登录。）" target="_blank" rel="noopener">https://linux.die.net/man/8/crond)）。crond会将/var/spool/cron目录下的crontab文件载入内存，并在每分钟检查是否有需要执行的任务。（我怀疑就是这个机制导致Linux的定时任务的最小间隔是分钟而不是秒。crond的任务如果执行完没关闭的话，会残留下来很多crond进程。如果任务写得有问题的话可能会把进程数都吃光，导致无法ssh登录。）</a><br>输出会通过系统内邮件发给对应的用户。  </p>
-<p>我们可以通过执行一个“echo $PATH”的定时任务，查看cron的PATH环境变量。结果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PATH=/usr/bin:/bin</span><br></pre></td></tr></table></figure>
-
-<p>没有ntpdate所在的/usr/sbin目录。这就能解释“command not found”这个报错的原因了。  </p>
-<h3 id="系统任务调度"><a href="#系统任务调度" class="headerlink" title="系统任务调度"></a>系统任务调度</h3><p>/etc/crontab文件也是由crond守护进程扫描并调用的。但差别在于3点：</p>
-<ul>
-<li>/etc/crontab文件中额外增加了/sbin和/usr/sbin两个目录</li>
-<li>通过/bin/bash执行</li>
-<li>可以执行的用户<br>我理解/etc/crontab文件的意义在于：  </li>
-<li>/etc/passwd中某些用户是不允许登录的系统账号（例如mysql用户）。虽然也可以通过crontab -u配置，但总不如汇总在一个文件里查看起来方便</li>
-<li>方便添加公共环境变量。通过crontab -e执行需要制定环境变量的命令的时候，需要在命令前先添加一个export。而这些环境变量可以直接写在/etc/crontab文件的顶部</li>
-</ul>
-<p>想起来之前sudo的时候也在环境变量的时候栽过坑，所以也总结一下环境变量相关知识。  </p>
-<h1 id="环境变量层级"><a href="#环境变量层级" class="headerlink" title="环境变量层级"></a>环境变量层级</h1><p>对于每个进程来说，环境变量保存在/proc/$PID/environ这个文件里（$PID是进程号）。每个环境变量的键值对之间是通过\x0这个字符分割的，所以可以通过如下的命令打印当前进程用到的环境变量：  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed 's:\x0:\n:g' /proc/$PID/environ</span><br></pre></td></tr></table></figure>
-
-<p>这些环境变量是由多个层级的环境变量值拼成的。  </p>
-<p>环境变量分为几个层级：  </p>
-<ul>
-<li>全局</li>
-<li>用户级（Per User）</li>
-<li>会话级（Per Session）</li>
-</ul>
-<h3 id="全局"><a href="#全局" class="headerlink" title="全局"></a>全局</h3><p>全局的环境变量主要在两个文件里：</p>
-<ul>
-<li>/etc/environment：推荐加在这个文件里</li>
-<li>/etc/profile：只针对登录的shell有效<br>此外，bash命令也会自带一些环境变量。/etc/locale.conf文件里也带有一个LANG=”en_US.UTF-8”的环境变量。</li>
-</ul>
-<p>之前遇到过一些登录SSH可以成功执行的命令，通过gitlab ci无法执行。原因主要也是因为依赖于一些只在/etc/profile中出现的变量。</p>
-<h3 id="用户级"><a href="#用户级" class="headerlink" title="用户级"></a>用户级</h3><p>某个变量可能只有某个用户才需要。这种时候就需要用户级别的。用户级的变量保存在<del>/.bashrc和</del>/.bash_profile等文件中（<del>表示用户的home目录）。另外也可以看到</del>/.bash_profile其实就是调用<del>/.bashrc。<br>例如要在用户的PATH里添加一个目录/home/my_user/bin，可以修改</del>/.bash_profile文件如下：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=&quot;$&#123;PATH&#125;:/home/my_user/bin&quot;</span><br></pre></td></tr></table></figure>
-
-<p>然后通过source ~/.bash_profile命令更新变量。</p>
-<h3 id="会话级"><a href="#会话级" class="headerlink" title="会话级"></a>会话级</h3><p>有些时候可能只是想在某次登录会话期间，让环境变量临时生效。这时候就靠export命令：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=&quot;$&#123;PATH&#125;:/home/my_user/tmp/usr/bin&quot;</span><br></pre></td></tr></table></figure>
-
-<p>像pwd命令读取的就是用户当前会话中所在路径。  </p>
-<h3 id="sudo"><a href="#sudo" class="headerlink" title="sudo"></a>sudo</h3><p>sudo需要专门拎出来说，是由于之前遇到过一个坑：<br>在一次pip安装lib的时候发生过，有一个命令在root下能成功执行的命令，普通用户sudo执行却会失败。  </p>
-<p>最终发现的原因是sudo下的PATH环境变量被重置成一个最小化的子集了。可以用文本编辑器打开/etc/sudoers文件，找到”secure_path”那一行：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin</span><br></pre></td></tr></table></figure>
-
-<p>而那个命令是在/usr/local/bin（忘了还是/usr/local/sbin了）下，自然就执行失败了。<br>更多可以参考这篇：<a href="https://linux.cn/article-3737-1.html" target="_blank" rel="noopener">技术|Linux有问必答：如何为sudo命令定义PATH环境变量</a>。但我不推荐文中修改secure_path的做法。sudo的secure_path这么设置自然有其安全上的考量。改为完整路径调用或通过export临时添加环境变量即可。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>这篇讲环境变量的比较全。虽然是ArchLinux的Wiki，但对于其他Linux的发行版也基本通用。<br><a href="https://wiki.archlinux.org/index.php/Environment_variables" target="_blank" rel="noopener">Environment variables - ArchWiki</a></p>
-<p>为什么虚拟机的时钟会产生偏差，这篇文章从原理上解释了原因。（话说Docker就<a href="https://stackoverflow.com/questions/24551592/how-to-make-sure-dockers-time-syncs-with-that-of-the-host" target="_blank" rel="noopener">不存在这个问题</a>，容器里想改时间也不能改，要错一起错）<br><a href="http://www.netis.com/247.html" target="_blank" rel="noopener">奔跑在虚拟化大路上的你 请看一看路边的荆棘 - Netis</a>  </p>
-<p>本文永久链接 [ <a href="https://galaxyyao.github.io/2019/05/23/crontab-ntpdate同步失败与Linux环境变量/">https://galaxyyao.github.io/2019/05/23/crontab-ntpdate同步失败与Linux环境变量/</a> ]</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/05/23/crontab-ntpdate同步失败与Linux环境变量/" data-id="ck40r6xc9000rh4fd1hc399ue" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
 
     </footer>
   </div>
@@ -1203,7 +1194,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/容器/">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/持续集成/">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/容器/">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/持续集成/">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li></ul>
     </div>
   </div>
 
@@ -1213,7 +1204,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/容器/" style="font-size: 20px;">容器</a> <a href="/tags/持续集成/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/数据库/" style="font-size: 10px;">数据库</a>
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/容器/" style="font-size: 20px;">容器</a> <a href="/tags/持续集成/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/数据库/" style="font-size: 10px;">数据库</a>
     </div>
   </div>
 
@@ -1235,6 +1226,10 @@
       <ul>
         
           <li>
+            <a href="/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/">Java-从FeignClient的Ambiguous mapping报错,重温RequestMapping原理</a>
+          </li>
+        
+          <li>
             <a href="/2019/12/09/Java-Feign-服务注册的多环境方案/">Java-Feign+服务注册的多环境方案</a>
           </li>
         
@@ -1248,10 +1243,6 @@
         
           <li>
             <a href="/2019/08/14/持续集成-Jenkins离线安装与配置/">持续集成-Jenkins离线安装与配置</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/30/MySQL-没有必要的varchar-255-长度及存储汉字问题汇总/">MySQL-没有必要的varchar(255)长度及存储汉字问题汇总</a>
           </li>
         
       </ul>
