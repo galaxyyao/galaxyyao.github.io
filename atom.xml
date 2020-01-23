@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://galaxyyao.github.io/"/>
-  <updated>2019-12-23T13:02:49.261Z</updated>
+  <updated>2020-01-23T03:31:43.685Z</updated>
   <id>https://galaxyyao.github.io/</id>
   
   <author>
@@ -17,11 +17,39 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>容器-14-国内Windows10环境安装Minikube</title>
+    <link href="https://galaxyyao.github.io/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/"/>
+    <id>https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/</id>
+    <published>2020-01-21T16:00:00.000Z</published>
+    <updated>2020-01-23T03:31:43.685Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+      <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+      <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Java-从FeignClient的Ambiguous mapping报错,重温RequestMapping原理</title>
     <link href="https://galaxyyao.github.io/2019/12/23/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/"/>
     <id>https://galaxyyao.github.io/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/</id>
     <published>2019-12-22T16:00:00.000Z</published>
-    <updated>2019-12-23T13:02:49.261Z</updated>
+    <updated>2019-12-23T13:08:05.406Z</updated>
     
     <summary type="html">
     
@@ -455,7 +483,7 @@
     <link href="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/"/>
     <id>https://galaxyyao.github.io/2019/05/29/容器-5-kubeadm部署Kubernetes1-14-2集群踩坑记/</id>
     <published>2019-05-28T16:00:00.000Z</published>
-    <updated>2019-08-27T06:53:02.414Z</updated>
+    <updated>2020-01-23T01:49:00.071Z</updated>
     
     <summary type="html">
     
@@ -509,32 +537,6 @@
     <link href="https://galaxyyao.github.io/2019/05/25/%E5%AE%B9%E5%99%A8-3-Cgroups%E7%9A%84%E8%AE%A1%E5%88%92%E7%BB%8F%E6%B5%8E/"/>
     <id>https://galaxyyao.github.io/2019/05/25/容器-3-Cgroups的计划经济/</id>
     <published>2019-05-24T16:00:00.000Z</published>
-    <updated>2019-08-27T06:53:02.414Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          
-        
-      
-    
-    </summary>
-    
-    
-      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
-    
-      <category term="docker" scheme="https://galaxyyao.github.io/tags/docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>容器-2-Docker存储引擎</title>
-    <link href="https://galaxyyao.github.io/2019/05/24/%E5%AE%B9%E5%99%A8-2-Docker%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/"/>
-    <id>https://galaxyyao.github.io/2019/05/24/容器-2-Docker存储引擎/</id>
-    <published>2019-05-23T16:00:00.000Z</published>
     <updated>2019-08-27T06:53:02.414Z</updated>
     
     <summary type="html">

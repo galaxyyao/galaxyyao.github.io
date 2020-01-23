@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Galaxy">
 <meta property="og:description" content="一般情况下我不喜欢把部署手册放到blog里。绝大多数情况下官网已经足够详尽，而且blog很可能因为版本陈旧误人子弟。曾经我写过Nginx的二进制部署手册，早就被轻松愉快的yum安装扫进了废纸堆。而使用了Docker和K8s后yum安装方式也被迅速淘汰。Hadoop的部署也被Cloudera全自动化部署替代了。但kubernetes的部署由于涉及科学上网的问题，把原本几个命令就能解决的问题搞得相当复">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-27T06:53:02.414Z">
+<meta property="og:updated_time" content="2020-01-23T01:49:00.071Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="容器-5-kubeadm部署Kubernetes1.14.2集群踩坑记">
 <meta name="twitter:description" content="一般情况下我不喜欢把部署手册放到blog里。绝大多数情况下官网已经足够详尽，而且blog很可能因为版本陈旧误人子弟。曾经我写过Nginx的二进制部署手册，早就被轻松愉快的yum安装扫进了废纸堆。而使用了Docker和K8s后yum安装方式也被迅速淘汰。Hadoop的部署也被Cloudera全自动化部署替代了。但kubernetes的部署由于涉及科学上网的问题，把原本几个命令就能解决的问题搞得相当复">
@@ -93,7 +93,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>一般情况下我不喜欢把部署手册放到blog里。绝大多数情况下官网已经足够详尽，而且blog很可能因为版本陈旧误人子弟。曾经我写过Nginx的二进制部署手册，早就被轻松愉快的yum安装扫进了废纸堆。而使用了Docker和K8s后yum安装方式也被迅速淘汰。Hadoop的部署也被Cloudera全自动化部署替代了。<br>但kubernetes的部署由于涉及科学上网的问题，把原本几个命令就能解决的问题搞得相当复杂。所以希望这篇也能多少对还在被GFW恶心的人有些帮助。（当然可能更简单的方式是部署在墙外，比如AWS上）  </p>
-<h1 id="0-部署目标和硬件准备"><a href="#0-部署目标和硬件准备" class="headerlink" title="0. 部署目标和硬件准备"></a>0. 部署目标和硬件准备</h1><h3 id="0-1-部署目标"><a href="#0-1-部署目标" class="headerlink" title="0.1 部署目标"></a>0.1 部署目标</h3><p>由于是测试目的，就不部署高可用了。高可用的部署可以参见最后的参考资料。<br>物理拓扑结构是1 Master + 3 Worker（Worker数量可轻松扩展）。  </p>
+<h2 id="0-部署目标和硬件准备"><a href="#0-部署目标和硬件准备" class="headerlink" title="0. 部署目标和硬件准备"></a>0. 部署目标和硬件准备</h2><h3 id="0-1-部署目标"><a href="#0-1-部署目标" class="headerlink" title="0.1 部署目标"></a>0.1 部署目标</h3><p>由于是测试目的，就不部署高可用了。高可用的部署可以参见最后的参考资料。<br>物理拓扑结构是1 Master + 3 Worker（Worker数量可轻松扩展）。  </p>
 <h3 id="0-2-硬件准备"><a href="#0-2-硬件准备" class="headerlink" title="0.2 硬件准备"></a>0.2 硬件准备</h3><p>部署的Kubernetes版本是v1.14.2（截止2019/5/29的最新版本），Docker的版本是Docker CE 18.09.6（也是截止2019/5/29的最新版本）。<br>服务器全是VMWare虚拟机。虚机的硬件和操作系统如下：  </p>
 <table>
 <thead>
@@ -135,12 +135,12 @@
 </tr>
 </tbody></table>
 <p>下面所有的命令都是在root账号下执行的。  </p>
-<h1 id="1-检查和配置操作系统"><a href="#1-检查和配置操作系统" class="headerlink" title="1. 检查和配置操作系统"></a>1. 检查和配置操作系统</h1><h3 id="1-1-检查操作系统-硬件配置-网络连通性"><a href="#1-1-检查操作系统-硬件配置-网络连通性" class="headerlink" title="1.1 检查操作系统/硬件配置/网络连通性"></a>1.1 检查操作系统/硬件配置/网络连通性</h3><p>按照<a href="https://kubernetes.io/zh/docs/setup/independent/install-kubeadm/" target="_blank" rel="noopener">安装 kubeadm - Kubernetes</a>检查操作系统/硬件配置/网络连通性。主要检查节点之中不可以有重复的主机名，MAC 地址，product_uuid。  </p>
+<h2 id="1-检查和配置操作系统"><a href="#1-检查和配置操作系统" class="headerlink" title="1. 检查和配置操作系统"></a>1. 检查和配置操作系统</h2><h3 id="1-1-检查操作系统-硬件配置-网络连通性"><a href="#1-1-检查操作系统-硬件配置-网络连通性" class="headerlink" title="1.1 检查操作系统/硬件配置/网络连通性"></a>1.1 检查操作系统/硬件配置/网络连通性</h3><p>按照<a href="https://kubernetes.io/zh/docs/setup/independent/install-kubeadm/" target="_blank" rel="noopener">安装 kubeadm - Kubernetes</a>检查操作系统/硬件配置/网络连通性。主要检查节点之中不可以有重复的主机名，MAC 地址，product_uuid。  </p>
 <h3 id="1-2-配置hostname"><a href="#1-2-配置hostname" class="headerlink" title="1.2 配置hostname"></a>1.2 配置hostname</h3><p>根据官方文档的<a href="https://kubernetes.io/docs/setup/independent/troubleshooting-kubeadm/" target="_blank" rel="noopener">kubeadm问题排查</a>，需要确保hostname -i命令返回可路由的ip。<br>我拿到的虚机默认只会返回127.0.0.1。这个可能导致了后续配置过程中Worker节点在join后一直NotReady的问题。所以以防万一还是在每个节点上配置一下比较保险。  </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/hosts</span><br></pre></td></tr></table></figure>
 
 <p>添加内容：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">10.16.34.54     docker-4</span><br><span class="line">10.16.34.57     docker-5</span><br><span class="line">10.16.34.58     docker-6</span><br><span class="line">10.16.34.59     docker-7</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">10.16.34.54     docker-4</span><br><span class="line">10.16.34.57     docker-5</span><br><span class="line">10.16.34.58     docker-6</span><br><span class="line">10.16.34.59     docker-7</span><br></pre></td></tr></table></figure>
 
 <p>然后重启network  </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart network</span><br></pre></td></tr></table></figure>
@@ -148,8 +148,9 @@
 <h3 id="1-3-禁用swap"><a href="#1-3-禁用swap" class="headerlink" title="1.3 禁用swap"></a>1.3 禁用swap</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo swapoff -a</span><br><span class="line">sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab</span><br></pre></td></tr></table></figure>
 
 <p>kubelet在swap不禁用的情况下会报错：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubelet[2856]: error: failed to run Kubelet: Running with swap on is not supported, please disable swap! or set --fail-swap-on</span><br></pre></td></tr></table></figure>
-
+<blockquote>
+<p>kubelet[2856]: error: failed to run Kubelet: Running with swap on is not supported, please disable swap! or set –fail-swap-on</p>
+</blockquote>
 <p>K8S这么设计的原因主要是性能考量：Kubernetes会把每个node实例尽量压榨到利用率100%，包括CPU和内存。而swap出来的虚拟内存的性能远比不上真实内存，会影响调度器对机器余力的判断。  </p>
 <h3 id="1-4-禁用selinux"><a href="#1-4-禁用selinux" class="headerlink" title="1.4 禁用selinux"></a>1.4 禁用selinux</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 将 SELinux 设置为 permissive 模式(将其禁用)</span></span><br><span class="line">setenforce 0</span><br><span class="line">sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config</span><br></pre></td></tr></table></figure>
 
@@ -157,7 +158,10 @@
 <h3 id="1-5-RHEL-CentOS7相关iptables配置"><a href="#1-5-RHEL-CentOS7相关iptables配置" class="headerlink" title="1.5 RHEL/CentOS7相关iptables配置"></a>1.5 RHEL/CentOS7相关iptables配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt;  /etc/sysctl.d/k8s.conf</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">vm.swappiness=0</span><br><span class="line">EOF</span><br><span class="line">sysctl --system</span><br></pre></td></tr></table></figure>
 
 <h3 id="1-6-开启端口"><a href="#1-6-开启端口" class="headerlink" title="1.6 开启端口"></a>1.6 开启端口</h3><p>理论上需要开这些端口：<br><strong>Master 节点</strong>  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=6443/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=2379-2380/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=10250/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=10251/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=10252/tcp</span><br><span class="line">sudo firewall-cmd --reload</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">**Worker 节点**  </span><br><span class="line">```shell</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=10250/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=30000-32767/tcp</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=6443/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=2379-2380/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=10250/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=10251/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=10252/tcp</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+<p><strong>Worker 节点</strong>  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=10250/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=30000-32767/tcp</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
 
 <p>不过对于测试环境来说，为了以防未知的坑，还是直接关闭掉防火墙比较直接。之后在部署Rook的时候，apply -f operator.yaml后Pod的状态一直为CrashLoopBackOff或Error。<br>查看Event日志得到了如下的错误信息：  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">State:       Waiting</span><br><span class="line">  Reason:    CrashLoopBackOff</span><br><span class="line">Last State:  Terminated</span><br><span class="line">  Reason:    Error</span><br><span class="line">  Message:   failed to get pod. Get https://10.96.0.1:443/api/v1/namespaces/rook-ceph/pods/rook-ceph-operator-765ff54667-njkn6: dial tcp 10.96.0.1:443: connect: no route to host</span><br></pre></td></tr></table></figure>
@@ -165,11 +169,11 @@
 <p>通过kubectl get svc -n=kube-system 命令查询service，发现kube-dns还需要开启53/UDP,53/TCP,9153/TCP这三个端口。kubernetes-dashboard也需要443端口。<br>在关闭防火墙后，rook-ceph部署成功。<br>综上所述，将本步骤修改为：  </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld</span><br><span class="line">systemctl disable firewalld</span><br></pre></td></tr></table></figure>
 
-<h1 id="2-安装容器运行时-CRI-Docker"><a href="#2-安装容器运行时-CRI-Docker" class="headerlink" title="2. 安装容器运行时(CRI)-Docker"></a>2. 安装容器运行时(CRI)-Docker</h1><h3 id="2-1-安装Docker"><a href="#2-1-安装Docker" class="headerlink" title="2.1 安装Docker"></a>2.1 安装Docker</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">yum -y install yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">yum -y install wget</span><br><span class="line">cd /etc/yum.repos.d/</span><br><span class="line">wget https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line">yum clean all</span><br><span class="line">yum -y install docker-ce</span><br></pre></td></tr></table></figure>
+<h2 id="2-安装容器运行时-CRI-Docker"><a href="#2-安装容器运行时-CRI-Docker" class="headerlink" title="2. 安装容器运行时(CRI)-Docker"></a>2. 安装容器运行时(CRI)-Docker</h2><h3 id="2-1-安装Docker"><a href="#2-1-安装Docker" class="headerlink" title="2.1 安装Docker"></a>2.1 安装Docker</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">yum -y install yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">yum -y install wget</span><br><span class="line">cd /etc/yum.repos.d/</span><br><span class="line">wget https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line">yum clean all</span><br><span class="line">yum -y install docker-ce</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-2-启动Docker服务"><a href="#2-2-启动Docker服务" class="headerlink" title="2.2 启动Docker服务"></a>2.2 启动Docker服务</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl enable docker</span><br><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
 
-<h1 id="3-安装Kubernetes"><a href="#3-安装Kubernetes" class="headerlink" title="3. 安装Kubernetes"></a>3. 安装Kubernetes</h1><p>需要在每台机器上都安装以下的软件包：  </p>
+<h2 id="3-安装Kubernetes"><a href="#3-安装Kubernetes" class="headerlink" title="3. 安装Kubernetes"></a>3. 安装Kubernetes</h2><p>需要在每台机器上都安装以下的软件包：  </p>
 <ul>
 <li>kubeadm: 用来初始化集群的指令</li>
 <li>kubelet: 在集群中的每个节点上用来启动pod和container等</li>
@@ -292,7 +296,7 @@
 <p>验证完如果不需要的话可以删除：  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete -f nginx-deployment.yaml</span><br></pre></td></tr></table></figure>
 
-<h1 id="4-问题排查"><a href="#4-问题排查" class="headerlink" title="4. 问题排查"></a>4. 问题排查</h1><p>安装的过程肯定不可能一帆风顺。知道怎么排查很重要。  </p>
+<h2 id="4-问题排查"><a href="#4-问题排查" class="headerlink" title="4. 问题排查"></a>4. 问题排查</h2><p>安装的过程肯定不可能一帆风顺。知道怎么排查很重要。  </p>
 <h3 id="4-1-排查节点问题"><a href="#4-1-排查节点问题" class="headerlink" title="4.1 排查节点问题"></a>4.1 排查节点问题</h3><p>如果怀疑是节点问题，可以通过如下的方式来查看节点状态：  </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe nodes</span><br></pre></td></tr></table></figure>
 
@@ -327,15 +331,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ERROR FileContent--proc-sys-net-ipv4-ip_forward]: /proc/sys/net/ipv4/ip_forward contents are not set to 1</span><br></pre></td></tr></table></figure>
 
 <p>Master节点如果不是到我遇到的这个情况也可以reset。  </p>
-<h1 id="5-尚未确认的问题"><a href="#5-尚未确认的问题" class="headerlink" title="5. 尚未确认的问题"></a>5. 尚未确认的问题</h1><p>下面是一些我遇到过的问题。在解决过程中进行了不少操作，不太确定到底是其中具体哪个操作起到了决定性作用。所以姑且把我做过的事情都记录一下。  </p>
-<h3 id="runtime-network-not-ready-NetworkReady-false-reason-NetworkPluginNotReady-message-docker-network-plugin-is-not-ready-cni-config-uninitialized"><a href="#runtime-network-not-ready-NetworkReady-false-reason-NetworkPluginNotReady-message-docker-network-plugin-is-not-ready-cni-config-uninitialized" class="headerlink" title="runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized"></a>runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized</h3><p>在Worker节点加入后一直显示NotReady。查看node状态，在message里看到了如上的消息。<br>尝试过关闭防火墙，怀疑过虚拟机网卡问题。<br>怀疑可能有两个措施可能最终产生效果：  </p>
+<h2 id="5-尚未确认的问题"><a href="#5-尚未确认的问题" class="headerlink" title="5. 尚未确认的问题"></a>5. 尚未确认的问题</h2><p>下面是一些我遇到过的问题。在解决过程中进行了不少操作，不太确定到底是其中具体哪个操作起到了决定性作用。所以姑且把我做过的事情都记录一下。  </p>
+<h3 id="runtime-network-not-ready-NetworkReady-false-reason-NetworkPluginNotReady-message-docker-network-plugin-is-not-ready-cni-config-uninitialized"><a href="#runtime-network-not-ready-NetworkReady-false-reason-NetworkPluginNotReady-message-docker-network-plugin-is-not-ready-cni-config-uninitialized" class="headerlink" title="runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized"></a>runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized</h3><p>在Worker节点加入后一直显示NotReady。查看node状态，在message里看到了如上的消息。<br>尝试过关闭防火墙，怀疑过虚拟机网卡问题。<br>怀疑可能有两个措施可能最终产生效果： </p>
 <ul>
 <li>按照1.2配置/etc/hosts</li>
 <li>在每个Worker Node上也执行pullimages.sh拉取镜像</li>
 </ul>
 <p>极客时间的评论里有人因为多网卡而失败过，也摘抄一下备忘吧。  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2、卡在多网卡的问题上。</span><br><span class="line">2.1、我的环境是virtual box上虚拟的两个ubuntu，网络设置为nat+host only，集群搭建好之后，死活无法启动dashboard、ceph的容器（好多老外也是这么弄的啊），各种查各种试，也没解决问题。在kubernetes的官网上只说了“If you have more than one network adapter, and your Kubernetes components are not reachable on the default route, we recommend you add IP route(s) so Kubernetes cluster addresses go via the appropriate adapter.”。哪位大神按照这种方式弄好的清指点下，很是困惑啊啊啊啊，谁能解救我下………………</span><br><span class="line">2.2、放弃了2.1的nat+host only，改为了桥接的网络方式，只保留一个network interface，成功。</span><br></pre></td></tr></table></figure>
-
+<blockquote>
+<p>2、卡在多网卡的问题上。<br>  2.1、我的环境是virtual box上虚拟的两个ubuntu，网络设置为nat+host only，集群搭建好之后，死活无法启动dashboard、ceph的容器（好多老外也是这么弄的啊），各种查各种试，也没解决问题。在kubernetes的官网上只说了“If you have more than one network adapter, and your Kubernetes components are not reachable on the default route, we recommend you add IP route(s) so Kubernetes cluster addresses go via the appropriate adapter.”。哪位大神按照这种方式弄好的清指点下，很是困惑啊啊啊啊，谁能解救我下………………<br>  2.2、放弃了2.1的nat+host only，改为了桥接的网络方式，只保留一个network interface，成功。</p>
+</blockquote>
 <h3 id="rpc-error-code-DeadlineExceeded异常，导致Pod持续处于ContainerCreating状态"><a href="#rpc-error-code-DeadlineExceeded异常，导致Pod持续处于ContainerCreating状态" class="headerlink" title="rpc error: code = DeadlineExceeded异常，导致Pod持续处于ContainerCreating状态"></a>rpc error: code = DeadlineExceeded异常，导致Pod持续处于ContainerCreating状态</h3><p>在部署完后发生过所有Node都已经Ready，但apply的Pod（包括系统插件的kubernetes dashboard和自定义的nginx）一直处于ContainerCreating状态的情况。<br>在Worker上看到的日志中报rpc error: code = DeadlineExceeded：  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">May 29 01:51:10 docker-7 kubelet: E0529 01:51:10.545968   21276 kuberuntime_manager.go:693] createPodSandbox for pod &quot;kubernetes-dashboard-5f7b999d65-5jwpl_kube-system(a3e6ab24-81d4-11e9-935a-00505695705b)&quot; failed: rpc error: code = DeadlineExceeded desc = context deadline exceeded</span><br><span class="line">May 29 01:51:10 docker-7 kubelet: E0529 01:51:10.546252   21276 pod_workers.go:190] Error syncing pod a3e6ab24-81d4-11e9-935a-00505695705b (&quot;kubernetes-dashboard-5f7b999d65-5jwpl_kube-system(a3e6ab24-81d4-11e9-935a-00505695705b)&quot;), skipping: failed to &quot;CreatePodSandbox&quot; for &quot;kubernetes-dashboard-5f7b999d65-5jwpl_kube-system(a3e6ab24-81d4-11e9-935a-00505695705b)&quot; with CreatePodSandboxError: &quot;CreatePodSandbox for pod \&quot;kubernetes-dashboard-5f7b999d65-5jwpl_kube-system(a3e6ab24-81d4-11e9-935a-00505695705b)\&quot; failed: rpc error: code = DeadlineExceeded desc = context deadline exceeded&quot;</span><br></pre></td></tr></table></figure>
 
@@ -347,10 +352,10 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error restarting cluster: wait: waiting for component=kube-apiserver: timed out waiting for the condition</span><br></pre></td></tr></table></figure>
 
 <p>靠停用防火墙后删除重装minikube解决了。暂时不确定是否和防火墙有关。  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">minikube stop</span><br><span class="line">minikube delete</span><br><span class="line">systemctl disable firewalld</span><br><span class="line">systemctl reboot</span><br><span class="line">minikube start --registry-mirror=https://registry.docker-cn.com --vm-driver=none --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">minikube stop</span><br><span class="line">minikube delete</span><br><span class="line">systemctl disable firewalld</span><br><span class="line">systemctl reboot</span><br><span class="line">minikube start --vm-driver=none --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers</span><br></pre></td></tr></table></figure>
 
 <p>最终感谢阿里云提供repo的镜像，微软Azure云提供Docker镜像。<br>F*ck GFW  </p>
-<h1 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6. 参考资料"></a>6. 参考资料</h1><p>如果是个人学习目的的话，Minikube就已经够用了，安装比上述步骤简单不少。当然科学上网的问题还是要解决。<br><a href="https://kubernetes.io/docs/tasks/tools/install-minikube/" target="_blank" rel="noopener">Install Minikube - Kubernetes</a>  </p>
+<h2 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6. 参考资料"></a>6. 参考资料</h2><p>如果是个人学习目的的话，Minikube就已经够用了，安装比上述步骤简单不少。当然科学上网的问题还是要解决。<br><a href="https://kubernetes.io/docs/tasks/tools/install-minikube/" target="_blank" rel="noopener">Install Minikube - Kubernetes</a>  </p>
 <p>这篇是基于极客时间课程的搭建步骤，也是相对比较完整的。<br><a href="https://www.datayang.com/article/45" target="_blank" rel="noopener">centos7快速搭建Kubernetes 1.11.1单机集群-data羊</a>  </p>
 <p>官方文档的CRI和kubeadm安装手册。如果服务器在墙外直接照着操作就行。<br><a href="https://kubernetes.io/zh/docs/setup/independent/install-kubeadm/" target="_blank" rel="noopener">安装 kubeadm - Kubernetes</a><br><a href="https://kubernetes.io/docs/setup/cri/#docker" target="_blank" rel="noopener">CRI installation - Kubernetes</a>  </p>
 <p>kubeadm高可用部署的官方文档。<br><a href="https://kubernetes.io/docs/setup/independent/high-availability/" target="_blank" rel="noopener">Creating Highly Available Clusters with kubeadm - Kubernetes</a></p>
@@ -362,7 +367,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/05/29/容器-5-kubeadm部署Kubernetes1-14-2集群踩坑记/" data-id="ck4ig9un30043s4fdwh81qxck" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/05/29/容器-5-kubeadm部署Kubernetes1-14-2集群踩坑记/" data-id="ck5q6f48v0048bofdrcegn61g" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -423,7 +428,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
     </div>
   </div>
 
@@ -434,6 +439,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/01/22/容器-14-国内Windows10环境安装Minikube/">容器-14-国内Windows10环境安装Minikube</a>
+          </li>
         
           <li>
             <a href="/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/">Java-从FeignClient的Ambiguous mapping报错,重温RequestMapping原理</a>
@@ -451,10 +460,6 @@
             <a href="/2019/09/18/Maven-组织内部项目统一配置DistributionManagement/">Maven-组织内部项目统一配置DistributionManagement</a>
           </li>
         
-          <li>
-            <a href="/2019/08/14/持续集成-Jenkins离线安装与配置/">持续集成-Jenkins离线安装与配置</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -467,7 +472,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2019 姚皓(Hao Yao)<br>
+      &copy; 2020 姚皓(Hao Yao)<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

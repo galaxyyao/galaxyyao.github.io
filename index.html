@@ -71,6 +71,74 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-容器-14-国内Windows10环境安装Minikube" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/22/容器-14-国内Windows10环境安装Minikube/" class="article-date">
+  <time datetime="2020-01-21T16:00:00.000Z" itemprop="datePublished">2020-01-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/22/容器-14-国内Windows10环境安装Minikube/">容器-14-国内Windows10环境安装Minikube</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。<br>只靠Docker Desktop，平时开发的时候起个数据库或redis是足够用了，但像service mesh之类的就玩不了了。趁年前有空，搭了一套Minikube，把步骤顺便记录一下。原本想合并到之前kubeadm安装的<a href="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/">那篇</a>里，但可能会翻起来不方便，还是单独另开一片吧</p>
+<h2 id="1-软硬件条件"><a href="#1-软硬件条件" class="headerlink" title="1. 软硬件条件"></a>1. 软硬件条件</h2><p>现在内存也不值钱了，插个16G足够玩了。<br>操作系统上，虽然Windows 10家庭版+VirtualBox/VMWare也可以，但从硬件利用率角度，还是用Windows 10企业版/专业版/教育版+Hyper-V比较好。<br>在控制面板-&gt;程序-&gt;启动或关闭Windows 功能 里面打开所有Hyper-V选项然后重启。<br>重启后运行systeminfo，看到如下内容，说明操作系统层面已经ok了：  </p>
+<blockquote>
+<p>Hyper-V 要求:     已检测到虚拟机监控程序。将不显示 Hyper-V 所需的功能。</p>
+</blockquote>
+<p>Docker Desktop是否安装不影响。  </p>
+<h2 id="2-网络条件"><a href="#2-网络条件" class="headerlink" title="2. 网络条件"></a>2. 网络条件</h2><p>因为你懂的那个原因，需要本地搞个SS的梯子。如果哪个步骤因为网络原因卡住了，可以切成代理再试一次。  </p>
+<h2 id="3-安装步骤"><a href="#3-安装步骤" class="headerlink" title="3. 安装步骤"></a>3. 安装步骤</h2><h3 id="3-1-安装Minikube"><a href="#3-1-安装Minikube" class="headerlink" title="3.1 安装Minikube"></a>3.1 安装Minikube</h3><p><a href="https://minikube.sigs.k8s.io/docs/start/windows/" target="_blank" rel="noopener">官方文档</a>里有详细描述，但似乎遗漏了需要先安装Kubernetes Cli的提示。<br>所以最彻底的方法是通过Chocolatey来安装，它会帮忙把该装的都装好：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">choco install minikube</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-Minikube初始启动"><a href="#3-2-Minikube初始启动" class="headerlink" title="3.2 Minikube初始启动"></a>3.2 Minikube初始启动</h3><p>接下来就可以通过start命令来启动了。第一次启动可能会因为kubeadm和kubelet镜像下载失败而失败。不过不用担心，可以反复执行的，大不了用minikube delete重置重来。第一次启动主要是看个版本号。  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube start --vm-driver=hyperv --cpus=2 --memory=6g --image-repository="registry.cn-hangzhou.aliyuncs.com/google_containers"</span><br></pre></td></tr></table></figure>
+
+<p>PS. 有些步骤里会加上一个<code>--registry-mirror=https://registry.docker-cn.com</code>的参数。但实际Docker的国内站已经挂了（公司都快撑不下去了，有点惨），加个image-repository的参数就足够了。这里image-repository用的是阿里的镜像。<br>参数建议在start的时候就加上。通过<code>minikube config set memory 4096</code>来调整，需要delete了重新start。  </p>
+<h3 id="3-3-手动下载kubeadm和kubelet"><a href="#3-3-手动下载kubeadm和kubelet" class="headerlink" title="3.3 手动下载kubeadm和kubelet"></a>3.3 手动下载kubeadm和kubelet</h3><p>第一次启动非常花时间，等最终的kubeadm和kubelet下载失败报错信息，来确定k8s的版本。我安装的minikube使用的版本是v1.17.0。<br>然后可以手动从googleapis网站下载（Windows机器默认没有curl，也可以通过Chocolatey安装，参考<a href="https://chocolatey.org/packages/curl" target="_blank" rel="noopener">这篇</a>：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -Lo kubeadm http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubeadm</span><br><span class="line">curl -Lo kubelet http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubelet</span><br></pre></td></tr></table></figure>
+
+<p>下载后扔到<code>C:\Users\用户名\.minikube\cache\版本号</code>的目录里。<br>如果其他K8S的组件下载失败，也可以使用类似的方式下载后扔到<code>C:\Users\用户名\.minikube\cache\images\registry.cn-hangzhou.aliyuncs.com\google_containers</code>的目录里。例如kube-proxy：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -Lo kube-proxy_v1.17.0 http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kube-proxy</span><br></pre></td></tr></table></figure>
+
+<p>但这招对版本号不一样的例如etcd没用。这个我是靠重试多次硬抗的。<br>对于国内网络来说，这个步骤很花时间，不要急慢慢等。  </p>
+<h2 id="4-验证"><a href="#4-验证" class="headerlink" title="4. 验证"></a>4. 验证</h2><p>安装好后就可以验证了。先看看是不是所有系统容器都启动了：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get pod -A</span><br><span class="line">NAMESPACE              NAME                                         READY   STATUS    RESTARTS   AGE</span><br><span class="line">kube-system            coredns-7f9c544f75-j6cfj                     1/1     Running   1          6h10m</span><br><span class="line">kube-system            coredns-7f9c544f75-wpcn7                     1/1     Running   1          6h10m</span><br><span class="line">kube-system            etcd-minikube                                1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-addon-manager-minikube                  1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-apiserver-minikube                      1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-controller-manager-minikube             1/1     Running   2          6h10m</span><br><span class="line">kube-system            kube-proxy-kbnsr                             1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-scheduler-minikube                      1/1     Running   1          6h10m</span><br><span class="line">kube-system            storage-provisioner                          1/1     Running   1          6h10m</span><br><span class="line">kubernetes-dashboard   dashboard-metrics-scraper-7b64584c5c-6k8f8   1/1     Running   1          6h4m</span><br><span class="line">kubernetes-dashboard   kubernetes-dashboard-79d9cd965-565j6         1/1     Running   2          6h4m</span><br></pre></td></tr></table></figure>
+
+<p>然后可以看看dashboard。本机就是好不用token：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube dashboard</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-常见问题"><a href="#5-常见问题" class="headerlink" title="5. 常见问题"></a>5. 常见问题</h2><h3 id="5-1-minikube-delete失败"><a href="#5-1-minikube-delete失败" class="headerlink" title="5.1 minikube delete失败"></a>5.1 minikube delete失败</h3><p>遇到过一次minikube delete失败，报的是C:\Users\用户名.minikube\machines下某个conf文件找不到。尝试手动删除该目录会报文件被锁定，无法删除。重启后文件夹依然被锁定。<br>这个时候打开services.msc，停止“Hyper-V 虚拟机管理”服务后，就可以删除了。删除完把这个服务重新启用即可。  </p>
+<h2 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6. 参考资料"></a>6. 参考资料</h2><p>常用操作可以参考这个官方文档：<br><a href="https://kubernetes.io/zh/docs/setup/learning-environment/minikube/" target="_blank" rel="noopener">使用 Minikube 安装 Kubernetes - Kubernetes</a>  </p>
+<p>本文永久链接 [ <a href="https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/">https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/</a> ]</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/" data-id="ck5q6f472001ebofd8umi618u" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/" class="article-date">
@@ -129,12 +197,12 @@
 <p>而isHandler的逻辑很简单，就是看Bean上是否有@Controller注解或@RequestMapping注解。参见<a href="https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/mvc/method/annotation/RequestMappingHandlerMapping.java" target="_blank" rel="noopener">源代码</a>：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isHandler</span><span class="params">(Class&lt;?&gt; beanType)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (AnnotatedElementUtils.hasAnnotation(beanType, Controller.class) ||</span><br><span class="line">			AnnotatedElementUtils.hasAnnotation(beanType, RequestMapping.class));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h1 id="Ambiguous-mapping报错原因总结和解决方案"><a href="#Ambiguous-mapping报错原因总结和解决方案" class="headerlink" title="Ambiguous mapping报错原因总结和解决方案"></a>Ambiguous mapping报错原因总结和解决方案</h1><p>归根到底，Ambiguous mapping报错原因在于上面的那个逻辑中使用的是“或”（||），而不是“和”（&amp;&amp;）。<br>由于我们的DemoSpiService扩展了DemoApiService，而DemoApiService的接口定义上有@RequestMapping注解，于是DemoSpiService也被Spring MVC扫描Handler了。而偏生对于DemoSpiService和DemoConsumerController的URL路径都是“/demo”，于是就产生了冲突。<br>知道了原因后，解决方案也就很简单了：修改一下DemoConsumerController的@RequestMapping的URL，例如改为<code>@RequestMapping(&quot;/consumer/demo&quot;)</code>，就可以成功启动了。  </p>
+<h1 id="4-Ambiguous-mapping报错原因总结和解决方案"><a href="#4-Ambiguous-mapping报错原因总结和解决方案" class="headerlink" title="4. Ambiguous mapping报错原因总结和解决方案"></a>4. Ambiguous mapping报错原因总结和解决方案</h1><p>归根到底，Ambiguous mapping报错原因在于上面的那个逻辑中使用的是“或”（||），而不是“和”（&amp;&amp;）。<br>由于我们的DemoSpiService扩展了DemoApiService，而DemoApiService的接口定义上有@RequestMapping注解，于是DemoSpiService也被Spring MVC扫描Handler了。而偏生对于DemoSpiService和DemoConsumerController的URL路径都是“/demo”，于是就产生了冲突。<br>知道了原因后，解决方案也就很简单了：修改一下DemoConsumerController的@RequestMapping的URL，例如改为<code>@RequestMapping(&quot;/consumer/demo&quot;)</code>，就可以成功启动了。  </p>
 <p>你可能会担心@FeignClient+API模块是否会暴露不该暴露的接口？直接访问的话会返回404：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;timestamp&quot;: &quot;2019-12-23T12:51:05.376+0000&quot;,</span><br><span class="line">    &quot;status&quot;: 404,</span><br><span class="line">    &quot;error&quot;: &quot;Not Found&quot;,</span><br><span class="line">    &quot;message&quot;: &quot;No message available&quot;,</span><br><span class="line">    &quot;path&quot;: &quot;/demo/hello&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>也很容易理解：请求在找RequestMapping对应的View：”/demo/hello”。但View不存在，就只能返回404了。只有在DemoSpiService上主动添加@ResponseBody注解，才能对外暴露。  </p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>这篇是主要参考资料。作者认为这是Spring MVC的锅。我理解指的是“或”的那个逻辑。但我觉得当初Spring这么写肯定是有原因的。。。虽然我没找到相关文章。<br><a href="https://blog.ahao.moe/posts/FeignClient_and_Ambiguous_mapping.html" target="_blank" rel="noopener">FeignClient 出现 Ambiguous mapping 重复映射 | Japari Park</a>  </p>
+<h1 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h1><p>这篇是主要参考资料。作者认为这是Spring MVC的锅。我理解指的是“或”的那个逻辑。但我觉得当初Spring这么写肯定是有原因的。。。虽然我没找到相关文章。<br><a href="https://blog.ahao.moe/posts/FeignClient_and_Ambiguous_mapping.html" target="_blank" rel="noopener">FeignClient 出现 Ambiguous mapping 重复映射 | Japari Park</a>  </p>
 <p>另外是两篇Spring原理解析参考<br><a href="https://www.cnblogs.com/forwrader/p/6886581.html" target="_blank" rel="noopener">SpringMVC在@RequestMapping配置两个相同路径 - Text_Dexter - 博客园</a>  </p>
 <p><a href="https://blog.csdn.net/J080624/article/details/56278461" target="_blank" rel="noopener">Spring MVC — @RequestMapping原理讲解-1 - 小小默：进无止境</a>  </p>
 <p>本文永久链接 [ <a href="https://galaxyyao.github.io/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/">https://galaxyyao.github.io/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/</a> ]</p>
@@ -142,7 +210,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/" data-id="ck4iganrk0000kofdj2fbrqr9" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/" data-id="ck5q6f474001gbofdmj3qsbmh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring/">Spring</a></li></ul>
@@ -253,7 +321,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/12/09/Java-Feign-服务注册的多环境方案/" data-id="ck4ig9umo003is4fd5pi6y57q" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/12/09/Java-Feign-服务注册的多环境方案/" data-id="ck5q6f48d003mbofdydtclut6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Feign/">Feign</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Cloud/">Spring Cloud</a></li></ul>
@@ -493,7 +561,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/09/22/数据库-转到PostgreSQL的新手/" data-id="ck4ig9ump003ks4fdrw00sz6w" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/09/22/数据库-转到PostgreSQL的新手/" data-id="ck5q6f48e003obofdvpsg0juo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PostgreSQL/">PostgreSQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pgsql/">pgsql</a></li></ul>
@@ -556,7 +624,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/09/18/Maven-组织内部项目统一配置DistributionManagement/" data-id="ck4ig9ul4000xs4fd5ll6ed4m" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/09/18/Maven-组织内部项目统一配置DistributionManagement/" data-id="ck5q6f471001bbofd7u2pjwf0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Maven/">Maven</a></li></ul>
@@ -675,7 +743,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/08/14/持续集成-Jenkins离线安装与配置/" data-id="ck4ig9ukz000rs4fdgw8jxgt5" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/08/14/持续集成-Jenkins离线安装与配置/" data-id="ck5q6f46z0017bofdrdfn0sqi" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CI/">CI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/持续集成/">持续集成</a></li></ul>
@@ -743,7 +811,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/07/30/MySQL-没有必要的varchar-255-长度及存储汉字问题汇总/" data-id="ck4ig9ukw000ms4fdulphjndy" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/07/30/MySQL-没有必要的varchar-255-长度及存储汉字问题汇总/" data-id="ck5q6f46y0015bofdqs4asrlw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库/">数据库</a></li></ul>
@@ -807,7 +875,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/07/11/前端-通过自定义协议URI-Scheme-点击Chrome中的链接打开IE/" data-id="ck4ig9uky000ps4fd9bt05iwy" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/07/11/前端-通过自定义协议URI-Scheme-点击Chrome中的链接打开IE/" data-id="ck5q6f4700019bofdmk94i4us" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IE/">IE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/">Windows</a></li></ul>
@@ -878,7 +946,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/07/04/容器-13-Kubernetes实战-静态网站部署优化2-InitContainer/" data-id="ck4ig9uks000hs4fd6u31kjej" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/07/04/容器-13-Kubernetes实战-静态网站部署优化2-InitContainer/" data-id="ck5q6f46w0011bofdz8ob8muc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -971,77 +1039,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/07/03/容器-12-Kubernetes实战-静态网站部署优化1-ConfigMap-Secret与TLS/" data-id="ck4ig9umn003gs4fdbbqzw2c7" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-容器-11-Kubernetes实战-Ingress与Traefik" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/27/容器-11-Kubernetes实战-Ingress与Traefik/" class="article-date">
-  <time datetime="2019-06-26T16:00:00.000Z" itemprop="datePublished">2019-06-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/27/容器-11-Kubernetes实战-Ingress与Traefik/">容器-11-Kubernetes实战-Ingress与Traefik</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在上一篇中，通过NodePort模式，其实我们已经可以将一系列Pod暴露给集群外。但Service最多只能做好OSI 4层的负载均衡。而OSI 7层的负载均衡需要交给Ingress。<br>简单解释一下，2层的负载均衡就是虚拟MAC地址接收请求；3层的负载均衡就是虚拟IP地址；4层就是基于IP + 端口；7层就涉及URI等应用层。<br>以下文会提到的Traefik官方的一张图来说明，Ingress的作用就是根据不同的域名，正确找到对应的后台的Service：<br><img src="/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/traefik-architecture.png" alt="Traefik作用"><br>在Service接到请求后，再负责转交给Pod：<br><img src="/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/k8s-ingress-service.png" alt="Kubernetes Service与Deployment">   </p>
-<p>要使用Ingress需要先安装一个Ingress Controller。一般比较常用的有两个：Nginx Ingress Controller和Traefik Ingress Controller。在我做POC的过程中一开始选择Nginx Ingress Controller，但总是curl调不通，于是最终选择了Traefik。Traefik还多带了一个UI不错的后台管理admin dashboard。而Nginx的不少功能需要用Nginx Plus版的才有。虽然也很理解，毕竟Nginx也是要恰饭的。。。<br>需要说明一点：虽然Nginx本身可以同时担任静态网站web server和反向代理两种职责，但Nginx Ingress Controller只负责反向代理。<br>Ingress Controller除了这两个之外，还是有F5的、Kong的和Voyager等等。从这里就可以看到Kubernetes的一大特点：指定了方向，让各厂家和开源开发者发挥自己的特长来做实现。  </p>
-<h1 id="Traefik-Ingress安装"><a href="#Traefik-Ingress安装" class="headerlink" title="Traefik Ingress安装"></a>Traefik Ingress安装</h1><p>安装按照<a href="https://docs.traefik.io/user-guide/kubernetes/" target="_blank" rel="noopener">官方文档</a>一步步做就行了。<br>先配置RBAC（关于RBAC我们之后详细介绍）：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://raw.githubusercontent.com/containous/traefik/v1.7/examples/k8s/traefik-rbac.yaml</span><br></pre></td></tr></table></figure>
-
-<p>然后配置Ingress Controller和对应的Service，对外暴露http的80端口和admin的8080端口。<br>Ingress Controller有两种部署方式：Deployment和DaemonSet。DaemonSet是一种特殊的Pod：</p>
-<ul>
-<li>在每个节点上有且仅有一个Pod实例</li>
-<li>当有新Worker节点加入时，自动在新节点上创建；旧节点被删除后，上面的DaemonSet Pod会被自动回收<br>两种方式各有各的好处。官方文档上都有详细比较，并在最后很贴心地对选择困难症给了建议：遇事不决先用DaemonSet试试。那么作为POC我就却之不恭选择DaemonSet了。反正要吃后悔药也就是几个命令的事情。<br>最后部署一个Traefik Dashboard的UI。配置的时候需要注意根据自己的情况调整host域名，然后我们就能通过域名访问admin Dashboard了。  </li>
-</ul>
-<h1 id="Ingress-YAML定义"><a href="#Ingress-YAML定义" class="headerlink" title="Ingress YAML定义"></a>Ingress YAML定义</h1><p>对于Ingress来说，最关键的就是定义找服务的规则：IngressRule。<br>下面是最简单的Ingress模板：  </p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">piVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">&lt;ingress-name&gt;</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  rules:</span></span><br><span class="line"><span class="attr">  - host:</span> <span class="string">&lt;host-name&gt;</span></span><br><span class="line"><span class="attr">    http:</span></span><br><span class="line"><span class="attr">      paths:</span></span><br><span class="line"><span class="attr">      - path:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">        backend:</span></span><br><span class="line"><span class="attr">          serviceName:</span> <span class="string">&lt;service-name&gt;</span></span><br><span class="line"><span class="attr">          servicePort:</span> <span class="string">http</span></span><br></pre></td></tr></table></figure>
-
-<p>如果配置过Nginx的话就很容易理解这个配置文件了。<br>需要注意的是：Nginx的server_name可以是ip，但Ingress的spec.rules.host必须是一个域名格式（FQDN），不能是ip。<br>我们的POC项目按照这个模板配置一下：  </p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">poc-ingress</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  rules:</span></span><br><span class="line"><span class="attr">  - host:</span> <span class="string">poc.anxintrust.net</span></span><br><span class="line"><span class="attr">    http:</span></span><br><span class="line"><span class="attr">      paths:</span></span><br><span class="line"><span class="attr">      - path:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">        backend:</span></span><br><span class="line"><span class="attr">          serviceName:</span> <span class="string">poc-web-service</span></span><br><span class="line"><span class="attr">          servicePort:</span> <span class="string">http</span></span><br></pre></td></tr></table></figure>
-
-<p>然后配置一个DNS指向任何一个Worker节点的ip，或修改本地的hosts，就可以访问我们的静态网站了。  </p>
-<h1 id="Ingress-Controller高可用"><a href="#Ingress-Controller高可用" class="headerlink" title="Ingress Controller高可用"></a>Ingress Controller高可用</h1><p>我们在上文使用的DNS指定节点的方式会有不少弊端。虽然我们可以给每个域名都配置所有Worker节点的ip，即Round-robin DNS方式。但Round-robin本身就不是一个故障转移方案。在Kubernetes官方的<a href="https://kubernetes.io/docs/concepts/services-networking/service/#why-not-use-round-robin-dns" target="_blank" rel="noopener">Service章节</a>就有提到其他缺陷。  </p>
-<p>一般有两种方式：  </p>
-<h3 id="Deployment方式部署Ingress-Controller，Service类型指定为LoadBalancer"><a href="#Deployment方式部署Ingress-Controller，Service类型指定为LoadBalancer" class="headerlink" title="Deployment方式部署Ingress Controller，Service类型指定为LoadBalancer"></a>Deployment方式部署Ingress Controller，Service类型指定为LoadBalancer</h3><p>如果使用公有云，或私有服务器有自己的LoadBalancer，一般就使用该方案了。云会给每个LoadBalancer类型的Service分配公网ip地址。但公有云的LoadBalancer服务是要收费的，而自己很难部署。  </p>
-<h3 id="DaemonSet方式在边缘节点部署Ingress-Controller，外部通过虚拟ip和keepalived访问边缘节点"><a href="#DaemonSet方式在边缘节点部署Ingress-Controller，外部通过虚拟ip和keepalived访问边缘节点" class="headerlink" title="DaemonSet方式在边缘节点部署Ingress Controller，外部通过虚拟ip和keepalived访问边缘节点"></a>DaemonSet方式在边缘节点部署Ingress Controller，外部通过虚拟ip和keepalived访问边缘节点</h3><p>首先我们可以通过label命令，选定几台服务器作为边缘节点：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl label node docker-5 node=edge</span><br><span class="line">kubectl label node docker-6 node=edge</span><br></pre></td></tr></table></figure>
-
-<p>然后修改traefik-ds.yaml，将通过nodeSelector，限定Ingress Controller部署在边缘节点上：  </p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  template:</span></span><br><span class="line"><span class="attr">    metadata:</span></span><br><span class="line"><span class="attr">      labels:</span></span><br><span class="line"><span class="attr">        k8s-app:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line"><span class="attr">        name:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line"><span class="attr">    spec:</span></span><br><span class="line"><span class="attr">      serviceAccountName:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line">      <span class="comment"># 中间省略</span></span><br><span class="line"><span class="attr">      nodeSelector:</span></span><br><span class="line"><span class="attr">        node:</span> <span class="string">edge</span></span><br></pre></td></tr></table></figure>
-
-<p>在重新apply后，可以看到traefik-ingress-controller的Pod数量降低到了2个。<br>然后参考这篇部署keepalived即可：<a href="https://github.com/rootsongjc/kubernetes-handbook/blob/master/practice/edge-node-configuration.md" target="_blank" rel="noopener">边缘节点配置</a>  </p>
-<p><img src="/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/k8s-edge-node-architecture.png" alt="Kubernetes Edge Node Architecture">  </p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>Kubernetes Ingress Controller的使用介绍及高可用落地 · Service Mesh|服务网格中文社区<br><a href="http://www.servicemesher.com/blog/kubernetes-ingress-controller-deployment-and-ha/" target="_blank" rel="noopener">http://www.servicemesher.com/blog/kubernetes-ingress-controller-deployment-and-ha/</a>  </p>
-<p>Traefik Ingress Controller的安装和使用官方文档<br><a href="https://docs.traefik.io/user-guide/kubernetes/" target="_blank" rel="noopener">Kubernetes - Traefik</a>  </p>
-<p>Nginx Ingress Controller的一个范例，虽然最后没跑起来<br><a href="https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-ingress-guide-nginx-example.html" target="_blank" rel="noopener">Kubernetes Ingress with Nginx Example - Kubernetes Book</a><br>Nginx Ingress Controller的排查手册<br><a href="https://kubernetes.github.io/ingress-nginx/troubleshooting/" target="_blank" rel="noopener">Troubleshooting - NGINX Ingress Controller</a>  </p>
-<p>本文永久链接 [ <a href="https://galaxyyao.github.io/2019/06/27/容器-11-Kubernetes实战-Ingress与Traefik/">https://galaxyyao.github.io/2019/06/27/容器-11-Kubernetes实战-Ingress与Traefik/</a> ]</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/06/27/容器-11-Kubernetes实战-Ingress与Traefik/" data-id="ck4ig9ukr000fs4fd9qjj5ptq" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/07/03/容器-12-Kubernetes实战-静态网站部署优化1-ConfigMap-Secret与TLS/" data-id="ck5q6f488003fbofd8r64qelz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -1090,7 +1088,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
     </div>
   </div>
 
@@ -1101,6 +1099,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/01/22/容器-14-国内Windows10环境安装Minikube/">容器-14-国内Windows10环境安装Minikube</a>
+          </li>
         
           <li>
             <a href="/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/">Java-从FeignClient的Ambiguous mapping报错,重温RequestMapping原理</a>
@@ -1118,10 +1120,6 @@
             <a href="/2019/09/18/Maven-组织内部项目统一配置DistributionManagement/">Maven-组织内部项目统一配置DistributionManagement</a>
           </li>
         
-          <li>
-            <a href="/2019/08/14/持续集成-Jenkins离线安装与配置/">持续集成-Jenkins离线安装与配置</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1134,7 +1132,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2019 姚皓(Hao Yao)<br>
+      &copy; 2020 姚皓(Hao Yao)<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
