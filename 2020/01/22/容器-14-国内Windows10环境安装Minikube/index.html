@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Galaxy">
 <meta property="og:description" content="上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。只靠Docker Desktop，平时开发的时候起个数据库或re">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-23T03:31:43.685Z">
+<meta property="og:updated_time" content="2020-01-23T03:47:11.499Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="容器-14-国内Windows10环境安装Minikube">
 <meta name="twitter:description" content="上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。只靠Docker Desktop，平时开发的时候起个数据库或re">
@@ -99,7 +99,7 @@
 </blockquote>
 <p>Docker Desktop是否安装不影响。  </p>
 <h2 id="2-网络条件"><a href="#2-网络条件" class="headerlink" title="2. 网络条件"></a>2. 网络条件</h2><p>因为你懂的那个原因，需要本地搞个SS的梯子。如果哪个步骤因为网络原因卡住了，可以切成代理再试一次。  </p>
-<h2 id="3-安装步骤"><a href="#3-安装步骤" class="headerlink" title="3. 安装步骤"></a>3. 安装步骤</h2><h3 id="3-1-安装Minikube"><a href="#3-1-安装Minikube" class="headerlink" title="3.1 安装Minikube"></a>3.1 安装Minikube</h3><p><a href="https://minikube.sigs.k8s.io/docs/start/windows/" target="_blank" rel="noopener">官方文档</a>里有详细描述，但似乎遗漏了需要先安装Kubernetes Cli的提示。<br>所以最彻底的方法是通过Chocolatey来安装，它会帮忙把该装的都装好：  </p>
+<h2 id="3-安装步骤"><a href="#3-安装步骤" class="headerlink" title="3. 安装步骤"></a>3. 安装步骤</h2><h3 id="3-1-安装Minikube"><a href="#3-1-安装Minikube" class="headerlink" title="3.1 安装Minikube"></a>3.1 安装Minikube</h3><p>首先注意一下，后续的步骤都需要用管理员权限的命令行来执行。Powershell应该也行。<br>安装步骤在<a href="https://minikube.sigs.k8s.io/docs/start/windows/" target="_blank" rel="noopener">官方文档</a>里有详细描述，但似乎遗漏了需要先安装Kubernetes Cli的提示。<br>所以最彻底的方法是通过Chocolatey来安装，它会帮忙把该装的都装好：  </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">choco install minikube</span><br></pre></td></tr></table></figure>
 
 <h3 id="3-2-Minikube初始启动"><a href="#3-2-Minikube初始启动" class="headerlink" title="3.2 Minikube初始启动"></a>3.2 Minikube初始启动</h3><p>接下来就可以通过start命令来启动了。第一次启动可能会因为kubeadm和kubelet镜像下载失败而失败。不过不用担心，可以反复执行的，大不了用minikube delete重置重来。第一次启动主要是看个版本号。  </p>
@@ -117,7 +117,10 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get pod -A</span><br><span class="line">NAMESPACE              NAME                                         READY   STATUS    RESTARTS   AGE</span><br><span class="line">kube-system            coredns-7f9c544f75-j6cfj                     1/1     Running   1          6h10m</span><br><span class="line">kube-system            coredns-7f9c544f75-wpcn7                     1/1     Running   1          6h10m</span><br><span class="line">kube-system            etcd-minikube                                1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-addon-manager-minikube                  1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-apiserver-minikube                      1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-controller-manager-minikube             1/1     Running   2          6h10m</span><br><span class="line">kube-system            kube-proxy-kbnsr                             1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-scheduler-minikube                      1/1     Running   1          6h10m</span><br><span class="line">kube-system            storage-provisioner                          1/1     Running   1          6h10m</span><br><span class="line">kubernetes-dashboard   dashboard-metrics-scraper-7b64584c5c-6k8f8   1/1     Running   1          6h4m</span><br><span class="line">kubernetes-dashboard   kubernetes-dashboard-79d9cd965-565j6         1/1     Running   2          6h4m</span><br></pre></td></tr></table></figure>
 
 <p>然后可以看看dashboard。本机就是好不用token：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube dashboard</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube dashboard</span><br></pre></td></tr></table></figure>
+
+<p>然后也可以照<a href="https://minikube.sigs.k8s.io/docs/examples/" target="_blank" rel="noopener">官方的Example</a>里的，创建个echo server来验证。需要注意image里的<code>k8s.gcr.io</code>需要替换为<code>registry.cn-hangzhou.aliyuncs.com/google_containers</code>：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl create deployment hello-minikube --image=registry.cn-hangzhou.aliyuncs.com/google_containers/echoserver:1.4</span><br><span class="line">kubectl expose deployment hello-minikube --type=NodePort --port=8080</span><br><span class="line">minikube service hello-minikube</span><br></pre></td></tr></table></figure>
 
 <h2 id="5-常见问题"><a href="#5-常见问题" class="headerlink" title="5. 常见问题"></a>5. 常见问题</h2><h3 id="5-1-minikube-delete失败"><a href="#5-1-minikube-delete失败" class="headerlink" title="5.1 minikube delete失败"></a>5.1 minikube delete失败</h3><p>遇到过一次minikube delete失败，报的是C:\Users\用户名.minikube\machines下某个conf文件找不到。尝试手动删除该目录会报文件被锁定，无法删除。重启后文件夹依然被锁定。<br>这个时候打开services.msc，停止“Hyper-V 虚拟机管理”服务后，就可以删除了。删除完把这个服务重新启用即可。  </p>
 <h2 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6. 参考资料"></a>6. 参考资料</h2><p>常用操作可以参考这个官方文档：<br><a href="https://kubernetes.io/zh/docs/setup/learning-environment/minikube/" target="_blank" rel="noopener">使用 Minikube 安装 Kubernetes - Kubernetes</a>  </p>
@@ -126,7 +129,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/" data-id="ck5q6f472001ebofd8umi618u" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/" data-id="ck5q788pp001hw0fdomhb68ad" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
