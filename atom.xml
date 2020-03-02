@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://galaxyyao.github.io/"/>
-  <updated>2020-01-23T03:47:11.499Z</updated>
+  <updated>2020-03-02T07:38:22.337Z</updated>
   <id>https://galaxyyao.github.io/</id>
   
   <author>
@@ -17,11 +17,59 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>管理-远程办公项目管理经验总结</title>
+    <link href="https://galaxyyao.github.io/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/"/>
+    <id>https://galaxyyao.github.io/2020/03/02/管理-远程办公项目管理经验总结/</id>
+    <published>2020-03-01T16:00:00.000Z</published>
+    <updated>2020-03-02T07:38:22.337Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="项目管理" scheme="https://galaxyyao.github.io/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>中台-读《说透中台》有感</title>
+    <link href="https://galaxyyao.github.io/2020/02/05/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E6%9C%89%E6%84%9F/"/>
+    <id>https://galaxyyao.github.io/2020/02/05/中台-读说透中台有感/</id>
+    <published>2020-02-04T16:00:00.000Z</published>
+    <updated>2020-02-06T02:59:47.166Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+      <category term="中台" scheme="https://galaxyyao.github.io/tags/%E4%B8%AD%E5%8F%B0/"/>
+    
+  </entry>
+  
+  <entry>
     <title>容器-14-国内Windows10环境安装Minikube</title>
     <link href="https://galaxyyao.github.io/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/"/>
     <id>https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/</id>
     <published>2020-01-21T16:00:00.000Z</published>
-    <updated>2020-01-23T03:47:11.499Z</updated>
+    <updated>2020-02-06T02:52:00.218Z</updated>
     
     <summary type="html">
     
@@ -235,7 +283,7 @@
     <link href="https://galaxyyao.github.io/2019/07/04/%E5%AE%B9%E5%99%A8-13-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%962-InitContainer/"/>
     <id>https://galaxyyao.github.io/2019/07/04/容器-13-Kubernetes实战-静态网站部署优化2-InitContainer/</id>
     <published>2019-07-03T16:00:00.000Z</published>
-    <updated>2019-08-27T06:53:02.414Z</updated>
+    <updated>2020-02-03T02:11:28.437Z</updated>
     
     <summary type="html">
     
@@ -263,7 +311,7 @@
     <link href="https://galaxyyao.github.io/2019/07/03/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/"/>
     <id>https://galaxyyao.github.io/2019/07/03/容器-12-Kubernetes实战-静态网站部署优化1-ConfigMap-Secret与TLS/</id>
     <published>2019-07-02T16:00:00.000Z</published>
-    <updated>2019-08-27T06:53:02.414Z</updated>
+    <updated>2020-02-03T02:11:28.435Z</updated>
     
     <summary type="html">
     
@@ -291,7 +339,7 @@
     <link href="https://galaxyyao.github.io/2019/06/27/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/"/>
     <id>https://galaxyyao.github.io/2019/06/27/容器-11-Kubernetes实战-Ingress与Traefik/</id>
     <published>2019-06-26T16:00:00.000Z</published>
-    <updated>2019-08-27T06:53:02.414Z</updated>
+    <updated>2020-02-03T02:11:28.433Z</updated>
     
     <summary type="html">
     
@@ -319,7 +367,7 @@
     <link href="https://galaxyyao.github.io/2019/06/26/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/"/>
     <id>https://galaxyyao.github.io/2019/06/26/容器-10-Kubernetes实战-Service/</id>
     <published>2019-06-25T16:00:00.000Z</published>
-    <updated>2019-08-27T06:53:02.414Z</updated>
+    <updated>2020-02-03T02:11:28.433Z</updated>
     
     <summary type="html">
     
@@ -347,7 +395,7 @@
     <link href="https://galaxyyao.github.io/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/"/>
     <id>https://galaxyyao.github.io/2019/06/25/容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为/</id>
     <published>2019-06-24T16:00:00.000Z</published>
-    <updated>2019-08-27T06:53:02.414Z</updated>
+    <updated>2020-01-23T09:34:01.384Z</updated>
     
     <summary type="html">
     
@@ -375,7 +423,7 @@
     <link href="https://galaxyyao.github.io/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/"/>
     <id>https://galaxyyao.github.io/2019/06/24/容器-8-Kubernetes实战-k8s核心概念之Node-Pod与Deployment/</id>
     <published>2019-06-23T16:00:00.000Z</published>
-    <updated>2019-08-27T06:53:02.414Z</updated>
+    <updated>2020-02-03T02:11:28.430Z</updated>
     
     <summary type="html">
     
@@ -403,7 +451,7 @@
     <link href="https://galaxyyao.github.io/2019/06/18/%E5%AE%B9%E5%99%A8-7-Kubernetes%E5%AE%9E%E6%88%98-%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93%E5%92%8C%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F/"/>
     <id>https://galaxyyao.github.io/2019/06/18/容器-7-Kubernetes实战-私有仓库和打包镜像/</id>
     <published>2019-06-17T16:00:00.000Z</published>
-    <updated>2019-08-27T06:53:02.414Z</updated>
+    <updated>2020-02-03T02:11:28.428Z</updated>
     
     <summary type="html">
     
@@ -455,7 +503,7 @@
     <link href="https://galaxyyao.github.io/2019/06/13/%E5%AE%B9%E5%99%A8-6-Kubernetes%E5%AE%9E%E6%88%98-POC%E7%9B%AE%E6%A0%87/"/>
     <id>https://galaxyyao.github.io/2019/06/13/容器-6-Kubernetes实战-POC目标/</id>
     <published>2019-06-12T16:00:00.000Z</published>
-    <updated>2019-08-27T06:53:02.414Z</updated>
+    <updated>2020-02-03T02:11:28.428Z</updated>
     
     <summary type="html">
     
@@ -503,58 +551,6 @@
       <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
     
       <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>容器-4-Docker的意义</title>
-    <link href="https://galaxyyao.github.io/2019/05/27/%E5%AE%B9%E5%99%A8-4-Docker%E7%9A%84%E6%84%8F%E4%B9%89/"/>
-    <id>https://galaxyyao.github.io/2019/05/27/容器-4-Docker的意义/</id>
-    <published>2019-05-26T16:00:00.000Z</published>
-    <updated>2019-08-27T06:53:02.414Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          
-        
-      
-    
-    </summary>
-    
-    
-      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
-    
-      <category term="docker" scheme="https://galaxyyao.github.io/tags/docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>容器-3-Cgroups的计划经济</title>
-    <link href="https://galaxyyao.github.io/2019/05/25/%E5%AE%B9%E5%99%A8-3-Cgroups%E7%9A%84%E8%AE%A1%E5%88%92%E7%BB%8F%E6%B5%8E/"/>
-    <id>https://galaxyyao.github.io/2019/05/25/容器-3-Cgroups的计划经济/</id>
-    <published>2019-05-24T16:00:00.000Z</published>
-    <updated>2019-08-27T06:53:02.414Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          
-        
-      
-    
-    </summary>
-    
-    
-      <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
-    
-      <category term="docker" scheme="https://galaxyyao.github.io/tags/docker/"/>
     
   </entry>
   

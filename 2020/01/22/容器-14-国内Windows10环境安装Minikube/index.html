@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Galaxy">
 <meta property="og:description" content="上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。只靠Docker Desktop，平时开发的时候起个数据库或re">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-23T03:47:11.499Z">
+<meta property="og:updated_time" content="2020-02-06T02:52:00.218Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="容器-14-国内Windows10环境安装Minikube">
 <meta name="twitter:description" content="上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。只靠Docker Desktop，平时开发的时候起个数据库或re">
@@ -92,29 +92,65 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。<br>只靠Docker Desktop，平时开发的时候起个数据库或redis是足够用了，但像service mesh之类的就玩不了了。趁年前有空，搭了一套Minikube，把步骤顺便记录一下。原本想合并到之前kubeadm安装的<a href="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/">那篇</a>里，但可能会翻起来不方便，还是单独另开一片吧</p>
+        <p>上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。<br>只靠Docker Desktop，平时开发的时候起个数据库或redis是足够用了，但像service mesh之类的就玩不了了。趁年前有空，搭了一套Minikube，把步骤顺便记录一下。原本想合并到之前kubeadm安装的<a href="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/">那篇</a>里，但可能会翻起来不方便，还是单独另开一篇吧。<br>后续“Kubernetes实战”系列都会基于minikube环境来搭建。  </p>
 <h2 id="1-软硬件条件"><a href="#1-软硬件条件" class="headerlink" title="1. 软硬件条件"></a>1. 软硬件条件</h2><p>现在内存也不值钱了，插个16G足够玩了。<br>操作系统上，虽然Windows 10家庭版+VirtualBox/VMWare也可以，但从硬件利用率角度，还是用Windows 10企业版/专业版/教育版+Hyper-V比较好。<br>在控制面板-&gt;程序-&gt;启动或关闭Windows 功能 里面打开所有Hyper-V选项然后重启。<br>重启后运行systeminfo，看到如下内容，说明操作系统层面已经ok了：  </p>
-<blockquote>
-<p>Hyper-V 要求:     已检测到虚拟机监控程序。将不显示 Hyper-V 所需的功能。</p>
-</blockquote>
-<p>Docker Desktop是否安装不影响。  </p>
-<h2 id="2-网络条件"><a href="#2-网络条件" class="headerlink" title="2. 网络条件"></a>2. 网络条件</h2><p>因为你懂的那个原因，需要本地搞个SS的梯子。如果哪个步骤因为网络原因卡住了，可以切成代理再试一次。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hyper-V 要求:     已检测到虚拟机监控程序。将不显示 Hyper-V 所需的功能。</span><br></pre></td></tr></table></figure>
+
+<p>Docker Desktop是否安装不影响，但在安装Minikube的过程中最好不要启动。在安装过程中报过一个<code>create: precreate: no External vswitch nor Default Switch found</code>的报错，不确定是不是相关。<br>顺带提一句，如果装了Docker Desktop，可以在Settings-&gt;Daemon-&gt;Registry mirrors里填写：<code>https://dockerhub.azk8s.cn</code>、<code>http://hub-mirror.c.163.com</code>和<code>https://docker.mirrors.ustc.edu.cn</code><br>另外感谢这篇<a href="https://xuxinkun.github.io/2019/06/11/cn-registry/" target="_blank" rel="noopener">docker/kubernetes国内源/镜像源解决方式 - xinkun的博客 | Xinkun Blog</a>的整理，我也复制一下备忘：  </p>
+<table>
+<thead>
+<tr>
+<th>global</th>
+<th>proxy in China</th>
+<th>format</th>
+<th>example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>dockerhub (docker.io)</td>
+<td>dockerhub.azk8s.cn</td>
+<td><code>dockerhub.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
+<td>dockerhub.azk8s.cn/microsoft/azure-cli:2.0.61 dockerhub.azk8s.cn/library/nginx:1.15</td>
+</tr>
+<tr>
+<td>gcr.io</td>
+<td>gcr.azk8s.cn</td>
+<td><code>gcr.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
+<td>gcr.azk8s.cn/google_containers/hyperkube-amd64:v1.13.5</td>
+</tr>
+<tr>
+<td>quay.io</td>
+<td>quay.azk8s.cn</td>
+<td><code>quay.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
+<td>quay.azk8s.cn/deis/go-dev:v1.10.0</td>
+</tr>
+</tbody></table>
+<h2 id="2-网络条件"><a href="#2-网络条件" class="headerlink" title="2. 网络条件"></a>2. 网络条件</h2><p>以防万一请先关闭Windows防火墙。<br>因为你懂的那个原因，需要本地搞个SS的梯子。如果哪个步骤因为网络原因卡住了，可以切成代理再试一次。  </p>
 <h2 id="3-安装步骤"><a href="#3-安装步骤" class="headerlink" title="3. 安装步骤"></a>3. 安装步骤</h2><h3 id="3-1-安装Minikube"><a href="#3-1-安装Minikube" class="headerlink" title="3.1 安装Minikube"></a>3.1 安装Minikube</h3><p>首先注意一下，后续的步骤都需要用管理员权限的命令行来执行。Powershell应该也行。<br>安装步骤在<a href="https://minikube.sigs.k8s.io/docs/start/windows/" target="_blank" rel="noopener">官方文档</a>里有详细描述，但似乎遗漏了需要先安装Kubernetes Cli的提示。<br>所以最彻底的方法是通过Chocolatey来安装，它会帮忙把该装的都装好：  </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">choco install minikube</span><br></pre></td></tr></table></figure>
 
 <h3 id="3-2-Minikube初始启动"><a href="#3-2-Minikube初始启动" class="headerlink" title="3.2 Minikube初始启动"></a>3.2 Minikube初始启动</h3><p>接下来就可以通过start命令来启动了。第一次启动可能会因为kubeadm和kubelet镜像下载失败而失败。不过不用担心，可以反复执行的，大不了用minikube delete重置重来。第一次启动主要是看个版本号。  </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube start --vm-driver=hyperv --cpus=2 --memory=6g --image-repository="registry.cn-hangzhou.aliyuncs.com/google_containers"</span><br></pre></td></tr></table></figure>
 
-<p>PS. 有些步骤里会加上一个<code>--registry-mirror=https://registry.docker-cn.com</code>的参数。但实际Docker的国内站已经挂了（公司都快撑不下去了，有点惨），加个image-repository的参数就足够了。这里image-repository用的是阿里的镜像。<br>参数建议在start的时候就加上。通过<code>minikube config set memory 4096</code>来调整，需要delete了重新start。  </p>
-<h3 id="3-3-手动下载kubeadm和kubelet"><a href="#3-3-手动下载kubeadm和kubelet" class="headerlink" title="3.3 手动下载kubeadm和kubelet"></a>3.3 手动下载kubeadm和kubelet</h3><p>第一次启动非常花时间，等最终的kubeadm和kubelet下载失败报错信息，来确定k8s的版本。我安装的minikube使用的版本是v1.17.0。<br>然后可以手动从googleapis网站下载（Windows机器默认没有curl，也可以通过Chocolatey安装，参考<a href="https://chocolatey.org/packages/curl" target="_blank" rel="noopener">这篇</a>：  </p>
+<p>PS1. memory参数建议在start的时候就加上。通过<code>minikube config set memory 4096</code>来调整，需要delete了重新start。<br>PS2. 有些步骤里会加上一个<code>--registry-mirror=https://registry.docker-cn.com</code>的参数。但实际Docker的国内站已经挂了（公司都快撑不下去了，有点惨），加个image-repository的参数就足够了。这里image-repository用的是阿里的镜像。<br>PS3. 如果怀疑是网络问题想通过代理下载，可以添加HTTP_PROXY等参数，例如：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube start --vm-driver=hyperv --cpus=2 --memory=6g --image-repository="registry.cn-hangzhou.aliyuncs.com/google_containers" --docker-env HTTP_PROXY=http://127.0.0.1:1080 --docker-env HTTPS_PROXY=http://127.0.0.1:1080 --docker-env NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-手动下载kubeadm和kubelet"><a href="#3-3-手动下载kubeadm和kubelet" class="headerlink" title="3.3 手动下载kubeadm和kubelet"></a>3.3 手动下载kubeadm和kubelet</h3><p>第一次启动可能会非常花时间（视你的网络而定）。如果失败的话，可以根据kubeadm和kubelet下载失败报错信息，来确定k8s的版本。我安装的minikube使用的版本是v1.17.0。<br>然后可以手动从googleapis网站下载（Windows机器默认没有curl，也可以通过Chocolatey安装，参考<a href="https://chocolatey.org/packages/curl" target="_blank" rel="noopener">这篇</a>：  </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -Lo kubeadm http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubeadm</span><br><span class="line">curl -Lo kubelet http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubelet</span><br></pre></td></tr></table></figure>
 
 <p>下载后扔到<code>C:\Users\用户名\.minikube\cache\版本号</code>的目录里。<br>如果其他K8S的组件下载失败，也可以使用类似的方式下载后扔到<code>C:\Users\用户名\.minikube\cache\images\registry.cn-hangzhou.aliyuncs.com\google_containers</code>的目录里。例如kube-proxy：  </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -Lo kube-proxy_v1.17.0 http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kube-proxy</span><br></pre></td></tr></table></figure>
 
 <p>但这招对版本号不一样的例如etcd没用。这个我是靠重试多次硬抗的。<br>对于国内网络来说，这个步骤很花时间，不要急慢慢等。  </p>
+<h3 id="3-4-更新minikube-kubectl"><a href="#3-4-更新minikube-kubectl" class="headerlink" title="3.4 更新minikube kubectl"></a>3.4 更新minikube kubectl</h3><p>如果同时装了Docker Desktop和minkube，会提示Docker下的kubectl.exe的版本不够高。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">* 完成！kubectl 已经配置至 &quot;minikube&quot;</span><br><span class="line">! C:\Program Files\Docker\Docker\Resources\bin\kubectl.exe is version 1.14.0, and is incompatible with Kubernetes 1.17.0. You will need to update C:\Program Files\Docker\Docker\Resources\bin\kubectl.exe or use &apos;minikube kubectl&apos; to connect with this cluster</span><br></pre></td></tr></table></figure>
+
+<p>接下来先用<code>minikube stop</code>停止，然后用<code>minikube kubectl options</code>的命令，会提示下载最新版本的kubectl：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ minikube kubectl options</span><br><span class="line">* 正在下载 kubectl.exe v1.17.0</span><br></pre></td></tr></table></figure>
+
+<p>最新版的kubectl会下载到<code>C:\Users\用户\.minikube\cache\v版本</code>的目录里，然后复制到Docker的bin目录（例如C:\Program Files\Docker\Docker\Resources\bin\）里覆盖即可。  </p>
 <h2 id="4-验证"><a href="#4-验证" class="headerlink" title="4. 验证"></a>4. 验证</h2><p>安装好后就可以验证了。先看看是不是所有系统容器都启动了：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get pod -A</span><br><span class="line">NAMESPACE              NAME                                         READY   STATUS    RESTARTS   AGE</span><br><span class="line">kube-system            coredns-7f9c544f75-j6cfj                     1/1     Running   1          6h10m</span><br><span class="line">kube-system            coredns-7f9c544f75-wpcn7                     1/1     Running   1          6h10m</span><br><span class="line">kube-system            etcd-minikube                                1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-addon-manager-minikube                  1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-apiserver-minikube                      1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-controller-manager-minikube             1/1     Running   2          6h10m</span><br><span class="line">kube-system            kube-proxy-kbnsr                             1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-scheduler-minikube                      1/1     Running   1          6h10m</span><br><span class="line">kube-system            storage-provisioner                          1/1     Running   1          6h10m</span><br><span class="line">kubernetes-dashboard   dashboard-metrics-scraper-7b64584c5c-6k8f8   1/1     Running   1          6h4m</span><br><span class="line">kubernetes-dashboard   kubernetes-dashboard-79d9cd965-565j6         1/1     Running   2          6h4m</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> kubectl get pod -A</span></span><br><span class="line">NAMESPACE              NAME                                         READY   STATUS    RESTARTS   AGE</span><br><span class="line">kube-system            coredns-7f9c544f75-j6cfj                     1/1     Running   1          6h10m</span><br><span class="line">kube-system            coredns-7f9c544f75-wpcn7                     1/1     Running   1          6h10m</span><br><span class="line">kube-system            etcd-minikube                                1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-addon-manager-minikube                  1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-apiserver-minikube                      1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-controller-manager-minikube             1/1     Running   2          6h10m</span><br><span class="line">kube-system            kube-proxy-kbnsr                             1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-scheduler-minikube                      1/1     Running   1          6h10m</span><br><span class="line">kube-system            storage-provisioner                          1/1     Running   1          6h10m</span><br><span class="line">kubernetes-dashboard   dashboard-metrics-scraper-7b64584c5c-6k8f8   1/1     Running   1          6h4m</span><br><span class="line">kubernetes-dashboard   kubernetes-dashboard-79d9cd965-565j6         1/1     Running   2          6h4m</span><br></pre></td></tr></table></figure>
 
 <p>然后可以看看dashboard。本机就是好不用token：  </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube dashboard</span><br></pre></td></tr></table></figure>
@@ -122,14 +158,23 @@
 <p>然后也可以照<a href="https://minikube.sigs.k8s.io/docs/examples/" target="_blank" rel="noopener">官方的Example</a>里的，创建个echo server来验证。需要注意image里的<code>k8s.gcr.io</code>需要替换为<code>registry.cn-hangzhou.aliyuncs.com/google_containers</code>：  </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl create deployment hello-minikube --image=registry.cn-hangzhou.aliyuncs.com/google_containers/echoserver:1.4</span><br><span class="line">kubectl expose deployment hello-minikube --type=NodePort --port=8080</span><br><span class="line">minikube service hello-minikube</span><br></pre></td></tr></table></figure>
 
-<h2 id="5-常见问题"><a href="#5-常见问题" class="headerlink" title="5. 常见问题"></a>5. 常见问题</h2><h3 id="5-1-minikube-delete失败"><a href="#5-1-minikube-delete失败" class="headerlink" title="5.1 minikube delete失败"></a>5.1 minikube delete失败</h3><p>遇到过一次minikube delete失败，报的是C:\Users\用户名.minikube\machines下某个conf文件找不到。尝试手动删除该目录会报文件被锁定，无法删除。重启后文件夹依然被锁定。<br>这个时候打开services.msc，停止“Hyper-V 虚拟机管理”服务后，就可以删除了。删除完把这个服务重新启用即可。  </p>
-<h2 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6. 参考资料"></a>6. 参考资料</h2><p>常用操作可以参考这个官方文档：<br><a href="https://kubernetes.io/zh/docs/setup/learning-environment/minikube/" target="_blank" rel="noopener">使用 Minikube 安装 Kubernetes - Kubernetes</a>  </p>
+<p>最后一句<code>minikube service &lt;service名&gt;</code>的作用是获取本地集群中指定服务的kubernetes URL。对于以NodePort对外暴露的服务，会自动打开浏览器并跳转到对应的ip+端口。注意对应的ip是Hyper-V管理器中的“vEthernet (Default Switch)”。  </p>
+<h2 id="5-启用ingress"><a href="#5-启用ingress" class="headerlink" title="5. 启用ingress"></a>5. 启用ingress</h2><p>minikube启用ingress还是挺简单的，可以参考<a href="https://kubernetes.github.io/ingress-nginx/deploy/" target="_blank" rel="noopener">Installation Guide - NGINX Ingress Controller</a>，一句命令启动：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube addons enable ingress</span><br></pre></td></tr></table></figure>
+
+<p>但有可能会遇到<code>Back-off pulling image</code>的报错信息。看到image的名字里包含&lt;quay.io&gt;就可以知道又是被墙拦住了。对于类似的问题，可以采用以下的步骤，从Azure拉取后打tag。对于ingress，命令如下：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">minikube ssh</span><br><span class="line">docker pull quay.azk8s.cn/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1</span><br><span class="line">docker tag quay.azk8s.cn/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1 quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1</span><br></pre></td></tr></table></figure>
+
+<p>部署完成后可以通过<code>kubectl get pod -n kube-system</code>的命令来确认ingress是否有安装成功。如果失败的话，最坏结果有可能需要minikube delete后重新start。  </p>
+<h2 id="6-常见问题"><a href="#6-常见问题" class="headerlink" title="6. 常见问题"></a>6. 常见问题</h2><h3 id="6-1-minikube-delete失败"><a href="#6-1-minikube-delete失败" class="headerlink" title="6.1 minikube delete失败"></a>6.1 minikube delete失败</h3><p>遇到过一次minikube delete失败，报的是C:\Users\用户名.minikube\machines下某个conf文件找不到。尝试手动删除该目录会报文件被锁定，无法删除。重启后文件夹依然被锁定。<br>这个时候打开services.msc，停止“Hyper-V 虚拟机管理”服务后，就可以删除了。删除完把这个服务重新启用即可。  </p>
+<h3 id="6-2-Unable-to-connect-to-the-server"><a href="#6-2-Unable-to-connect-to-the-server" class="headerlink" title="6.2 Unable to connect to the server"></a>6.2 Unable to connect to the server</h3><p>在kubectl apply命令的时候有些时候会出现<code>Unable to connect to the server</code>的报错。这种情况下<code>kubectl get node</code>的命令也会失败。电脑重启后问题解决。原因暂不明。。。可能是minikube的bug。  </p>
+<h2 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7. 参考资料"></a>7. 参考资料</h2><p>常用操作可以参考这个官方文档：<br><a href="https://kubernetes.io/zh/docs/setup/learning-environment/minikube/" target="_blank" rel="noopener">使用 Minikube 安装 Kubernetes - Kubernetes</a>  </p>
 <p>本文永久链接 [ <a href="https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/">https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/</a> ]</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/" data-id="ck5q788pp001hw0fdomhb68ad" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/" data-id="ck7a5jecp003g5gfdd33dssl1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -139,6 +184,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2020/02/05/中台-读说透中台有感/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          中台-读《说透中台》有感
+        
+      </div>
+    </a>
   
   
     <a href="/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/" id="article-nav-older" class="article-nav-link-wrap">
@@ -162,7 +216,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/容器/">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/持续集成/">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/中台/">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/容器/">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/持续集成/">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/项目管理/">项目管理</a></li></ul>
     </div>
   </div>
 
@@ -172,7 +226,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/容器/" style="font-size: 20px;">容器</a> <a href="/tags/持续集成/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/数据库/" style="font-size: 10px;">数据库</a>
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/中台/" style="font-size: 10px;">中台</a> <a href="/tags/容器/" style="font-size: 20px;">容器</a> <a href="/tags/持续集成/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/数据库/" style="font-size: 10px;">数据库</a> <a href="/tags/项目管理/" style="font-size: 10px;">项目管理</a>
     </div>
   </div>
 
@@ -181,7 +235,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
     </div>
   </div>
 
@@ -194,6 +248,14 @@
       <ul>
         
           <li>
+            <a href="/2020/03/02/管理-远程办公项目管理经验总结/">管理-远程办公项目管理经验总结</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/05/中台-读说透中台有感/">中台-读《说透中台》有感</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/22/容器-14-国内Windows10环境安装Minikube/">容器-14-国内Windows10环境安装Minikube</a>
           </li>
         
@@ -203,14 +265,6 @@
         
           <li>
             <a href="/2019/12/09/Java-Feign-服务注册的多环境方案/">Java-Feign+服务注册的多环境方案</a>
-          </li>
-        
-          <li>
-            <a href="/2019/09/22/数据库-转到PostgreSQL的新手/">数据库-转到PostgreSQL的新手Tips</a>
-          </li>
-        
-          <li>
-            <a href="/2019/09/18/Maven-组织内部项目统一配置DistributionManagement/">Maven-组织内部项目统一配置DistributionManagement</a>
           </li>
         
       </ul>

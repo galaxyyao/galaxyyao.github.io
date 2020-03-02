@@ -17,7 +17,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-6-Kubernetes%E5%AE%9E%E6%88%98-POC%E7%9B%AE%E6%A0%87/Kubernetes-core-concept-relation.png">
 <meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-6-Kubernetes%E5%AE%9E%E6%88%98-POC%E7%9B%AE%E6%A0%87/k8s-poc-target.jpg">
-<meta property="og:updated_time" content="2019-08-27T06:53:02.414Z">
+<meta property="og:updated_time" content="2020-02-03T02:11:28.428Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="容器-6-Kubernetes实战-POC目标">
 <meta name="twitter:description" content="在较为彻底地理解了Docker原理后，我曾经天真地以为再花差不多的时间就可以同样掌握k8s。直到我看到一张k8s的核心概念关系图：Docker只是其中粉红色的那一小块（Container）的一部分。。。   我也曾考虑过按照我的理解总结k8s优于Docker Swarm之处，以及为什么k8s能赢下容器编排大战。但很快发现这意味着我还需要先去熟悉Docker Swarm，才能较为准确地进行分析。这又">
@@ -99,7 +99,7 @@
 <p>我也曾考虑过按照我的理解总结k8s优于Docker Swarm之处，以及为什么k8s能赢下容器编排大战。但很快发现这意味着我还需要先去熟悉Docker Swarm，才能较为准确地进行分析。这又何苦呢？我们已经知道了结论：Kubernetes是容器编排之战的最终战胜者。就算Docker Swarm有再多的优点，我们也不会采用。  </p>
 <p>我还考虑过类似Docker系列那样，先从原理开始整理。但k8s涉及的原理范围更广，从各种存储介质到OSI七层原理，先研究透再写的话估计还得花一个月。  </p>
 <p>所以我们跳过枯燥的原理介绍，先进行最有趣的实战环节，做一个包含接近完整功能的POC（Proof of Concept，概念验证）。在POC的过程中，我们再来逐渐熟悉k8s的架构设计和原理。  </p>
-<h1 id="POC目标"><a href="#POC目标" class="headerlink" title="POC目标"></a>POC目标</h1><p>我们的目标是把现在基于虚拟机的部署方式和基于脚本的打包方式，尝试用Docker容器+Kubernetes实现。<br>部署的时候还需要考虑：</p>
+<h2 id="POC目标"><a href="#POC目标" class="headerlink" title="POC目标"></a>POC目标</h2><p>我们的目标是把现在基于虚拟机的部署方式和基于脚本的打包方式，尝试用Docker容器+Kubernetes实现。<br>部署的时候还需要考虑：  </p>
 <ul>
 <li>服务高可用</li>
 <li>节点扩展与收缩</li>
@@ -120,7 +120,7 @@
 <li>网络上，集群外可以访问静态网站，Java应用的接口，kibana页面。可以通过工具查询MySQL中的数据。  </li>
 </ul>
 <p><img src="/images/%E5%AE%B9%E5%99%A8-6-Kubernetes%E5%AE%9E%E6%88%98-POC%E7%9B%AE%E6%A0%87/k8s-poc-target.jpg" alt="POC目标架构">  </p>
-<p>POC相对实际部署架构的调整：</p>
+<p>POC相对实际部署架构的调整：  </p>
 <ul>
 <li>暂时省略了Node.JS后台应用。  </li>
 <li>数据库暂时省略了MongoDB，并用MySQL替换了Oracle。  </li>
@@ -130,7 +130,7 @@
 <li>暂时省略了ETL（Kettle）。  </li>
 </ul>
 <p>使用<a href="/2019/05/29/容器-5-kubeadm部署Kubernetes1-14-2集群踩坑记">上一章</a>中搭建完成的单主k8s集群进行部署。  </p>
-<h1 id="POC中的一个原则"><a href="#POC中的一个原则" class="headerlink" title="POC中的一个原则"></a>POC中的一个原则</h1><p>我们在POC及后续实际使用Kubernetes的过程中需要保持一个原则：<strong>只通过YAML修改Kubernetes对象</strong>。<br>换句话说，我们尽量避免像以往的运维那样，直接进入虚拟机进行操作。这样的操作是无法记录，不透明的。有可能我们下一次想部署同样的环境的时候遗漏了某个步骤，导致最终部署失败。即使我们写了操作手册也不能确保文字表达不会产生歧义。而YAML定义是透明且不会产生歧义的，且可以通过版本控制追溯历史的。  </p>
+<h2 id="POC中的一个原则"><a href="#POC中的一个原则" class="headerlink" title="POC中的一个原则"></a>POC中的一个原则</h2><p>我们在POC及后续实际使用Kubernetes的过程中需要保持一个原则：<strong>只通过YAML修改Kubernetes对象</strong>。<br>换句话说，我们尽量避免像以往的运维那样，直接进入虚拟机进行操作。这样的操作是无法记录，不透明的。有可能我们下一次想部署同样的环境的时候遗漏了某个步骤，导致最终部署失败。即使我们写了操作手册也不能确保文字表达不会产生歧义。而YAML定义是透明且不会产生歧义的，且可以通过版本控制追溯历史的。  </p>
 <p>这也是我为什么会相信Kubernetes是未来的趋势的原因之一：以前的运维经验像口耳相传的秘笈，而未来基于Kubernetes的运维就是使用YAML编程。零散的运维知识点通过Kubernetes被整合成了体系化的知识。配合封装了底层各种优化的公有云，培训出一个合格运维的成本会大大降低。<br>以前有些中小公司中，只有某个老资格的运维对服务器了如指掌，即使工作态度很差也不敢换人。但Kubernetes化运维时代，只需要部署的YAML配置在，交接时间会大大缩短。（当然网络、底层硬件和存储之类的依然需要不少时间交接。另外还有无法Kubernetes化的Windows服务器）<br>Serverless和FaaS（Function as a Serivce）技术最近也火热发展中。或许以后都不需要运维了，开发只需要直接向云Kubernetes直接提交业务函数即可。不过目前这些技术还处于探索阶段。<br>这对运维来说不能说是一个利好消息。但不跟上这个潮流的话，就只有等着被历史的车轮碾过淘汰。  </p>
 <p>当然上述只是我理想中的情况。现实永远是一个泥潭，会逼得我们做各种dirty workaround。但只要愿景是美好的，我们终能一步步接近。  </p>
 <p>好了，我们开始吧。  </p>
@@ -139,7 +139,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/06/13/容器-6-Kubernetes实战-POC目标/" data-id="ck5q788pa000vw0fdt83elzbi" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/06/13/容器-6-Kubernetes实战-POC目标/" data-id="ck7a5jebm001c5gfdma60fszm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -181,7 +181,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/容器/">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/持续集成/">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/中台/">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/容器/">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/持续集成/">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/项目管理/">项目管理</a></li></ul>
     </div>
   </div>
 
@@ -191,7 +191,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/容器/" style="font-size: 20px;">容器</a> <a href="/tags/持续集成/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/数据库/" style="font-size: 10px;">数据库</a>
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/中台/" style="font-size: 10px;">中台</a> <a href="/tags/容器/" style="font-size: 20px;">容器</a> <a href="/tags/持续集成/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/数据库/" style="font-size: 10px;">数据库</a> <a href="/tags/项目管理/" style="font-size: 10px;">项目管理</a>
     </div>
   </div>
 
@@ -200,7 +200,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
     </div>
   </div>
 
@@ -213,6 +213,14 @@
       <ul>
         
           <li>
+            <a href="/2020/03/02/管理-远程办公项目管理经验总结/">管理-远程办公项目管理经验总结</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/05/中台-读说透中台有感/">中台-读《说透中台》有感</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/22/容器-14-国内Windows10环境安装Minikube/">容器-14-国内Windows10环境安装Minikube</a>
           </li>
         
@@ -222,14 +230,6 @@
         
           <li>
             <a href="/2019/12/09/Java-Feign-服务注册的多环境方案/">Java-Feign+服务注册的多环境方案</a>
-          </li>
-        
-          <li>
-            <a href="/2019/09/22/数据库-转到PostgreSQL的新手/">数据库-转到PostgreSQL的新手Tips</a>
-          </li>
-        
-          <li>
-            <a href="/2019/09/18/Maven-组织内部项目统一配置DistributionManagement/">Maven-组织内部项目统一配置DistributionManagement</a>
           </li>
         
       </ul>
