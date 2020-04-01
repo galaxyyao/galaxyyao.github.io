@@ -94,12 +94,12 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>我们在上一篇已经将Dockerfile精简为了：  </p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"><span class="keyword">COPY</span> ./dist /usr/share/nginx/html</span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> ./dist /usr/share/nginx/html</span></span><br></pre></td></tr></table></figure>
 
 <p>但相信你也发现了，内容中还是对web服务器有着强依赖。当我们想换成其他版本的Nginx镜像，或换成其他Web服务器，就必须修改源代码中的Dockerfile，重新制作镜像。<br>这种情况并非不可能。典型的场景之一：我们镜像所依赖的Nginx或tomcat版本出现了某个安全事故，而该问题可以通过将web服务器或web容器版本升级到最新版本解决。<br>所以我们希望能在Dockerfile中将Nginx的痕迹彻底抹除，只在Kubernetes的YAML中指定web服务器。  </p>
 <p>一个很自然的想法就是：我们使用一个默认的web服务器镜像。在使用该镜像的容器启动之前，将静态网站的文件拷贝到相应目录，就像在前一篇从ConfigMap获取配置文件一样。<br>这就是initContainer的作用。  </p>
 <h2 id="1-initContainer"><a href="#1-initContainer" class="headerlink" title="1. initContainer"></a>1. initContainer</h2><p>我们首先将镜像改为alpine，并修改COPY的路径：  </p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> alpine:latest</span><br><span class="line"><span class="keyword">COPY</span> ./dist /html</span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> alpine:latest</span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> ./dist /html</span></span><br></pre></td></tr></table></figure>
 
 <p>重新编译为latest版本（这是为了强制每次重新拉取镜像）：  </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t 10.16.34.197:5000/staticsite .</span><br></pre></td></tr></table></figure>
@@ -130,7 +130,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/07/04/容器-13-Kubernetes实战-静态网站部署优化2-InitContainer/" data-id="ck7a5ma6t00174cfdgcc3nel4" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/07/04/容器-13-Kubernetes实战-静态网站部署优化2-InitContainer/" data-id="ck8gwpwew001d5sfdloj8r1z8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -223,7 +223,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/07/03/容器-12-Kubernetes实战-静态网站部署优化1-ConfigMap-Secret与TLS/" data-id="ck7a5ma7v00394cfd8g1am7gz" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/07/03/容器-12-Kubernetes实战-静态网站部署优化1-ConfigMap-Secret与TLS/" data-id="ck8gwpwfy003j5sfdkcuk21ii" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -297,7 +297,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/06/27/容器-11-Kubernetes实战-Ingress与Traefik/" data-id="ck7a5ma6r00144cfdedxmi41e" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/06/27/容器-11-Kubernetes实战-Ingress与Traefik/" data-id="ck8gwpwes00155sfd5o952uh1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -383,7 +383,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/06/26/容器-10-Kubernetes实战-Service/" data-id="ck7a5ma6p000z4cfdy1xbvrqn" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/06/26/容器-10-Kubernetes实战-Service/" data-id="ck8gwpwep00105sfda7opbesy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -482,7 +482,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/06/25/容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为/" data-id="ck7a5ma7t00374cfdn1sfccgt" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/06/25/容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为/" data-id="ck8gwpwfv003e5sfdqci9sq6f" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -615,7 +615,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/06/24/容器-8-Kubernetes实战-k8s核心概念之Node-Pod与Deployment/" data-id="ck7a5ma7s00344cfdfabx7b9j" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/06/24/容器-8-Kubernetes实战-k8s核心概念之Node-Pod与Deployment/" data-id="ck8gwpwfv003f5sfdgakfuyhx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -677,7 +677,7 @@
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  localhost;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">charset</span> utf-<span class="number">8</span>;</span><br><span class="line">    <span class="comment">#access_log  /var/log/nginx/log/host.access.log  main;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#error_page  404              /404.html;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># redirect server error pages to the static page /50x.html</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="attribute">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>另外增加了一个Dockerfile：  </p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"><span class="keyword">COPY</span> default.conf /etc/nginx/conf.d/default.conf</span><br><span class="line"><span class="keyword">COPY</span> ./dist /usr/share/nginx/html</span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> default.conf /etc/nginx/conf.d/default.conf</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> ./dist /usr/share/nginx/html</span></span><br></pre></td></tr></table></figure>
 
 <p>nginx:alpine是Nginx官方的轻量级镜像。  </p>
 <h3 id="3-2-执行打包命令"><a href="#3-2-执行打包命令" class="headerlink" title="3.2 执行打包命令"></a>3.2 执行打包命令</h3><p>然后到Dockerfile所在目录构建镜像并推送到私有仓库：  </p>
@@ -707,7 +707,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/06/18/容器-7-Kubernetes实战-私有仓库和打包镜像/" data-id="ck7a5ma6o000x4cfdqc0bn5ma" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/06/18/容器-7-Kubernetes实战-私有仓库和打包镜像/" data-id="ck8gwpwer00135sfdc0usd0la" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -806,7 +806,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/06/17/Nginx-替换response header中的Content-Disposition值/" data-id="ck7a5ma7r00324cfdy3wtorsf" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/06/17/Nginx-替换response header中的Content-Disposition值/" data-id="ck8gwpwfw003h5sfds32xiuoh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
@@ -884,7 +884,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/06/13/容器-6-Kubernetes实战-POC目标/" data-id="ck7a5ma6n000u4cfd1kq1vunj" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/06/13/容器-6-Kubernetes实战-POC目标/" data-id="ck8gwpwen000y5sfd7d43z2zo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -1193,7 +1193,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/05/29/容器-5-kubeadm部署Kubernetes1-14-2集群踩坑记/" data-id="ck7a5ma8j00414cfdlqd7x7pv" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/05/29/容器-5-kubeadm部署Kubernetes1-14-2集群踩坑记/" data-id="ck8gwpwgc00485sfdhxmki180" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -1259,7 +1259,7 @@
           </li>
         
           <li>
-            <a href="/2020/02/05/中台-读说透中台有感/">中台-读《说透中台》有感</a>
+            <a href="/2020/02/05/中台-读说透中台和企业IT架构转型之道有感/">中台-读《说透中台》和《企业IT架构转型之道》有感</a>
           </li>
         
           <li>

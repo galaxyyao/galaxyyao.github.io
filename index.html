@@ -147,7 +147,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2020/03/02/管理-远程办公项目管理经验总结/" data-id="ck7a5ma70001l4cfdnj76xf1f" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2020/03/02/管理-远程办公项目管理经验总结/" data-id="ck8gwpwf2001p5sfdgcck8lch" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/项目管理/">项目管理</a></li></ul>
@@ -159,9 +159,9 @@
 
 
   
-    <article id="post-中台-读说透中台有感" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-中台-读说透中台和企业IT架构转型之道有感" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/02/05/中台-读说透中台有感/" class="article-date">
+    <a href="/2020/02/05/中台-读说透中台和企业IT架构转型之道有感/" class="article-date">
   <time datetime="2020-02-04T16:00:00.000Z" itemprop="datePublished">2020-02-05</time>
 </a>
     
@@ -173,7 +173,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/05/中台-读说透中台有感/">中台-读《说透中台》有感</a>
+      <a class="article-title" href="/2020/02/05/中台-读说透中台和企业IT架构转型之道有感/">中台-读《说透中台》和《企业IT架构转型之道》有感</a>
     </h1>
   
 
@@ -181,27 +181,57 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>春节期间看完了极客时间的《说透中台》的课程，顺便也读了《企业IT架构转型之道-阿里巴巴中台战略思想与架构实战》一书。这篇从实际项目的角度来想象一下，如果让我来负责公司的中台，应该怎么做。  </p>
-<h2 id="1-一些中台概念整理"><a href="#1-一些中台概念整理" class="headerlink" title="1. 一些中台概念整理"></a>1. 一些中台概念整理</h2><ul>
-<li>中台的目的：企业能力复用</li>
-<li>中台的主流分类：业务中台/数据中台。业务中台产生数据，数据中台做数据的二次加工，并将结果再服务于业务中台。</li>
+        <p>春节期间看完了极客时间的《说透中台》的课程，顺便也读了《企业IT架构转型之道-阿里巴巴中台战略思想与架构实战》一书。这篇从实际项目的角度来想象一下，如果让我来负责公司的中台，应该怎么做。<br>首先说下评价：这个课程符合我对ThoughtWorks的刻板印象：有点滥用理论术语，干货不多；问题题了不少，解决方案不落地。可能是都是给其他公司做的项目，有保密协议的缘故。能理解，但还是不推荐。阿里的那本中台书更加实在。  </p>
+<h2 id="1-中台概念整理"><a href="#1-中台概念整理" class="headerlink" title="1. 中台概念整理"></a>1. 中台概念整理</h2><h3 id="1-1-中台的目的"><a href="#1-1-中台的目的" class="headerlink" title="1.1 中台的目的"></a>1.1 中台的目的</h3><p>中台的目的就是企业能力复用。  </p>
+<h3 id="1-2-中台的分类"><a href="#1-2-中台的分类" class="headerlink" title="1.2 中台的分类"></a>1.2 中台的分类</h3><p>中台主流分为两大类：业务中台/数据中台。业务中台产生数据，数据中台做数据的二次加工，并将结果再服务于业务中台。<br>也有“技术中台”的概念，可以理解为一些技术中间件的整合和封装，但我倾向于不将其认定为中台。<br>中台强调一个复用。如果根本没有系统从零开始建设，一上来就搞中台很容易会过度设计。  </p>
+<h2 id="2-中台的抓手"><a href="#2-中台的抓手" class="headerlink" title="2. 中台的抓手"></a>2. 中台的抓手</h2><p>中台会面对所有业务线的需求。虽然中台有企业级的属性，但不代表建设中台的时候必须梳理企业的全业务线。中台的愿景是能力复用，那么最好有具体的新业务作为抓手。  </p>
+<ul>
+<li>阿里是以聚划算作为抓手</li>
+<li><a href="https://time.geekbang.org/dailylesson/detail/100040819" target="_blank" rel="noopener">蘑菇街</a>的新增抓手是直播电商</li>
+<li>美菜网是遇到了生鲜和2B的一些新玩法需求</li>
 </ul>
-<p>“技术中台”的概念可以理解为一些技术中间件的整合和封装，本篇不将其认定为中台。  </p>
-<h2 id="2-中台"><a href="#2-中台" class="headerlink" title="2. 中台"></a>2. 中台</h2><h2 id="3-中台服务如何划分"><a href="#3-中台服务如何划分" class="headerlink" title="3. 中台服务如何划分"></a>3. 中台服务如何划分</h2><p>在具体动手开始搭建中台后，我们首先面临的问题是服务中心怎么划分怎么建设。<br>淘宝的经历是首先四个服务中心：  </p>
+<h2 id="2-1-对当前所在公司构建业务中台的构想"><a href="#2-1-对当前所在公司构建业务中台的构想" class="headerlink" title="2.1 对当前所在公司构建业务中台的构想"></a>2.1 对当前所在公司构建业务中台的构想</h2><p>《说透中台》中虚拟出来了一个极客地产。极客地产做中台的抓手是有新增的长租公寓的需求。长租公寓需要复用已有的地产投资和物业能力，但工程设计/招采/建设/装修/租赁等是从零开始。那么就可以针对地产投资和物业这两块来建设中台。而另外独立发展的业务线可以先跳过。<br>极客地产这个例子其实和当前所在公司挺像（为了避免再被信息安全“训诫”，这里就不提公司名字了）。已有的业务是投资，金融和运营三个板块，而现在新增了商业地产板块。是不是可以趁这个机会也建设中台？我觉得可以有针对性发展少数几个业务中台，主要做数据中台。<br>楼宇项目信息可能是少数比较共通的部分，但投前和投后在剩余的部分的交集有限。没有复用，还不如将功能独立建设在自己各自板块的应用里。当然现在对其他三个板块了解也有限，可能在了解更多后会推翻这个判断。  </p>
+<h2 id="3-中心与服务如何划分"><a href="#3-中心与服务如何划分" class="headerlink" title="3. 中心与服务如何划分"></a>3. 中心与服务如何划分</h2><p>在具体动手开始搭建中台后，我们首先面临的问题是服务中心怎么划分怎么建设。<br>淘宝的经历是首先四个服务中心：  </p>
 <ul>
 <li>用户中心</li>
 <li>商品中心</li>
 <li>交易中心</li>
 <li>店铺中心</li>
 </ul>
-<p>用户中心因为调用频繁收效大，而且复杂性和重要性较小，不出意外成为了最开始的试点。<br>商品中心后来又拆出了评价中心。交易中心拆出了营销中心。另外还增加了一个库存中心。  </p>
-<p>每个中心也可以由多个服务组成。例如交易中心可以分为订单服务和购物车服务。服务中心是业务领域的概念，是为了业务和数据的完整性而设立的。而包含的子服务模块是根据系统架构设计的层面来考虑的。  </p>
-<p>本文永久链接 [ <a href="https://galaxyyao.github.io/2020/02/05/中台-读说透中台有感/">https://galaxyyao.github.io/2020/02/05/中台-读说透中台有感/</a> ]</p>
+<p>用户中心因为调用频繁收效大，而且复杂性和重要性较小，不出意外成为了最开始的试点。商品中心后来又拆出了评价中心。交易中心拆出了营销中心。另外还增加了一个库存中心。<br>中心的划分的原则是：“高内聚、低耦合”。如果只有增删改查这样的简单需求，不建议单独拆出一个中心。像是积分这种，等发展到足够丰富或对其他业务中心的影响已经不可忽视再拆。<br>每个中心也可以由多个服务组成。例如交易中心可以分为订单服务和购物车服务。服务中心是业务领域的概念，是为了业务和数据的完整性而设立的。而包含的子服务模块是根据系统架构设计的层面来考虑的。但一开始不要拆得太细。  </p>
+<h2 id="4-中台的其他技术考量点"><a href="#4-中台的其他技术考量点" class="headerlink" title="4. 中台的其他技术考量点"></a>4. 中台的其他技术考量点</h2><h3 id="4-1-服务插件"><a href="#4-1-服务插件" class="headerlink" title="4.1 服务插件"></a>4.1 服务插件</h3><p>《<a href="https://time.geekbang.org/dailylesson/detail/100040824" target="_blank" rel="noopener">京东服务技术中台探索与实践</a>》的视频中提到了他们建设中台的时候有一个“服务插件”的概念。简单来说就是对于非常个性化的需求（例如对用户体验的预警），提供插件协议，由相应前台团队自己来开发插件。  </p>
+<p><img src="/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-service-plugin-1.jpg" alt="服务插件1">  </p>
+<p>这种中台的场景可能更适合中台把前端页面也包揽的情况。下图是插件在实际页面上的规定展示区域。  </p>
+<p><img src="/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-service-plugin-2.jpg" alt="服务插件2">  </p>
+<h3 id="4-2-租户"><a href="#4-2-租户" class="headerlink" title="4.2 租户"></a>4.2 租户</h3><p>还是《京东服务技术中台探索与实践》的视频。为了防止某些用户在大促的时候把中台资源（包括计算资源和存储资源）给吃完，引入了租户的概念。<br>租户的设计对于有2C秒杀大促等场景的企业可能是必要的，毕竟不能在中台层面产生雪崩。  </p>
+<p><img src="/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-tenant.jpg" alt="租户">  </p>
+<h3 id="4-3-配置化"><a href="#4-3-配置化" class="headerlink" title="4.3 配置化"></a>4.3 配置化</h3><p>包括蘑菇街和京东服务中台的例子中，都提到了中台可以成为业务逻辑的下沉，前台应用做配置。<br>像蘑菇街就是将促销的逻辑做成模板：  </p>
+<p><img src="/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-config-template.jpg" alt="配置化">  </p>
+<h2 id="5-中台的实施路径"><a href="#5-中台的实施路径" class="headerlink" title="5. 中台的实施路径"></a>5. 中台的实施路径</h2><p>阿里的中台实施路径分为三个阶段：  </p>
+<ul>
+<li>API as Service</li>
+<li>Product as Service</li>
+<li>Solution as Service</li>
+</ul>
+<p>第一个阶段比较好实现，第三个阶段是到一定层次后的追求，我觉得关键是第二个阶段，就是将中台打造成一个产品。<br>打造成产品，意味着将API进行场景化的组装。如果只是一堆API列表，无法达成快速支持前台的目的。<br>除此以外，产品化也意味着：  </p>
+<ul>
+<li>产品有自己的定位，可以选择性地实现前台需求</li>
+<li>产品要想方设法为客户（前台）体现价值，保持用户满意度才能生存下来。如果一定期限内无法获取前台用户，或前台用户不满意，则及时中止建设止损</li>
+<li>产品要讲究易用性，提供完善的文档和手册</li>
+</ul>
+<p>中台的绩效考核可以参考阿里的做法：  </p>
+<ul>
+<li>服务稳定40%</li>
+<li>业务创新25%（适当允许因此带来的上线事故）</li>
+<li>服务接入量20%</li>
+<li>客户满意度15%</li>
+</ul>
+<p>本文永久链接 [ <a href="https://galaxyyao.github.io/2020/02/05/中台-读说透中台和企业IT架构转型之道有感/">https://galaxyyao.github.io/2020/02/05/中台-读说透中台和企业IT架构转型之道有感/</a> ]</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2020/02/05/中台-读说透中台有感/" data-id="ck7a5ma6z001j4cfdwgyutvo2" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2020/02/05/中台-读说透中台和企业IT架构转型之道有感/" data-id="ck8gwpwex001f5sfd0ag0u1rn" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/中台/">中台</a></li></ul>
@@ -317,7 +347,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/" data-id="ck7a5ma80003g4cfddbcwt2bn" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/" data-id="ck8gwpwg1003o5sfdetk2mu23" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -400,7 +430,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/" data-id="ck7a5ma6y001g4cfd1e6bgx3a" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/" data-id="ck8gwpwf7001z5sfdbzabqicq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring/">Spring</a></li></ul>
@@ -511,7 +541,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/12/09/Java-Feign-服务注册的多环境方案/" data-id="ck7a5ma7y003d4cfdbtzdc0p4" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/12/09/Java-Feign-服务注册的多环境方案/" data-id="ck8gwpwg2003q5sfd5up0v9zu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Feign/">Feign</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Cloud/">Spring Cloud</a></li></ul>
@@ -546,19 +576,22 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>从Oracle或MySQL切换到PostgreSQL（以下简称pgsql）后，多少有些不一样的地方需要适应。这里就将和开发相关的一些区别挂一漏万地列举一下。  </p>
-<h1 id="1-Schema模式"><a href="#1-Schema模式" class="headerlink" title="1. Schema模式"></a>1. Schema模式</h1><p>和Oracle与MySQL一样，pgsql中也有TableSpace（表空间），用于定义用来存放表示数据库对象的文件的位置。<br>但在Schema（模式）的定义上，三者有很大的差别。<br>对于MySQL，模式与数据库同义。甚至可以用<code>CREATE SCHEMA</code>来创建数据库，效果和<code>CREATE DATABASE</code>一样。<br>对于Oracle，schema与数据库用户密切相关：  </p>
+<h2 id="1-Schema模式"><a href="#1-Schema模式" class="headerlink" title="1. Schema模式"></a>1. Schema模式</h2><p>和Oracle与MySQL一样，pgsql中也有TableSpace（表空间），用于定义用来存放表示数据库对象的文件的位置。<br>但在Schema（模式）的定义上，三者有很大的差别。<br>对于MySQL，模式与数据库同义。甚至可以用<code>CREATE SCHEMA</code>来创建数据库，效果和<code>CREATE DATABASE</code>一样。<br>对于Oracle，schema与数据库用户密切相关：  </p>
 <blockquote>
 <p>A schema is a collection of logical structures of data, or schema objects. A schema is owned by a database user and has the same name as that user. Each user owns a single schema.</p>
 </blockquote>
 <p>而pgsql中，层次结果如下：<br><img src="/images/%E6%95%B0%E6%8D%AE%E5%BA%93-%E8%BD%AC%E5%88%B0PostgreSQL%E7%9A%84%E6%96%B0%E6%89%8BTips/pgsql-hierarchy.png" alt="PostgreSQL Hierachy">   </p>
 <p>从图中可以看到，schema是database与table中间的一层。可以理解为命名空间类似的概念。当新创建一个数据库时，pgsql会默认创建一个public schema。如果没有指定的话，就是以public schema来操作各种数据对象。  例如：<code>CREATE TABLE products ( ... )</code> 等同于 <code>CREATE TABLE public.products ( ... )</code><br>schema不能互相嵌套。同一个schema下不能有重复的对象名字，但在不同schema下可以重复。<br>schema与database的差别在于schema不是严格分离的：一个用户可以访问他所连接的数据库中的任意模式中的对象。  </p>
 <p>对于数据库管理人员来说，还需要了解一下授权相关的差别，但在本文中就略过了。更多可以参考这篇：<a href="http://mysql.taobao.org/monthly/2016/05/03/" target="_blank" rel="noopener">PostgreSQL · 特性分析 · 逻辑结构和权限体系</a>  </p>
-<h2 id="1-1-Schema与开发相关"><a href="#1-1-Schema与开发相关" class="headerlink" title="1.1 Schema与开发相关"></a>1.1 Schema与开发相关</h2><p>连接url字符串中除了需要指定数据库之外，还需要加一个currentSchema。例如下面的范例中，database是<code>pabem</code>，schema是<code>pabem_um_dev</code>：  </p>
+<h3 id="1-1-Schema与开发相关"><a href="#1-1-Schema与开发相关" class="headerlink" title="1.1 Schema与开发相关"></a>1.1 Schema与开发相关</h3><p>连接url字符串中除了需要指定数据库之外，还需要加一个currentSchema。例如下面的范例中，database是<code>pabem</code>，schema是<code>pabem_um_dev</code>：  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc:postgresql://localhost:5432/pabem?currentSchema=pabem_um_dev</span><br></pre></td></tr></table></figure>
 
 <p>schema可能对需要跨数据源的应用开发带来一些简便。如果需要跨的两个数据源只是同一个数据库的两个schema，就可以去掉连接url中的currentSchema，就可以当单数据源应用来开发了。  </p>
 <p><strong>参考资料</strong><br><a href="http://www.postgres.cn/docs/11/manage-ag-tablespaces.html" target="_blank" rel="noopener">表空间</a>  </p>
-<h1 id="2-自增字段"><a href="#2-自增字段" class="headerlink" title="2. 自增字段"></a>2. 自增字段</h1><p>和MySQL中使用的<code>auto increment</code>不同，PostgreSQL和Oracle类似，都是用sequence（序列）。<br>sequence的好处在于可以让多张表共享同一个自增序列，但创建起来的确也挺麻烦。所以pgsql还新增了一个语法糖serial。<br>和数值类型一样，也分为smallserial, serial和bigserial：  </p>
+<p>默认schema是<code>public</code>，切换执行sql所在schema的语法是：  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> search_path <span class="keyword">to</span> &lt;schema_name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-自增字段"><a href="#2-自增字段" class="headerlink" title="2. 自增字段"></a>2. 自增字段</h2><p>和MySQL中使用的<code>auto increment</code>不同，PostgreSQL和Oracle类似，都是用sequence（序列）。<br>sequence的好处在于可以让多张表共享同一个自增序列，但创建起来的确也挺麻烦。所以pgsql还新增了一个语法糖serial。<br>和数值类型一样，也分为smallserial, serial和bigserial：  </p>
 <table>
 <thead>
 <tr>
@@ -583,10 +616,10 @@
 <td>1 to 9223372036854775807</td>
 </tr>
 </tbody></table>
-<h2 id="2-1-Serial与开发相关"><a href="#2-1-Serial与开发相关" class="headerlink" title="2.1 Serial与开发相关"></a>2.1 Serial与开发相关</h2><p>对于自增的id字段，需要在Entity的属性上加上注解：  </p>
+<h3 id="2-1-Serial与开发相关"><a href="#2-1-Serial与开发相关" class="headerlink" title="2.1 Serial与开发相关"></a>2.1 Serial与开发相关</h3><p>对于自增的id字段，需要在Entity的属性上加上注解：  </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</span><br></pre></td></tr></table></figure>
 
-<h1 id="3-数据类型映射"><a href="#3-数据类型映射" class="headerlink" title="3. 数据类型映射"></a>3. 数据类型映射</h1><table>
+<h2 id="3-数据类型映射"><a href="#3-数据类型映射" class="headerlink" title="3. 数据类型映射"></a>3. 数据类型映射</h2><table>
 <thead>
 <tr>
 <th>PostgreSQL数据类型</th>
@@ -657,40 +690,40 @@
 </tr>
 </tbody></table>
 <p><strong>参考资料</strong><br><a href="https://www.postgresql.org/docs/current/datatype-numeric.html" target="_blank" rel="noopener">PostgreSQL: Documentation: 11: 8.1. Numeric Types</a>  </p>
-<h1 id="4-常用函数与语法差异"><a href="#4-常用函数与语法差异" class="headerlink" title="4. 常用函数与语法差异"></a>4. 常用函数与语法差异</h1><h2 id="DUAL"><a href="#DUAL" class="headerlink" title="DUAL"></a>DUAL</h2><p>pgsql中的select可以省略from，所以不再需要强制加一个<code>from dual</code>。  </p>
-<h2 id="4-1-日期和时间"><a href="#4-1-日期和时间" class="headerlink" title="4.1 日期和时间"></a>4.1 日期和时间</h2><ul>
+<h2 id="4-常用函数与语法差异"><a href="#4-常用函数与语法差异" class="headerlink" title="4. 常用函数与语法差异"></a>4. 常用函数与语法差异</h2><h3 id="4-1-DUAL"><a href="#4-1-DUAL" class="headerlink" title="4.1 DUAL"></a>4.1 DUAL</h3><p>pgsql中的select可以省略from，所以不再需要强制加一个<code>from dual</code>。  </p>
+<h3 id="4-2-日期和时间"><a href="#4-2-日期和时间" class="headerlink" title="4.2 日期和时间"></a>4.2 日期和时间</h3><ul>
 <li>当前时间：<code>now()</code>  </li>
 <li>日期转字符串：<code>select to_char(current_date,&#39;YYYY-MM-dd&#39;);</code></li>
 <li>时间转字符串：<code>select to_char(now(),&#39;YYYY-MM-dd HH24:MI:SS&#39;);</code></li>
 </ul>
-<h2 id="4-2-字符串"><a href="#4-2-字符串" class="headerlink" title="4.2 字符串"></a>4.2 字符串</h2><ul>
+<h3 id="4-3-字符串"><a href="#4-3-字符串" class="headerlink" title="4.3 字符串"></a>4.3 字符串</h3><ul>
 <li>拼接：<code>select &#39;a&#39;||&#39;b&#39; as col1;</code></li>
 <li>获取指定字符串的下标：<code>select position(&#39;om&#39; in &#39;Thomas&#39;);</code></li>
 </ul>
-<h2 id="4-3-序列"><a href="#4-3-序列" class="headerlink" title="4.3 序列"></a>4.3 序列</h2><p>获取序列下一个值的语法为：<code>nextval(&#39;sequence_name&#39;)</code></p>
-<h2 id="4-4-行数"><a href="#4-4-行数" class="headerlink" title="4.4 行数"></a>4.4 行数</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ROW_NUMBER() OVER(</span><br><span class="line">    [PARTITION BY column_1, column_2,…]</span><br><span class="line">    [ORDER BY column_3,column_4,…]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="4-4-序列"><a href="#4-4-序列" class="headerlink" title="4.4 序列"></a>4.4 序列</h3><p>获取序列下一个值的语法为：<code>nextval(&#39;sequence_name&#39;)</code></p>
+<h3 id="4-5-行数"><a href="#4-5-行数" class="headerlink" title="4.5 行数"></a>4.5 行数</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ROW_NUMBER() OVER(</span><br><span class="line">    [PARTITION BY column_1, column_2,…]</span><br><span class="line">    [ORDER BY column_3,column_4,…]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
 <p>例如：  </p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">   product_id,</span><br><span class="line">   product_name,</span><br><span class="line">   <span class="keyword">group_id</span>,</span><br><span class="line">   ROW_NUMBER () <span class="keyword">OVER</span> (</span><br><span class="line">      <span class="keyword">PARTITION</span> <span class="keyword">BY</span> <span class="keyword">group_id</span></span><br><span class="line">      <span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">         product_name</span><br><span class="line">   )</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">   products;</span><br></pre></td></tr></table></figure>
 
-<h2 id="4-5-NVL（判断为空赋值）"><a href="#4-5-NVL（判断为空赋值）" class="headerlink" title="4.5 NVL（判断为空赋值）"></a>4.5 NVL（判断为空赋值）</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">coalesce</span>(<span class="literal">null</span>,<span class="number">0</span>) <span class="keyword">as</span> col1;</span><br></pre></td></tr></table></figure>
+<h3 id="4-6-NVL（判断为空赋值）"><a href="#4-6-NVL（判断为空赋值）" class="headerlink" title="4.6 NVL（判断为空赋值）"></a>4.6 NVL（判断为空赋值）</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">coalesce</span>(<span class="literal">null</span>,<span class="number">0</span>) <span class="keyword">as</span> col1;</span><br></pre></td></tr></table></figure>
 
-<h2 id="4-6-分页"><a href="#4-6-分页" class="headerlink" title="4.6 分页"></a>4.6 分页</h2><p>PostgreSQL中的分页语法和MySQL类似：  </p>
+<h3 id="4-7-分页"><a href="#4-7-分页" class="headerlink" title="4.7 分页"></a>4.7 分页</h3><p>PostgreSQL中的分页语法和MySQL类似：  </p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">   *</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">   <span class="keyword">table</span></span><br><span class="line"><span class="keyword">LIMIT</span> n <span class="keyword">OFFSET</span> m;</span><br></pre></td></tr></table></figure>
 
-<h2 id="4-7-CRUD语法差异"><a href="#4-7-CRUD语法差异" class="headerlink" title="4.7 CRUD语法差异"></a>4.7 CRUD语法差异</h2><p>网上也看到有人整理了一下CRUD语法的差异：<br><img src="/images/%E6%95%B0%E6%8D%AE%E5%BA%93-%E8%BD%AC%E5%88%B0PostgreSQL%E7%9A%84%E6%96%B0%E6%89%8BTips/mysql-pgsql-gramma-difference.png" alt="PostgreSQL MySQL Gramma Difference"><br>简单总结一下，就是支持插入/更新/删除并返回，以及插入冲突则更新或什么不做。前者从通用性考虑不推荐，后者MyBatis Plus也封装了一个，不一定需要使用数据库的实现。<br>表关联多字段更新倒可能比较常用，在Oracle中也有同样的语法：  </p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> table1 <span class="keyword">set</span> (col1, col2) = </span><br><span class="line">  (<span class="keyword">select</span> col1, col2 <span class="keyword">from</span> table2</span><br><span class="line">   <span class="keyword">where</span> table2.col3 = table1.col3)</span><br></pre></td></tr></table></figure>
+<h3 id="4-8-CRUD语法差异"><a href="#4-8-CRUD语法差异" class="headerlink" title="4.8 CRUD语法差异"></a>4.8 CRUD语法差异</h3><p>网上也看到有人整理了一下CRUD语法的差异：<br><img src="/images/%E6%95%B0%E6%8D%AE%E5%BA%93-%E8%BD%AC%E5%88%B0PostgreSQL%E7%9A%84%E6%96%B0%E6%89%8BTips/mysql-pgsql-gramma-difference.png" alt="PostgreSQL MySQL Gramma Difference"><br>简单总结一下，就是支持插入/更新/删除并返回，以及插入冲突则更新或什么不做。前者从通用性考虑不推荐，后者MyBatis Plus也封装了一个，不一定需要使用数据库的实现。<br>表关联多字段更新倒可能比较常用，在Oracle中也有同样的语法：  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> table1 <span class="keyword">set</span> (col1, col2) =</span><br><span class="line">  (<span class="keyword">select</span> col1, col2 <span class="keyword">from</span> table2</span><br><span class="line">   <span class="keyword">where</span> table2.col3 = table1.col3)</span><br></pre></td></tr></table></figure>
 
 <p><strong>参考资料</strong><br><a href="https://yq.aliyun.com/articles/348692?utm_content=m_40008" target="_blank" rel="noopener">MySQL和PostgreSQL的常用语法差异-云栖社区-阿里云</a>  </p>
-<h1 id="5-Rule规则系统"><a href="#5-Rule规则系统" class="headerlink" title="5. Rule规则系统"></a>5. Rule规则系统</h1><p>这个是pgsql中的一个特性。或者更准确地说，是查询重写规则系统，即把根据既定规则修改后的查询再提交给查询规划器。<br>实际上PostgreSQL中的视图就是通过规则系统来实现的。例如如下的查询：  </p>
+<h2 id="5-Rule规则系统"><a href="#5-Rule规则系统" class="headerlink" title="5. Rule规则系统"></a>5. Rule规则系统</h2><p>这个是pgsql中的一个特性。或者更准确地说，是查询重写规则系统，即把根据既定规则修改后的查询再提交给查询规划器。<br>实际上PostgreSQL中的视图就是通过规则系统来实现的。例如如下的查询：  </p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> myview <span class="keyword">AS</span> <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> mytab;</span><br></pre></td></tr></table></figure>
 
 <p>内部的规则：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE myview (same column list as mytab);</span><br><span class="line">CREATE RULE &quot;_RETURN&quot; AS ON SELECT TO myview DO INSTEAD</span><br><span class="line">    SELECT * FROM mytab;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> myview (same <span class="keyword">column</span> <span class="keyword">list</span> <span class="keyword">as</span> mytab);</span><br><span class="line"><span class="keyword">CREATE</span> RULE <span class="string">"_RETURN"</span> <span class="keyword">AS</span> <span class="keyword">ON</span> <span class="keyword">SELECT</span> <span class="keyword">TO</span> myview <span class="keyword">DO</span> INSTEAD</span><br><span class="line">    <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> mytab;</span><br></pre></td></tr></table></figure>
 
 <p>pgsql中同样也有触发器。你可能会发现规则系统和触发器的作用有点相像。其实他们的作用域有重叠的部分，也有另一方无法替换的场景。<br>只有触发器能做的场景：约束触发器。触发器能抛出异常，而规则系统只能静默地选择处理或不处理。而只有规则系统能做更新视图。<br>另外触发器会对被影响的每一行触发一次，而规则系统是一次性的重写。所以在某些场景下规则系统的性能会高于触发器。  </p>
 <p><strong>参考资料</strong><br><a href="http://www.postgres.cn/docs/11/rules.html" target="_blank" rel="noopener">Chapter 41. 规则系统</a><br><a href="https://www.postgresql.org/docs/11/rules-triggers.html" target="_blank" rel="noopener">PostgreSQL: Documentation: 11: 41.7. Rules Versus Triggers</a><br><a href="http://www.penglixun.com/tech/database/postgresql_rule_system.html" target="_blank" rel="noopener">PostgreSQL的规则系统 | P.Linux Laboratory</a>  </p>
-<h1 id="6-Java开发配置"><a href="#6-Java开发配置" class="headerlink" title="6. Java开发配置"></a>6. Java开发配置</h1><p>使用JPA作为数据源的时候，启动的时候会告警：  </p>
+<h2 id="6-Java开发配置"><a href="#6-Java开发配置" class="headerlink" title="6. Java开发配置"></a>6. Java开发配置</h2><p>使用JPA作为数据源的时候，启动的时候会告警：  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java.sql.SQLFeatureNotSupportedException: 这个 org.postgresql.jdbc.PgConnection.createClob() 方法尚未被实作。</span><br><span class="line">	at org.postgresql.Driver.notImplemented(Driver.java:692) ~[postgresql-42.2.8.jar:42.2.8]</span><br><span class="line">	at org.postgresql.jdbc.PgConnection.createClob(PgConnection.java:1268) ~[postgresql-42.2.8.jar:42.2.8]</span><br></pre></td></tr></table></figure>
 
 <p>这是由于Hibernate尝试验证PostgreSQL的CLOB特性，但是PostgreSQL的JDBC驱动并没有实现这个特性，所以抛出了异常。<br>可以增加配置，关闭这个特性的检测：  </p>
@@ -698,8 +731,8 @@
 
 <p>参考资料：<a href="https://www.cnblogs.com/Amos-Turing/p/9939316.html" target="_blank" rel="noopener">SpringBoot连接PostgreSQL - ldp.im - 博客园</a></p>
 <p>如果只使用MyBatis就不需要加这个配置了。  </p>
-<h1 id="7-排序规则与大小写敏感"><a href="#7-排序规则与大小写敏感" class="headerlink" title="7. 排序规则与大小写敏感"></a>7. 排序规则与大小写敏感</h1><p>大小写敏感分为两个不同的方面：数据库对象名的大小写敏感，以及字段内容的大小写敏感。  </p>
-<h2 id="数据库对象名的大小写敏感"><a href="#数据库对象名的大小写敏感" class="headerlink" title="数据库对象名的大小写敏感"></a>数据库对象名的大小写敏感</h2><p>PostgreSQL在创建数据库对象（表/字段等）时，会默认将对象名改为小写。<br>例如会将如下的SQL</p>
+<h2 id="7-排序规则与大小写敏感"><a href="#7-排序规则与大小写敏感" class="headerlink" title="7. 排序规则与大小写敏感"></a>7. 排序规则与大小写敏感</h2><p>大小写敏感分为两个不同的方面：数据库对象名的大小写敏感，以及字段内容的大小写敏感。  </p>
+<h3 id="7-1-数据库对象名的大小写敏感"><a href="#7-1-数据库对象名的大小写敏感" class="headerlink" title="7.1 数据库对象名的大小写敏感"></a>7.1 数据库对象名的大小写敏感</h3><p>PostgreSQL在创建数据库对象（表/字段等）时，会默认将对象名改为小写。<br>例如会将如下的SQL</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> FullName <span class="keyword">FROM</span> Person</span><br></pre></td></tr></table></figure>
 
 <p>转换为</p>
@@ -709,18 +742,19 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">"Person"</span> (<span class="string">"FullName"</span> <span class="built_in">VARCHAR</span>(<span class="number">100</span>), <span class="string">"Address"</span> <span class="built_in">VARCHAR</span>(<span class="number">100</span>))</span><br></pre></td></tr></table></figure>
 
 <p>但非常不推荐这种方式。  </p>
-<h2 id="字段内容的大小写敏感"><a href="#字段内容的大小写敏感" class="headerlink" title="字段内容的大小写敏感"></a>字段内容的大小写敏感</h2><p>PostgreSQL查询的时候是大小写敏感的。而且在建库时不能像MySQL那样，通过collation参数来指定数据库是否大小写敏感。<br>如果需要进行大小写不敏感的查询和模糊查询，可以使用如下两种方法之一：</p>
+<h3 id="7-2-字段内容的大小写敏感"><a href="#7-2-字段内容的大小写敏感" class="headerlink" title="7.2 字段内容的大小写敏感"></a>7.2 字段内容的大小写敏感</h3><p>PostgreSQL查询的时候是大小写敏感的。而且在建库时不能像MySQL那样，通过collation参数来指定数据库是否大小写敏感。<br>如果需要进行大小写不敏感的查询和模糊查询，可以使用如下两种方法之一：  </p>
 <ul>
 <li>等号<code>=</code>或<code>LIKE</code>的两边的表达式加上<code>LOWER()</code>或<code>UPPER()</code></li>
-<li>使用<code>ILIKE</code>（应该是Insensitive Like的缩写吧）<br>例如：  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> person <span class="keyword">where</span> <span class="keyword">lower</span>(user_name) <span class="keyword">like</span> <span class="keyword">lower</span>(<span class="string">'%alice%'</span>)</span><br></pre></td></tr></table></figure>
-
-</li>
+<li>使用<code>ILIKE</code>（应该是Insensitive Like的缩写吧）</li>
 </ul>
+<p>例如：  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> person <span class="keyword">where</span> <span class="keyword">lower</span>(user_name) <span class="keyword">like</span> <span class="keyword">lower</span>(<span class="string">'%alice%'</span>)</span><br></pre></td></tr></table></figure>
+
 <p>或</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> person <span class="keyword">where</span> user_name <span class="keyword">ilike</span> <span class="string">'%alice%'</span></span><br></pre></td></tr></table></figure>
 
 <p><code>LIKE</code>和<code>ILIKE</code>也可以换成<code>~~</code>和<code>~~*</code>。但为了SQL的可读性和统一，还是避免使用这样的语法吧。<br>对于text类型的字段，可以在PostgreSQL安装citext模块后，改为citext类型。这样就可以大小写不敏感了。  </p>
-<h3 id="字段内容的大小写敏感带来的问题"><a href="#字段内容的大小写敏感带来的问题" class="headerlink" title="字段内容的大小写敏感带来的问题"></a>字段内容的大小写敏感带来的问题</h3><p>字段内容大小写敏感可能会带来三个问题：  </p>
+<h3 id="7-3-字段内容的大小写敏感带来的问题"><a href="#7-3-字段内容的大小写敏感带来的问题" class="headerlink" title="7.3 字段内容的大小写敏感带来的问题"></a>7.3 字段内容的大小写敏感带来的问题</h3><p>字段内容大小写敏感可能会带来三个问题：  </p>
 <ul>
 <li>排序</li>
 <li>性能</li>
@@ -730,28 +764,30 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> person <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">lower</span>(user_name)</span><br></pre></td></tr></table></figure>
 
 <p>性能方面，有人做过测试，使用<code>lower</code>+<code>like</code>会比<code>ilike</code>快17%左右。再考虑到数据库迁移过程中的兼容性，还是推荐使用<code>lower</code>+<code>like</code>。<br>通过<code>UNIQUE</code>或者<code>PRIMARY KEY</code>隐式产生的索引是大小写敏感的。如果使用<code>lower</code>的话，就不会走索引。如果对这方面有性能要求的话，可以给PostgreSQL安装上pg_trgm模块。  </p>
-<h1 id="8-其他MySQL与PostgreSQL比较"><a href="#8-其他MySQL与PostgreSQL比较" class="headerlink" title="8. 其他MySQL与PostgreSQL比较"></a>8. 其他MySQL与PostgreSQL比较</h1><ul>
+<h2 id="8-其他MySQL与PostgreSQL比较"><a href="#8-其他MySQL与PostgreSQL比较" class="headerlink" title="8. 其他MySQL与PostgreSQL比较"></a>8. 其他MySQL与PostgreSQL比较</h2><ul>
 <li>PostgreSQL中天然支持emoji，不需要像MySQL中一样专门设置utf8mb4编码</li>
 <li>PostgreSQL和Oracle一样有物化视图</li>
 <li>支持CTE语法</li>
 <li>支持intersect语法</li>
 <li>PostgreSQL中没有单独的存储过程，是通过Function实现的</li>
 </ul>
-<h1 id="9-其他Oracle与PostgreSQL比较"><a href="#9-其他Oracle与PostgreSQL比较" class="headerlink" title="9. 其他Oracle与PostgreSQL比较"></a>9. 其他Oracle与PostgreSQL比较</h1><ul>
+<h2 id="9-其他Oracle与PostgreSQL比较"><a href="#9-其他Oracle与PostgreSQL比较" class="headerlink" title="9. 其他Oracle与PostgreSQL比较"></a>9. 其他Oracle与PostgreSQL比较</h2><ul>
 <li>NULL与空字符串在Oracle里是同一含义，但在pgsql中是不同的</li>
 <li>同义词synonym在pg中使用<code>search_path</code>来实现，例如：<code>SET search_path TO myschema;</code></li>
 </ul>
-<h1 id="10-PostgreSQL独有特性"><a href="#10-PostgreSQL独有特性" class="headerlink" title="10. PostgreSQL独有特性"></a>10. PostgreSQL独有特性</h1><h2 id="json-jsonb"><a href="#json-jsonb" class="headerlink" title="json/jsonb"></a>json/jsonb</h2><p>这两个是PostgreSQL专有的数据类型。从用户操作的角度来说没有区别，区别主要是存储和读取的系统处理（预处理）和耗时方面有区别。json写入快，读取慢，jsonb写入慢，读取快。<br>有文章说jsonb的性能已经优于MongoDB的BSON。但至少有一个好处是如果需要处理json数据，在有PostgreSQL的情况下可以少引入一个数据库。  </p>
-<h2 id="GIS"><a href="#GIS" class="headerlink" title="GIS"></a>GIS</h2><p>PostGIS基本成为了空间地理信息数据的存储标准。  </p>
-<h1 id="11-其他"><a href="#11-其他" class="headerlink" title="11. 其他"></a>11. 其他</h1><p>如果想在本机Docker Desktop上启动pgsql，用官方的postgres:latest好像会有些问题，需要改为用alpine镜像。命令可参考：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name posttest -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:alpine</span><br></pre></td></tr></table></figure>
+<h2 id="10-PostgreSQL独有特性"><a href="#10-PostgreSQL独有特性" class="headerlink" title="10. PostgreSQL独有特性"></a>10. PostgreSQL独有特性</h2><h3 id="json-jsonb"><a href="#json-jsonb" class="headerlink" title="json/jsonb"></a>json/jsonb</h3><p>这两个是PostgreSQL专有的数据类型。从用户操作的角度来说没有区别，区别主要是存储和读取的系统处理（预处理）和耗时方面有区别。json写入快，读取慢，jsonb写入慢，读取快。<br>有文章说jsonb的性能已经优于MongoDB的BSON。但至少有一个好处是如果需要处理json数据，在有PostgreSQL的情况下可以少引入一个数据库。  </p>
+<h3 id="GIS"><a href="#GIS" class="headerlink" title="GIS"></a>GIS</h3><p>PostGIS基本成为了空间地理信息数据的存储标准。  </p>
+<h2 id="11-其他"><a href="#11-其他" class="headerlink" title="11. 其他"></a>11. 其他</h2><p>如果想在本机Docker Desktop上启动pgsql，用官方的postgres:latest好像会有些问题，需要改为用alpine镜像。命令可参考：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name posttest -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:alpine</span><br></pre></td></tr></table></figure>
+
+
 
 <p>本文永久链接 [ <a href="https://galaxyyao.github.io/2019/09/22/数据库-转到PostgreSQL的新手/">https://galaxyyao.github.io/2019/09/22/数据库-转到PostgreSQL的新手/</a> ]</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/09/22/数据库-转到PostgreSQL的新手/" data-id="ck7a5ma7x003b4cfdcjmo6kj6" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/09/22/数据库-转到PostgreSQL的新手/" data-id="ck8gwpwfz003m5sfdgtmejemg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PostgreSQL/">PostgreSQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pgsql/">pgsql</a></li></ul>
@@ -814,7 +850,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/09/18/Maven-组织内部项目统一配置DistributionManagement/" data-id="ck7a5ma6x001e4cfdfk4tusvl" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/09/18/Maven-组织内部项目统一配置DistributionManagement/" data-id="ck8gwpwf1001m5sfd5s4kpy4h" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Maven/">Maven</a></li></ul>
@@ -933,7 +969,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/08/14/持续集成-Jenkins离线安装与配置/" data-id="ck7a5ma6v001b4cfdtdci8us5" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/08/14/持续集成-Jenkins离线安装与配置/" data-id="ck8gwpwev001c5sfdq16as1pq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CI/">CI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/持续集成/">持续集成</a></li></ul>
@@ -1001,7 +1037,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/07/30/MySQL-没有必要的varchar-255-长度及存储汉字问题汇总/" data-id="ck7a5ma6u00194cfd7gm3nehp" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/07/30/MySQL-没有必要的varchar-255-长度及存储汉字问题汇总/" data-id="ck8gwpwet00175sfd2eytww22" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库/">数据库</a></li></ul>
@@ -1065,7 +1101,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/07/11/前端-通过自定义协议URI-Scheme-点击Chrome中的链接打开IE/" data-id="ck7a5ma6q00124cfdlu7260gc" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/07/11/前端-通过自定义协议URI-Scheme-点击Chrome中的链接打开IE/" data-id="ck8gwpweu00195sfdgaiu2war" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IE/">IE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/">Windows</a></li></ul>
@@ -1131,7 +1167,7 @@
           </li>
         
           <li>
-            <a href="/2020/02/05/中台-读说透中台有感/">中台-读《说透中台》有感</a>
+            <a href="/2020/02/05/中台-读说透中台和企业IT架构转型之道有感/">中台-读《说透中台》和《企业IT架构转型之道》有感</a>
           </li>
         
           <li>

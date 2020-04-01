@@ -95,12 +95,12 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>我们在上一篇已经将Dockerfile精简为了：  </p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"><span class="keyword">COPY</span> ./dist /usr/share/nginx/html</span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> ./dist /usr/share/nginx/html</span></span><br></pre></td></tr></table></figure>
 
 <p>但相信你也发现了，内容中还是对web服务器有着强依赖。当我们想换成其他版本的Nginx镜像，或换成其他Web服务器，就必须修改源代码中的Dockerfile，重新制作镜像。<br>这种情况并非不可能。典型的场景之一：我们镜像所依赖的Nginx或tomcat版本出现了某个安全事故，而该问题可以通过将web服务器或web容器版本升级到最新版本解决。<br>所以我们希望能在Dockerfile中将Nginx的痕迹彻底抹除，只在Kubernetes的YAML中指定web服务器。  </p>
 <p>一个很自然的想法就是：我们使用一个默认的web服务器镜像。在使用该镜像的容器启动之前，将静态网站的文件拷贝到相应目录，就像在前一篇从ConfigMap获取配置文件一样。<br>这就是initContainer的作用。  </p>
 <h2 id="1-initContainer"><a href="#1-initContainer" class="headerlink" title="1. initContainer"></a>1. initContainer</h2><p>我们首先将镜像改为alpine，并修改COPY的路径：  </p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> alpine:latest</span><br><span class="line"><span class="keyword">COPY</span> ./dist /html</span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> alpine:latest</span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> ./dist /html</span></span><br></pre></td></tr></table></figure>
 
 <p>重新编译为latest版本（这是为了强制每次重新拉取镜像）：  </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t 10.16.34.197:5000/staticsite .</span><br></pre></td></tr></table></figure>
@@ -131,7 +131,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/07/04/容器-13-Kubernetes实战-静态网站部署优化2-InitContainer/" data-id="ck7a5ma6t00174cfdgcc3nel4" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/07/04/容器-13-Kubernetes实战-静态网站部署优化2-InitContainer/" data-id="ck8gwpwew001d5sfdloj8r1z8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -209,7 +209,7 @@
           </li>
         
           <li>
-            <a href="/2020/02/05/中台-读说透中台有感/">中台-读《说透中台》有感</a>
+            <a href="/2020/02/05/中台-读说透中台和企业IT架构转型之道有感/">中台-读《说透中台》和《企业IT架构转型之道》有感</a>
           </li>
         
           <li>
