@@ -71,6 +71,375 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-金融业务-不动产保理业务入门和系统设计" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/01/金融业务-不动产保理业务入门和系统设计/" class="article-date">
+  <time datetime="2020-07-31T16:00:00.000Z" itemprop="datePublished">2020-08-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/01/金融业务-不动产保理业务入门和系统设计/">金融业务-不动产保理业务入门和系统设计</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-保理的概念"><a href="#1-保理的概念" class="headerlink" title="1.保理的概念"></a>1.保理的概念</h2><p>保理，从本质上来说，就是应收账款的融资服务。<br>举个场景:某桂园向某混凝土公司A采购了2000吨水泥，应收账款100万。但由于账期原因，应收账款是按照季度结算。但公司A因为款项没有即时结清，产生了资金周转问题。于是公司A就将应收账款以折扣价转让给了保理商B。保理商B给供应公司A提供了融资，并通知某桂园回款后续不再打给公司A，而是打给保理商自己。季末某桂园将回款打给了保理商B。保理商B在融资和回款的差价里赚到了收益。<br>整个流程可以参见下图</p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/factoring-process.jpeg" alt="保理业务流程">  </p>
+<p>在这个最基础的流程中，有三方：  </p>
+<ul>
+<li>卖方:某混凝公司A，也可以称为债权方、上游</li>
+<li>买方:某桂园，也可以称为债务方、下游</li>
+<li>保理商:分为商业机构进行的商业保理和银行保理</li>
+</ul>
+<h3 id="1-1-正向保理和反向保理"><a href="#1-1-正向保理和反向保理" class="headerlink" title="1.1 正向保理和反向保理"></a>1.1 正向保理和反向保理</h3><p>保理这个概念产生的时候，都是由拥有融资需要的卖方主动发起的。但卖方拿到融资却不供货转身跑路的情况，也不是不会发生。这种情况下，买方当然也不会为没有收到的货而白白付钱。保理为了尽量避坏账，会对卖方的资质和规模进行要求。<br>但现实中很常见的情况是：上游的卖方是中小企业，无法达成资质规模要求，尽调难度也很大；而下游买方是龙头企业，拥有较高的资信程度。为了在这种场景下也能让保理商放心融资，会由卖方（混凝土公司A）找买方（某桂园）做担保，由买方主动发起保理申请。买方为了保证上游供应链的稳定，出面找保理商做担保：公司A确实是我的上游供应商，我们有商务合作。如果你能信得过我的话（大企业的授信担保），就给公司A融资，然后在一定时间段后到我这里兑回款。保理商相信了A的资信，给公司A提供了融资。<br>在这里出现了一个<strong>核心企业</strong>的概念。核心企业是供应链中的概念,是供应链中的关键节点，资信程度较高（AA＋是基本门槛）。  </p>
+<p>在保理流程中，核心企业是保理的发起方。核心企业的类型也是区分正向保理和反向保理的关键判断因素。核心企业是卖家，就是正向保理；核心企业是买家，就是反向保理。这里的“正”和“反”指的是相关交易链的方向。  </p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/reverse-factoring.jpg" alt="正向保理-反向保理">  </p>
+<p>相比正向保理，反向保理几个优势：  </p>
+<ul>
+<li>上游量中小企业融资难的问题得以解决</li>
+<li>便于建立长期的战略合作伙伴关系，供应链更加稳定</li>
+<li>提高了保理业务的工作效率。保理商不再需要着重审核供应商的财务情况。反而需要更关注核心企业贸易背景的真实性，预防核心企业和上游供应串谋欺诈风险</li>
+<li>核心企业的资金运用效率得以提升，减少核心企业的财务管理成本</li>
+</ul>
+<p>此外，由于保理业务需要债务人确权，所以在正向保理中可能会发生债务人不愿意配合的情况。不愿意配合的主要原因是在转让前，买卖双方的应收账款仅属于商业信用，强势买方在账款到期后，有继续延期支付的可能。在这种情况下，卖方为自身经营利益考虑，也只能被动同意。但是若将应收账款转给保理商之后，商业信用负债就变成了需要刚性兑付的金融负债，到期不还款就会被起诉的可能。所以买方是很不情愿将债权转给保理商的。但反向保理中，由于本身就是债务人发起的，所以基本不会存在类似的问题。  </p>
+<h3 id="1-2-ABS资产证券化和专项计划"><a href="#1-2-ABS资产证券化和专项计划" class="headerlink" title="1.2 ABS资产证券化和专项计划"></a>1.2 ABS资产证券化和专项计划</h3><p>放款给卖方的资金可以是保理商的自有资金，但相较把应收账款捂1年等买方回款，还有其他资金周转率更高的方式，例如将应收账款进行资产证券化（ABS）。<br>ABS，即“Asset Backed Securitization”（资产证券化），是一种非常常见的融资方式。常见的保理ABS交易架构如下：  </p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/abs.jpg" alt="ABS交易架构范例">  </p>
+<p>我们扩展一下之前提到的混凝土公司A和某桂园的案例：  </p>
+<ol>
+<li>公司A提供给对某桂园水泥，应收账款债权100万。如果不通过保理，正常还款账期是3个月</li>
+<li>为了更快收回款项，公司A将应收账款债权折价至94万，转让给了保理商B，使账期缩短到了半个月</li>
+<li>保理商B以95万元的价格将应收账款债权打包发行ABS（即票面发行利率5%），设立专项计划。通过资产证券化过程中履行合同审核、确权等义务，收取1万元的中介费。如果债务人是某桂园的子公司的话，会加入母公司作为共同付款人来增信</li>
+<li>ABS发行一年后，某桂园偿还本息100万元或更多</li>
+<li>价差的5万，在扣除管理费/销售成本/增值税/律师费/评级费/托管费等费用后，剩余的就是证券持有人的收益</li>
+<li>从形式上，这个保理流程中，公司A贴息5万元，但实际由于某桂园的账期从3个月延长到了1年，所以可能会以某种形式承担部分利息，返还至公司A</li>
+</ol>
+<p>归纳整个流程，实现了买方/卖方/保理商三方的共赢：</p>
+<ul>
+<li>对卖方：实现了快速融资。换个角度，等于公司A做了2.5个月的融资，利息6万，相比从银行融资更容易成功，成本更低。并与核心企业建立了更牢固的合作伙伴关系</li>
+<li>对买方：变相拉长了账期。换个角度，等于某桂园以极低的成本融到了9个月的100万元资金。作为牵头发起保理的代价，还可以向卖方后续要求优先供货权等利益</li>
+<li>对保理商：获得了低风险的收益</li>
+</ul>
+<p>以上范例仅为简化版的范例，实际并不会对单个供应商的应收账款建立ABS。一个ABS产品中通常会包含数十笔到数百笔不等的应收账款。资产池至少包含10个相互之间不存在关联关系的债权人（供应商）。  </p>
+<h3 id="1-3-再保理"><a href="#1-3-再保理" class="headerlink" title="1.3 再保理"></a>1.3 再保理</h3><p>除了将债权ABS化之外，还有另一种处理方式是将转给其他保理商，即再保理。常见的是转给银行，即银行再保理。  </p>
+<p>与国外相反，国内由大部分金融资源集中在银行，加上政策原因，所以是银行率先开展保理业务。而商业保理是从2012年之后商务部发文批准后才开始发展。由于起步较晚，商业保理公司普遍轻资产，资产负债率较高，无法直接从银行获得贷款。但如果拥有银行认可的优质保理资产，可以通过再保理的形式，将这些资产转计给银行或其他保理商，获得融资。具体流程如下：  </p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/refactoring.jpg" alt="再保理">  </p>
+<p>我们从再保理的角度扩展一下混凝公司A、某桂园和保理商B的案例：  </p>
+<ol>
+<li>保理商B除了为混凝公司A之外，还为某桂园的一系列供应商提供保理服务，例如混凝土公司X，装修公司Y和园林公司Z</li>
+<li>保理商B想进一步扩大业务规模，希望基于银行C与某园合作的基础上，将自己手头的公司XYZ的应收账款转给银行C，获得融资</li>
+<li>保理商B与银行C签订再保理合作协议，向银行C提供与供应商签的保理合司和票据等材料</li>
+<li>某桂园向银行C出具应收账款转让确认书，确认银行C为新的债权人</li>
+<li>银行C向保理商B发放融资</li>
+<li>保理商B将融资用于扩大业务规模，向更多的公司U公司V公司W提供保理业务</li>
+</ol>
+<p>其实从标准的保理概念上，应该称之为“双保理”。即保理商B是卖方保理，银行保理C为买方保理。  </p>
+<h2 id="2不动产保理业务和保理系统的特点"><a href="#2不动产保理业务和保理系统的特点" class="headerlink" title="2不动产保理业务和保理系统的特点"></a>2不动产保理业务和保理系统的特点</h2><p>对于不动产保理ABS业务，实践中通常有以下几个特点：  </p>
+<ul>
+<li>以反向保理为主：通常采用“1＋N”模式。1即供应链核心企业，N为上游供应商</li>
+<li>具有类信用债特点：通常直接债务人为由核心企业针对特定地产项目创建的项目公司。对核心企业主体信用依赖强，供应商往往规模小，追索权意义不大，所以大多采用了无追索权保理的形式</li>
+<li>平层结构为主：即通常不设外部增信。同样由于强依赖核心企业主的还款力和意愿，对于优先级证券的信用级别没有提升作用，保证担保差额补等外部措施也并不会起到增信作用</li>
+<li>通常采用到期一次还本付息的本息兑付方式。主要是由于项目期限短（通常为1年或1年以下）</li>
+<li>多采用了储架发行模式和“黑红池”机制。主要是由于存在期限短、单笔金额小、笔数多、同质化高的特点<ul>
+<li>储架发行，即“一次备案，多次发行”</li>
+<li>黑红池机制中“红池”指前期审批报备阶段所使用的基础资产池，而“黑池”则是在证券发行时使用的基础资产池</li>
+</ul>
+</li>
+</ul>
+<p>这些特点使得不动产保理系统在设计过程中产生了以下几个特点：  </p>
+<ul>
+<li>需要包含供买方/卖方/核心企业使用的外部客户门户系统</li>
+<li>核心企业成为买方和资产的必填要素</li>
+<li>需要与核心企业进行系统对接</li>
+<li>保理产品的设计较单纯（相较其他一些公私募产品）</li>
+<li>尽调管理以核心企业为查询维度</li>
+<li>还款管理和催收管理弱化</li>
+</ul>
+<h2 id="3-资产的属性及和其他业务对象的关联关系"><a href="#3-资产的属性及和其他业务对象的关联关系" class="headerlink" title="3.资产的属性及和其他业务对象的关联关系"></a>3.资产的属性及和其他业务对象的关联关系</h2><p>不动产保理中的核心概念是<strong>资产</strong>。<br>资产就是应收账款。资产本身的主要因素包括:发票编号、发票金额、资产转让金额等。  </p>
+<p>资产与众多业务对象之间都有关联关系：</p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/refactoring-relation.jpg" alt="资产-业务对象关联关系">  </p>
+<p>接下来围绕资产和不同业务对象的关联关系展开描述。  </p>
+<h3 id="3-1-供应商-项目公司-核心企业"><a href="#3-1-供应商-项目公司-核心企业" class="headerlink" title="3.1 供应商/项目公司/核心企业"></a>3.1 供应商/项目公司/核心企业</h3><p>这里的项目公司即上文提到的买方（债务人），供应商即卖方（债权人）。所以资产和三者的关系是：  </p>
+<ul>
+<li>供应商卖出资产</li>
+<li>项目公司买入资产</li>
+<li>核心企业增信资产</li>
+</ul>
+<p>在资产导入阶段，如果资产对应的供应商和项目公司未进行准入审核，会生成审核任务，并通过短信通知供应商和项目公司登录客户门户自助补充资料（实物、银行账户、联系人等）。完成准入审核是合同签订的必要前置条件。  </p>
+<p>准入审核的关键信息包括：公司名称、统一社会信用代码、用印方式、营业执照、资质证书、法人身份证、授权用印经办人授权书影像、授权用印经办人身份证影像等。其中对非结构化数据（例如营业执照的影像资料）的审核也被称为实物审核。  </p>
+<p>在新增项目公司和供应商后，内部也会开展尽调（尽职调查）。除了对公司的尽调外，也会对资产进行尽调，以确保不是通过虚假交易骗保（理）。<br>在企业准入成功后，会在电子签章系统里为其注册账号，用于后续的合同签署。  </p>
+<h3 id="3-2-产品-投资项目-项目-资产包"><a href="#3-2-产品-投资项目-项目-资产包" class="headerlink" title="3.2 产品/投资项目/项目/资产包"></a>3.2 产品/投资项目/项目/资产包</h3><p>产品/投资项目/项目/资产包，这几个概念从上往下，从抽象到具体。  </p>
+<h4 id="产品"><a href="#产品" class="headerlink" title="产品"></a>产品</h4><p>产品可以是针对某个核心企业的业务模式，比如“某桂园私募ABS反向保理”，“某科再保理”等。  </p>
+<p>产品的关键信息包括产品类型、还款方式、宽限期、资金规模、债权期限天数、利率范围等。其中产品类型是针对主体（正向/反向保理）+资产处置方式类别。例如：  </p>
+<ul>
+<li>公募ABS反向保理</li>
+<li>私募契约型基金反向保理</li>
+<li>私募信托反向保理</li>
+<li>供应链ABS正向保理</li>
+<li>银行再保理</li>
+</ul>
+<h4 id="投资项目"><a href="#投资项目" class="headerlink" title="投资项目"></a>投资项目</h4><p>投资项目，是保理商公司内部进行投决（投资决策）的投资活动单位。<br>所以投资项目的关键因素包括立项会、投决会等会议的信息、审批规模、投资团队、资金来源等。  </p>
+<h4 id="项目资产包"><a href="#项目资产包" class="headerlink" title="项目资产包"></a>项目资产包</h4><p>根据保理的不同阶段，项目可以分为保理项目和资产处置项目。<br>保理项目是合同签署的对象单位。对于保理项目，关键信息包括签约方式，资产到期日、折现期、折价率等。<br>资产处置项目是将资产金融化的对象单位，会补充对应的金融产品的信息，包括金融产品代码（例如基金代码）评级、服务费、律师事务所、托管人、评级机构、专项计划户名账号等等。  </p>
+<h4 id="资产包"><a href="#资产包" class="headerlink" title="资产包"></a>资产包</h4><p>项目和资产包对应。保理项目和资产处置项目分别对应预备资产包和（处置）资产包。<br>资产包是应收账款的组合。会从预备资产池中选出符合要求的应收账款进行打包处理。上文也提到过，如果要包装为ABS产品的话资产包中至少需要包含10个相互之间不存在关联关系的供应商。当资产包中的资产确定，进行合同签署后，就会转为（处置）资产包。后续资产包中的资产就不可再发生变化。  </p>
+<h3 id="3-3-中登登记"><a href="#3-3-中登登记" class="headerlink" title="3.3 中登登记"></a>3.3 中登登记</h3><p>《民法典草案》第七百六十八条规定：应收账款债权人同一应收账款订立多个保理合同，致使多个保理人主张权利的，已经登记的先于未登记的取得应收账款；均已经登记的，按照登记时间的先后顺序取得应收账款，均未登记的，由最先到达应收账款债务人的转让通知中载明的保理人取得应收账款；既未登记也未通知的，按照保理融资款或者服务报酬的比例取得应收账款。  </p>
+<p>这里的<strong>登记</strong>，指的就是到国家公认的中登网进行登记。<br>中登网，全名中国人民银行征信中心动产融资统一登记平台。中登网的主要作用是用于以融资为目的的动产登记公示。<br>对于保理业务来说，中登网的主要作用是收质押登记和应收账款转让。如果没有在中登网上进行登记，那么万一项目公司背着保理商，偷偷将应收账款进行多次质押引起纠纷，在法律上就会处于不利地位。  </p>
+<p>当资产成功导入且包含发票，就需要进行中登查询和登记。<br>首先进行中登查询。中登查询不通过的话就会进入到退单流程；而中登查询通过的话就进入登记流程。<br>中登登记的关键因素包括：应收账款的出让人信息（供应商企业信息）、资产信息、受让人信息（保理商企业信息）等。  </p>
+<h3 id="3-4-合同"><a href="#3-4-合同" class="headerlink" title="3.4 合同"></a>3.4 合同</h3><p>《民法典草案》第七百六十二条规定：保理合同的内容一般包括业务类型、服务范围、服务期限、基础交易合同情况、应收账款信息、转让价款、服务报酬及支付方式等条款。<br>合同签约包括两种方式:纸质和在线。保理商分别于如果是在线签，为了确保合同的合规，会通过第三万电子签章服务进行合同的签署和生成（如E签宝、上上签）。  </p>
+<h3 id="3-5-放款还款"><a href="#3-5-放款还款" class="headerlink" title="3.5 放款还款"></a>3.5 放款还款</h3><p>当资产和实物审核通过，并在中登网登记成功，内部合同用印完毕后，即可进入向供应商的放款申请审批。由于放款申请所需的绝大部分信息在该步骤之前都已补充完华（供应商信息/资产转让金额），所以只需要补充支付方式（商票支付/现金支付）即可。<br>当处置资产的到期日到达后，会创建还款登记和确认任务。还款登记的主要因素包括本次还款日期还款金额、还款凭证等。还款登记完成后，就可以进行财务流水匹配和制证处理。  </p>
+<h2 id="4-保理流程"><a href="#4-保理流程" class="headerlink" title="4. 保理流程"></a>4. 保理流程</h2><p>经过前一章的介绍，我们就可以将资产在整个保理流程中的流转过程梳理出来</p>
+<ol>
+<li>首先在前置阶段，预先配置好资产所属和核心企业以及上层的产品/投决项目信息</li>
+<li>在投前（保理项目）阶段，进行供应商和项目公司的信息补充和审核。同步进行资产导入和审核，并将资产到中登网上进行登记</li>
+<li>进入合同签署，资产包里的资产固定，进入投后（处置项目）阶段。在该阶段进行放款资产出售以及收款</li>
+</ol>
+<p>在保理流程的不同阶段，资产包的类型也会发生变化。在投前阶段，是从预备资产池生成预备资产包，并退回审核不通过的资产；在投后阶段，预备资产包变为处置资产包</p>
+<h2 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h2><p><a href="https://www.zhihu.com/question/298194999" target="_blank" rel="noopener">正向保理和反向保理有什么不一样</a>  </p>
+<p><a href="https://www.sohu.com/a/226643976_530652" target="_blank" rel="noopener">供应链金融之反向保理资产证券化模式</a>  </p>
+<p><a href="https://www.sohu.com/a/163127543_743870" target="_blank" rel="noopener">浅析“再保理”业务</a>  </p>
+<p><a href="http://www.cairongquan.com/Article/view/94131.html" target="_blank" rel="noopener">一文读懂：房地产供应链应付账款ABS</a>  </p>
+<p>本文永久链接 [ <a href="https://galaxyyao.github.io/2020/08/01/金融业务-不动产保理业务入门和系统设计/">https://galaxyyao.github.io/2020/08/01/金融业务-不动产保理业务入门和系统设计/</a> ]</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2020/08/01/金融业务-不动产保理业务入门和系统设计/" data-id="ckdwjigya004590fdgvytha1n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/金融/">金融</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-运维-运维体系标准化之故障管理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/30/运维-运维体系标准化之故障管理/" class="article-date">
+  <time datetime="2020-07-29T16:00:00.000Z" itemprop="datePublished">2020-07-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/30/运维-运维体系标准化之故障管理/">运维-运维体系标准化之故障管理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文是极客时间<a href="https://time.geekbang.org/column/intro/63" target="_blank" rel="noopener">《赵成的运维体系管理课》</a>的读后体会之二 。  </p>
+<h2 id="1-对故障的认识"><a href="#1-对故障的认识" class="headerlink" title="1.对故障的认识"></a>1.对故障的认识</h2><p>ITIL的10个重要的IT管理关键模块之一就是故障管理。<br><strong>故障永远只是表面现象，其背后技术和管理上的问题才是根因</strong>  </p>
+<p>即当技术和管理上的问题积累到一定程度后，就会以故障的形式爆发出来。所以不能仅将眼光限于故障本身和直接责任人。  </p>
+<ul>
+<li>管理者要先自我反省:员工只是执行者，管理者的责任永远大于执行者</li>
+<li>强调用技术解决问题，而不是单纯地靠增加管理流程和检查环节来解决问题<ul>
+<li>短期可以辅以一些管理措施，比如靠宣传学习必要的Double Check/制定复杂操作的Checklist等。但是这些只能作为辅助手段，一定不能是常态</li>
+<li>随着系统复杂度越来越高，迟早有一天会超出单纯人力的认知范围和掌控能力，各种人力的管理成本也会随之上升，所以最终必须将这些人为动作转化到技术平台中去</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-故障的定级"><a href="#2-故障的定级" class="headerlink" title="2.故障的定级"></a>2.故障的定级</h2><p>故障需要有标准化的流程来指导我们的处理过程。  </p>
+<p>这里有个关键组织:故障应急小组。这个组织有4个职责：  </p>
+<ul>
+<li>制定故障定级定责标准</li>
+<li>对线上故障做出定级和定责</li>
+<li>跟踪线上故障处理</li>
+<li>组织故障复盘</li>
+</ul>
+<p>故障应急小组需要有个负责人。在部分公司，这个负责人属于研发效率团队。<br>定级定责标准等同于法律条款，而这个角色等同于法官。法官依法办事，做到公平公正。<br>现实情况中，因为各方受到故障的影响不同，对故障影响的理解也不同，所以复盘过程中经常会出现下面这两种争执场景：  </p>
+<ul>
+<li>技术支持判定故障很严重，但是责任方认为没什么大不了的，不应该把故障等级判定到如此之高</li>
+<li>技术支持认为故障影响较小，但是受影响方却认为十分严重，不应该将故障等级判定得这么低</li>
+</ul>
+<p>所以需要有严格而明确的判定标准。故障定级标准的目标是要判定故障的影响程度，使各相关利益方能够基于统一的标准判断和评估。<br>故障等级常见可以分为PO-P4共5个级别。PO最高P4最低。定级主要看3点：功能的核心程度，影响面，以及影响时间。核心程度有一些共通的标准（例如登录），也有各系统独有的业务衡量标准，所以需要基于每个系统与业务部门分别制定。影响时间是包含故障发生到完全解决的总时间。根据实际况，也可以调整为只计算工作时间的时间长度。如果影响时间超过一定时长，要进行故障升级。<br>P故障通常是两个或以上P1故障的叠加造成。  </p>
+<h3 id="2-1-故障定级范例"><a href="#2-1-故障定级范例" class="headerlink" title="2.1 故障定级范例"></a>2.1 故障定级范例</h3><p>下面是两个定级参考范例。首先是交易系统，主要以钱为衡量指标。  </p>
+<p><img src="/images/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/accident-rank-deal.png" alt="故障定级-交易">  </p>
+<p>另一个是IM即时通信App的故障定级标准。  </p>
+<p><img src="/images/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/accident-rank-im.png" alt="故障定级-IM">  </p>
+<p>再次强调一下，为了避免日后引起争执，需要将定级标准在业务部门、产品团队、开发团队、测试团队和运维团队之间进行逐点的细节讨论，并达成最终一致的认可。<br>这个标准可能覆盖不到有些特例，这个时候需要由应急小组的负责人根据已达成一致的标准＋自己的经验进行独立裁量。同时，在每季度或半年对标准进行一轮修订。需要注意的是要对故障应急小组，特别是应急小组的负责人树立绝对的话语权和决策权的制度。  </p>
+<h2 id="3-故障应急处理"><a href="#3-故障应急处理" class="headerlink" title="3.故障应急处理"></a>3.故障应急处理</h2><p>故障发生后可能会产生很大的外部压力，并传递到研发团队。如果没有很好的故障应对措施，很容易陷入慌乱。  </p>
+<h3 id="3-1-故障应急的原则"><a href="#3-1-故障应急的原则" class="headerlink" title="3.1 故障应急的原则"></a>3.1 故障应急的原则</h3><p>在故障应急状态下，坚守的第一原则是：优先恢复业务而非定位问题。<br>这需要事先有充足的预案准备以及故障模拟演练，也涉及各种稳定性保障措施，例如扩容，开关，限流降级等。  </p>
+<h3 id="3-2-故障应急流程"><a href="#3-2-故障应急流程" class="headerlink" title="3.2 故障应急流程"></a>3.2 故障应急流程</h3><p>故障应急流程由故障应急小组来主导。对外同步信息，包括大致原因，影响面和预估恢复时长，同时屏蔽各方对故障处理人员的干扰；对内组织协调各团队相关人员集中处理。  </p>
+<p>故障的应急流程主要分为以下几个步骤：  </p>
+<ul>
+<li>确认故障的有效性</li>
+<li>登记生产缺陷</li>
+<li>将故障上报到可用性保障群里<ul>
+<li>故障的原因排查和讨论在该群里或者单独拉一个独立的故障处理群处理。如果相关人员比较集中在一个办公场所，则集中到会议室</li>
+</ul>
+</li>
+<li>对于处理时间比较长的故障，应急处理小组每隔15-30分钟对相关业务部门同步一次故障处理进程，并判断是否需要升级故障</li>
+<li>确定故障处理方案，包括:正常业务流程处理提交数据修改单/修改配置/回滚/紧急版本/放到大版本</li>
+<li>在故障确认处理完成后，关闭生产缺陷</li>
+<li>组织故障复盘，产出故障分析报告，将问题记录到事件管理。故障分析报告需要同步给技术副总监、PMO，以及其他的产品、开发、测试和运维，以便后续吸取教训</li>
+<li>根据事件管理的记录，进行故障数据分析<ul>
+<li>分析角度包括:每月故障数对比、每月故障处理时间对比近两月故障等级占比分布、近两月故障类别占比分布、近两月故障来源对比和近两月各业务组故障数对比</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-3-故障的信息通报"><a href="#3-3-故障的信息通报" class="headerlink" title="3.3 故障的信息通报"></a>3.3 故障的信息通报</h3><p>对于每一级故障的知会人员的标准参考如下：  </p>
+<ul>
+<li>P0/P1：技术总监/PMO</li>
+<li>P2：技术副总监/PMO/测试主管/运维主管</li>
+<li>P3/P4：技术经理/产品经理</li>
+</ul>
+<h2 id="4-故障的复盘"><a href="#4-故障的复盘" class="headerlink" title="4.故障的复盘"></a>4.故障的复盘</h2><p>首先要明确复盘的目的。复盘的目的是为了从故障中学习我到我们技术和管理上的不足，然后不断改进。切总将复盘过程和目的搞成追究责任或实施惩罚，这对于团队氛围和员工积极性的打击是非常大的。<br>在复盘过程中，故障应急小组要起到关键作用，组织复盘会议。<br>对于低级别的生产事故，在晨会夕会之后顺带进行；对于高级别的生产事故，需要专门安排时间进行。  </p>
+<p>复盘会议的环节包括：  </p>
+<ul>
+<li>故障的回顾<ul>
+<li>包括故障发生时间点，故障影响面，恢复时长，主要处理人或团队</li>
+</ul>
+</li>
+<li>故障处理时间线回顾<ul>
+<li>故障应急小组在整个过程记录时间点，以便真实再现整个故障处理过程</li>
+</ul>
+</li>
+<li>针对时间线合理讨论<ul>
+<li>比如为什么没有告警而是用户反馈的，响应时长是否符合规范，是否有预案和预案执行完成度，测试环节为什么没有发现等</li>
+<li>故障应急小组负责人注意控制场面，务必注意对事不对人，及时干预和警告，避免演变成批斗会</li>
+</ul>
+</li>
+<li>确定故障根因</li>
+<li>故障定级定责<ul>
+<li>对于高级别生产故障定责时可以仅少数相关人在场时进行，考虑责任人个人感受</li>
+</ul>
+</li>
+<li>产出故障分析报告</li>
+<li>将问题记录到事件管理</li>
+</ul>
+<p>对故障根因的讨论可以诸如：  </p>
+<ul>
+<li>是否是人员对业务不熟悉导致？</li>
+<li>是否有人为操作导致？如果是的话，是否能改为自动化？</li>
+<li>是否在代码静态扫描中包含但被忽略了？</li>
+<li>为什么容量不足没有更早发现？</li>
+<li>为什么没法快速定位？是监控不够，还是告警太多人员麻木？</li>
+<li>管理上，人员的on call机制是否及时？应对故障的协作方式上是否还能改进？</li>
+</ul>
+<p>此外，按季度、半年和全年的周期，需要进行周期内的故障案例总结会。总结会的目的包括：  </p>
+<ul>
+<li>分析故障趋势，观察是否需要进行人员安排的调整</li>
+<li>发现共性的问题，贡献给整个研发团队</li>
+</ul>
+<h2 id="5-故障的定责"><a href="#5-故障的定责" class="headerlink" title="5.故障的定责"></a>5.故障的定责</h2><p>定责的目的是为了责任到人，并且使责任人能够真真切切地认识到自己的不足之处，能够主导改进措施的落地。<br>相比故障复盘的对事不对人，定责就是对人不对事了，所以不能一刀切，不能上纲上线，一定要慎重。<br>对于故障的定责方式，也要根据故障的类型来划分。  </p>
+<h3 id="5-1-高压线规则"><a href="#5-1-高压线规则" class="headerlink" title="5.1 高压线规则"></a>5.1 高压线规则</h3><p>有一类是绝对不允许触碰的底线。对于这类高压线规则，需要让每个成员牢记在心，并经常重复提醒。例如：  </p>
+<ul>
+<li>未经发布系统，私自变更线上代码和配置</li>
+<li>未经授权、严格的方案准备和评审，私自在业务高峰期进行硬件和网络设备变更</li>
+<li>未经授权，私自在生产环境进行调测性质的操作</li>
+<li>未经授权，私自变更生产环境数据</li>
+</ul>
+<p>通过高压线去加强安全稳定意识，目的是要让每一个人对线上都心存敬畏。从经验来看，绝大多数的严重故障都是因为无意识或意识薄弱导致的，并不是因为单纯的技术能力不足等技术因素。很多人事后复盘时候最常讲的话就是：“我以为是没问题的，我以为是没影响的。”其实恰恰就是因为这种“想当然”，导致了严重故障。  </p>
+<p>对于高压线问题，碰一次就要疼一次。  </p>
+<h3 id="5-2-鼓励做事，而不是处罚错误"><a href="#5-2-鼓励做事，而不是处罚错误" class="headerlink" title="5.2 鼓励做事，而不是处罚错误"></a>5.2 鼓励做事，而不是处罚错误</h3><p>Google的专家有一句名言:理解一个系统应该如何工作并不能使人成为专家，只能靠调查系统为何不能正常工作才行。  </p>
+<p>每个人的技术能力提升，基本都是伴随着大大小小故障的发生、处理、复盘和改进。虽然我们不希望有故障发生，但是真的没有了故障，我们也就没有了真刀真枪实战成长的机会。我们对待故障一定要客观和辩证地理解，特别是对于管理者来说，对于故障，一定要有容忍度，一定要有耐心。<br>我们的团队和人员，在这样一次次痛苦的经历后，各方面的能力都得到了锻炼，素养也一定会有大幅度提升。所以，对故障有容忍度，有耐心，我们的团队就会变得越来越强，对于故障的应对也会变得更加游刃有余。而一出故障就劈头盖脸地把团队和责任人骂一通，并且还要严厉处罚的方式，最后的效果就是严重打击士气，适得其反。<br>特别是以下这些原因造成的故障：  </p>
+<ul>
+<li>员工积极主动地承担了一些极具挑战性的工作，需要尝试某个新技术或解决方案</li>
+<li>业务高速发展时期，业务量成指数级增长时，团队人员能和经验水平整体上还没法很好地应对。这个时候可能任何一个小变动都是最后一根稻草</li>
+</ul>
+<p>何况，如果不出问题，可能很多主管压根都没有关注过员工在做的事情，过程中是否有困难，是否需要支持等等，这本身就是管理者的失责。<br>员工努力做事的积极性一旦被打击，变得畏首畏尾起来，也就谈不上什么技术进步和突破了而且想要再恢复起来也会非常困难，最终很大概率上会导致优秀人才流失。  </p>
+<h3 id="5-3-定责和绩效非强挂钩"><a href="#5-3-定责和绩效非强挂钩" class="headerlink" title="5.3 定责和绩效非强挂钩"></a>5.3 定责和绩效非强挂钩</h3><p>在故障后直接谈及处罚，员工的情绪很可能会消极和抵触。例如“反正都是我的错，你说咋样就咋样”，或“凭什么罚我却不罚别人，又不是我一个人的问题”。员工害怕、甚至拒绝承担责任，宁可少做不做，也不愿多做多错，团队沟通成本上升，运作效率自然下降。特别是一个故障如果是涉及多方的，扯皮推诿就开始了，都想着把责任撇干净，甚至当众相互指责，这个负面效应杀伤力极大。<br>所以可以考虑将定责放到季度、半年为维度，根据事件管理中的记录来整体判断。如果员工整体的表现都是不错的，甚至是突出的，说明员工已经改正或者那件事情确实是偶尔的失误导致，这种情况下员工仍然会有好的绩效。但如果是频繁出问题，这种情况就基于事实反馈，也会更加容易沟通。  </p>
+<p>本文永久链接 [ <a href="https://galaxyyao.github.io/2020/07/30/运维-运维体系标准化之故障管理/">https://galaxyyao.github.io/2020/07/30/运维-运维体系标准化之故障管理/</a> ]</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2020/07/30/运维-运维体系标准化之故障管理/" data-id="ckdwjigxz003k90fdkn5p2hfk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/运维/">运维</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-运维-运营体系标准化之配置管理CMDB" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/29/运维-运营体系标准化之配置管理CMDB/" class="article-date">
+  <time datetime="2020-07-28T16:00:00.000Z" itemprop="datePublished">2020-07-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/29/运维-运营体系标准化之配置管理CMDB/">运维-运营体系标准化之配置管理CMDB</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文是极客时间<a href="https://time.geekbang.org/column/intro/63" target="_blank" rel="noopener">《赵成的运维体系管理课》</a>的读后体会之一。  </p>
+<h2 id="运维配置管理实践中一些混乱现象"><a href="#运维配置管理实践中一些混乱现象" class="headerlink" title="运维配置管理实践中一些混乱现象"></a>运维配置管理实践中一些混乱现象</h2><p>在公司的运维配置管理实践中，存在一些混乱的现象：  </p>
+<ul>
+<li>信息安全收到fastjson的安全问题报告，但报告中的服务器对应的系统却有错位</li>
+<li>信息安全收到了报告，发现tomcat的某个版本出现了漏洞需要升级，但不知道到底影响到哪些系统，只能逐个请每个系统的负责人判断</li>
+<li>部分服务器（特别是开发坏境服务器）已经基本可以确认不再被使用，但服务器资源没有回收，每月持续占用硬件预算</li>
+<li>某系统上线后发现中漏配置了一个域名，导致部分用户打开首页报错</li>
+<li>redis缺少规划，多个系统公用一个redis集群的情况下，无法根据键（key）来区分每个系统占用了多少缓存。遇到内存不足的情况很难深入排查是哪个系统导致</li>
+<li>生产消息队列中不少queue堆积着大量消息，但不知道是否还在用，不敢随意删除</li>
+</ul>
+<p>这些情况很可能短期甚至长期内不会直接导致什么问题。可能就是让信息安全整理材料多费一点时间，开发排查多绕一点弯路，或多花一些硬件维持或扩容费用。但有些时候这些问题就是给未来出现的生产问题埋下隐患。<br>硬件的归属，服务器的使用情况，应用域名管理，软件版本，应用与中间件的关联等等，都属于广义上的配置管理。所以归根到底，是配置管理的混乱。  </p>
+<h2 id="ITIL和配置管理CMDB"><a href="#ITIL和配置管理CMDB" class="headerlink" title="ITIL和配置管理CMDB"></a>ITIL和配置管理CMDB</h2><p>在ITIL（Information Technology Infrastrueture Library）中，有10个重要的IT管理关键模块。其中配置管理（CMDB）通常被认为是其他IT流程的基础。<br>CMDB（Configuration Managoment DataBase），配置管理数据库，是与IT系统所有组件相关的信息库。它包含IT基础架构配置项的详细信息。<br>在传统运维时代，CMDB的核心对象是资源，即网络和硬件设备。但在云计算和互联网运维时代，CMB的核心已经转变为了“应用”。随着微服务架构的推广，以应用为核心的注册中心、缓存、消息队列、数据库等都需要纳入配置管理的管理范畴。  </p>
+<p>以应用为核心的配置管理标准化可以包括：  </p>
+<ul>
+<li>元数据属性:系统名、 BA Owner/开发Owner/运维Owner</li>
+<li>环境属性:拥有几套环境</li>
+<li>逻辑实体属性:架构评审和变更设计</li>
+<li>硬件和网络属性:服务器配置、SLB、域名、ip等</li>
+<li>代码属性:编程语言、代码库地址、需求空间地址</li>
+<li>应用日录属性:日志日录、应用目录、临时目录等</li>
+<li>应用配置属性:端口号、jvm参数等</li>
+<li>中间件属性:web容器、注册中心、缓存、消息队列、数据库等</li>
+</ul>
+<p>最终目标是能达成传统CMDB和应用视角CMDB的统一。<br><img src="/images/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/CMDB-unite.jpeg" alt="CMDB统一">  </p>
+<p>也有开源的CMDB，比如腾讯的<a href="https://bk.tencent.com/" target="_blank" rel="noopener">蓝鲸智云</a>。<br>可以参考它的架构</p>
+<p><img src="/images/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/cmdb-framework.jpg" alt="腾讯蓝鲸架构">  </p>
+<h2 id="CMDB的维护和流转"><a href="#CMDB的维护和流转" class="headerlink" title="CMDB的维护和流转"></a>CMDB的维护和流转</h2><p>CMDB并不能只靠运维团队内部封闭来做，而要站在怎么能够打造和发挥出整个技术架构体系运维能力的视角。有部分信息也需要开发来提供，例如消息队列的queue名等。所以CMDB需要跨团队协作。一方面运维团队要主动出击，去沟通，去推进；另一方面，必须能得到上级主管甚至是更高层技术领导的支持。<br>配置数据也需要保持持续维护。过时的配置数据等于没有，甚至更差。这个首先需要在所有运维人员的重要性认识上保持统一。此外，也对每个应用的负责运维和研发人员提出相应的问责机制。<br>和货币类似，只是维护信息不会产生价值。只有把信息流转到开发，测试和信息安全等角色，对整体的研发效能和故障率做出贡献，才能使配置管理免于成为运维的纯负担。  </p>
+<p>本文永久链接 [ <a href="https://galaxyyao.github.io/2020/07/29/运维-运营体系标准化之配置管理CMDB/">https://galaxyyao.github.io/2020/07/29/运维-运营体系标准化之配置管理CMDB/</a> ]</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2020/07/29/运维-运营体系标准化之配置管理CMDB/" data-id="ckdwjigwt001j90fddyyd4wnk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/运维/">运维</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-管理-远程办公项目管理经验总结" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/03/02/管理-远程办公项目管理经验总结/" class="article-date">
@@ -147,7 +516,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2020/03/02/管理-远程办公项目管理经验总结/" data-id="ck8gwpwf2001p5sfdgcck8lch" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2020/03/02/管理-远程办公项目管理经验总结/" data-id="ckdwjigwv001o90fdk5ncxzl7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/项目管理/">项目管理</a></li></ul>
@@ -231,7 +600,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2020/02/05/中台-读说透中台和企业IT架构转型之道有感/" data-id="ck8gwpwex001f5sfd0ag0u1rn" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2020/02/05/中台-读说透中台和企业IT架构转型之道有感/" data-id="ckdwjigwq001e90fdqt78go2a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/中台/">中台</a></li></ul>
@@ -347,7 +716,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/" data-id="ck8gwpwg1003o5sfdetk2mu23" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2020/01/22/容器-14-国内Windows10环境安装Minikube/" data-id="ckdwjigxx003f90fdznrxzlr2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/容器/">容器</a></li></ul>
@@ -430,7 +799,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/" data-id="ck8gwpwf7001z5sfdbzabqicq" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/" data-id="ckdwjigwu001m90fdx1v8v5fp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring/">Spring</a></li></ul>
@@ -541,7 +910,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/12/09/Java-Feign-服务注册的多环境方案/" data-id="ck8gwpwg2003q5sfd5up0v9zu" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/12/09/Java-Feign-服务注册的多环境方案/" data-id="ckdwjigxv003d90fdseuoee9r" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Feign/">Feign</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Cloud/">Spring Cloud</a></li></ul>
@@ -787,7 +1156,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/09/22/数据库-转到PostgreSQL的新手/" data-id="ck8gwpwfz003m5sfdgtmejemg" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/09/22/数据库-转到PostgreSQL的新手/" data-id="ckdwjigxy003i90fdmxjpcw1a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PostgreSQL/">PostgreSQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pgsql/">pgsql</a></li></ul>
@@ -850,261 +1219,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/09/18/Maven-组织内部项目统一配置DistributionManagement/" data-id="ck8gwpwf1001m5sfd5s4kpy4h" class="article-share-link">Share</a>
+      <a data-url="https://galaxyyao.github.io/2019/09/18/Maven-组织内部项目统一配置DistributionManagement/" data-id="ckdwjigwl001990fd5wx6penp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Maven/">Maven</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-持续集成-Jenkins离线安装与配置" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/08/14/持续集成-Jenkins离线安装与配置/" class="article-date">
-  <time datetime="2019-08-13T16:00:00.000Z" itemprop="datePublished">2019-08-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/14/持续集成-Jenkins离线安装与配置/">持续集成-Jenkins离线安装与配置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本篇主要针对的是Jenkins服务器处在局域网中，无法连上互联网的情况下如何做自动化部署。<br>本文对网络的架设是：有内部的git服务器，yum私有仓库，nexus Repository OSS私有仓库和npm私有仓库。如果这些条件都没有，可能你们还是本地开发机上打包稍微快一些。  </p>
-<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><h4 id="1-1-安装必要依赖"><a href="#1-1-安装必要依赖" class="headerlink" title="1.1 安装必要依赖"></a>1.1 安装必要依赖</h4><p>Jenkins的必要依赖是JDK。后续自动化部署的必要依赖是git，Maven和Node.js。<br>具体的安装步骤就不详述了。rpm安装（针对JDK）或私有YUM仓库安装都可以。<br>例如私有YUM仓库中openjdk，直接运行<code>yum install java-1.8.0-openjdk.x86_64</code> 即可。  </p>
-<p><strong>Maven私有仓库配置</strong><br>Maven打包的时候默认会从公网的仓库拉取依赖的第三方库。我们需要将其改为指向私有仓库。<br>首先可以通过如下两条命令之一获得配置文件地址： </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mvn --version</span><br><span class="line">mvn -e -X</span><br></pre></td></tr></table></figure>
-
-<p>假设<code>settings.xml</code>文件的位置在<code>/etc/maven/</code>路径下。<br>编辑该文件内容：  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/maven/settings.xml</span><br></pre></td></tr></table></figure>
-
-<p>我们首先需要在<code>&lt;profiles&gt;</code>和<code>&lt;/profiles&gt;</code>之间添加私有仓库地址（包括仓库和插件仓库）：  </p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">id</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>local-nexus<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://10.16.34.197:8081/repository/maven-central/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span>&gt;</span>central<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>Internal Mirror of Central Plugins Repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://10.16.34.197:8081/repository/maven-central/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>然后在最后的<code>&lt;/settings&gt;</code>上添加当前活跃的profile：  </p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activeProfiles</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">activeProfile</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">activeProfile</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activeProfiles</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>npm私有仓库配置</strong><br>npm配置私有仓库就简单多了，一条命令搞定：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm set registry http://10.16.34.197:8081/repository/npm-central</span><br></pre></td></tr></table></figure>
-
-<h4 id="1-2-安装Jenkins"><a href="#1-2-安装Jenkins" class="headerlink" title="1.2 安装Jenkins"></a>1.2 安装Jenkins</h4><p>Jenkins离线rpm安装包下载地址：<a href="https://jenkins.io/zh/download/" target="_blank" rel="noopener">https://jenkins.io/zh/download/</a><br>然后rpm安装jenkins（根据你下载的具体rpm包名更新命令）：  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh jenkins-2.176.2-1.1.noarch.rpm</span><br></pre></td></tr></table></figure>
-
-<p>然后启动jenkins：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start jenkins</span><br></pre></td></tr></table></figure>
-
-<p>确保防火墙已关闭或开放端口8080，然后就可以访问<code>http://ip:8080/</code>来访问jenkins首页了。<br>万一没有成功启动，可以通过<code>systemctl status jenkins</code>来确认失败的原因。  </p>
-<h3 id="2-配置"><a href="#2-配置" class="headerlink" title="2. 配置"></a>2. 配置</h3><h4 id="2-1-启动配置"><a href="#2-1-启动配置" class="headerlink" title="2.1 启动配置"></a>2.1 启动配置</h4><p>在启动Jenkins后，首先需要解锁。<br>在服务器上执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /var/lib/jenkins/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure>
-
-<p>然后输入到Unlock Jenkins的Administrator password框。<br>由于我们是离线模式安装，Jenkins会提醒“This Jenkins instance appears to be offline”。我们先点击“Skip Plugin Installations”跳过插件安装。<br>然后创建管理员用户，点击下一步。<br>如果有域名的话，在当前步骤的“Jenkins URL”中填写域名。我们这里直接点击“Save and Finish”。<br>Welcome to Jenkins:)  </p>
-<h4 id="2-2-插件配置"><a href="#2-2-插件配置" class="headerlink" title="2.2 插件配置"></a>2.2 插件配置</h4><p>在左侧菜单点击<code>Manage Jenkins</code>，然后点击<code>Manage Plugins</code>-&gt;<code>Advanced</code>。我们可以在这边上传所需插件的hpi文件。hpi文件可以从<code>https://plugins.jenkins.io</code>下载。<br>需要注意有一些包具有依赖。<br>我们需要的几个插件：</p>
-<ul>
-<li>Publish Over SSH</li>
-<li>build-pipeline-plugin</li>
-<li>cron_column</li>
-<li>git</li>
-<li>nodejs</li>
-</ul>
-<p>插件安装先后顺序如下：</p>
-<ul>
-<li>structs</li>
-<li>credentials</li>
-<li>ssh-credentials</li>
-<li>publish-over</li>
-<li>publish-over-ssh</li>
-<li>jquery</li>
-<li>scm-api</li>
-<li>workflow-step-api</li>
-<li>workflow-api</li>
-<li>junit</li>
-<li>javadoc</li>
-<li>display-url-api</li>
-<li>mailer</li>
-<li>apache-httpcomponents-client-4-api</li>
-<li>maven-plugin</li>
-<li>matrix-project</li>
-<li>token-macro</li>
-<li>run-condition</li>
-<li>conditional-buildstep</li>
-<li>parameterized-trigger</li>
-<li>build-pipeline-plugin</li>
-<li>cron_column</li>
-<li>git-client</li>
-<li>workflow-scm-step</li>
-<li>git</li>
-<li>config-file-provider</li>
-<li>nodejs</li>
-</ul>
-<p>当中根据提示可能需要重启数次Jenkins，也可以等所有插件都安装完再重启Jenkins。  </p>
-<h4 id="2-3-配置工具"><a href="#2-3-配置工具" class="headerlink" title="2.3 配置工具"></a>2.3 配置工具</h4><p>在左侧菜单点击<code>Manage Jenkins</code>，然后点击<code>Global Tool Configuration</code>，配置JDK、Maven和NodeJS（Git默认已配置）。<br>注意配置的时候取消“Install Automatically”。  </p>
-<p><strong>配置JDK</strong><br>执行</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alternatives --config java</span><br></pre></td></tr></table></figure>
-
-<p>如果是OpenJDK，Command那列括号里<code>/jre/bin/java</code>之前的内容就是JAVA_HOME</p>
-<p><strong>配置git</strong><br><code>Path to Git executable</code>可以填<code>git</code>或<code>usr/bin/git</code>都可以。  </p>
-<p><strong>配置Maven</strong><br>执行如下命令</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn --version</span><br></pre></td></tr></table></figure>
-
-<p>返回的结果里取Maven home即可。  </p>
-<p><strong>配置node</strong><br>可以通过<code>npm config list</code>命令查看当前的npm配置。<code>node bin location</code>后的就是node的位置。  </p>
-<p>至此Jenkins的安装和基本配置就完成了。  </p>
-<h1 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h1><p>这篇整理完才发现Nexus Repository Manager真强大，除了maven之外，docker/npm/pypi/yum都可以proxy。<br>虽然也有单独npm代理的方案，比如：<a href="https://liaolongdong.com/2019/01/24/build-private-package.html" target="_blank" rel="noopener">使用verdaccio搭建npm私有仓库 - Better’s study fairyland</a>  </p>
-<p>本文永久链接 [ <a href="https://galaxyyao.github.io/2019/08/14/持续集成-Jenkins离线安装与配置/">https://galaxyyao.github.io/2019/08/14/持续集成-Jenkins离线安装与配置/</a> ]</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/08/14/持续集成-Jenkins离线安装与配置/" data-id="ck8gwpwev001c5sfdq16as1pq" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CI/">CI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/持续集成/">持续集成</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-MySQL-没有必要的varchar-255-长度及存储汉字问题汇总" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/30/MySQL-没有必要的varchar-255-长度及存储汉字问题汇总/" class="article-date">
-  <time datetime="2019-07-29T16:00:00.000Z" itemprop="datePublished">2019-07-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/30/MySQL-没有必要的varchar-255-长度及存储汉字问题汇总/">MySQL-没有必要的varchar(255)长度及存储汉字问题汇总</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>最近在整理代码规范，按照之前oracle的习惯，定了以下的字段长度设定规范：  </p>
-<ul>
-<li>名称字段：varchar(200)</li>
-<li>较长的名称字段/简介字段：varchar(500)</li>
-<li>特别长的描述字段： varchar(2000)</li>
-<li>超过2000中文字的字段：text<br>为什么是200长度，而不是100或300，也是拍脑袋想的，类似DND里的房规。<br>但在被问起为什么不设置为经常见到的varchar(255)时，一时回答不上来。趁这个机会，把字段长度这块的知识汇总梳理一下。  </li>
-</ul>
-<h1 id="为什么会经常被设置为varchar-255"><a href="#为什么会经常被设置为varchar-255" class="headerlink" title="为什么会经常被设置为varchar(255)"></a>为什么会经常被设置为varchar(255)</h1><p>MySQL 4.1版本之前，varchar的最大长度是255 byte字节（也有一说是5.0.3版本之前）。查了下这个版本发布都是2004年的事情了。惯性真恐怖，我可不相信还有多少系统是从2004年升级过来的。  </p>
-<h1 id="varchar-50-和varchar-255-有性能上的差别么？"><a href="#varchar-50-和varchar-255-有性能上的差别么？" class="headerlink" title="varchar(50)和varchar(255)有性能上的差别么？"></a>varchar(50)和varchar(255)有性能上的差别么？</h1><p>对于INNODB，<code>varchar(50)</code>和<code>varchar(255)</code>这两者在存放方式上完全一样：1-2 byte保存长度，实际的字符串存放在另外的位置，每个字符1 byte到4 byte不定（视编码和实际存储的字符而定）。所以将一个字段从varchar(50)长度改成varchar(100)长度不会导致表的重建。但如果把长度从varchar(50)改成varchar(256)就不一样了，表示长度会需要用到2 byte或更多。  </p>
-<p>既然255长度以下对INNODB都一样，而且我们平时基本上也不太会使用到MYISAM，那么是不是为了省心，我们就可以把255长度以下的字段的类型都设置成varchar(255)了呢？<br>非也。<br>因为内存表介意。<br>虽然我们不会明文创建内存表，但所有的中间结果都会被数据库引擎存放在内存表。我们可以通过EXPLAIN或者SHOW STATUS可以查看MYSQL是否使用了内存表用来帮助完成某个操作。<br>而内存表会按照固定长度来保存。以utf-8编码为例，对于varchar(255)，每一行所占用的内存就是长度的2 byte + 3 * 255 byte。对于100条数据，光一个varchar字段就占约1GB内存。如果我们该用varchar(50)，就可以剩下来约80%的内存空间。<br>除此之外，255长度也可能会对索引造成坑。MySQL在5.6版本及之前的最大长度是767 byte。但MySQL 5.5版本后开始支持4个byte的字符集utf8mb4（沙雕表情用到的字符太多，长度不够用）。255 * 4 &gt; 767，所以索引就放不下varchar(255)长度的字段了。虽然MySQL在5.7版本后将限制改成了3072 byte，但如果是多字段的联合索引还是有可能会超过这个限制。  </p>
-<p>所以我们的结论就是：在长度够用的情况下，越短越好。    </p>
-<h1 id="varchar的最大长度是多少"><a href="#varchar的最大长度是多少" class="headerlink" title="varchar的最大长度是多少"></a>varchar的最大长度是多少</h1><p>varchar的最大长度是65535 byte。所以</p>
-<ul>
-<li>字符类型若为gbk，每个字符最多占2个字节，最大长度不能超过32766字符</li>
-<li>字符类型若为utf8，每个字符最多占3个字节，最大长度不能超过21845字符</li>
-<li>字符类型若为utf8mb，每个字符最多占4个字节，最大长度不能超过16383字符<br>但通常导致varchar长度限制的通常是一行定义的长度,就是表里所有字段定义的长度总和。这个限制也是65535 byte。如果超出长度，会报错：  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR 1118 (42000): Row size too large. The maximum row size for the used table type, not counting BLOBs, is 65535. You have to change some columns to TEXT or BLOBs。</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>这也是为什么阿里开发规范中这么要求：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">【强制】varchar是可变长字符串，不预先分配存储空间，长度不要超过5000，如果存储长度大于此值，定义字段类型为text，独立出来一张表，用主键来对应，避免影响其它字段索引效率。</span><br></pre></td></tr></table></figure>
-
-<h1 id="varchar-50-是能保存16个汉字，还是25个，抑或50个？"><a href="#varchar-50-是能保存16个汉字，还是25个，抑或50个？" class="headerlink" title="varchar(50)是能保存16个汉字，还是25个，抑或50个？"></a>varchar(50)是能保存16个汉字，还是25个，抑或50个？</h1><p>以前SQL Server的nvarchar转Oracle的varchar2时造成的固有印象，让我一直觉得varchar保存中文字时长度需要打对折或除以3。<br>但这个也是MySQL 5.0版本之前的事。现在varchar(n)是几，就能存几个中文字。<br>不过也需要注意统计字数使用CHARACTER_LENGTH而非LENGTH</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 返回为12</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">LENGTH</span>(<span class="string">"轻松工作"</span>);</span><br><span class="line"><span class="comment">-- 返回为4</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">CHARACTER_LENGTH</span>(<span class="string">"轻松工作"</span>);</span><br></pre></td></tr></table></figure>
-
-<h1 id="为什么还是用MySQL"><a href="#为什么还是用MySQL" class="headerlink" title="为什么还是用MySQL"></a>为什么还是用MySQL</h1><p>为什么MySQL坑那么多，不改用PostgreSQL？<br>相比MySQL，我个人更偏好PostgreSQL，能从各种设计细节就感觉得到很规范。但无奈国内分布式数据库方案基本都是基于MySQL的。。。虽然我们的场景在今年年内暂时也看不到用分布式的必要性，但万一有了呢。。。<br>先发优势真是可怕。  </p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>感谢这篇stackexchange的详细回答<br><a href="https://dba.stackexchange.com/questions/76469/mysql-varchar-length-and-performance" target="_blank" rel="noopener">database design - MySQL - varchar length and performance - Database Administrators Stack Exchange</a>  </p>
-<p>关于内存表的详细介绍<br><a href="http://mysql.taobao.org/monthly/2016/06/07/" target="_blank" rel="noopener">MySQL · 特性分析 · 内部临时表</a>  </p>
-<p>为什么索引长度会有767 byte或3072 byte的限制的详细解释<br><a href="https://dinglin.iteye.com/blog/1681332" target="_blank" rel="noopener">关于InnoDB索引长度限制的tips - 追风刀·丁奇 - ITeye博客</a>  </p>
-<p>本文永久链接 [ <a href="https://galaxyyao.github.io/2019/07/30/MySQL-没有必要的varchar-255-长度及存储汉字问题汇总/">https://galaxyyao.github.io/2019/07/30/MySQL-没有必要的varchar-255-长度及存储汉字问题汇总/</a> ]</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/07/30/MySQL-没有必要的varchar-255-长度及存储汉字问题汇总/" data-id="ck8gwpwet00175sfd2eytww22" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库/">数据库</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-前端-通过自定义协议URI-Scheme-点击Chrome中的链接打开IE" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/11/前端-通过自定义协议URI-Scheme-点击Chrome中的链接打开IE/" class="article-date">
-  <time datetime="2019-07-10T16:00:00.000Z" itemprop="datePublished">2019-07-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/11/前端-通过自定义协议URI-Scheme-点击Chrome中的链接打开IE/">前端-通过自定义协议URI Scheme,点击Chrome中的链接打开IE</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>有部分老Web系统只有在IE下才能正常打开。其中有一部分是即使polyfill也没法搞定的兼容性原因，另一部分就是因为使用到了ActiveX。后者中我接触到的就有金格控件和泛微OA的。<br>对于新开发的Portal系统，没有余力为了迁就IE，对每个功能还额外做兼容性测试。于是剩下的方案就是在单点登录跳转到相应的页面的时候，指定使用IE打开。<br>其实这个功能并不罕见。比如腾讯的网站上经常有点击图标打开QQ，而淘宝网页上也有很多点击打开阿里旺旺。从原理上，这是利用到了Windows自定义协议URI Scheme。  </p>
-<h1 id="URI-Scheme"><a href="#URI-Scheme" class="headerlink" title="URI Scheme"></a>URI Scheme</h1><p>自定义协议从本质上就是修改注册表。官方资料可以参考这篇<a href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa767914(v=vs.85)" target="_blank" rel="noopener">Registering an Application to a URI Scheme (Windows) | Microsoft Docs</a><br>官方给了一个范例，注册一个alert://的协议，点击后打开自定义的alert.exe。  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">HKEY_CLASSES_ROOT</span><br><span class="line">   alert</span><br><span class="line">      (Default) = &quot;URL:Alert Protocol&quot;</span><br><span class="line">      URL Protocol = &quot;&quot;</span><br><span class="line">      DefaultIcon</span><br><span class="line">         (Default) = &quot;alert.exe,1&quot;</span><br><span class="line">      shell</span><br><span class="line">         open</span><br><span class="line">            command</span><br><span class="line">               (Default) = &quot;C:\Program Files\Alert\alert.exe&quot; &quot;%1&quot;</span><br></pre></td></tr></table></figure>
-
-<h1 id="方案1"><a href="#方案1" class="headerlink" title="方案1"></a>方案1</h1><p>能看出这是一种比较通用的方案。能打开自定义的alert.exe，自然也能打开IE。所以只要将以下内容保存为test.reg，点击运行后就能将注册表项导入：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00  </span><br><span class="line">   </span><br><span class="line">[HKEY_CLASSES_ROOT\openIE]  </span><br><span class="line">@=&quot;URL:OpenIE Protocol&quot;  </span><br><span class="line">&quot;URL Protocol&quot;=&quot;&quot;  </span><br><span class="line">   </span><br><span class="line">[HKEY_CLASSES_ROOT\openIE\DefaultIcon]  </span><br><span class="line">@=&quot;iexplore.exe,1&quot;  </span><br><span class="line">   </span><br><span class="line">[HKEY_CLASSES_ROOT\openIE\shell]  </span><br><span class="line">   </span><br><span class="line">[HKEY_CLASSES_ROOT\openIE\shell\open]  </span><br><span class="line">   </span><br><span class="line">[HKEY_CLASSES_ROOT\openIE\shell\open\command]  </span><br><span class="line">@=&quot;cmd /c set m=%1 &amp; call set m=%%m:openIE:=%% &amp; call \&quot;C:\\Program Files\\Internet Explorer\\iexplore.exe\&quot; %%m%% &amp; exit&quot;</span><br></pre></td></tr></table></figure>
-
-<p>与微软官方范例的差别在于将协议改为了openIE://（这个不重要），以及最后的命令改为了一串很长的：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmd /c set m=%1 &amp; call set m=%%m:openIE:=%% &amp; call \&quot;C:\\Program Files\\Internet Explorer\\iexplore.exe\&quot; %%m%% &amp; exit</span><br></pre></td></tr></table></figure>
-
-<p><code>/c</code>参数表示执行完命令后关闭窗口。所以运行的时候你会看到先弹出一个命令行窗口。该命令接收了openIE://后的参数，然后传递给IE浏览器。  </p>
-<p>对应的超链接HTML如下：  </p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"openIE:www.baidu.com"</span>&gt;</span>网络联通性测试<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="方案1的问题"><a href="#方案1的问题" class="headerlink" title="方案1的问题"></a>方案1的问题</h3><p>除了会弹出一个命令行窗口的问题之外，还有一个比较严重的问题：无法正确处理特殊字符&amp;。<br>比如url是<a href="https://www.baidu.com?key1=value&amp;key2=value，那么第二个参数就会丢失。有些文章提出用^&amp;替代&amp;可以转义，实测无效。而大部分的单点登录URL后都是跟着一串参数。所以该方案无效。" target="_blank" rel="noopener">https://www.baidu.com?key1=value&amp;key2=value，那么第二个参数就会丢失。有些文章提出用^&amp;替代&amp;可以转义，实测无效。而大部分的单点登录URL后都是跟着一串参数。所以该方案无效。</a>  </p>
-<h1 id="方案2"><a href="#方案2" class="headerlink" title="方案2"></a>方案2</h1><p>方案2做了两个改动。一个是将改动从HKEY_CLASSES_ROOT改到了HKEY_CURRENT_USER\Software\Classes下。我理解影响范围会小一些。<br>另一个改动是在cmd参数里将也用引号包起来，并用反斜杠转义。<br>修改后的注册表导入内容如下：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00</span><br><span class="line"></span><br><span class="line">[HKEY_CURRENT_USER\Software\Classes\ie]</span><br><span class="line">&quot;URL Protocol&quot;=&quot;&quot;</span><br><span class="line">@=&quot;URL:IE Protocol&quot;</span><br><span class="line"></span><br><span class="line">[HKEY_CURRENT_USER\Software\Classes\ie\shell]</span><br><span class="line"></span><br><span class="line">[HKEY_CURRENT_USER\Software\Classes\ie\shell\open]</span><br><span class="line"></span><br><span class="line">[HKEY_CURRENT_USER\Software\Classes\ie\shell\open\command]</span><br><span class="line">@=&quot;cmd /c set url=\&quot;%1\&quot; &amp; call set url=%%url:ie:=%% &amp; call start iexplore -nosessionmerging -noframemerging %%url%%&quot;</span><br></pre></td></tr></table></figure>
-
-<p>对应的HTML超链接如下：  </p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"ie:https://www.baidu.com?key1=value&amp;key2=value2"</span>&gt;</span>网络联通性测试<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>事实证明方案2可以正确处理URL参数。  </p>
-<p>最后提一下，标题中的Chrome只是指代我们常用的浏览器。并不表示Firefox或那一坨国产浏览器（恕不列举）就不能打开了。  </p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>方案2的来源<br><a href="https://superuser.com/questions/1437499/registry-how-to-register-internet-explorer-as-a-uri-scheme-and-call-from-chrom" target="_blank" rel="noopener">windows - Registry - How to register Internet Explorer as a URI scheme and call from chrome? - Super User</a>  </p>
-<p>方案1的来源<br><a href="https://www.lisen.me/implementation-of-chrome-opening-ie-using-custom-protocol.html" target="_blank" rel="noopener">使用自定义协议实现Chrome打开IE_木子网</a>  </p>
-<p>本文永久链接 [ <a href="https://galaxyyao.github.io/2019/07/11/前端-通过自定义协议URI-Scheme-点击Chrome中的链接打开IE/">https://galaxyyao.github.io/2019/07/11/前端-通过自定义协议URI-Scheme-点击Chrome中的链接打开IE/</a> ]</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://galaxyyao.github.io/2019/07/11/前端-通过自定义协议URI-Scheme-点击Chrome中的链接打开IE/" data-id="ck8gwpweu00195sfdgaiu2war" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IE/">IE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/">Windows</a></li></ul>
 
     </footer>
   </div>
@@ -1131,7 +1249,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/中台/">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/容器/">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/持续集成/">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/项目管理/">项目管理</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/中台/">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/容器/">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/持续集成/">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/运维/">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/金融/">金融</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/项目管理/">项目管理</a></li></ul>
     </div>
   </div>
 
@@ -1141,7 +1259,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/中台/" style="font-size: 10px;">中台</a> <a href="/tags/容器/" style="font-size: 20px;">容器</a> <a href="/tags/持续集成/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/数据库/" style="font-size: 10px;">数据库</a> <a href="/tags/项目管理/" style="font-size: 10px;">项目管理</a>
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/中台/" style="font-size: 10px;">中台</a> <a href="/tags/容器/" style="font-size: 20px;">容器</a> <a href="/tags/持续集成/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/数据库/" style="font-size: 10px;">数据库</a> <a href="/tags/运维/" style="font-size: 11.67px;">运维</a> <a href="/tags/金融/" style="font-size: 10px;">金融</a> <a href="/tags/项目管理/" style="font-size: 10px;">项目管理</a>
     </div>
   </div>
 
@@ -1150,7 +1268,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
     </div>
   </div>
 
@@ -1163,23 +1281,23 @@
       <ul>
         
           <li>
+            <a href="/2020/08/01/金融业务-不动产保理业务入门和系统设计/">金融业务-不动产保理业务入门和系统设计</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/运维-运维体系标准化之故障管理/">运维-运维体系标准化之故障管理</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/29/运维-运营体系标准化之配置管理CMDB/">运维-运营体系标准化之配置管理CMDB</a>
+          </li>
+        
+          <li>
             <a href="/2020/03/02/管理-远程办公项目管理经验总结/">管理-远程办公项目管理经验总结</a>
           </li>
         
           <li>
             <a href="/2020/02/05/中台-读说透中台和企业IT架构转型之道有感/">中台-读《说透中台》和《企业IT架构转型之道》有感</a>
-          </li>
-        
-          <li>
-            <a href="/2020/01/22/容器-14-国内Windows10环境安装Minikube/">容器-14-国内Windows10环境安装Minikube</a>
-          </li>
-        
-          <li>
-            <a href="/2019/12/23/Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理/">Java-从FeignClient的Ambiguous mapping报错,重温RequestMapping原理</a>
-          </li>
-        
-          <li>
-            <a href="/2019/12/09/Java-Feign-服务注册的多环境方案/">Java-Feign+服务注册的多环境方案</a>
           </li>
         
       </ul>
