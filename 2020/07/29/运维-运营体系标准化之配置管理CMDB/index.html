@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>运维-运营体系标准化之配置管理CMDB | Galaxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本文是极客时间《赵成的运维体系管理课》的读后体会之一。   运维配置管理实践中一些混乱现象在公司的运维配置管理实践中，存在一些混乱的现象：    信息安全收到fastjson的安全问题报告，但报告中的服务器对应的系统却有错位 信息安全收到了报告，发现tomcat的某个版本出现了漏洞需要升级，但不知道到底影响到哪些系统，只能逐个请每个系统的负责人判断 部分服务器（特别是开发坏境服务器）已经基本可以确">
+<meta property="og:type" content="article">
+<meta property="og:title" content="运维-运营体系标准化之配置管理CMDB">
+<meta property="og:url" content="https://galaxyyao.github.io/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="本文是极客时间《赵成的运维体系管理课》的读后体会之一。   运维配置管理实践中一些混乱现象在公司的运维配置管理实践中，存在一些混乱的现象：    信息安全收到fastjson的安全问题报告，但报告中的服务器对应的系统却有错位 信息安全收到了报告，发现tomcat的某个版本出现了漏洞需要升级，但不知道到底影响到哪些系统，只能逐个请每个系统的负责人判断 部分服务器（特别是开发坏境服务器）已经基本可以确">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/CMDB-unite.jpeg">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/cmdb-framework.jpg">
+<meta property="article:published_time" content="2020-07-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-30T05:34:34.000Z">
+<meta property="article:author" content="姚皓(Hao Yao)">
+<meta property="article:tag" content="运维">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://galaxyyao.github.io/images/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/CMDB-unite.jpeg">
+  
+    <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Galaxy</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://galaxyyao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-运维-运营体系标准化之配置管理CMDB" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/" class="article-date">
+  <time class="dt-published" datetime="2020-07-28T16:00:00.000Z" itemprop="datePublished">2020-07-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      运维-运营体系标准化之配置管理CMDB
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本文是极客时间<a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/63">《赵成的运维体系管理课》</a>的读后体会之一。  </p>
+<h2 id="运维配置管理实践中一些混乱现象"><a href="#运维配置管理实践中一些混乱现象" class="headerlink" title="运维配置管理实践中一些混乱现象"></a>运维配置管理实践中一些混乱现象</h2><p>在公司的运维配置管理实践中，存在一些混乱的现象：  </p>
+<ul>
+<li>信息安全收到fastjson的安全问题报告，但报告中的服务器对应的系统却有错位</li>
+<li>信息安全收到了报告，发现tomcat的某个版本出现了漏洞需要升级，但不知道到底影响到哪些系统，只能逐个请每个系统的负责人判断</li>
+<li>部分服务器（特别是开发坏境服务器）已经基本可以确认不再被使用，但服务器资源没有回收，每月持续占用硬件预算</li>
+<li>某系统上线后发现中漏配置了一个域名，导致部分用户打开首页报错</li>
+<li>redis缺少规划，多个系统公用一个redis集群的情况下，无法根据键（key）来区分每个系统占用了多少缓存。遇到内存不足的情况很难深入排查是哪个系统导致</li>
+<li>生产消息队列中不少queue堆积着大量消息，但不知道是否还在用，不敢随意删除</li>
+</ul>
+<p>这些情况很可能短期甚至长期内不会直接导致什么问题。可能就是让信息安全整理材料多费一点时间，开发排查多绕一点弯路，或多花一些硬件维持或扩容费用。但有些时候这些问题就是给未来出现的生产问题埋下隐患。<br>硬件的归属，服务器的使用情况，应用域名管理，软件版本，应用与中间件的关联等等，都属于广义上的配置管理。所以归根到底，是配置管理的混乱。  </p>
+<h2 id="ITIL和配置管理CMDB"><a href="#ITIL和配置管理CMDB" class="headerlink" title="ITIL和配置管理CMDB"></a>ITIL和配置管理CMDB</h2><p>在ITIL（Information Technology Infrastrueture Library）中，有10个重要的IT管理关键模块。其中配置管理（CMDB）通常被认为是其他IT流程的基础。<br>CMDB（Configuration Managoment DataBase），配置管理数据库，是与IT系统所有组件相关的信息库。它包含IT基础架构配置项的详细信息。<br>在传统运维时代，CMDB的核心对象是资源，即网络和硬件设备。但在云计算和互联网运维时代，CMB的核心已经转变为了“应用”。随着微服务架构的推广，以应用为核心的注册中心、缓存、消息队列、数据库等都需要纳入配置管理的管理范畴。  </p>
+<p>以应用为核心的配置管理标准化可以包括：  </p>
+<ul>
+<li>元数据属性:系统名、 BA Owner&#x2F;开发Owner&#x2F;运维Owner</li>
+<li>环境属性:拥有几套环境</li>
+<li>逻辑实体属性:架构评审和变更设计</li>
+<li>硬件和网络属性:服务器配置、SLB、域名、ip等</li>
+<li>代码属性:编程语言、代码库地址、需求空间地址</li>
+<li>应用日录属性:日志日录、应用目录、临时目录等</li>
+<li>应用配置属性:端口号、jvm参数等</li>
+<li>中间件属性:web容器、注册中心、缓存、消息队列、数据库等</li>
+</ul>
+<p>最终目标是能达成传统CMDB和应用视角CMDB的统一。<br><img src="/images/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/CMDB-unite.jpeg" alt="CMDB统一">  </p>
+<p>也有开源的CMDB，比如腾讯的<a target="_blank" rel="noopener" href="https://bk.tencent.com/">蓝鲸智云</a>。<br>可以参考它的架构</p>
+<p><img src="/images/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/cmdb-framework.jpg" alt="腾讯蓝鲸架构">  </p>
+<h2 id="CMDB的维护和流转"><a href="#CMDB的维护和流转" class="headerlink" title="CMDB的维护和流转"></a>CMDB的维护和流转</h2><p>CMDB并不能只靠运维团队内部封闭来做，而要站在怎么能够打造和发挥出整个技术架构体系运维能力的视角。有部分信息也需要开发来提供，例如消息队列的queue名等。所以CMDB需要跨团队协作。一方面运维团队要主动出击，去沟通，去推进；另一方面，必须能得到上级主管甚至是更高层技术领导的支持。<br>配置数据也需要保持持续维护。过时的配置数据等于没有，甚至更差。这个首先需要在所有运维人员的重要性认识上保持统一。此外，也对每个应用的负责运维和研发人员提出相应的问责机制。<br>和货币类似，只是维护信息不会产生价值。只有把信息流转到开发，测试和信息安全等角色，对整体的研发效能和故障率做出贡献，才能使配置管理免于成为运维的纯负担。  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/" data-id="clzhqggef004eng6o6b5w97mu" data-title="运维-运营体系标准化之配置管理CMDB" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          运维-运维体系标准化之故障管理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">管理-远程办公项目管理经验总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/" rel="tag">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/" rel="tag">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/" rel="tag">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/" rel="tag">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/%E4%B8%AD%E5%8F%B0/" style="font-size: 10px;">中台</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 20px;">容器</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 11.67px;">运维</a> <a href="/tags/%E9%87%91%E8%9E%8D/" style="font-size: 10px;">金融</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/">Resume以及ARTS</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">金融业务-不动产保理业务入门和系统设计</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/">运维-运维体系标准化之故障管理</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/">运维-运营体系标准化之配置管理CMDB</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/">管理-远程办公项目管理经验总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 姚皓(Hao Yao)<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

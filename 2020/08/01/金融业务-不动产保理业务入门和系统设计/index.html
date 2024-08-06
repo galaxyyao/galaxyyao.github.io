@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>金融业务-不动产保理业务入门和系统设计 | Galaxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="1.保理的概念保理，从本质上来说，就是应收账款的融资服务。举个场景:某桂园向某混凝土公司A采购了2000吨水泥，应收账款100万。但由于账期原因，应收账款是按照季度结算。但公司A因为款项没有即时结清，产生了资金周转问题。于是公司A就将应收账款以折扣价转让给了保理商B。保理商B给供应公司A提供了融资，并通知某桂园回款后续不再打给公司A，而是打给保理商自己。季末某桂园将回款打给了保理商B。保理商B在融">
+<meta property="og:type" content="article">
+<meta property="og:title" content="金融业务-不动产保理业务入门和系统设计">
+<meta property="og:url" content="https://galaxyyao.github.io/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="1.保理的概念保理，从本质上来说，就是应收账款的融资服务。举个场景:某桂园向某混凝土公司A采购了2000吨水泥，应收账款100万。但由于账期原因，应收账款是按照季度结算。但公司A因为款项没有即时结清，产生了资金周转问题。于是公司A就将应收账款以折扣价转让给了保理商B。保理商B给供应公司A提供了融资，并通知某桂园回款后续不再打给公司A，而是打给保理商自己。季末某桂园将回款打给了保理商B。保理商B在融">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/factoring-process.jpeg">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/reverse-factoring.jpg">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/abs.jpg">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/refactoring.jpg">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/refactoring-relation.jpg">
+<meta property="article:published_time" content="2020-07-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-30T05:34:34.000Z">
+<meta property="article:author" content="姚皓(Hao Yao)">
+<meta property="article:tag" content="金融">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://galaxyyao.github.io/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/factoring-process.jpeg">
+  
+    <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Galaxy</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://galaxyyao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-金融业务-不动产保理业务入门和系统设计" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="article-date">
+  <time class="dt-published" datetime="2020-07-31T16:00:00.000Z" itemprop="datePublished">2020-08-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      金融业务-不动产保理业务入门和系统设计
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-保理的概念"><a href="#1-保理的概念" class="headerlink" title="1.保理的概念"></a>1.保理的概念</h2><p>保理，从本质上来说，就是应收账款的融资服务。<br>举个场景:某桂园向某混凝土公司A采购了2000吨水泥，应收账款100万。但由于账期原因，应收账款是按照季度结算。但公司A因为款项没有即时结清，产生了资金周转问题。于是公司A就将应收账款以折扣价转让给了保理商B。保理商B给供应公司A提供了融资，并通知某桂园回款后续不再打给公司A，而是打给保理商自己。季末某桂园将回款打给了保理商B。保理商B在融资和回款的差价里赚到了收益。<br>整个流程可以参见下图</p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/factoring-process.jpeg" alt="保理业务流程">  </p>
+<p>在这个最基础的流程中，有三方：  </p>
+<ul>
+<li>卖方:某混凝公司A，也可以称为债权方、上游</li>
+<li>买方:某桂园，也可以称为债务方、下游</li>
+<li>保理商:分为商业机构进行的商业保理和银行保理</li>
+</ul>
+<h3 id="1-1-正向保理和反向保理"><a href="#1-1-正向保理和反向保理" class="headerlink" title="1.1 正向保理和反向保理"></a>1.1 正向保理和反向保理</h3><p>保理这个概念产生的时候，都是由拥有融资需要的卖方主动发起的。但卖方拿到融资却不供货转身跑路的情况，也不是不会发生。这种情况下，买方当然也不会为没有收到的货而白白付钱。保理为了尽量避坏账，会对卖方的资质和规模进行要求。<br>但现实中很常见的情况是：上游的卖方是中小企业，无法达成资质规模要求，尽调难度也很大；而下游买方是龙头企业，拥有较高的资信程度。为了在这种场景下也能让保理商放心融资，会由卖方（混凝土公司A）找买方（某桂园）做担保，由买方主动发起保理申请。买方为了保证上游供应链的稳定，出面找保理商做担保：公司A确实是我的上游供应商，我们有商务合作。如果你能信得过我的话（大企业的授信担保），就给公司A融资，然后在一定时间段后到我这里兑回款。保理商相信了A的资信，给公司A提供了融资。<br>在这里出现了一个<strong>核心企业</strong>的概念。核心企业是供应链中的概念,是供应链中的关键节点，资信程度较高（AA＋是基本门槛）。  </p>
+<p>在保理流程中，核心企业是保理的发起方。核心企业的类型也是区分正向保理和反向保理的关键判断因素。核心企业是卖家，就是正向保理；核心企业是买家，就是反向保理。这里的“正”和“反”指的是相关交易链的方向。  </p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/reverse-factoring.jpg" alt="正向保理-反向保理">  </p>
+<p>相比正向保理，反向保理几个优势：  </p>
+<ul>
+<li>上游量中小企业融资难的问题得以解决</li>
+<li>便于建立长期的战略合作伙伴关系，供应链更加稳定</li>
+<li>提高了保理业务的工作效率。保理商不再需要着重审核供应商的财务情况。反而需要更关注核心企业贸易背景的真实性，预防核心企业和上游供应串谋欺诈风险</li>
+<li>核心企业的资金运用效率得以提升，减少核心企业的财务管理成本</li>
+</ul>
+<p>此外，由于保理业务需要债务人确权，所以在正向保理中可能会发生债务人不愿意配合的情况。不愿意配合的主要原因是在转让前，买卖双方的应收账款仅属于商业信用，强势买方在账款到期后，有继续延期支付的可能。在这种情况下，卖方为自身经营利益考虑，也只能被动同意。但是若将应收账款转给保理商之后，商业信用负债就变成了需要刚性兑付的金融负债，到期不还款就会被起诉的可能。所以买方是很不情愿将债权转给保理商的。但反向保理中，由于本身就是债务人发起的，所以基本不会存在类似的问题。  </p>
+<h3 id="1-2-ABS资产证券化和专项计划"><a href="#1-2-ABS资产证券化和专项计划" class="headerlink" title="1.2 ABS资产证券化和专项计划"></a>1.2 ABS资产证券化和专项计划</h3><p>放款给卖方的资金可以是保理商的自有资金，但相较把应收账款捂1年等买方回款，还有其他资金周转率更高的方式，例如将应收账款进行资产证券化（ABS）。<br>ABS，即“Asset Backed Securitization”（资产证券化），是一种非常常见的融资方式。常见的保理ABS交易架构如下：  </p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/abs.jpg" alt="ABS交易架构范例">  </p>
+<p>我们扩展一下之前提到的混凝土公司A和某桂园的案例：  </p>
+<ol>
+<li>公司A提供给对某桂园水泥，应收账款债权100万。如果不通过保理，正常还款账期是3个月</li>
+<li>为了更快收回款项，公司A将应收账款债权折价至94万，转让给了保理商B，使账期缩短到了半个月</li>
+<li>保理商B以95万元的价格将应收账款债权打包发行ABS（即票面发行利率5%），设立专项计划。通过资产证券化过程中履行合同审核、确权等义务，收取1万元的中介费。如果债务人是某桂园的子公司的话，会加入母公司作为共同付款人来增信</li>
+<li>ABS发行一年后，某桂园偿还本息100万元或更多</li>
+<li>价差的5万，在扣除管理费&#x2F;销售成本&#x2F;增值税&#x2F;律师费&#x2F;评级费&#x2F;托管费等费用后，剩余的就是证券持有人的收益</li>
+<li>从形式上，这个保理流程中，公司A贴息5万元，但实际由于某桂园的账期从3个月延长到了1年，所以可能会以某种形式承担部分利息，返还至公司A</li>
+</ol>
+<p>归纳整个流程，实现了买方&#x2F;卖方&#x2F;保理商三方的共赢：</p>
+<ul>
+<li>对卖方：实现了快速融资。换个角度，等于公司A做了2.5个月的融资，利息6万，相比从银行融资更容易成功，成本更低。并与核心企业建立了更牢固的合作伙伴关系</li>
+<li>对买方：变相拉长了账期。换个角度，等于某桂园以极低的成本融到了9个月的100万元资金。作为牵头发起保理的代价，还可以向卖方后续要求优先供货权等利益</li>
+<li>对保理商：获得了低风险的收益</li>
+</ul>
+<p>以上范例仅为简化版的范例，实际并不会对单个供应商的应收账款建立ABS。一个ABS产品中通常会包含数十笔到数百笔不等的应收账款。资产池至少包含10个相互之间不存在关联关系的债权人（供应商）。  </p>
+<h3 id="1-3-再保理"><a href="#1-3-再保理" class="headerlink" title="1.3 再保理"></a>1.3 再保理</h3><p>除了将债权ABS化之外，还有另一种处理方式是将转给其他保理商，即再保理。常见的是转给银行，即银行再保理。  </p>
+<p>与国外相反，国内由大部分金融资源集中在银行，加上政策原因，所以是银行率先开展保理业务。而商业保理是从2012年之后商务部发文批准后才开始发展。由于起步较晚，商业保理公司普遍轻资产，资产负债率较高，无法直接从银行获得贷款。但如果拥有银行认可的优质保理资产，可以通过再保理的形式，将这些资产转计给银行或其他保理商，获得融资。具体流程如下：  </p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/refactoring.jpg" alt="再保理">  </p>
+<p>我们从再保理的角度扩展一下混凝公司A、某桂园和保理商B的案例：  </p>
+<ol>
+<li>保理商B除了为混凝公司A之外，还为某桂园的一系列供应商提供保理服务，例如混凝土公司X，装修公司Y和园林公司Z</li>
+<li>保理商B想进一步扩大业务规模，希望基于银行C与某园合作的基础上，将自己手头的公司XYZ的应收账款转给银行C，获得融资</li>
+<li>保理商B与银行C签订再保理合作协议，向银行C提供与供应商签的保理合司和票据等材料</li>
+<li>某桂园向银行C出具应收账款转让确认书，确认银行C为新的债权人</li>
+<li>银行C向保理商B发放融资</li>
+<li>保理商B将融资用于扩大业务规模，向更多的公司U公司V公司W提供保理业务</li>
+</ol>
+<p>其实从标准的保理概念上，应该称之为“双保理”。即保理商B是卖方保理，银行保理C为买方保理。  </p>
+<h2 id="2不动产保理业务和保理系统的特点"><a href="#2不动产保理业务和保理系统的特点" class="headerlink" title="2不动产保理业务和保理系统的特点"></a>2不动产保理业务和保理系统的特点</h2><p>对于不动产保理ABS业务，实践中通常有以下几个特点：  </p>
+<ul>
+<li>以反向保理为主：通常采用“1＋N”模式。1即供应链核心企业，N为上游供应商</li>
+<li>具有类信用债特点：通常直接债务人为由核心企业针对特定地产项目创建的项目公司。对核心企业主体信用依赖强，供应商往往规模小，追索权意义不大，所以大多采用了无追索权保理的形式</li>
+<li>平层结构为主：即通常不设外部增信。同样由于强依赖核心企业主的还款力和意愿，对于优先级证券的信用级别没有提升作用，保证担保差额补等外部措施也并不会起到增信作用</li>
+<li>通常采用到期一次还本付息的本息兑付方式。主要是由于项目期限短（通常为1年或1年以下）</li>
+<li>多采用了储架发行模式和“黑红池”机制。主要是由于存在期限短、单笔金额小、笔数多、同质化高的特点<ul>
+<li>储架发行，即“一次备案，多次发行”</li>
+<li>黑红池机制中“红池”指前期审批报备阶段所使用的基础资产池，而“黑池”则是在证券发行时使用的基础资产池</li>
+</ul>
+</li>
+</ul>
+<p>这些特点使得不动产保理系统在设计过程中产生了以下几个特点：  </p>
+<ul>
+<li>需要包含供买方&#x2F;卖方&#x2F;核心企业使用的外部客户门户系统</li>
+<li>核心企业成为买方和资产的必填要素</li>
+<li>需要与核心企业进行系统对接</li>
+<li>保理产品的设计较单纯（相较其他一些公私募产品）</li>
+<li>尽调管理以核心企业为查询维度</li>
+<li>还款管理和催收管理弱化</li>
+</ul>
+<h2 id="3-资产的属性及和其他业务对象的关联关系"><a href="#3-资产的属性及和其他业务对象的关联关系" class="headerlink" title="3.资产的属性及和其他业务对象的关联关系"></a>3.资产的属性及和其他业务对象的关联关系</h2><p>不动产保理中的核心概念是<strong>资产</strong>。<br>资产就是应收账款。资产本身的主要因素包括:发票编号、发票金额、资产转让金额等。  </p>
+<p>资产与众多业务对象之间都有关联关系：</p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/refactoring-relation.jpg" alt="资产-业务对象关联关系">  </p>
+<p>接下来围绕资产和不同业务对象的关联关系展开描述。  </p>
+<h3 id="3-1-供应商-项目公司-核心企业"><a href="#3-1-供应商-项目公司-核心企业" class="headerlink" title="3.1 供应商&#x2F;项目公司&#x2F;核心企业"></a>3.1 供应商&#x2F;项目公司&#x2F;核心企业</h3><p>这里的项目公司即上文提到的买方（债务人），供应商即卖方（债权人）。所以资产和三者的关系是：  </p>
+<ul>
+<li>供应商卖出资产</li>
+<li>项目公司买入资产</li>
+<li>核心企业增信资产</li>
+</ul>
+<p>在资产导入阶段，如果资产对应的供应商和项目公司未进行准入审核，会生成审核任务，并通过短信通知供应商和项目公司登录客户门户自助补充资料（实物、银行账户、联系人等）。完成准入审核是合同签订的必要前置条件。  </p>
+<p>准入审核的关键信息包括：公司名称、统一社会信用代码、用印方式、营业执照、资质证书、法人身份证、授权用印经办人授权书影像、授权用印经办人身份证影像等。其中对非结构化数据（例如营业执照的影像资料）的审核也被称为实物审核。  </p>
+<p>在新增项目公司和供应商后，内部也会开展尽调（尽职调查）。除了对公司的尽调外，也会对资产进行尽调，以确保不是通过虚假交易骗保（理）。<br>在企业准入成功后，会在电子签章系统里为其注册账号，用于后续的合同签署。  </p>
+<h3 id="3-2-产品-投资项目-项目-资产包"><a href="#3-2-产品-投资项目-项目-资产包" class="headerlink" title="3.2 产品&#x2F;投资项目&#x2F;项目&#x2F;资产包"></a>3.2 产品&#x2F;投资项目&#x2F;项目&#x2F;资产包</h3><p>产品&#x2F;投资项目&#x2F;项目&#x2F;资产包，这几个概念从上往下，从抽象到具体。  </p>
+<h4 id="产品"><a href="#产品" class="headerlink" title="产品"></a>产品</h4><p>产品可以是针对某个核心企业的业务模式，比如“某桂园私募ABS反向保理”，“某科再保理”等。  </p>
+<p>产品的关键信息包括产品类型、还款方式、宽限期、资金规模、债权期限天数、利率范围等。其中产品类型是针对主体（正向&#x2F;反向保理）+资产处置方式类别。例如：  </p>
+<ul>
+<li>公募ABS反向保理</li>
+<li>私募契约型基金反向保理</li>
+<li>私募信托反向保理</li>
+<li>供应链ABS正向保理</li>
+<li>银行再保理</li>
+</ul>
+<h4 id="投资项目"><a href="#投资项目" class="headerlink" title="投资项目"></a>投资项目</h4><p>投资项目，是保理商公司内部进行投决（投资决策）的投资活动单位。<br>所以投资项目的关键因素包括立项会、投决会等会议的信息、审批规模、投资团队、资金来源等。  </p>
+<h4 id="项目资产包"><a href="#项目资产包" class="headerlink" title="项目资产包"></a>项目资产包</h4><p>根据保理的不同阶段，项目可以分为保理项目和资产处置项目。<br>保理项目是合同签署的对象单位。对于保理项目，关键信息包括签约方式，资产到期日、折现期、折价率等。<br>资产处置项目是将资产金融化的对象单位，会补充对应的金融产品的信息，包括金融产品代码（例如基金代码）评级、服务费、律师事务所、托管人、评级机构、专项计划户名账号等等。  </p>
+<h4 id="资产包"><a href="#资产包" class="headerlink" title="资产包"></a>资产包</h4><p>项目和资产包对应。保理项目和资产处置项目分别对应预备资产包和（处置）资产包。<br>资产包是应收账款的组合。会从预备资产池中选出符合要求的应收账款进行打包处理。上文也提到过，如果要包装为ABS产品的话资产包中至少需要包含10个相互之间不存在关联关系的供应商。当资产包中的资产确定，进行合同签署后，就会转为（处置）资产包。后续资产包中的资产就不可再发生变化。  </p>
+<h3 id="3-3-中登登记"><a href="#3-3-中登登记" class="headerlink" title="3.3 中登登记"></a>3.3 中登登记</h3><p>《民法典草案》第七百六十八条规定：应收账款债权人同一应收账款订立多个保理合同，致使多个保理人主张权利的，已经登记的先于未登记的取得应收账款；均已经登记的，按照登记时间的先后顺序取得应收账款，均未登记的，由最先到达应收账款债务人的转让通知中载明的保理人取得应收账款；既未登记也未通知的，按照保理融资款或者服务报酬的比例取得应收账款。  </p>
+<p>这里的<strong>登记</strong>，指的就是到国家公认的中登网进行登记。<br>中登网，全名中国人民银行征信中心动产融资统一登记平台。中登网的主要作用是用于以融资为目的的动产登记公示。<br>对于保理业务来说，中登网的主要作用是收质押登记和应收账款转让。如果没有在中登网上进行登记，那么万一项目公司背着保理商，偷偷将应收账款进行多次质押引起纠纷，在法律上就会处于不利地位。  </p>
+<p>当资产成功导入且包含发票，就需要进行中登查询和登记。<br>首先进行中登查询。中登查询不通过的话就会进入到退单流程；而中登查询通过的话就进入登记流程。<br>中登登记的关键因素包括：应收账款的出让人信息（供应商企业信息）、资产信息、受让人信息（保理商企业信息）等。  </p>
+<h3 id="3-4-合同"><a href="#3-4-合同" class="headerlink" title="3.4 合同"></a>3.4 合同</h3><p>《民法典草案》第七百六十二条规定：保理合同的内容一般包括业务类型、服务范围、服务期限、基础交易合同情况、应收账款信息、转让价款、服务报酬及支付方式等条款。<br>合同签约包括两种方式:纸质和在线。保理商分别于如果是在线签，为了确保合同的合规，会通过第三万电子签章服务进行合同的签署和生成（如E签宝、上上签）。  </p>
+<h3 id="3-5-放款还款"><a href="#3-5-放款还款" class="headerlink" title="3.5 放款还款"></a>3.5 放款还款</h3><p>当资产和实物审核通过，并在中登网登记成功，内部合同用印完毕后，即可进入向供应商的放款申请审批。由于放款申请所需的绝大部分信息在该步骤之前都已补充完华（供应商信息&#x2F;资产转让金额），所以只需要补充支付方式（商票支付&#x2F;现金支付）即可。<br>当处置资产的到期日到达后，会创建还款登记和确认任务。还款登记的主要因素包括本次还款日期还款金额、还款凭证等。还款登记完成后，就可以进行财务流水匹配和制证处理。  </p>
+<h2 id="4-保理流程"><a href="#4-保理流程" class="headerlink" title="4. 保理流程"></a>4. 保理流程</h2><p>经过前一章的介绍，我们就可以将资产在整个保理流程中的流转过程梳理出来</p>
+<ol>
+<li>首先在前置阶段，预先配置好资产所属和核心企业以及上层的产品&#x2F;投决项目信息</li>
+<li>在投前（保理项目）阶段，进行供应商和项目公司的信息补充和审核。同步进行资产导入和审核，并将资产到中登网上进行登记</li>
+<li>进入合同签署，资产包里的资产固定，进入投后（处置项目）阶段。在该阶段进行放款资产出售以及收款</li>
+</ol>
+<p>在保理流程的不同阶段，资产包的类型也会发生变化。在投前阶段，是从预备资产池生成预备资产包，并退回审核不通过的资产；在投后阶段，预备资产包变为处置资产包</p>
+<h2 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h2><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/298194999">正向保理和反向保理有什么不一样</a>  </p>
+<p><a target="_blank" rel="noopener" href="https://www.sohu.com/a/226643976_530652">供应链金融之反向保理资产证券化模式</a>  </p>
+<p><a target="_blank" rel="noopener" href="https://www.sohu.com/a/163127543_743870">浅析“再保理”业务</a>  </p>
+<p><a target="_blank" rel="noopener" href="http://www.cairongquan.com/Article/view/94131.html">一文读懂：房地产供应链应付账款ABS</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" data-id="clzhqggeg004hng6oc22rdyn7" data-title="金融业务-不动产保理业务入门和系统设计" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          Resume以及ARTS
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">运维-运维体系标准化之故障管理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/" rel="tag">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/" rel="tag">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/" rel="tag">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/" rel="tag">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/%E4%B8%AD%E5%8F%B0/" style="font-size: 10px;">中台</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 20px;">容器</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 11.67px;">运维</a> <a href="/tags/%E9%87%91%E8%9E%8D/" style="font-size: 10px;">金融</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/">Resume以及ARTS</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">金融业务-不动产保理业务入门和系统设计</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/">运维-运维体系标准化之故障管理</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/">运维-运营体系标准化之配置管理CMDB</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/">管理-远程办公项目管理经验总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 姚皓(Hao Yao)<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

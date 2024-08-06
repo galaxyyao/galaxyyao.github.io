@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>容器-4-Docker的意义 | Galaxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在介绍完Docker的原理后，我们再回过头来看Docker的意义。 Docker的意义事实上，Cgroups是2007年就被合并到Linux内核的功能。那个时候结合了Cgroups的资源管理能力+Linux Namespace的视图隔离能力的LXC（Linux Container）就已经产生了。但LXC的视角还是操作系统和服务器，目标是打造一个相比虚拟机更轻量级的系统容器。而Docker从理念上就">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器-4-Docker的意义">
+<meta property="og:url" content="https://galaxyyao.github.io/2019/05/27/%E5%AE%B9%E5%99%A8-4-Docker%E7%9A%84%E6%84%8F%E4%B9%89/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="在介绍完Docker的原理后，我们再回过头来看Docker的意义。 Docker的意义事实上，Cgroups是2007年就被合并到Linux内核的功能。那个时候结合了Cgroups的资源管理能力+Linux Namespace的视图隔离能力的LXC（Linux Container）就已经产生了。但LXC的视角还是操作系统和服务器，目标是打造一个相比虚拟机更轻量级的系统容器。而Docker从理念上就">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-4-Docker%E7%9A%84%E6%84%8F%E4%B9%89/lxc-vs-docker.jpg">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-4-Docker%E7%9A%84%E6%84%8F%E4%B9%89/docker-hub.png">
+<meta property="article:published_time" content="2019-05-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-30T05:34:34.000Z">
+<meta property="article:author" content="姚皓(Hao Yao)">
+<meta property="article:tag" content="容器">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-4-Docker%E7%9A%84%E6%84%8F%E4%B9%89/lxc-vs-docker.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Galaxy</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://galaxyyao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-容器-4-Docker的意义" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/05/27/%E5%AE%B9%E5%99%A8-4-Docker%E7%9A%84%E6%84%8F%E4%B9%89/" class="article-date">
+  <time class="dt-published" datetime="2019-05-26T16:00:00.000Z" itemprop="datePublished">2019-05-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      容器-4-Docker的意义
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在介绍完Docker的原理后，我们再回过头来看Docker的意义。</p>
+<h1 id="Docker的意义"><a href="#Docker的意义" class="headerlink" title="Docker的意义"></a>Docker的意义</h1><p>事实上，Cgroups是2007年就被合并到Linux内核的功能。那个时候结合了Cgroups的资源管理能力+Linux Namespace的视图隔离能力的LXC（Linux Container）就已经产生了。<br>但LXC的视角还是操作系统和服务器，目标是打造一个相比虚拟机更轻量级的系统容器。<br>而Docker从理念上就截然不同，将目标中心转到了应用。<br><img src="/images/%E5%AE%B9%E5%99%A8-4-Docker%E7%9A%84%E6%84%8F%E4%B9%89/lxc-vs-docker.jpg" alt="LXC vs Docker">  </p>
+<p>不要小看这个理念上的差异。以应用为中心意味着两件事情的彻底改变：  </p>
+<h3 id="构建和部署"><a href="#构建和部署" class="headerlink" title="构建和部署"></a>构建和部署</h3><p>测试环境和生产环境的构建和部署都是以应用为粒度的。而一个操作系统上可能部署着不同测试阶段的应用。不可能那么凑巧让上面所有的应用恰好同一周期完毕，然后将整个操作系统从测试搬到生产。这个不符合正常的开发测试流程。<br>而Docker直接将一个应用运行所需的完整环境，即整个操作系统的文件系统也打包了进去。只要这个应用的Docker镜像测试完成，就可以单独发布上生产。还可以利用现有的构建工具来辅助，例如Jenkins&#x2F;Ansible等。遇到性能瓶颈需要横向扩展时，也可以针对单应用迅速部署启动。在性能压力消除后也可以快速回收。<br>在Docker之前，也已经有Cloud Foundry等PaaS项目开始以应用为中心。但相比做完一个镜像就可以随处运行的Docker，它们的便利性和适应性差了不少。</p>
+<h3 id="版本化和共享"><a href="#版本化和共享" class="headerlink" title="版本化和共享"></a>版本化和共享</h3><p>制作一个操作系统容器是一件私有的事情。你制作的操作系统容器一般只会使用在你自己的团队，顶多扩展到全公司内部。别人看不到你是具体怎么做的系统容器，不清楚你是否在里面埋了雷。借我十个胆子也不敢用。<br>而Docker在容器镜像的制作上引入了“层（Layer）”的概念。这种基于“层”的实现借鉴了Git的思想，使容器的创建变得透明。每个人都可以审查应用容器在原始操作系统的容器上做了哪些修改。<br>类似在Github上开源代码，当每个人和每个公司都可以参与到全世界的应用容器分发过程中时，Docker的爆发也在情理之中了。<br><img src="/images/%E5%AE%B9%E5%99%A8-4-Docker%E7%9A%84%E6%84%8F%E4%B9%89/docker-hub.png" alt="Docker hub">  </p>
+<h1 id="Docker对于开发人员的意义"><a href="#Docker对于开发人员的意义" class="headerlink" title="Docker对于开发人员的意义"></a>Docker对于开发人员的意义</h1><p>曾经我也觉得Docker是运维的事情。对开发来说，吃鸡蛋难道还要管鸡蛋是怎么下的么？但在现在微服务化趋势越来越明显的现在，使用Docker也会带来开发上的很大优势：<br>之前我们开发和SIT测试环境的基础组件和微服务基本是公用的。这会带来一系列问题：  </p>
+<ul>
+<li>A为了某个开发中的特性改动了数据库某个字段，导致其他开发和测试环境直接崩溃</li>
+<li>A始终收不到消息队列中的消息，最后发现是B本地启动的应用把消息给消费掉了</li>
+<li>CI&#x2F;CD被触发导致X应用自动重新部署，但A开发中的功能依赖于X应用，于是只能等自动部署完毕后才能继续开发<br>而Docker可以使公用的中间件&#x2F;数据库&#x2F;微服务在本地按需启动。每个人独享自己的开发环境，不再受到其他开发人员和测试环境的影响。</li>
+</ul>
+<p>此外Docker也进一步降低了生产部署的风险和时间。“我本地运行正常啊”这样的问题出现的概率会降低。也可以将上线的时间进一步压缩（虽然我们现在的一键部署脚本基本也可以一分钟内完成打包发布了），使开发同学能按时回家吃饭。  </p>
+<p>Docker也大大降低了尝试新技术和新软件的成本。<br>我现在手头虚拟机资源还算相对充沛，如果想搭个jenkins，gitlab或区块链玩玩，申请几台新的虚机就行。但当初我也饱尝过没有机器可供随便玩的受限感。即使好不容易搞到一台虚机，还要研究个半天怎么安装。安装的时候谨慎再谨慎，就怕不小心装错了搞坏了操作系统，还要陪着笑麻烦运维删掉虚机重装。<br>而现在大部分技术都提供了镜像，本地一句docker run命令，就可以直接开始体验了。玩坏了删除容器重新来一遍。完全没有任何心理负担。  </p>
+<p>即使只是对个人接个项目赚赚外快，Docker也带来不少便利。当你本地开发调试完，需要部署到客户本地。选项一是跑到客户现场，或远程到客户内网，手动装一堆环境依赖，可能还会遇到信息安全的限制。选项二是让客户自己运行pull + run两个命令，分分钟部署好。怎么选择毫无悬念。  </p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>极客时间的这篇专栏非常之推荐，讲得非常通俗易懂循序渐进，绝对值回票价。看到第10章搭建kubeadm的时候可能会卡一下，不过结合实际环境操作演练一下就可以跨过去了。<br><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/116">深入剖析Kubernetes</a>  </p>
+<h1 id="Docker全系列"><a href="#Docker全系列" class="headerlink" title="Docker全系列"></a>Docker全系列</h1><p><a href="/2019/05/17/%E5%AE%B9%E5%99%A8-1-Namespace%EF%BC%9A%E6%A5%9A%E9%97%A8%E7%9A%84%E4%B8%96%E7%95%8C">Namespace：楚门的世界</a><br><a href="/2019/05/24/%E5%AE%B9%E5%99%A8-2-Docker%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E">Docker存储引擎</a><br><a href="/2019/05/25/%E5%AE%B9%E5%99%A8-3-Cgroups%E7%9A%84%E8%AE%A1%E5%88%92%E7%BB%8F%E6%B5%8E">Cgroups的计划经济</a><br><a href="/2019/05/27/%E5%AE%B9%E5%99%A8-4-Docker%E7%9A%84%E6%84%8F%E4%B9%89">Docker的意义</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/05/27/%E5%AE%B9%E5%99%A8-4-Docker%E7%9A%84%E6%84%8F%E4%B9%89/" data-id="clzhqgge8000gng6o4a80e103" data-title="容器-4-Docker的意义" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          容器-5-kubeadm部署Kubernetes1.14.2集群踩坑记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/05/25/%E5%AE%B9%E5%99%A8-3-Cgroups%E7%9A%84%E8%AE%A1%E5%88%92%E7%BB%8F%E6%B5%8E/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">容器-3-Cgroups的计划经济</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/" rel="tag">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/" rel="tag">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/" rel="tag">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/" rel="tag">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/%E4%B8%AD%E5%8F%B0/" style="font-size: 10px;">中台</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 20px;">容器</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 11.67px;">运维</a> <a href="/tags/%E9%87%91%E8%9E%8D/" style="font-size: 10px;">金融</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/">Resume以及ARTS</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">金融业务-不动产保理业务入门和系统设计</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/">运维-运维体系标准化之故障管理</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/">运维-运营体系标准化之配置管理CMDB</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/">管理-远程办公项目管理经验总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 姚皓(Hao Yao)<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>容器-5-kubeadm部署Kubernetes1.14.2集群踩坑记 | Galaxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="一般情况下我不喜欢把部署手册放到blog里。绝大多数情况下官网已经足够详尽，而且blog很可能因为版本陈旧误人子弟。曾经我写过Nginx的二进制部署手册，早就被轻松愉快的yum安装扫进了废纸堆。而使用了Docker和K8s后yum安装方式也被迅速淘汰。Hadoop的部署也被Cloudera全自动化部署替代了。但kubernetes的部署由于涉及科学上网的问题，把原本几个命令就能解决的问题搞得相当复">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器-5-kubeadm部署Kubernetes1.14.2集群踩坑记">
+<meta property="og:url" content="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="一般情况下我不喜欢把部署手册放到blog里。绝大多数情况下官网已经足够详尽，而且blog很可能因为版本陈旧误人子弟。曾经我写过Nginx的二进制部署手册，早就被轻松愉快的yum安装扫进了废纸堆。而使用了Docker和K8s后yum安装方式也被迅速淘汰。Hadoop的部署也被Cloudera全自动化部署替代了。但kubernetes的部署由于涉及科学上网的问题，把原本几个命令就能解决的问题搞得相当复">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-30T05:34:34.000Z">
+<meta property="article:author" content="姚皓(Hao Yao)">
+<meta property="article:tag" content="容器">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Galaxy</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://galaxyyao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-容器-5-kubeadm部署Kubernetes1-14-2集群踩坑记" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/" class="article-date">
+  <time class="dt-published" datetime="2019-05-28T16:00:00.000Z" itemprop="datePublished">2019-05-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      容器-5-kubeadm部署Kubernetes1.14.2集群踩坑记
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>一般情况下我不喜欢把部署手册放到blog里。绝大多数情况下官网已经足够详尽，而且blog很可能因为版本陈旧误人子弟。曾经我写过Nginx的二进制部署手册，早就被轻松愉快的yum安装扫进了废纸堆。而使用了Docker和K8s后yum安装方式也被迅速淘汰。Hadoop的部署也被Cloudera全自动化部署替代了。<br>但kubernetes的部署由于涉及科学上网的问题，把原本几个命令就能解决的问题搞得相当复杂。所以希望这篇也能多少对还在被GFW恶心的人有些帮助。（当然可能更简单的方式是部署在墙外，比如AWS上）  </p>
+<h2 id="0-部署目标和硬件准备"><a href="#0-部署目标和硬件准备" class="headerlink" title="0. 部署目标和硬件准备"></a>0. 部署目标和硬件准备</h2><h3 id="0-1-部署目标"><a href="#0-1-部署目标" class="headerlink" title="0.1 部署目标"></a>0.1 部署目标</h3><p>由于是测试目的，就不部署高可用了。高可用的部署可以参见最后的参考资料。<br>物理拓扑结构是1 Master + 3 Worker（Worker数量可轻松扩展）。  </p>
+<h3 id="0-2-硬件准备"><a href="#0-2-硬件准备" class="headerlink" title="0.2 硬件准备"></a>0.2 硬件准备</h3><p>部署的Kubernetes版本是v1.14.2（截止2019&#x2F;5&#x2F;29的最新版本），Docker的版本是Docker CE 18.09.6（也是截止2019&#x2F;5&#x2F;29的最新版本）。<br>服务器全是VMWare虚拟机。虚机的硬件和操作系统如下：  </p>
+<table>
+<thead>
+<tr>
+<th>HOSTNAME</th>
+<th>ip</th>
+<th>ROLES</th>
+<th>硬件配置</th>
+<th>操作系统</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>docker-4</td>
+<td>10.16.34.54</td>
+<td>master</td>
+<td>4核CPU&#x2F;8GB内存&#x2F;100GB硬盘</td>
+<td>CentOS 7.4</td>
+</tr>
+<tr>
+<td>docker-5</td>
+<td>10.16.34.57</td>
+<td>worker</td>
+<td>4核CPU&#x2F;8GB内存&#x2F;100GB硬盘</td>
+<td>CentOS 7.4</td>
+</tr>
+<tr>
+<td>docker-6</td>
+<td>10.16.34.58</td>
+<td>worker</td>
+<td>4核CPU&#x2F;8GB内存&#x2F;100GB硬盘</td>
+<td>CentOS 7.4</td>
+</tr>
+<tr>
+<td>docker-7</td>
+<td>10.16.34.59</td>
+<td>worker</td>
+<td>4核CPU&#x2F;8GB内存&#x2F;100GB硬盘</td>
+<td>CentOS 7.4</td>
+</tr>
+</tbody></table>
+<p>下面所有的命令都是在root账号下执行的。  </p>
+<h2 id="1-检查和配置操作系统"><a href="#1-检查和配置操作系统" class="headerlink" title="1. 检查和配置操作系统"></a>1. 检查和配置操作系统</h2><h3 id="1-1-检查操作系统-硬件配置-网络连通性"><a href="#1-1-检查操作系统-硬件配置-网络连通性" class="headerlink" title="1.1 检查操作系统&#x2F;硬件配置&#x2F;网络连通性"></a>1.1 检查操作系统&#x2F;硬件配置&#x2F;网络连通性</h3><p>按照<a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/setup/independent/install-kubeadm/">安装 kubeadm - Kubernetes</a>检查操作系统&#x2F;硬件配置&#x2F;网络连通性。主要检查节点之中不可以有重复的主机名，MAC 地址，product_uuid。  </p>
+<h3 id="1-2-配置hostname"><a href="#1-2-配置hostname" class="headerlink" title="1.2 配置hostname"></a>1.2 配置hostname</h3><p>根据官方文档的<a target="_blank" rel="noopener" href="https://kubernetes.io/docs/setup/independent/troubleshooting-kubeadm/">kubeadm问题排查</a>，需要确保hostname -i命令返回可路由的ip。<br>我拿到的虚机默认只会返回127.0.0.1。这个可能导致了后续配置过程中Worker节点在join后一直NotReady的问题。所以以防万一还是在每个节点上配置一下比较保险。  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>添加内容：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">10.16.34.54     docker-4</span><br><span class="line">10.16.34.57     docker-5</span><br><span class="line">10.16.34.58     docker-6</span><br><span class="line">10.16.34.59     docker-7</span><br></pre></td></tr></table></figure>
+
+<p>然后重启network  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart network</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-禁用swap"><a href="#1-3-禁用swap" class="headerlink" title="1.3 禁用swap"></a>1.3 禁用swap</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo swapoff -a</span><br><span class="line">sudo sed -i &#x27;/ swap / s/^\(.*\)$/#\1/g&#x27; /etc/fstab</span><br></pre></td></tr></table></figure>
+
+<p>kubelet在swap不禁用的情况下会报错：  </p>
+<blockquote>
+<p>kubelet[2856]: error: failed to run Kubelet: Running with swap on is not supported, please disable swap! or set –fail-swap-on</p>
+</blockquote>
+<p>K8S这么设计的原因主要是性能考量：Kubernetes会把每个node实例尽量压榨到利用率100%，包括CPU和内存。而swap出来的虚拟内存的性能远比不上真实内存，会影响调度器对机器余力的判断。  </p>
+<h3 id="1-4-禁用selinux"><a href="#1-4-禁用selinux" class="headerlink" title="1.4 禁用selinux"></a>1.4 禁用selinux</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 SELinux 设置为 permissive 模式(将其禁用)</span></span><br><span class="line">setenforce 0</span><br><span class="line">sed -i &#x27;s/^SELINUX=enforcing$/SELINUX=permissive/&#x27; /etc/selinux/config</span><br></pre></td></tr></table></figure>
+
+<p>禁用SELinux是因为kubelet还不支持。不然容器访问不了宿主机的文件系统，也就没法使用Pod网络。  </p>
+<h3 id="1-5-RHEL-CentOS7相关iptables配置"><a href="#1-5-RHEL-CentOS7相关iptables配置" class="headerlink" title="1.5 RHEL&#x2F;CentOS7相关iptables配置"></a>1.5 RHEL&#x2F;CentOS7相关iptables配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt;  /etc/sysctl.d/k8s.conf</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">vm.swappiness=0</span><br><span class="line">EOF</span><br><span class="line">sysctl --system</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-6-开启端口"><a href="#1-6-开启端口" class="headerlink" title="1.6 开启端口"></a>1.6 开启端口</h3><p>理论上需要开这些端口：<br><strong>Master 节点</strong>  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=6443/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=2379-2380/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=10250/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=10251/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=10252/tcp</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+<p><strong>Worker 节点</strong>  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=10250/tcp</span><br><span class="line">sudo firewall-cmd --zone=public --permanent --add-port=30000-32767/tcp</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+<p>不过对于测试环境来说，为了以防未知的坑，还是直接关闭掉防火墙比较直接。之后在部署Rook的时候，apply -f operator.yaml后Pod的状态一直为CrashLoopBackOff或Error。<br>查看Event日志得到了如下的错误信息：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">State:       Waiting</span><br><span class="line">  Reason:    CrashLoopBackOff</span><br><span class="line">Last State:  Terminated</span><br><span class="line">  Reason:    Error</span><br><span class="line">  Message:   failed to get pod. Get https://10.96.0.1:443/api/v1/namespaces/rook-ceph/pods/rook-ceph-operator-765ff54667-njkn6: dial tcp 10.96.0.1:443: connect: no route to host</span><br></pre></td></tr></table></figure>
+<p>通过kubectl get svc -n&#x3D;kube-system 命令查询service，发现kube-dns还需要开启53&#x2F;UDP,53&#x2F;TCP,9153&#x2F;TCP这三个端口。kubernetes-dashboard也需要443端口。<br>在关闭防火墙后，rook-ceph部署成功。<br>综上所述，将本步骤修改为：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld</span><br><span class="line">systemctl disable firewalld</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-安装容器运行时-CRI-Docker"><a href="#2-安装容器运行时-CRI-Docker" class="headerlink" title="2. 安装容器运行时(CRI)-Docker"></a>2. 安装容器运行时(CRI)-Docker</h2><h3 id="2-1-安装Docker"><a href="#2-1-安装Docker" class="headerlink" title="2.1 安装Docker"></a>2.1 安装Docker</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">yum -y install yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">yum -y install wget</span><br><span class="line">cd /etc/yum.repos.d/</span><br><span class="line">wget https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line">yum clean all</span><br><span class="line">yum -y install docker-ce</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-启动Docker服务"><a href="#2-2-启动Docker服务" class="headerlink" title="2.2 启动Docker服务"></a>2.2 启动Docker服务</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl enable docker</span><br><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-安装Kubernetes"><a href="#3-安装Kubernetes" class="headerlink" title="3. 安装Kubernetes"></a>3. 安装Kubernetes</h2><p>需要在每台机器上都安装以下的软件包：  </p>
+<ul>
+<li>kubeadm: 用来初始化集群的指令</li>
+<li>kubelet: 在集群中的每个节点上用来启动pod和container等</li>
+<li>kubectl: 用来与集群通信的命令行工具</li>
+</ul>
+<h3 id="3-1-准备repo"><a href="#3-1-准备repo" class="headerlink" title="3.1 准备repo"></a>3.1 准备repo</h3><p>这里开始和科学上网有关了。要把repo地址里的packages.cloud.google.com都替换成很阿里云的域名mirrors.aliyun.com&#x2F;kubernetes。<br>gpgcheck可以保留为1，不过这里以防万一我改为了不check。  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=0</span><br><span class="line">repo_gpgcheck=0</span><br><span class="line">gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg</span><br><span class="line">EOF</span><br><span class="line">yum clean all</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-开始安装kubelet-kubeadm-kubectl"><a href="#3-2-开始安装kubelet-kubeadm-kubectl" class="headerlink" title="3.2 开始安装kubelet&#x2F;kubeadm&#x2F;kubectl"></a>3.2 开始安装kubelet&#x2F;kubeadm&#x2F;kubectl</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install kubelet kubeadm kubectl --disableexcludes=kubernetes</span><br></pre></td></tr></table></figure>
+<p>有些blog里提到还需要yum install kubernetes-cni。实际发现执行完上面的命令已经安装好了。大概最新版的kubeadm已经包含了kubernetes-cni。<br>有些部署手册里依赖的是比较早版本的Kubernetes，可以在安装的时候指定版本：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install kubelet=1.11.3-00</span><br><span class="line">yum install kubectl=1.11.3-00</span><br><span class="line">yum install kubeadm=1.11.3-00</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-启动kubelet服务"><a href="#3-3-启动kubelet服务" class="headerlink" title="3.3 启动kubelet服务"></a>3.3 启动kubelet服务</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl enable kubelet &amp;&amp; systemctl start kubelet</span><br></pre></td></tr></table></figure>
+<p>由于上一个步骤里yum安装的时候没有指定版本，这时候就可以通过kubectl version查到yum安装的Kubernetes版本。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 ~]# kubectl version</span><br><span class="line">Client Version: version.Info&#123;Major:&quot;1&quot;, Minor:&quot;14&quot;, GitVersion:&quot;v1.14.2&quot;, GitCommit:&quot;66049e3b21efe110454d67df4fa62b08ea79a19b&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2019-05-16T16:23:09Z&quot;, GoVersion:&quot;go1.12.5&quot;, Compiler:&quot;gc&quot;, Platform:&quot;linux/amd64&quot;&#125;</span><br><span class="line">The connection to the server localhost:8080 was refused - did you specify the right host or port?</span><br></pre></td></tr></table></figure>
+<p>connection refused的报错信息可以先无视。  </p>
+<h3 id="3-4-在Master节点上创建kubeadm-init的配置文件kubeadm-yaml"><a href="#3-4-在Master节点上创建kubeadm-init的配置文件kubeadm-yaml" class="headerlink" title="3.4 在Master节点上创建kubeadm init的配置文件kubeadm.yaml"></a>3.4 在Master节点上创建kubeadm init的配置文件kubeadm.yaml</h3><p>可以把kubernetes的YAML配置文件放在任何路径下。我这里是放到root的HOME目录&#x2F;root&#x2F;下。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br></pre></td></tr></table></figure>
+
+<p>然后创建一份kubeadm init的配置文件kubeadm.yaml如下：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: kubeadm.k8s.io/v1beta1</span><br><span class="line">kind: ClusterConfiguration</span><br><span class="line">controllerManager:</span><br><span class="line">    extraArgs:</span><br><span class="line">        horizontal-pod-autoscaler-use-rest-clients: &quot;true&quot;</span><br><span class="line">        horizontal-pod-autoscaler-sync-period: &quot;10s&quot;</span><br><span class="line">        node-monitor-grace-period: &quot;10s&quot;</span><br><span class="line">apiServer:</span><br><span class="line">    extraArgs:</span><br><span class="line">        runtime-config: &quot;api/all=true&quot;</span><br><span class="line">kubernetesVersion: &quot;stable-1.14&quot;</span><br></pre></td></tr></table></figure>
+
+<p>对于旧版本（例如1.11），apiVersion是kubeadm.k8s.io&#x2F;v1alpha1：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: kubeadm.k8s.io/v1alpha1</span><br><span class="line">kind: MasterConfiguration</span><br><span class="line">controllerManagerExtraArgs:</span><br><span class="line">  horizontal-pod-autoscaler-use-rest-clients: &quot;true&quot;</span><br><span class="line">  horizontal-pod-autoscaler-sync-period: &quot;10s&quot;</span><br><span class="line">  node-monitor-grace-period: &quot;10s&quot;</span><br><span class="line">apiServerExtraArgs:</span><br><span class="line">  runtime-config: &quot;api/all=true&quot;</span><br><span class="line">kubernetesVersion: &quot;stable-1.11&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-确定拉取的镜像版本"><a href="#3-5-确定拉取的镜像版本" class="headerlink" title="3.5 确定拉取的镜像版本"></a>3.5 确定拉取的镜像版本</h3><p>如果服务器在墙外，那么就可以kubeadm init –config kubeadm.yaml，然后去泡杯茶慢慢等着了。但如果不是的话，你会看到如下的错误：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">error execution phase preflight: [preflight] Some fatal errors occurred:</span><br><span class="line">        [ERROR ImagePull]: failed to pull image k8s.gcr.io/kube-apiserver:v1.14.2: output: Error response from daemon: Get https://k8s.gcr.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)</span><br><span class="line">, error: exit status 1</span><br><span class="line">        [ERROR ImagePull]: failed to pull image k8s.gcr.io/kube-controller-manager:v1.14.2: output: Error response from daemon: Get https://k8s.gcr.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)</span><br><span class="line">, error: exit status 1</span><br><span class="line">        [ERROR ImagePull]: failed to pull image k8s.gcr.io/kube-scheduler:v1.14.2: output: Error response from daemon: Get https://k8s.gcr.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)</span><br><span class="line">, error: exit status 1</span><br><span class="line">        [ERROR ImagePull]: failed to pull image k8s.gcr.io/kube-proxy:v1.14.2: output: Error response from daemon: Get https://k8s.gcr.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)</span><br><span class="line">, error: exit status 1</span><br><span class="line">        [ERROR ImagePull]: failed to pull image k8s.gcr.io/pause:3.1: output: Error response from daemon: Get https://k8s.gcr.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)</span><br><span class="line">, error: exit status 1</span><br><span class="line">        [ERROR ImagePull]: failed to pull image k8s.gcr.io/etcd:3.3.10: output: Error response from daemon: Get https://k8s.gcr.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)</span><br><span class="line">, error: exit status 1</span><br><span class="line">        [ERROR ImagePull]: failed to pull image k8s.gcr.io/coredns:1.3.1: output: Error response from daemon: Get https://k8s.gcr.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)</span><br><span class="line">, error: exit status 1</span><br><span class="line">[preflight] If you know what you are doing, you can make a check non-fatal with `--ignore-preflight-errors=...`</span><br></pre></td></tr></table></figure>
+<p>原因就是国内连不上gcr.io。  </p>
+<p>如果你清楚知道kubeadm init使用的每个镜像的版本，那么你可以直接去按下一节的步骤去拉取镜像。<br>但如果你不确定的话，还是先执行一遍kubeadm init命令，从错误信息里获取当前版本Kubernetes使用的各镜像的版本，以便下一节的pullimages.sh脚本中指定。  </p>
+<p>kubeadm需要的镜像包括：kube-proxy&#x2F;kube-scheduler&#x2F;kube-controller-manager&#x2F;kube-apiserver&#x2F;etcd&#x2F;coredns&#x2F;pause。<br>对于v1.14.2，具体版本如下：<br>kube-proxy:v1.14.2 kube-scheduler:v1.14.2 kube-controller-manager:v1.14.2 kube-apiserver:v1.14.2 etcd:3.3.10 coredns:1.3.1 pause:3.1</p>
+<h2 id="3-6-拉取镜像"><a href="#3-6-拉取镜像" class="headerlink" title="3.6 拉取镜像"></a>3.6 拉取镜像</h2><p>这个步骤是最麻烦的。<br>如上一节所示，直接pull的话会失败。网上大多数文章中推荐docker hub上的一个个人的镜像站：<a target="_blank" rel="noopener" href="https://github.com/anjia0532/gcr.io_mirror">anjia0532&#x2F;gcr.io_mirror</a>:。但这个镜像站已经被Travis CI标记为疑似滥用，所以最新的几个版本都没有同步了。  </p>
+<p>所以现在推荐使用的是Azure中国的镜像站。就是对于从k8s.gcr.io拉取的docker pull命令，从gcr.azk8s.cn&#x2F;google-containers拉取。<br>举个具体的例子。比如要拉取kubernetes dashboard v1.10.1，原本的命令为：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1</span><br></pre></td></tr></table></figure>
+<p>现在改为：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull gcr.azk8s.cn/google-containers/kubernetes-dashboard-amd64:v1.10.1</span><br></pre></td></tr></table></figure>
+<p>然后还可以打一个标记，覆盖k8s.gcr.io的同名镜像。  </p>
+<p>对于kubeadm需要的镜像，可以通过如下的脚本一次性获取</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">vi pullimages.sh</span><br></pre></td></tr></table></figure>
+<p>添加内容：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">images=(kube-proxy:v1.14.2 kube-scheduler:v1.14.2 kube-controller-manager:v1.14.2 kube-apiserver:v1.14.2 etcd:3.3.10 coredns:1.3.1 pause:3.1 )</span><br><span class="line">for imageName in $&#123;images[@]&#125; ; do</span><br><span class="line">docker pull gcr.azk8s.cn/google-containers/$imageName</span><br><span class="line">docker tag gcr.azk8s.cn/google-containers/$imageName k8s.gcr.io/$imageName</span><br><span class="line">docker rmi gcr.azk8s.cn/google-containers/$imageName</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>（最后一句rmi的意义暂时没搞懂，为啥最后要把Azure的镜像删除掉。。。但的确能work，所以姑且按照网上的脚本来）  </p>
+<p>执行脚本：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x pullimages.sh</span><br><span class="line">./pullimages.sh</span><br></pre></td></tr></table></figure>
+
+<p>不太确定的一点是要不要在所有的Worker Node上都执行pullimages.sh。如果遇到Worker Node一直是NotReady的话，可以在服务器上也执行一下。  </p>
+<p>PS. 也可以用阿里云的镜像，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kubernetes-dashboard-amd64:v1.10.1</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-7-在Master节点上执行kubeadm-init"><a href="#3-7-在Master节点上执行kubeadm-init" class="headerlink" title="3.7 在Master节点上执行kubeadm init"></a>3.7 在Master节点上执行kubeadm init</h3><p>先配置停用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/sysconfig/kubelet</span><br></pre></td></tr></table></figure>
+<p>将内容修改为：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KUBELET_EXTRA_ARGS=&quot;--fail-swap-on=false&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后就可以执行kubeadm init命令了。具体执行时间看网速，我这里大概总共3分钟。  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm init --config kubeadm.yaml</span><br></pre></td></tr></table></figure>
+<p>如果成功的话会显示如下内容：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Your Kubernetes control-plane has initialized successfully!</span><br><span class="line"></span><br><span class="line">To start using your cluster, you need to run the following as a regular user:</span><br><span class="line"></span><br><span class="line">  mkdir -p $HOME/.kube</span><br><span class="line">  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">  sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br><span class="line"></span><br><span class="line">You should now deploy a pod network to the cluster.</span><br><span class="line">Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:</span><br><span class="line">  https://kubernetes.io/docs/concepts/cluster-administration/addons/</span><br><span class="line"></span><br><span class="line">Then you can join any number of worker nodes by running the following on each as root:</span><br><span class="line"></span><br><span class="line">kubeadm join 10.16.34.54:6443 --token hfzcd2.xhqca62fjjbmq7xh \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:29a90fa653aaffd384259867c02e046a7b81a354838059f97f2053533faacbd9 </span><br></pre></td></tr></table></figure>
+<p>然后按照提示在Master节点上执行剩下的命令：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p $HOME/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br></pre></td></tr></table></figure>
+<p>保存好那条kubeadm join的命令。注意只有这个token只有当天有效。隔了24小时之后就需要kubectl create token重新创建token。  </p>
+<h3 id="3-8-部署网络插件Weave"><a href="#3-8-部署网络插件Weave" class="headerlink" title="3.8 部署网络插件Weave"></a>3.8 部署网络插件Weave</h3><p>在进行接下来的步骤之前先不要急，要先确认所有的node状态和pod状态。<br>依次检查健康状态</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get cs</span><br></pre></td></tr></table></figure>
+<p>节点状态  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
+<p>如果是测试用的单节点部署，需要运行以下命令，去掉master节点的污点：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl taint nodes --all node-role.kubernetes.io/master-</span><br></pre></td></tr></table></figure>
+
+<p>系统Pod状态</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -n kube-system</span><br></pre></td></tr></table></figure>
+<p>当前由于没有部署网络插件，所以coredns的Pod的状态还是Pending。  </p>
+<p>确保除了coredns之外的Pod都是running后，部署Weave插件：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://git.io/weave-kube-1.6</span><br></pre></td></tr></table></figure>
+<p>通过如下命令，等待Weave的Pod也正常running状态后，才能继续后续的kubeadm join操作</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -n kube-system</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-9-Worker节点加入"><a href="#3-9-Worker节点加入" class="headerlink" title="3.9 Worker节点加入"></a>3.9 Worker节点加入</h3><p>在每个Worker节点上执行1.1到3.3，以及3.6步骤后，执行join命令：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubeadm join 10.16.34.54:6443 --token hfzcd2.xhqca62fjjbmq7xh \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:29a90fa653aaffd384259867c02e046a7b81a354838059f97f2053533faacbd9 </span><br></pre></td></tr></table></figure>
+<p>在Master上观察各节点状态，直到全部Ready。  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-10-设置Worker角色"><a href="#3-10-设置Worker角色" class="headerlink" title="3.10 设置Worker角色"></a>3.10 设置Worker角色</h3><p>通过kubeadm join加入的节点的默认角色为none，需要再标记为worker：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl label node docker-5 node-role.kubernetes.io/worker=worker</span><br><span class="line">kubectl label node docker-6 node-role.kubernetes.io/worker=worker</span><br><span class="line">kubectl label node docker-7 node-role.kubernetes.io/worker=worker</span><br></pre></td></tr></table></figure>
+
+<p>最终节点状态：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 ~]# kubectl get nodes</span><br><span class="line">NAME       STATUS   ROLES    AGE   VERSION</span><br><span class="line">docker-4   Ready    master   24h   v1.14.2</span><br><span class="line">docker-5   Ready    worker   24h   v1.14.2</span><br><span class="line">docker-6   Ready    worker   24h   v1.14.2</span><br><span class="line">docker-7   Ready    worker   24h   v1.14.2</span><br></pre></td></tr></table></figure>
+<p>最终系统Pod状态：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 ~]# kubectl get pods -n kube-system</span><br><span class="line">NAME                                    READY   STATUS    RESTARTS   AGE</span><br><span class="line">coredns-fb8b8dccf-5h9kk                 1/1     Running   0          24h</span><br><span class="line">coredns-fb8b8dccf-p6kh8                 1/1     Running   0          24h</span><br><span class="line">etcd-docker-4                           1/1     Running   0          24h</span><br><span class="line">kube-apiserver-docker-4                 1/1     Running   0          24h</span><br><span class="line">kube-controller-manager-docker-4        1/1     Running   0          24h</span><br><span class="line">kube-proxy-7xfbp                        1/1     Running   0          24h</span><br><span class="line">kube-proxy-dw4l5                        1/1     Running   0          24h</span><br><span class="line">kube-proxy-lhmrq                        1/1     Running   0          24h</span><br><span class="line">kube-proxy-zmhql                        1/1     Running   0          24h</span><br><span class="line">kube-scheduler-docker-4                 1/1     Running   0          24h</span><br><span class="line">weave-net-g2w9p                         2/2     Running   1          24h</span><br><span class="line">weave-net-hh6p2                         2/2     Running   1          24h</span><br><span class="line">weave-net-qgk82                         2/2     Running   0          24h</span><br><span class="line">weave-net-vgdnf                         2/2     Running   0          24h</span><br></pre></td></tr></table></figure>
+<p>有些时候状态没Ready不要急，先泡杯茶去。有些操作要花一些时间的。包括之后kubectl的一些操作，拍下回车后有时候会没有UI反馈内容。如果这个时候没有耐心地Ctrl+C中止，可能产生一些不可知的后遗症。在apply多个yaml的时候，也最好在每个步骤结束后确认全部的Pod状态是Running，再进行下一个步骤。<br>如果泡完茶依然有问题，再按照下一章的排查步骤来排查。  </p>
+<h3 id="3-11-验证"><a href="#3-11-验证" class="headerlink" title="3.11 验证"></a>3.11 验证</h3><p>可以通过部署一个Nginx的Pod来进行验证。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">vi nginx-deployment.yaml</span><br></pre></td></tr></table></figure>
+<p>输入内容：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx-deployment</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: nginx</span><br><span class="line">  replicas: 2</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: nginx</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: nginx</span><br><span class="line">        image: nginx:1.14.2</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 80</span><br></pre></td></tr></table></figure>
+<p>然后执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f nginx-deployment.yaml</span><br></pre></td></tr></table></figure>
+<p>最后验证Pod状态：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 ~]# kubectl get pods</span><br><span class="line">NAME                                READY   STATUS    RESTARTS   AGE</span><br><span class="line">nginx-deployment-5cbdcb76f7-8shbf   1/1     Running   0          17h</span><br><span class="line">nginx-deployment-5cbdcb76f7-g2gkt   1/1     Running   0          17h</span><br></pre></td></tr></table></figure>
+
+<p>验证完如果不需要的话可以删除：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete -f nginx-deployment.yaml</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-问题排查"><a href="#4-问题排查" class="headerlink" title="4. 问题排查"></a>4. 问题排查</h2><p>安装的过程肯定不可能一帆风顺。知道怎么排查很重要。  </p>
+<h3 id="4-1-排查节点问题"><a href="#4-1-排查节点问题" class="headerlink" title="4.1 排查节点问题"></a>4.1 排查节点问题</h3><p>如果怀疑是节点问题，可以通过如下的方式来查看节点状态：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe nodes</span><br></pre></td></tr></table></figure>
+<p>重点看Conditions下的Message。  </p>
+<h3 id="4-2-排查Pod"><a href="#4-2-排查Pod" class="headerlink" title="4.2 排查Pod"></a>4.2 排查Pod</h3><p>如果是系统Pod，可以通过如下命令首先查看Pod状态：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -n kube-system</span><br></pre></td></tr></table></figure>
+<p>然后describe节点查看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe pod &lt;Pod名&gt; -n kube-system</span><br></pre></td></tr></table></figure>
+
+<p>如果是普通Pod，就把命令最后的-n kube-system去掉：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods</span><br></pre></td></tr></table></figure>
+<p>然后describe节点查看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe pod &lt;Pod名&gt;</span><br></pre></td></tr></table></figure>
+
+<p>重点都是看最后的Events。  </p>
+<h3 id="4-3-其他日志"><a href="#4-3-其他日志" class="headerlink" title="4.3 其他日志"></a>4.3 其他日志</h3><p>有些时候Events比较简略，就需要查看日志。特别如果问题是在Worker Node上，没法执行kubectl命令，只能查看日志。<br>查看方式有两种：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl -l -u kubelet</span><br></pre></td></tr></table></figure>
+<p>或者  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f /var/log/messages</span><br></pre></td></tr></table></figure>
+<p>还可以通过grep来缩小排查范围。  </p>
+<h3 id="4-4-重置状态"><a href="#4-4-重置状态" class="headerlink" title="4.4 重置状态"></a>4.4 重置状态</h3><p>在尝试解决网络插件问题的时候，我曾经病急乱投医地装了个flannel。但Pod状态始终处于ContainerCreating状态。后来Weave恢复后尝试通过kubectl delete命令删除flannel，遇到了Pod一直terminating但删除不掉的症状。雪上加霜的是还出现了硬件的告警：“kernel:NMI watchdog: BUG: soft lockup - CPU#1 stuck for 22s”。尝试reboot服务器居然发生了超时：“Failed to start reboot.target: Connection timed out”。<br>万策已尽，只能请运维直接干掉虚机重装了。换了台机器继续装Master节点。但几个Worker Node已经join了原Master。这时候就要靠reset命令重置：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm reset</span><br></pre></td></tr></table></figure>
+<p>需要注意reset完可能需要执行以下命令：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 1 &gt; /proc/sys/net/ipv4/ip_forward</span><br></pre></td></tr></table></figure>
+<p>要不然可能会遇到以下的报错信息：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ERROR FileContent--proc-sys-net-ipv4-ip_forward]: /proc/sys/net/ipv4/ip_forward contents are not set to 1</span><br></pre></td></tr></table></figure>
+<p>Master节点如果不是到我遇到的这个情况也可以reset。  </p>
+<h2 id="5-尚未确认的问题"><a href="#5-尚未确认的问题" class="headerlink" title="5. 尚未确认的问题"></a>5. 尚未确认的问题</h2><p>下面是一些我遇到过的问题。在解决过程中进行了不少操作，不太确定到底是其中具体哪个操作起到了决定性作用。所以姑且把我做过的事情都记录一下。  </p>
+<h3 id="runtime-network-not-ready-NetworkReady-false-reason-NetworkPluginNotReady-message-docker-network-plugin-is-not-ready-cni-config-uninitialized"><a href="#runtime-network-not-ready-NetworkReady-false-reason-NetworkPluginNotReady-message-docker-network-plugin-is-not-ready-cni-config-uninitialized" class="headerlink" title="runtime network not ready: NetworkReady&#x3D;false reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized"></a>runtime network not ready: NetworkReady&#x3D;false reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized</h3><p>在Worker节点加入后一直显示NotReady。查看node状态，在message里看到了如上的消息。<br>尝试过关闭防火墙，怀疑过虚拟机网卡问题。<br>怀疑可能有两个措施可能最终产生效果： </p>
+<ul>
+<li>按照1.2配置&#x2F;etc&#x2F;hosts</li>
+<li>在每个Worker Node上也执行pullimages.sh拉取镜像</li>
+</ul>
+<p>极客时间的评论里有人因为多网卡而失败过，也摘抄一下备忘吧。  </p>
+<blockquote>
+<p>2、卡在多网卡的问题上。<br>  2.1、我的环境是virtual box上虚拟的两个ubuntu，网络设置为nat+host only，集群搭建好之后，死活无法启动dashboard、ceph的容器（好多老外也是这么弄的啊），各种查各种试，也没解决问题。在kubernetes的官网上只说了“If you have more than one network adapter, and your Kubernetes components are not reachable on the default route, we recommend you add IP route(s) so Kubernetes cluster addresses go via the appropriate adapter.”。哪位大神按照这种方式弄好的清指点下，很是困惑啊啊啊啊，谁能解救我下………………<br>  2.2、放弃了2.1的nat+host only，改为了桥接的网络方式，只保留一个network interface，成功。</p>
+</blockquote>
+<h3 id="rpc-error-code-DeadlineExceeded异常，导致Pod持续处于ContainerCreating状态"><a href="#rpc-error-code-DeadlineExceeded异常，导致Pod持续处于ContainerCreating状态" class="headerlink" title="rpc error: code &#x3D; DeadlineExceeded异常，导致Pod持续处于ContainerCreating状态"></a>rpc error: code &#x3D; DeadlineExceeded异常，导致Pod持续处于ContainerCreating状态</h3><p>在部署完后发生过所有Node都已经Ready，但apply的Pod（包括系统插件的kubernetes dashboard和自定义的nginx）一直处于ContainerCreating状态的情况。<br>在Worker上看到的日志中报rpc error: code &#x3D; DeadlineExceeded：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">May 29 01:51:10 docker-7 kubelet: E0529 01:51:10.545968   21276 kuberuntime_manager.go:693] createPodSandbox for pod &quot;kubernetes-dashboard-5f7b999d65-5jwpl_kube-system(a3e6ab24-81d4-11e9-935a-00505695705b)&quot; failed: rpc error: code = DeadlineExceeded desc = context deadline exceeded</span><br><span class="line">May 29 01:51:10 docker-7 kubelet: E0529 01:51:10.546252   21276 pod_workers.go:190] Error syncing pod a3e6ab24-81d4-11e9-935a-00505695705b (&quot;kubernetes-dashboard-5f7b999d65-5jwpl_kube-system(a3e6ab24-81d4-11e9-935a-00505695705b)&quot;), skipping: failed to &quot;CreatePodSandbox&quot; for &quot;kubernetes-dashboard-5f7b999d65-5jwpl_kube-system(a3e6ab24-81d4-11e9-935a-00505695705b)&quot; with CreatePodSandboxError: &quot;CreatePodSandbox for pod \&quot;kubernetes-dashboard-5f7b999d65-5jwpl_kube-system(a3e6ab24-81d4-11e9-935a-00505695705b)\&quot; failed: rpc error: code = DeadlineExceeded desc = context deadline exceeded&quot;</span><br></pre></td></tr></table></figure>
+<p>这个问题网上信息非常有限。采取了很多措施，最后也不知道哪个起效了。怀疑是又执行了一遍“1.5 RHEL&#x2F;CentOS7相关iptables配置”产生了效果。  </p>
+<h3 id="CrashLoopBackOff状态"><a href="#CrashLoopBackOff状态" class="headerlink" title="CrashLoopBackOff状态"></a>CrashLoopBackOff状态</h3><p>装Minikube的时候还遇到过core-dns一直处于CrashLoopBackOff状态，也记录一下：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-1 ~]# kubectl get pods --all-namespaces</span><br><span class="line">NAMESPACE     NAME                               READY   STATUS             RESTARTS   AGE</span><br><span class="line">kube-system   coredns-59ffb8b4c-vtj5r            0/1     CrashLoopBackOff   20         78m</span><br><span class="line">kube-system   coredns-59ffb8b4c-xj47w            0/1     CrashLoopBackOff   20         78m</span><br><span class="line">kube-system   coredns-d5947d4b-g9hrd             0/1     CrashLoopBackOff   21         83m</span><br></pre></td></tr></table></figure>
+<p>message如下：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error restarting cluster: wait: waiting for component=kube-apiserver: timed out waiting for the condition</span><br></pre></td></tr></table></figure>
+<p>靠停用防火墙后删除重装minikube解决了。暂时不确定是否和防火墙有关。  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">minikube stop</span><br><span class="line">minikube delete</span><br><span class="line">systemctl disable firewalld</span><br><span class="line">systemctl reboot</span><br><span class="line">minikube start --vm-driver=none --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers</span><br></pre></td></tr></table></figure>
+
+<p>最终感谢阿里云提供repo的镜像，微软Azure云提供Docker镜像。<br>F*ck GFW  </p>
+<h2 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6. 参考资料"></a>6. 参考资料</h2><p>如果是个人学习目的的话，Minikube就已经够用了，安装比上述步骤简单不少。当然科学上网的问题还是要解决。<br><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/tools/install-minikube/">Install Minikube - Kubernetes</a>  </p>
+<p>这篇是基于极客时间课程的搭建步骤，也是相对比较完整的。<br><a target="_blank" rel="noopener" href="https://www.datayang.com/article/45">centos7快速搭建Kubernetes 1.11.1单机集群-data羊</a>  </p>
+<p>官方文档的CRI和kubeadm安装手册。如果服务器在墙外直接照着操作就行。<br><a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/setup/independent/install-kubeadm/">安装 kubeadm - Kubernetes</a><br><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/setup/cri/#docker">CRI installation - Kubernetes</a>  </p>
+<p>kubeadm高可用部署的官方文档。<br><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/setup/independent/high-availability/">Creating Highly Available Clusters with kubeadm - Kubernetes</a></p>
+<p>如果没有访问外网的话可以参考这篇。但我部署的时候真不想遇到这种情况。。。<br><a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/reference/setup-tools/kubeadm/kubeadm-init/#%E5%9C%A8%E6%B2%A1%E6%9C%89%E4%BA%92%E8%81%94%E7%BD%91%E8%BF%9E%E6%8E%A5%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E8%BF%90%E8%A1%8C-kubeadm">kubeadm init - 在没有互联网连接的情况下运行 kubeadm</a>  </p>
+<p>补充一个Ansible部署K8S的开源项目（尚未试用）<br><a target="_blank" rel="noopener" href="https://github.com/easzlab/kubeasz">easzlab&#x2F;kubeasz: 使用Ansible脚本安装K8S集群，介绍组件交互原理，方便直接，不受国内网络环境影响</a>  </p>
+<p>还有一个部署生产级别K8S的开源项目（尚未试用）<br><a target="_blank" rel="noopener" href="https://github.com/kubernetes-sigs/kubespray">kubernetes-sigs&#x2F;kubespray: Deploy a Production Ready Kubernetes Cluster</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/" data-id="clzhqgge8000ing6o6yg92w14" data-title="容器-5-kubeadm部署Kubernetes1.14.2集群踩坑记" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/13/%E5%AE%B9%E5%99%A8-6-Kubernetes%E5%AE%9E%E6%88%98-POC%E7%9B%AE%E6%A0%87/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          容器-6-Kubernetes实战-POC目标
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/05/27/%E5%AE%B9%E5%99%A8-4-Docker%E7%9A%84%E6%84%8F%E4%B9%89/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">容器-4-Docker的意义</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/" rel="tag">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/" rel="tag">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/" rel="tag">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/" rel="tag">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/%E4%B8%AD%E5%8F%B0/" style="font-size: 10px;">中台</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 20px;">容器</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 11.67px;">运维</a> <a href="/tags/%E9%87%91%E8%9E%8D/" style="font-size: 10px;">金融</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/">Resume以及ARTS</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">金融业务-不动产保理业务入门和系统设计</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/">运维-运维体系标准化之故障管理</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/">运维-运营体系标准化之配置管理CMDB</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/">管理-远程办公项目管理经验总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 姚皓(Hao Yao)<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

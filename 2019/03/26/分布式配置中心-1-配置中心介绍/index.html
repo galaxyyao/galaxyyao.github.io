@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>分布式配置中心 - 1. 配置中心介绍 | Galaxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="实施计划 先以测试环境一个应用作为试点，实施配置中心 稳定运行至少两周后，在生产环境的该应用上实施配置中心 再稳定运行两周后，在测试和生产环境的所有应用都改为使用配置中心 配置中心先使用Spring Cloud Config。不够用的话再考虑评估Apollo和Nacos  选型的考量Spring Cloud Config的原理和架构相对比较容易理解，所以先以Spring Cloud Config作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式配置中心 - 1. 配置中心介绍">
+<meta property="og:url" content="https://galaxyyao.github.io/2019/03/26/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83-1-%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="实施计划 先以测试环境一个应用作为试点，实施配置中心 稳定运行至少两周后，在生产环境的该应用上实施配置中心 再稳定运行两周后，在测试和生产环境的所有应用都改为使用配置中心 配置中心先使用Spring Cloud Config。不够用的话再考虑评估Apollo和Nacos  选型的考量Spring Cloud Config的原理和架构相对比较容易理解，所以先以Spring Cloud Config作">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-03-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-30T05:34:34.000Z">
+<meta property="article:author" content="姚皓(Hao Yao)">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Spring Cloud">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Galaxy</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://galaxyyao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-分布式配置中心-1-配置中心介绍" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/03/26/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83-1-%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E4%BB%8B%E7%BB%8D/" class="article-date">
+  <time class="dt-published" datetime="2019-03-25T16:00:00.000Z" itemprop="datePublished">2019-03-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      分布式配置中心 - 1. 配置中心介绍
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="实施计划"><a href="#实施计划" class="headerlink" title="实施计划"></a>实施计划</h2><ul>
+<li>先以测试环境一个应用作为试点，实施配置中心</li>
+<li>稳定运行至少两周后，在生产环境的该应用上实施配置中心</li>
+<li>再稳定运行两周后，在测试和生产环境的所有应用都改为使用配置中心</li>
+<li>配置中心先使用Spring Cloud Config。不够用的话再考虑评估Apollo和Nacos</li>
+</ul>
+<h2 id="选型的考量"><a href="#选型的考量" class="headerlink" title="选型的考量"></a>选型的考量</h2><p>Spring Cloud Config的原理和架构相对比较容易理解，所以先以Spring Cloud Config作为一个具体的实例，介绍一个简化版本的配置中心。如果只是小团队的话，Spring Cloud Config已经足够用了。<br>但对于大一些的团队来说，还是存在以下两个不足：</p>
+<ul>
+<li>UI只能依赖Gitlab的界面</li>
+<li>依赖于Git的权限控制粒度比较粗，也很难扩展</li>
+</ul>
+<h2 id="什么是配置中心"><a href="#什么是配置中心" class="headerlink" title="什么是配置中心"></a>什么是配置中心</h2><p>这里引用几篇配置中心的科普文。</p>
+<h4 id="第一篇"><a href="#第一篇" class="headerlink" title="第一篇"></a>第一篇</h4><p><a target="_blank" rel="noopener" href="https://infoq.cn/article/the-foundation-of-dynamic-adjustment-configuration-center">动态调整的基础 —— 配置中心</a><br>这篇应该是淘宝在2016年之前的方案。<br>虽然相对于现在已经比较out-of-date，但其中提到的几点比较有意思：</p>
+<ul>
+<li>配置动态化的需求发展历程</li>
+<li>应用 - 平台 - 版本 - 模块的元信息模型。在spring cloud config里，对应{application}&#x2F;{profile}&#x2F;{label}的三个层次。在Apollo里，对应Namespace。</li>
+<li>把配置中心拆分成网关、核心服务和界面系统三个部分。在Apollo里，也拆分为Meta Server&#x2F;Config Service&#x2F;Admin Service三块。<br>去年的一次分享上听一个阿里的技术专家说，他进阿里第一个月做的事情就是写开关配置。光20多行的代码就加了5个开关。阿里的这个“不要写死”的要求，在加强了灵活性的同时，对配置管理也提出了很高的要求。</li>
+</ul>
+<h4 id="第二篇"><a href="#第二篇" class="headerlink" title="第二篇"></a>第二篇</h4><p>下面这篇提出了一个通用版的配置中心的架构图。<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/xlgen157387/article/details/82840553">为什么需要分布式配置中心？ - 徐刘根</a></p>
+<h4 id="第三篇"><a href="#第三篇" class="headerlink" title="第三篇"></a>第三篇</h4><p><a target="_blank" rel="noopener" href="http://jm.taobao.org/2016/09/28/an-article-about-config-center/">一篇好TM长的关于配置中心的文章 | 阿里中间件团队博客</a><br>顺便提一句，文中提到的淘宝的开源配置中心项目Diamond，但已经5年没有维护了。。。</p>
+<h2 id="配置中心的优点与缺点"><a href="#配置中心的优点与缺点" class="headerlink" title="配置中心的优点与缺点"></a>配置中心的优点与缺点</h2><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>避免敏感信息在源代码中暴露，安全性提升</li>
+<li>可以实现不重启应用就动态刷新配置</li>
+<li>可以在应用间共享配置。原本只能在应用内共享配置</li>
+<li>配置集中化管理，易于全局管理所有配置</li>
+<li>对配置进行权限管理</li>
+</ul>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>原本下载应用代码就可以启动，现在还增加依赖spring cloud config server服务&#x2F;Apollo服务</li>
+<li>如果config服务挂了，应用会无法重启</li>
+<li>不如配置放在项目中那么直观</li>
+<li>多分支开发的时候，处理不当的话可能会互相影响</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/03/26/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83-1-%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E4%BB%8B%E7%BB%8D/" data-id="clzhqgge60003ng6oei921g3n" data-title="分布式配置中心 - 1. 配置中心介绍" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/03/28/Gitlab-CI-pipeline%E5%90%AF%E5%8A%A8tomcat%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          从Gitlab CI启动tomcat的坑，到tty与进程组
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/03/22/Twelve-Factor-12%E8%A6%81%E7%B4%A012%E5%8E%9F%E5%88%99/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">Twelve-Factor 12要素12原则</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/" rel="tag">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/" rel="tag">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/" rel="tag">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/" rel="tag">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/%E4%B8%AD%E5%8F%B0/" style="font-size: 10px;">中台</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 20px;">容器</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 11.67px;">运维</a> <a href="/tags/%E9%87%91%E8%9E%8D/" style="font-size: 10px;">金融</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/">Resume以及ARTS</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">金融业务-不动产保理业务入门和系统设计</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/">运维-运维体系标准化之故障管理</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/">运维-运营体系标准化之配置管理CMDB</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/">管理-远程办公项目管理经验总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 姚皓(Hao Yao)<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

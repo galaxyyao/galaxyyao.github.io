@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为 | Galaxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="我们上一章部署都是通过神奇的kubectl命令。我们这章就探寻一下，当我们拍下kubectl命令到Pod成功启动之间，Kubernetes究竟做了一些什么事情。先上一张总的架构图，下面提到每个组件的时候可以在这张架构图上找位置，以及和其他组件间的关联关系：   1. 全流程1.1 Kubectlkubectl是用于针对Kubernetes集群运行命令的命令行接口。虽然我们是在Master节点上执行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为">
+<meta property="og:url" content="https://galaxyyao.github.io/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="我们上一章部署都是通过神奇的kubectl命令。我们这章就探寻一下，当我们拍下kubectl命令到Pod成功启动之间，Kubernetes究竟做了一些什么事情。先上一张总的架构图，下面提到每个组件的时候可以在这张架构图上找位置，以及和其他组件间的关联关系：   1. 全流程1.1 Kubectlkubectl是用于针对Kubernetes集群运行命令的命令行接口。虽然我们是在Master节点上执行">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-architecture.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-replicaset.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-deploymentcontroller.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-replicaset-v2.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/kustomize.jpg">
+<meta property="article:published_time" content="2019-06-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-30T05:34:34.000Z">
+<meta property="article:author" content="姚皓(Hao Yao)">
+<meta property="article:tag" content="容器">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-architecture.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Galaxy</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://galaxyyao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/" class="article-date">
+  <time class="dt-published" datetime="2019-06-24T16:00:00.000Z" itemprop="datePublished">2019-06-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我们上一章部署都是通过神奇的kubectl命令。我们这章就探寻一下，当我们拍下kubectl命令到Pod成功启动之间，Kubernetes究竟做了一些什么事情。<br>先上一张总的架构图，下面提到每个组件的时候可以在这张架构图上找位置，以及和其他组件间的关联关系：<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-architecture.png" alt="Kubernetes component architecture">  </p>
+<h2 id="1-全流程"><a href="#1-全流程" class="headerlink" title="1. 全流程"></a>1. 全流程</h2><h3 id="1-1-Kubectl"><a href="#1-1-Kubectl" class="headerlink" title="1.1 Kubectl"></a>1.1 Kubectl</h3><p>kubectl是用于针对Kubernetes集群运行命令的命令行接口。<br>虽然我们是在Master节点上执行运行的kubectl，但其实kubectl也可以在本地安装，与k8s的api server远程通信交互。<br>kubectl在接到apply命令后，会先做一个基本的验证。如果要创建的资源不合法，或YAML格式错误，就会快速失败。<br>除了通过kubectl之外，也可以直接调用api，或通过dashboard UI等多种方式与api server通信。  </p>
+<p>在通信之前，kubectl需要先进行身份认证。认证信息保存在$HOME&#x2F;.kube&#x2F;config文件里，大致内容如下：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 .kube]# pwd</span><br><span class="line">/root/.kube</span><br><span class="line">[root@docker-4 .kube]# cat config</span><br><span class="line">apiVersion: v1</span><br><span class="line">clusters:</span><br><span class="line">- cluster:</span><br><span class="line">    certificate-authority-data: &lt;证书授权信息&gt;</span><br><span class="line">    server: https://10.16.34.54:6443</span><br><span class="line">  name: kubernetes</span><br><span class="line">contexts:</span><br><span class="line">- context:</span><br><span class="line">    cluster: kubernetes</span><br><span class="line">    user: kubernetes-admin</span><br><span class="line">  name: kubernetes-admin@kubernetes</span><br><span class="line">current-context: kubernetes-admin@kubernetes</span><br><span class="line">kind: Config</span><br><span class="line">preferences: &#123;&#125;</span><br><span class="line">users:</span><br><span class="line">- name: kubernetes-admin</span><br><span class="line">  user:</span><br><span class="line">    client-certificate-data: &lt;客户端证书数据&gt;</span><br></pre></td></tr></table></figure>
+
+<p>config文件中的clusters.cluster.server就是要访问的api server的地址</p>
+<h3 id="1-2-kube-apiserver"><a href="#1-2-kube-apiserver" class="headerlink" title="1.2 kube-apiserver"></a>1.2 kube-apiserver</h3><p>API Server对外暴露了Kubernetes API，用于提供查询&#x2F;操作&#x2F;监控服务。<br>当接收到来自kubectl的请求后，API Server会先做三件事：  </p>
+<ul>
+<li>验证认证信息</li>
+<li>确认授权，即发送请求的用户有权限进行这个操作</li>
+<li>准入控制，封装了一系列额外的检查以确保操作不会产生意外或负面结果。还可以自定义插件实现自己的准入控制</li>
+</ul>
+<h3 id="1-3-etcd"><a href="#1-3-etcd" class="headerlink" title="1.3 etcd"></a>1.3 etcd</h3><p>etcd是一种高可用分布式存储，用于共享配置和服务发现。<br>之前在研究服务注册的时候还比较过它与Consul。etcd和Consul一样都是在CAP中保证CP，都是用Go语言开发的，一致性协议也都是用raft。Consul相比etcd多了多数据中心的支持。当然在k8s出现的时候还没有Consul，只有在zookeeper和etcd之间选。etcd相比zookeeper能稳定提供更大的吞吐量和延迟，而且和k8s使用的开发语言都是Go，这大概是最终选择了etcd的主要原因吧。  </p>
+<p>k8s集群将etcd当做数据库来使用，把所有的数据都存储在etcd上。当执行kubectl get命令时，结果就是从etcd中获取的。<br>假设kubectl执行的是创建上一篇中nginx-deployment的行为，那么最终etcd中保存的是4个对象：  </p>
+<ul>
+<li>1个Deployment对象</li>
+<li>1个ReplicaSet对象</li>
+<li>2个Pod对象<br>关于为什么还多了一个ReplicaSet对象，我们在下面说明。</li>
+</ul>
+<h3 id="1-4-Initializer初始化"><a href="#1-4-Initializer初始化" class="headerlink" title="1.4 Initializer初始化"></a>1.4 Initializer初始化</h3><p>在Pod还处于Pending状态，可以对Pod进行一些修改。例如给容器插入一个Sidecar容器，添加一些环境变量，挂载volume等等。Initializer初始器就是负责这个工作的。<br>最热门的Service Mesh–Istio项目就是通过Initializer，将Envoy容器作为Sidecar插入到每个启动的Pod中的。</p>
+<h3 id="1-5-控制循环"><a href="#1-5-控制循环" class="headerlink" title="1.5 控制循环"></a>1.5 控制循环</h3><p>Kubernetes内部始终在运行着一个“控制循环”来实现资源的调整。<br>控制循环，就是控制平面的死循环。每次循环过程中，都会通过将k8s的“当前状态”和“期望状态”进行比对，来决定下一步进行什么操作。<br>用伪代码来描述就是：  </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">  实际状态 := 获取集群中对象 X 的实际状态（Actual State）</span><br><span class="line">  期望状态 := 获取集群中对象 X 的期望状态（Desired State）</span><br><span class="line">  <span class="keyword">if</span> 实际状态 == 期望状态&#123;</span><br><span class="line">    什么都不做</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    执行编排动作，将实际状态调整为期望状态</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例如当刚接收到nginx-deployment的命令时，期望是要部署2个pod，实际状态是0个pod已Ready，差额是2个：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 deployment]# kubectl get deployment</span><br><span class="line">NAME                      READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">nginx-deployment          0/2     2            0           3s</span><br></pre></td></tr></table></figure>
+
+<p>当部署完成后，期望状态&#x3D;&#x3D;实际状态，部署结束：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 deployment]# kubectl get deployment</span><br><span class="line">NAME                      READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">nginx-deployment          2/2     2            2           19s</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-6-DeploymentController与ReplicaSet"><a href="#1-6-DeploymentController与ReplicaSet" class="headerlink" title="1.6 DeploymentController与ReplicaSet"></a>1.6 DeploymentController与ReplicaSet</h3><p>对于每个对象类型，由kube-controller-manager对应的controller来创建。例如Deployment就对应DeploymentController。<br>在一些比较早的文章里，你还能看到ReplicationController，但现在它已经不再被使用。DeploymentController是其升级版，在包含了ReplicationController所有功能的基础上还增加了回滚暂停等功能。  </p>
+<p>在说明DeploymentController之前，先提一下上一章里没有提到的一个细节：Deployment和Pod之间还隔了一层ReplicaSet。<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-replicaset.png" alt="Kubernetes ReplicaSet">  </p>
+<p>保持副本数量其实主要是靠ReplicaSet。从一个ReplicaSet的YAML可以看到，几乎和Deployment一模一样：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ReplicaSet</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-set</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.7.9</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>但我们之所以不直接使用ReplicaSet部署，是由于ReplicaSet的功能比较简陋。当我们想实现滚动更新的时候，就需要更上一层的Deployment支援了。  </p>
+<p>DeploymentController通过一个叫Informer的模块对Deployment、ReplicaSet和Pod的变更进行监听。<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-deploymentcontroller.png" alt="Kubernetes DeploymentController"><br>假设上述范例中poc-deployment里的应用升级了一个版本，从v1升级到了v2。控制循环会获得一个新的期望：部署两个v2的Pod。现状是有两个v1的Pod。但此时不能立即把v1的Pod停止了，不然服务就会有一段时间不可用了。在整个滚动更新的过程中，需要保证至少有两个Pod可用，无论是v1还是v2。<br>所以这时候Deployment会创建一个v2的ReplicaSet，包含v2的Pod。<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-replicaset-v2.png" alt="Kubernetes ReplicaSet V2"><br>当v2的ReplicaSet中Pod的状态Ready后，v1的ReplicaSet就可以进行缩容为0个Pod了。  </p>
+<p>PS. 我们实际场景中可能会有会话黏连（session sticky）的情况存在。会话还处于活跃状态的Pod不应该被直接下线。怎么处理就是后话了。  </p>
+<h3 id="1-7-kube-scheduler"><a href="#1-7-kube-scheduler" class="headerlink" title="1.7 kube-scheduler"></a>1.7 kube-scheduler</h3><p>Pod创建好之后，还没有被分派节点。kube-scheduler就是用来将待分派的Pod调度到指定Worker节点，并将节点与Pod的绑定信息也记录到etcd。<br>Master上的工作到此为止。  </p>
+<h3 id="1-8-kubelet"><a href="#1-8-kubelet" class="headerlink" title="1.8 kubelet"></a>1.8 kubelet</h3><p>每个Worker节点上会有一个Kubelet服务进程。kube-scheduler下发的任务就是由kubelet接收的。除此之外，它还负责：  </p>
+<ul>
+<li>挂载Pod所需要的volume</li>
+<li>下载Pod的secret</li>
+<li>运行容器</li>
+<li>对容器生命周期进行检测</li>
+<li>回报节点和Pod的状态<br>可以把Kubelet当成一种特殊的Controller。</li>
+</ul>
+<p>至此容器正常启动，整个流程结束。  </p>
+<h2 id="2-声明式API"><a href="#2-声明式API" class="headerlink" title="2. 声明式API"></a>2. 声明式API</h2><p>kubectl apply和docker run看上去是两句很类似的命令，但表现出来的理念截然不同。<br>docker run是命令式的。你发出命令，服务器接收，并按照命令创建出容器。<br>但Kuberentes的API是所谓的“声明式”，即你向Kubernetes提交一个定义好的API对象，声明自己想要达到的目标状态。当Kubernetes接收到这个目标状态后，自己内部协调各种组件，达成并保持这个状态。  </p>
+<p>声明式对于分布式系统有着重大的意义。  </p>
+<ul>
+<li>首先是能实现自动化调整。分布式系统的每个组件都可能会随时发生故障。假设一个节点在部署某个Pod的过程中突然挂掉了，如果采用的是命令式API，就需要人工干预：“我换个节点再重新拍命令。等恢复那个节点后再进行之前操作的回滚”。但对于使用了声明式API的Kubernetes，会在每个控制循环的开始检查：“之前部署Pod的任务还没完成，和kubelet联系一下，问问看Node进展如何了？怎么联系不上Node？换个Node部署吧。”在挂掉的Node恢复后，它会自动调用API Server获取当前状态并进行分析：“之前要我部署的Pod已经在其他Node上部署好了？如果我继续部署的话，Pod数量就比目标多了。那么我把自己进行到一半的操作回滚吧。”整个过程完全无需外界干预。  </li>
+<li>其次，对于命令式API，每个命令都是独占且阻塞的。只有先等前一个命令执行完之后才能执行下一个命令，不然就有出现冲突的可能。而声明式API使得多个写操作都能并行执行，使得处理效率大大提升。  </li>
+<li>此外，声明式API还支持操作的合并。你可以设置一个YAML为基础YAML，在用户提交YAML后会和基础YAML合并，然后再提交给API Server。我感觉这有点像Java里的自定义拦截器。知名的Istio项目是主要实现原理也就是靠这种方式注入Envoy。</li>
+</ul>
+<p><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/kustomize.jpg" alt="Kubernetes kustomize">   </p>
+<h2 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h2><p>本篇主要参考了<a target="_blank" rel="noopener" href="https://github.com/jamiehannaford/what-happens-when-k8s">jamiehannaford&#x2F;what-happens-when-k8s: What happens when I type kubectl run?</a><br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzU1MzY4NzQ1OA==&mid=2247484192&idx=1&sn=91c70c17c8d1c87950f321284083201a&chksm=fbee43edcc99cafb0d9545ca0727c03f1249729635d99373c79a4a0dab3ab122df8191f04437&mpshare=1&scene=1&srcid=&key=55c5aac104b43cbd3c53056a63edc606f9a6a33d4c9869f4f1d73cf0752a59e1b388d154653af734bea9ecf943efba56f96932bd5c85ecca9016603557ddfac21503c0347d2b62176f2a1870e52f24c4&ascene=1&uin=MTI2MzU5MTI4MA==&devicetype=Windows+10&version=62060833&lang=zh_CN&pass_ticket=QXPk0d9qyCPvIVu28S2CGQLMg+qFH8Z6fcaxHhhfwKaUOGhlAZlZPlBXKAnDcSTA">翻译版</a>  </p>
+<p>对k8s如何使用etcd的简要介绍<br><a target="_blank" rel="noopener" href="https://matthewpalmer.net/kubernetes-app-developer/articles/how-does-kubernetes-use-etcd.html">How Does Kubernetes Use etcd?</a>  </p>
+<p>Deployment原理主要是参考这篇<br><a target="_blank" rel="noopener" href="https://draveness.me/kubernetes-deployment">详解 Kubernetes Deployment 的实现原理</a>  </p>
+<p>关于Informer机制的更详细介绍<br><a target="_blank" rel="noopener" href="https://www.kubernetes.org.cn/2693.html">Kubernetes Informer 详解_Kubernetes中文社区</a>  </p>
+<p>这篇是Kubernetes的开发者介绍的Kubernetes设计原则，值得完整读一下<br><a target="_blank" rel="noopener" href="https://www.yangcs.net/posts/kubernetes-design-and-development-explained/">Kubernetes 设计与开发原则 - 杨传胜的博客|Cloud Native|yangcs.net</a><br>原文是这篇：<br><a target="_blank" rel="noopener" href="https://thenewstack.io/kubernetes-design-and-development-explained/">Kubernetes Design and Development Explained - The New Stack</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/" data-id="clzhqggea000sng6o8x54703a" data-title="容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/26/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          容器-10-Kubernetes实战-Service
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">容器-8-Kubernetes实战-k8s核心概念之Node,Pod与Deployment</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/" rel="tag">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/" rel="tag">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/" rel="tag">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/" rel="tag">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/%E4%B8%AD%E5%8F%B0/" style="font-size: 10px;">中台</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 20px;">容器</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 11.67px;">运维</a> <a href="/tags/%E9%87%91%E8%9E%8D/" style="font-size: 10px;">金融</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/">Resume以及ARTS</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">金融业务-不动产保理业务入门和系统设计</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/">运维-运维体系标准化之故障管理</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/">运维-运营体系标准化之配置管理CMDB</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/">管理-远程办公项目管理经验总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 姚皓(Hao Yao)<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

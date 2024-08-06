@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Galaxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="姚皓的技术博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Galaxy">
+<meta property="og:url" content="https://galaxyyao.github.io/page/4/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="姚皓的技术博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="姚皓(Hao Yao)">
+<meta property="article:tag" content="galaxyyao,姚皓">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Galaxy</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://galaxyyao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-分布式配置中心-2-Spring-Cloud-Config评估" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/03/29/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83-2-Spring-Cloud-Config%E8%AF%84%E4%BC%B0/" class="article-date">
+  <time class="dt-published" datetime="2019-03-28T16:00:00.000Z" itemprop="datePublished">2019-03-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/03/29/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83-2-Spring-Cloud-Config%E8%AF%84%E4%BC%B0/">分布式配置中心 - 2. Spring Cloud Config评估</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Spring-Cloud-Config架构图"><a href="#Spring-Cloud-Config架构图" class="headerlink" title="Spring Cloud Config架构图"></a>Spring Cloud Config架构图</h2><p><img src="/images/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83-2-Spring-Cloud-Config%E8%AF%84%E4%BC%B0/config-server-fig1.png" alt="Spring Cloud Config架构-Git配置"></p>
+<p>从上图可以看到，Spring Cloud Config（Git版）的架构还是非常简单的。简单的代价就是缺少可视化配置界面，无法实现灰度发布和自动回滚。要实现比较复杂和细粒度的权限控制也比较困难。<br>如果只使用Spring Cloud Config也没法实现配置自动刷新，还要依赖于Spring Cloud Bus。</p>
+<h2 id="技术资料"><a href="#技术资料" class="headerlink" title="技术资料"></a>技术资料</h2><p><a target="_blank" rel="noopener" href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_spring_cloud_config_server">Spring-Cloud-Config-官方文档-server</a><br><a target="_blank" rel="noopener" href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_spring_cloud_config_client">Spring-Cloud-Config-官方文档-client</a><br><a target="_blank" rel="noopener" href="https://www.baeldung.com/spring-cloud-configuration">Spring-Cloud-Config-配置中心-git</a></p>
+<h2 id="对配置中心的期望"><a href="#对配置中心的期望" class="headerlink" title="对配置中心的期望"></a>对配置中心的期望</h2><p>在具体评估技术之前，可以先列一下我们希望该技术能实现的目标，然后进行逐一确认是否能实现。<br>对于配置中心，我们的期望如下：</p>
+<h4 id="从代码和项目管理角度"><a href="#从代码和项目管理角度" class="headerlink" title="从代码和项目管理角度"></a>从代码和项目管理角度</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 清晰地按项目划分配置</li>
+<li><input checked="" disabled="" type="checkbox"> 可以将项目间共通的配置提取公共配置</li>
+<li><input checked="" disabled="" type="checkbox"> 可以支持非Java应用获取配置</li>
+</ul>
+<h4 id="从信息安全角度"><a href="#从信息安全角度" class="headerlink" title="从信息安全角度"></a>从信息安全角度</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 生产和测试配置有分别的权限控制</li>
+<li><input checked="" disabled="" type="checkbox"> 可以对生产的密码配置进行不可逆的加密</li>
+</ul>
+<h4 id="从版本管理角度"><a href="#从版本管理角度" class="headerlink" title="从版本管理角度"></a>从版本管理角度</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 可以支持多个不同分支同时并行开发</li>
+<li><input checked="" disabled="" type="checkbox"> 支持自动化持续集成</li>
+</ul>
+<h4 id="从运维角度"><a href="#从运维角度" class="headerlink" title="从运维角度"></a>从运维角度</h4><ul>
+<li><input checked="" disabled="" type="checkbox"> 当配置修改后可以动态刷新更新配置</li>
+<li><input checked="" disabled="" type="checkbox"> 部署上可以实现高可用，当一个节点崩溃时不影响正常使用。</li>
+<li><input checked="" disabled="" type="checkbox"> 当配置中心不可用时，应用不会立刻崩溃</li>
+<li><input disabled="" type="checkbox"> 有可视化的界面，方便维护</li>
+</ul>
+<h2 id="Spring-Cloud-Config各种特性的具体实现"><a href="#Spring-Cloud-Config各种特性的具体实现" class="headerlink" title="Spring Cloud Config各种特性的具体实现"></a>Spring Cloud Config各种特性的具体实现</h2><h4 id="按目录划分不同应用-不同环境-不同版本"><a href="#按目录划分不同应用-不同环境-不同版本" class="headerlink" title="按目录划分不同应用&#x2F;不同环境&#x2F;不同版本"></a>按目录划分不同应用&#x2F;不同环境&#x2F;不同版本</h4><p>可以通过search-path实现。下面是按目录划分应用的范例： </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">config:</span></span><br><span class="line">      <span class="attr">server:</span></span><br><span class="line">        <span class="attr">git:</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">http://gitlab.anxintrust.com/config/java-project-config.git</span></span><br><span class="line">          <span class="attr">search-paths:</span> <span class="string">&#x27;&#123;application&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="共享公共配置"><a href="#共享公共配置" class="headerlink" title="共享公共配置"></a>共享公共配置</h4><p>可以在根目录下建立common&#x2F;application.yml文件实现  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">search-paths:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&#x27;&#123;application&#125;&#x27;</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">common</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="动态刷新"><a href="#动态刷新" class="headerlink" title="动态刷新"></a>动态刷新</h4><p>可以通过&#x2F;actuator&#x2F;refresh加上@RefreshScope注解实现。<br>这个时候专门的@Configuration配置类的好处就体现出来了。只要给配置类加上@RefreshScope就可以了。而如果使用@Value获取配置的话，就需要在所有用到配置的类上加注解了。</p>
+<h4 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h4><p>通过JCE(Java Cryptography Extension)实现。具体可以参见：<a target="_blank" rel="noopener" href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption">Encryption and Decryption</a></p>
+<h4 id="测试和生产使用不同的仓库"><a href="#测试和生产使用不同的仓库" class="headerlink" title="测试和生产使用不同的仓库"></a>测试和生产使用不同的仓库</h4><p>为了信息安全考虑，生产和测试可以通过使用不同的Eureka服务，注册到不同的仓库<br><img src="/images/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83-2-Spring-Cloud-Config%E8%AF%84%E4%BC%B0/spring-cloud-config-deploy.png" alt="Spring Cloud Config 部署架构"></p>
+<h4 id="版本管理-多分支并行开发"><a href="#版本管理-多分支并行开发" class="headerlink" title="版本管理&#x2F;多分支并行开发"></a>版本管理&#x2F;多分支并行开发</h4><p>多分支并行开发可以使用git的分支来实现。<br>假设有两个人分别在branch1和branch2上开发，而这两个分支可能会产生冲突。那么可以将配置的git项目建立分支，然后在客户端改为如下配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cloud:</span><br><span class="line">  config:</span><br><span class="line">    uri: http://127.0.0.1:20001/</span><br><span class="line">    label: branch1</span><br></pre></td></tr></table></figure>
+
+<h4 id="高可用"><a href="#高可用" class="headerlink" title="高可用"></a>高可用</h4><p>如果在client的配置里写死server，会导致两个副作用：</p>
+<ul>
+<li>当ip修改后所有配置都需要修改</li>
+<li>无法做到高可用<br>所以配合Eureka，将多个config server注册到eureka server上。具体实现可以参见：<br><a target="_blank" rel="noopener" href="https://www.kancloud.cn/fymod/springcloud/539203">配置中心Config和Eureka结合 · SpringCloud入门指南 · 看云</a><br>即将client配置改为：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cloud:</span><br><span class="line">  config:</span><br><span class="line">    label: master</span><br><span class="line">    fail-fast: true</span><br><span class="line">    discovery:</span><br><span class="line">      enabled: true</span><br><span class="line">      service-id: cloud-config-server</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="支持非Java应用获取配置"><a href="#支持非Java应用获取配置" class="headerlink" title="支持非Java应用获取配置"></a>支持非Java应用获取配置</h4><p>非Java应用可以通过<a href="http://ip:port/{application}/{profile}/{label}">http://ip:port/{application}/{profile}/{label}</a> 获取配置。例如：<br><a target="_blank" rel="noopener" href="http://127.0.0.1:20001/cloud-config-client-demo/dev/master">http://127.0.0.1:20001/cloud-config-client-demo/dev/master</a></p>
+<p>例如：<br><a target="_blank" rel="noopener" href="https://github.com/marshalYuan/spring-cloud-example/blob/master/docs/sidecar.md">Node.js通过Sidecar获取Spring Cloud Config配置</a></p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h4 id="配置文件优先级"><a href="#配置文件优先级" class="headerlink" title="配置文件优先级"></a>配置文件优先级</h4><p>Spring Cloud Config的配置需要早于application.yml&#x2F;application.properties加载。不然就会从默认的<a target="_blank" rel="noopener" href="http://localhost:8888/%E8%8E%B7%E5%8F%96%E9%85%8D%E7%BD%AE%E3%80%82">http://localhost:8888/获取配置。</a><br>所以需要将配置写在resources&#x2F;bootstrap.yml文件里。</p>
+<h2 id="源代码阅读参考"><a href="#源代码阅读参考" class="headerlink" title="源代码阅读参考"></a>源代码阅读参考</h2><p><strong>为什么bootstrap会在application配置之前读取</strong><br><a target="_blank" rel="noopener" href="https://github.com/spring-cloud/spring-cloud-commons/blob/master/spring-cloud-context/src/main/java/org/springframework/cloud/bootstrap/BootstrapApplicationListener.java">Spring Cloud BootstrapApplicationListener</a></p>
+<p><strong>Spring容器的刷新过程</strong><br><a target="_blank" rel="noopener" href="https://fangjian0423.github.io/2017/05/10/springboot-context-refresh/">SpringBoot源码分析之Spring容器的refresh过程 | Format’s Notes</a></p>
+<p><strong>Spring Cloud的热更新机制</strong><br><a target="_blank" rel="noopener" href="http://www.scienjus.com/spring-cloud-refresh/">Spring Cloud 是如何实现热更新的 · ScienJus’s Blog</a></p>
+<h2 id="其他参考资料"><a href="#其他参考资料" class="headerlink" title="其他参考资料"></a>其他参考资料</h2><h4 id="spring-cloud-config-server中-RefreshScope的”陷阱”-菩提树下的杨过-博客园"><a href="#spring-cloud-config-server中-RefreshScope的”陷阱”-菩提树下的杨过-博客园" class="headerlink" title="spring cloud:config-server中@RefreshScope的”陷阱” - 菩提树下的杨过 - 博客园"></a>spring cloud:config-server中@RefreshScope的”陷阱” - 菩提树下的杨过 - 博客园</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yjmyzz/p/8085530.html">https://www.cnblogs.com/yjmyzz/p/8085530.html</a></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>原本想在评估完Spring Cloud Config之后开始研究和部署Apollo。但实际评估下来觉得对于我们目前的状况来说，Spring Cloud Config就已经足够了。<br>我们当前的情况：  </p>
+<ul>
+<li>研发团队规模小</li>
+<li>微服务节点少</li>
+<li>配置更新频率低</li>
+<li>后端基本都是Java服务</li>
+</ul>
+<p>Apollo和Nacos在以下几方面有优势：  </p>
+<ul>
+<li>更好的管理配置UI</li>
+<li>多层级的权限控制</li>
+<li>团队开发语言多样</li>
+<li>配置更新频繁</li>
+<li>微服务节点多</li>
+</ul>
+<p>有一篇Nacos社区committer写的评估比较文可以作为参考，相对比较中立（略偏向Nacos）：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzAxNjM2MTk0Ng==&mid=2247487238&idx=1&sn=7c37a2c260daa64560501f78297ae0eb&chksm=9bf4bfb3ac8336a5da5426187438e48547591e4ace0622ac12bc79e066e3b271a60fd85e3e3a&mpshare=1&scene=1&srcid=&key=04ffe5b653798a42a0cbc0d8089e57c8f597cf61f6f4f51562d9b3c06c34835e0f34f4eca6e96e38dd83c982b2cd30f26d01d35f0395ab436c3e5d95a5cfcab8bf2a3c23c4e77b9c85c9b67ba480fab8&ascene=1&uin=MTI2MzU5MTI4MA==&devicetype=Windows+10&version=62060739&lang=zh_CN&pass_ticket=cCLMzzNOAvsb81M9HP1AhstrTm5ikm2e4n9GUj4qsfuxq6MGaWS9GiGVN7S8OyL/">架构设计之微服务配置中心选型</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/03/29/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83-2-Spring-Cloud-Config%E8%AF%84%E4%BC%B0/" data-id="clzhqgge70006ng6o7sbogtew" data-title="分布式配置中心 - 2. Spring Cloud Config评估" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Gitlab-CI-pipeline启动tomcat中遇到的坑" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/03/28/Gitlab-CI-pipeline%E5%90%AF%E5%8A%A8tomcat%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" class="article-date">
+  <time class="dt-published" datetime="2019-03-27T16:00:00.000Z" itemprop="datePublished">2019-03-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/03/28/Gitlab-CI-pipeline%E5%90%AF%E5%8A%A8tomcat%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/">从Gitlab CI启动tomcat的坑，到tty与进程组</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="问题症状"><a href="#问题症状" class="headerlink" title="问题症状"></a>问题症状</h2><p>为了做一个Spring MVC的Java Web项目的CI，我写了个编译war包后启动tomcat的脚本。CI脚本很简单：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">sit:</span></span><br><span class="line">   <span class="attr">script:</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">cd</span> <span class="string">/root/</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">./test-publish-xxx-sit.sh</span></span><br><span class="line">   <span class="attr">only:</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">develop</span></span><br></pre></td></tr></table></figure>
+<p>SSH到服务器手工执行脚本一切顺利。但通过gitlab-runner执行脚本，到最后一步执行.&#x2F;startup.sh启动tomcat的时候，遇到了两个很奇怪的现象：</p>
+<ul>
+<li>和SSH下执行.&#x2F;startup.sh不同，没有打印环境变量（例如Using CATALINA_BASE:）。只显示了最后一句“Tomcat started.”</li>
+<li>虽然打印了“Tomcat started.”，tomcat却没有正常启动。catalina.out里完全没有启动日志信息<br>尝试过从权限和执行用户方向排查，都没有找到原因。</li>
+</ul>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>在gitlab的论坛看到有人回答需要部署为linux的service，或者加个setsid，才能启动。结果证明这两种方式都是可行的解决方案。  </p>
+<p>问题是解决了。但疑问还是没解决：</p>
+<ul>
+<li>为何同样的用户执行，打印的日志不一样？</li>
+<li>为何普通脚本可以成功执行，但执行tomcat的启动脚本startup.sh的时候就会出问题？<br>前一个问题和tty有关，后一个问题和Linux进程组有关。</li>
+</ul>
+<h2 id="引申1：tty"><a href="#引申1：tty" class="headerlink" title="引申1：tty"></a>引申1：tty</h2><p>以前在python脚本排查的时候遇到过一个诡异的问题：sudo -i切换root下时可以正常执行的命令，到su - root切换到root下就执行失败了。最终发现问题和PATH环境变量有关。但这次明显不是这个原因，要不然也不会打印“Tomcat started.”的日志。<br>在翻了tomcat的catalina.sh后，找到了这段：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Bugzilla 37848: only output this if we have a TTY</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$have_tty</span> -eq 1 ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Using CATALINA_BASE:   <span class="variable">$CATALINA_BASE</span>&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Using CATALINA_HOME:   <span class="variable">$CATALINA_HOME</span>&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Using CATALINA_TMPDIR: <span class="variable">$CATALINA_TMPDIR</span>&quot;</span></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$1</span>&quot;</span> = <span class="string">&quot;debug&quot;</span> ] ; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Using JAVA_HOME:       <span class="variable">$JAVA_HOME</span>&quot;</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Using JRE_HOME:        <span class="variable">$JRE_HOME</span>&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Using CLASSPATH:       <span class="variable">$CLASSPATH</span>&quot;</span></span><br><span class="line">  <span class="keyword">if</span> [ ! -z <span class="string">&quot;<span class="variable">$CATALINA_PID</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Using CATALINA_PID:    <span class="variable">$CATALINA_PID</span>&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>而have_tty这个变量是执行tty后的结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">have_tty=0</span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;`tty`&quot;</span> != <span class="string">&quot;not a tty&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    have_tty=1</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>SSH的时候执行tty的结果是&#x2F;dev&#x2F;pts&#x2F;{数字}，而gitlab-runner执行的结果是not a tty。<br>tty的含义可以参见文末的参考资料，可以简单理解为终端。gitlab与gitlab-runner通信的时候是通过https请求，没有终端。所以按照tomcat启动脚本的逻辑不会输出环境变量。</p>
+<h2 id="引申2：进程组"><a href="#引申2：进程组" class="headerlink" title="引申2：进程组"></a>引申2：进程组</h2><p>排查时最疑惑的点在于：输出日志里打印了“Tomcat started.”，表示tomcat的启动脚本已经跑完了。但为何tomcat的进程不存在，catalina.out里也完全没有相关日志？<br>要解释这个问题，需要从进程组开始解释。  </p>
+<p>当开两个SSH连到Linux服务器上，执行ps auxf命令，可以得到如下结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND</span><br><span class="line">root      1101  0.0  0.1 106084  4136 ?        Ss   Mar20   0:00 /usr/sbin/sshd -D</span><br><span class="line">root     14590  0.0  0.1 145788  5244 ?        Ss   23:00   0:00  \_ sshd: root@pts/0</span><br><span class="line">root     14594  0.0  0.0 115440  2028 pts/0    Ss+  23:00   0:00  |   \_ -bash</span><br><span class="line">root     14631  3.2  0.1 145788  5240 ?        Ss   23:23   0:00  \_ sshd: root@pts/1</span><br><span class="line">root     14635  0.2  0.0 115436  2084 pts/1    Ss   23:23   0:00      \_ -bash</span><br><span class="line">root     14651  0.0  0.0 151244  1928 pts/1    R+   23:23   0:00          \_ ps auxf</span><br></pre></td></tr></table></figure>
+<p>这个界面展现了ssh相关的进程和进程间的父子关系。<br>TTY那一列中的pts&#x2F;0和pts&#x2F;1分别对应两个SSH终端。sshd对应下图中的ssh server。  bash是sshd进程创建的子进程。<br>当在第二个终端上通过bash执行ps auxf命令时，由bash进程创建ps auxf子进程。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">+----------+       +------------+</span><br><span class="line">| Keyboard |------&gt;|            |</span><br><span class="line">+----------+       |  Terminal  |</span><br><span class="line">| Monitor  |&lt;------|            |</span><br><span class="line">+----------+       +------------+</span><br><span class="line">                         |</span><br><span class="line">                         |  ssh protocol</span><br><span class="line">                         |</span><br><span class="line">                         ↓</span><br><span class="line">                   +------------+</span><br><span class="line">                   |            |</span><br><span class="line">                   | ssh server |--------------------------+</span><br><span class="line">                   |            |           fork           |</span><br><span class="line">                   +------------+                          |</span><br><span class="line">                       |   ↑                               |</span><br><span class="line">                       |   |                               |</span><br><span class="line">                 write |   | read                          |</span><br><span class="line">                       |   |                               |</span><br><span class="line">                 +-----|---|-------------------+           |</span><br><span class="line">                 |     |   |                   |           ↓</span><br><span class="line">                 |     ↓   |      +-------+    |       +-------+</span><br><span class="line">                 |   +--------+   | pts/0 |&lt;----------&gt;| shell |</span><br><span class="line">                 |   |        |   +-------+    |       +-------+</span><br><span class="line">                 |   |  ptmx  |&lt;-&gt;| pts/1 |&lt;----------&gt;| shell |</span><br><span class="line">                 |   |        |   +-------+    |       +-------+</span><br><span class="line">                 |   +--------+   | pts/2 |&lt;----------&gt;| shell |</span><br><span class="line">                 |                +-------+    |       +-------+</span><br><span class="line">                 |    Kernel                   |</span><br><span class="line">                 +-----------------------------+</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>状态列STAT中的加号“+”表示前台进程（可以通过man ps命令查看各种状态的详情）。第一个大S表示进程在中断睡眠，大R表示运行中。第二个小s表示是会话的session leader。<br>每个SSH窗口对应一个session会话。一个会话可以由多个进程组构成。一个进程组成为会话的前台工作(foreground)，而其他的进程组是后台工作(background)。<br>我们也可以执行命令的时候添加&amp;，使进程组成为后台进程组。</p>
+<p>在熟悉了这些知识后，我们来回顾一下我们的gitlab-runner脚本。<br>我们是通过.&#x2F;test-publish-xxx-sit.sh命令来调用脚本。在我修改之前，脚本是通过调用.&#x2F;startup.sh启动tomcat。<br>.&#x2F;xxx.sh是fork调用，即从当前进程创建一个子进程来执行脚本。（另外两种是source和exec）<br>startup.sh fork调用了catalina.sh。而catalina.sh通过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java 【省略参数】 org.apache.catalina.startup.Bootstrap start 【省略参数】 &amp;</span><br></pre></td></tr></table></figure>
+<p>这条命令启动了tomcat。总结一下，父子关系大致如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/usr/lib/gitlab-runner/gitlab-runner run</span><br><span class="line"> \_ /bin/bash</span><br><span class="line">     \_ /bin/sh ./test-publish-xxx-sit.sh</span><br><span class="line">         \_ /bin/sh ./startup.sh</span><br><span class="line">             \_ /bin/sh ./catalina.sh</span><br><span class="line">                 \_ /usr/bin/java org.apache.catalina.startup.Bootstrap start</span><br></pre></td></tr></table></figure>
+
+<p>通过gitlab runner的源代码可以看到，gitlab runner在执行完每条命令，对该命令的进程组执行KillProcessGroup操作。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> &#123;</span><br><span class="line"><span class="keyword">case</span> err = &lt;-waitCh:</span><br><span class="line">	<span class="keyword">return</span> err</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> &lt;-cmd.Context.Done():</span><br><span class="line">	<span class="keyword">return</span> s.killAndWait(c, waitCh)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *executor)</span></span> killAndWait(cmd *exec.Cmd, waitCh <span class="keyword">chan</span> <span class="type">error</span>) <span class="type">error</span> &#123;</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		s.Debugln(<span class="string">&quot;Aborting command...&quot;</span>)</span><br><span class="line">		helpers.KillProcessGroup(cmd)</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;-time.After(time.Second):</span><br><span class="line">		<span class="keyword">case</span> err := &lt;-waitCh:</span><br><span class="line">			<span class="keyword">return</span> err</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所以当gitlab-runner执行完&#x2F;bin&#x2F;sh .&#x2F;test-publish-xxx-sit.sh这个命令，杀掉进程组后，tomcat进程也被跟着一起杀掉了。<br>这也解释了为什么tomcat部署为服务和setsid命令会起效。<br>当setsid后，tomcat的启动脚本进程和原父进程脱离关系，成为了孤儿进程。<br>当部署为服务后，tomcat成为了守护进程，自然也和gitlab-runner的进程没有了关系。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>想起来当初刚开始玩Spring Boot的时候，在Linux服务器上用java -jar加上&amp;后台启动应用后，过了两小时后进程被自动杀掉了。一开始还以为是Spring Boot的Bug。。。在总结了发生规律后，才发现是和SSH session有关。改为了nohup+&amp;启动后问题解决。之后又改为优雅一些的注册为系统服务。但对原理的不甚了了，最终还是导致这次栽坑了。<br>知其然，知其所以然。<br>不过这次相比之前也有一点改进：总算储备的shell知识积累到有胆子去翻tomcat启动脚本了。这次顺带解答了我之前的一个疑惑：为什么启动tomcat的启动命令.&#x2F;startup.sh时不用后面加&amp;。这是因为启动脚本里已经带了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span> \&#123; <span class="variable">$_NOHUP</span> <span class="string">&quot;\&quot;<span class="variable">$_RUNJAVA</span>\&quot;&quot;</span> <span class="string">&quot;\&quot;<span class="variable">$LOGGING_CONFIG</span>\&quot;&quot;</span> <span class="variable">$LOGGING_MANAGER</span> <span class="variable">$JAVA_OPTS</span> <span class="variable">$CATALINA_OPTS</span> \</span><br><span class="line">  -D<span class="variable">$ENDORSED_PROP</span>=<span class="string">&quot;\&quot;<span class="variable">$JAVA_ENDORSED_DIRS</span>\&quot;&quot;</span> \</span><br><span class="line">  -classpath <span class="string">&quot;\&quot;<span class="variable">$CLASSPATH</span>\&quot;&quot;</span> \</span><br><span class="line">  -Dcatalina.base=<span class="string">&quot;\&quot;<span class="variable">$CATALINA_BASE</span>\&quot;&quot;</span> \</span><br><span class="line">  -Dcatalina.home=<span class="string">&quot;\&quot;<span class="variable">$CATALINA_HOME</span>\&quot;&quot;</span> \</span><br><span class="line">  -Djava.io.tmpdir=<span class="string">&quot;\&quot;<span class="variable">$CATALINA_TMPDIR</span>\&quot;&quot;</span> \</span><br><span class="line">  org.apache.catalina.startup.Bootstrap <span class="string">&quot;<span class="variable">$@</span>&quot;</span> start \</span><br><span class="line">  2\&gt;\&amp;1 \&amp; <span class="built_in">echo</span> \$! \&gt;\&quot;<span class="variable">$catalina_pid_file</span>\&quot; \; \&#125; <span class="variable">$catalina_out_command</span> <span class="string">&quot;&amp;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>但NOHUP参数默认不加，所以还是会被父进程杀掉。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="https://serverfault.com/questions/726451/attempting-to-restart-tomcat-8-with-gitlab-runner-pid-file-created-log-empty/730412#730412?newreg=6338dffe95904f31a1f6abf238d110a9">Attempting to restart tomcat 8 with gitlab-runner, pid file created, log empty, server not started - Server Fault</a><br>感谢作者解决问题后补充的回答。要不然我还钻在Google里，想不到去看tomcat启动脚本和gitlab-runner的源代码。</p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000009082089">Linux TTY&#x2F;PTS概述 - Linux程序员 - SegmentFault 思否</a><br>非常生动形象地用ASCII图展现了TTY的原理。</p>
+<p><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/linux/l-cn-nohup/index.html">Linux 技巧：让进程在后台可靠运行的几种方法</a><br>解释了为什么setsid和disown命令可以起效。</p>
+<p><a target="_blank" rel="noopener" href="http://blog.yongbin.me/2017/01/23/job_control/">终端断开导致Tomcat进程被kill问题分析 | El Psy Congroo</a><br>tomcat的另一种非正常死法，通过进程组实验的方式解释了原理。我没有产生过作者那样的疑问，主要是个人习惯太好了，从来不会做不退出脚本就直接关闭终端的行为（雾</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/03/28/Gitlab-CI-pipeline%E5%90%AF%E5%8A%A8tomcat%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/" data-id="clzhqgge70005ng6ob3t7dyar" data-title="从Gitlab CI启动tomcat的坑，到tty与进程组" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-分布式配置中心-1-配置中心介绍" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/03/26/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83-1-%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E4%BB%8B%E7%BB%8D/" class="article-date">
+  <time class="dt-published" datetime="2019-03-25T16:00:00.000Z" itemprop="datePublished">2019-03-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/03/26/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83-1-%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E4%BB%8B%E7%BB%8D/">分布式配置中心 - 1. 配置中心介绍</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="实施计划"><a href="#实施计划" class="headerlink" title="实施计划"></a>实施计划</h2><ul>
+<li>先以测试环境一个应用作为试点，实施配置中心</li>
+<li>稳定运行至少两周后，在生产环境的该应用上实施配置中心</li>
+<li>再稳定运行两周后，在测试和生产环境的所有应用都改为使用配置中心</li>
+<li>配置中心先使用Spring Cloud Config。不够用的话再考虑评估Apollo和Nacos</li>
+</ul>
+<h2 id="选型的考量"><a href="#选型的考量" class="headerlink" title="选型的考量"></a>选型的考量</h2><p>Spring Cloud Config的原理和架构相对比较容易理解，所以先以Spring Cloud Config作为一个具体的实例，介绍一个简化版本的配置中心。如果只是小团队的话，Spring Cloud Config已经足够用了。<br>但对于大一些的团队来说，还是存在以下两个不足：</p>
+<ul>
+<li>UI只能依赖Gitlab的界面</li>
+<li>依赖于Git的权限控制粒度比较粗，也很难扩展</li>
+</ul>
+<h2 id="什么是配置中心"><a href="#什么是配置中心" class="headerlink" title="什么是配置中心"></a>什么是配置中心</h2><p>这里引用几篇配置中心的科普文。</p>
+<h4 id="第一篇"><a href="#第一篇" class="headerlink" title="第一篇"></a>第一篇</h4><p><a target="_blank" rel="noopener" href="https://infoq.cn/article/the-foundation-of-dynamic-adjustment-configuration-center">动态调整的基础 —— 配置中心</a><br>这篇应该是淘宝在2016年之前的方案。<br>虽然相对于现在已经比较out-of-date，但其中提到的几点比较有意思：</p>
+<ul>
+<li>配置动态化的需求发展历程</li>
+<li>应用 - 平台 - 版本 - 模块的元信息模型。在spring cloud config里，对应{application}&#x2F;{profile}&#x2F;{label}的三个层次。在Apollo里，对应Namespace。</li>
+<li>把配置中心拆分成网关、核心服务和界面系统三个部分。在Apollo里，也拆分为Meta Server&#x2F;Config Service&#x2F;Admin Service三块。<br>去年的一次分享上听一个阿里的技术专家说，他进阿里第一个月做的事情就是写开关配置。光20多行的代码就加了5个开关。阿里的这个“不要写死”的要求，在加强了灵活性的同时，对配置管理也提出了很高的要求。</li>
+</ul>
+<h4 id="第二篇"><a href="#第二篇" class="headerlink" title="第二篇"></a>第二篇</h4><p>下面这篇提出了一个通用版的配置中心的架构图。<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/xlgen157387/article/details/82840553">为什么需要分布式配置中心？ - 徐刘根</a></p>
+<h4 id="第三篇"><a href="#第三篇" class="headerlink" title="第三篇"></a>第三篇</h4><p><a target="_blank" rel="noopener" href="http://jm.taobao.org/2016/09/28/an-article-about-config-center/">一篇好TM长的关于配置中心的文章 | 阿里中间件团队博客</a><br>顺便提一句，文中提到的淘宝的开源配置中心项目Diamond，但已经5年没有维护了。。。</p>
+<h2 id="配置中心的优点与缺点"><a href="#配置中心的优点与缺点" class="headerlink" title="配置中心的优点与缺点"></a>配置中心的优点与缺点</h2><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>避免敏感信息在源代码中暴露，安全性提升</li>
+<li>可以实现不重启应用就动态刷新配置</li>
+<li>可以在应用间共享配置。原本只能在应用内共享配置</li>
+<li>配置集中化管理，易于全局管理所有配置</li>
+<li>对配置进行权限管理</li>
+</ul>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>原本下载应用代码就可以启动，现在还增加依赖spring cloud config server服务&#x2F;Apollo服务</li>
+<li>如果config服务挂了，应用会无法重启</li>
+<li>不如配置放在项目中那么直观</li>
+<li>多分支开发的时候，处理不当的话可能会互相影响</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/03/26/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83-1-%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E4%BB%8B%E7%BB%8D/" data-id="clzhqgge60003ng6oei921g3n" data-title="分布式配置中心 - 1. 配置中心介绍" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Twelve-Factor-12要素12原则" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/03/22/Twelve-Factor-12%E8%A6%81%E7%B4%A012%E5%8E%9F%E5%88%99/" class="article-date">
+  <time class="dt-published" datetime="2019-03-21T16:00:00.000Z" itemprop="datePublished">2019-03-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/03/22/Twelve-Factor-12%E8%A6%81%E7%B4%A012%E5%8E%9F%E5%88%99/">Twelve-Factor 12要素12原则</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>英文版</strong><br><a target="_blank" rel="noopener" href="https://12factor.net/zh_cn/">https://12factor.net/zh_cn/</a><br><strong>中文版</strong><br><a target="_blank" rel="noopener" href="https://12factor.net/">https://12factor.net/</a></p>
+<p>这篇文章是Spring Cloud文档的总述部分提到的。12要素指的是构建SaaS应用的方法论的总结，一共有12条。<br>当得知这12要素是在2011年就提出的时候，我不禁由衷地钦佩。想想11年的时候我[消音–]都在做些啥。。。<br>从另外一个角度可以学习到的是如何从实践中提炼和总结经验，然后总结为理论。通过“实践-理论-实践-理论”这样的循环，实现螺旋式地提升。</p>
+<h2 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h2><p>类似“社会主义核心价值观”（手动狗头），12要素对我们的意义主要在对实现的指导性。我们有些时候会觉得当前的代码管理&#x2F;配置管理&#x2F;部署方案&#x2F;运维方案不够好，但又不知道怎么改进；有些时候看到了多种改进方案，但不知道哪一种更好。在这种时候可以参考12要素来决策。</p>
+<h2 id="12要素归类"><a href="#12要素归类" class="headerlink" title="12要素归类"></a>12要素归类</h2><p>我认为12要素可以粗略分为几类：</p>
+<h4 id="代码管理"><a href="#代码管理" class="headerlink" title="代码管理"></a>代码管理</h4><p>I. 基准代码&#x2F;II. 依赖</p>
+<h4 id="配置管理"><a href="#配置管理" class="headerlink" title="配置管理"></a>配置管理</h4><p>III. 配置&#x2F;IV. 后端服务 </p>
+<h4 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h4><p>V. 构建，发布，运行&#x2F;VI. 进程&#x2F;VII. 端口绑定&#x2F;VIII. 并发  </p>
+<h4 id="线上运维"><a href="#线上运维" class="headerlink" title="线上运维"></a>线上运维</h4><p>IX. 易处理&#x2F;X. 开发环境与线上环境等价&#x2F;XI. 日志&#x2F;XII. 管理进程  </p>
+<h2 id="12要素的修订和引申"><a href="#12要素的修订和引申" class="headerlink" title="12要素的修订和引申"></a>12要素的修订和引申</h2><p>毕竟是在8年前的2011年提出的，随着技术的发展，也有对12要素提出了一些修订。比如如下这篇：<br><a target="_blank" rel="noopener" href="https://www.nginx.com/blog/microservices-reference-architecture-nginx-twelve-factor-app/">MRA(Microservices Reference Architecture), Part 5: Adapting the Twelve Factor App for Microservices</a></p>
+<p>主要有以下几点：  </p>
+<ul>
+<li>对于“II. 依赖”，不仅限于类库依赖，还包括部署环境依赖。非容器环境，使用运维管理工具（Chef, Puppet, Ansible）来安装系统依赖；对于容器环境，使用Dockerfile。后面也有几点是基于容器化方案的改进意见。</li>
+<li>对于“VII. 端口绑定”，将原则扩展到数据隔离。即如果要获取另一个微服务的数据，只能通过API，而不能通过其他方式（例如读取数据库）另外要避免微服务之间有明显的依赖。</li>
+</ul>
+<h2 id="反思我们当前不符合12要素的实现"><a href="#反思我们当前不符合12要素的实现" class="headerlink" title="反思我们当前不符合12要素的实现"></a>反思我们当前不符合12要素的实现</h2><h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>现在的生产配置的加密方式还很粗糙。<br>另外现在配置还没有实现从环境变量中读取。<br>以上两点将在实施配置中心后改善。</p>
+<h4 id="服务间依赖"><a href="#服务间依赖" class="headerlink" title="服务间依赖"></a>服务间依赖</h4><p>部分微服务之间还有明显的依赖，无法避免雪崩效应。后续将引入服务发现和服务注册来改善。</p>
+<h4 id="进程无状态"><a href="#进程无状态" class="headerlink" title="进程无状态"></a>进程无状态</h4><p>部分应用的登录接口还带有粘性session。这是12-Factor极力反对的。<br>但避免粘性Session的一个必要条件是保持缓存服务的高可用。后续需要对Redis的高可用进行升级。</p>
+<h4 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h4><p>日志分析&#x2F;统计&#x2F;告警已经迈出了第一步，还有待后续改进措施的实施。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/03/22/Twelve-Factor-12%E8%A6%81%E7%B4%A012%E5%8E%9F%E5%88%99/" data-id="clzhqgge50002ng6oai8beoou" data-title="Twelve-Factor 12要素12原则" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/03/21/hello-world/" class="article-date">
+  <time class="dt-published" datetime="2019-03-20T16:00:00.000Z" itemprop="datePublished">2019-03-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/03/21/hello-world/">github级技术博客起航，以及ARTS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>陈皓在极客时间的专栏中提出过一个<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/301150832/answer/529809529">ARTS运动</a>：</p>
+<ul>
+<li>Algorithm：每周至少做一道leetcode算法题</li>
+<li>Review：每周阅读并点评至少一篇英文技术文章</li>
+<li>Tip：每周学习至少一个技术技巧</li>
+<li>Share：每周分享一篇有观点和思考的技术文章<br>我曾经在cnblog上写过博客，也在公司里做过一个名为技术沙龙的专栏，每2周写一个主题。虽然保持更新不轻松，但回想起来，有技术输出的那段时间也是技术上成长最快的时期。</li>
+</ul>
+<p>虽然大多数内容是蜻蜓点水，但也会尽量使博客的内容不是简单的copy &amp; paste。希望这个博客里有一点内容能对你有帮助，save your days。<br>希望在女儿出世后也还能保持月更。  </p>
+<p>有兴趣沟通的话可以通过邮件联系我：<a href="mailto:galaxyyao@live.com">galaxyyao[at]live.com</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/03/21/hello-world/" data-id="clzhqgge50001ng6oho4l8xgr" data-title="github级技术博客起航，以及ARTS" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/3/">&laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/" rel="tag">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/" rel="tag">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/" rel="tag">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/" rel="tag">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/%E4%B8%AD%E5%8F%B0/" style="font-size: 10px;">中台</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 20px;">容器</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 11.67px;">运维</a> <a href="/tags/%E9%87%91%E8%9E%8D/" style="font-size: 10px;">金融</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/">Resume以及ARTS</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">金融业务-不动产保理业务入门和系统设计</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/">运维-运维体系标准化之故障管理</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/">运维-运营体系标准化之配置管理CMDB</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/">管理-远程办公项目管理经验总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 姚皓(Hao Yao)<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

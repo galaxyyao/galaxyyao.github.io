@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Galaxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="姚皓的技术博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Galaxy">
+<meta property="og:url" content="https://galaxyyao.github.io/page/2/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="姚皓的技术博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="姚皓(Hao Yao)">
+<meta property="article:tag" content="galaxyyao,姚皓">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Galaxy</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://galaxyyao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Maven-组织内部项目统一配置DistributionManagement" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/09/18/Maven-%E7%BB%84%E7%BB%87%E5%86%85%E9%83%A8%E9%A1%B9%E7%9B%AE%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AEDistributionManagement/" class="article-date">
+  <time class="dt-published" datetime="2019-09-17T16:00:00.000Z" itemprop="datePublished">2019-09-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/09/18/Maven-%E7%BB%84%E7%BB%87%E5%86%85%E9%83%A8%E9%A1%B9%E7%9B%AE%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AEDistributionManagement/">Maven-组织内部项目统一配置DistributionManagement</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>搜了一下中文技术博客上似乎没有相关的文章，就简要翻译一下。  </p>
+<h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>假设公司内部有非常多Maven项目，需要deploy到一个内部maven私有仓库中。<br>如果希望<code>maven deploy</code>命令可以成功执行，一般需要在<code>pom.xml</code>中添加：  </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">distributionManagement</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus-site<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://central_nexus/server<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">distributionManagement</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>但需要deploy的项目很多的情况下，我们肯定不希望在每个项目的pom文件中都重复添加这个配置。  </p>
+<h1 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h1><p>为所有项目增加一个公共的parent pom项目。那么只需要在这个项目的pom文件中添加：  </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>your.company<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>company-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">distributionManagement</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus-site<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://central_nexus/server<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">distributionManagement</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后使其他项目的parent项目变成这个项目：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>your.company<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>company-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h1><p>方案一存在两个问题：</p>
+<ul>
+<li>如果代码泄露或将代码开源，会使该内部私有仓库的地址被暴露</li>
+<li>私有仓库这种环境配置信息最好和代码分离。类似通过配置中心，将数据库地址等配置和代码分离。</li>
+</ul>
+<p>我们完全可以将这个配置放到maven中。<br>可以通过<code>mvn</code>命令的启动参数来实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-DaltSnapshotDeploymentRepository=snapshots::default::https://YOUR_NEXUS_URL/snapshots</span><br><span class="line">-DaltReleaseDeploymentRepository=releases::default::https://YOUR_NEXUS_URL/releases</span><br></pre></td></tr></table></figure>
+<p>更好的方法是将其配在<code>settings.xml</code>中：  </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">[...]</span><br><span class="line">  <span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">altSnapshotDeploymentRepository</span>&gt;</span>snapshots::default::https://YOUR_NEXUS_URL/snapshots<span class="tag">&lt;/<span class="name">altSnapshotDeploymentRepository</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">altReleaseDeploymentRepository</span>&gt;</span>releases::default::https://YOUR_NEXUS_URL/releases<span class="tag">&lt;/<span class="name">altReleaseDeploymentRepository</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">activeProfiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">activeProfile</span>&gt;</span>nexus<span class="tag">&lt;/<span class="name">activeProfile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">activeProfiles</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>不要忘记也在<code>&lt;server&gt;</code>和<code>&lt;/server&gt;</code>之间加上<code>snapshots</code>和<code>releases</code>的账号。  </p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/3298135/how-to-specify-mavens-distributionmanagement-organisation-wide">java - How to specify maven’s distributionManagement organisation wide? - Stack Overflow</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/09/18/Maven-%E7%BB%84%E7%BB%87%E5%86%85%E9%83%A8%E9%A1%B9%E7%9B%AE%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AEDistributionManagement/" data-id="clzhqggeb0017ng6o4mxa3u14" data-title="Maven-组织内部项目统一配置DistributionManagement" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-持续集成-Jenkins离线安装与配置" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/08/14/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time class="dt-published" datetime="2019-08-13T16:00:00.000Z" itemprop="datePublished">2019-08-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/08/14/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">持续集成-Jenkins离线安装与配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本篇主要针对的是Jenkins服务器处在局域网中，无法连上互联网的情况下如何做自动化部署。<br>本文对网络的架设是：有内部的git服务器，yum私有仓库，nexus Repository OSS私有仓库和npm私有仓库。如果这些条件都没有，可能你们还是本地开发机上打包稍微快一些。  </p>
+<h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><h4 id="1-1-安装必要依赖"><a href="#1-1-安装必要依赖" class="headerlink" title="1.1 安装必要依赖"></a>1.1 安装必要依赖</h4><p>Jenkins的必要依赖是JDK。后续自动化部署的必要依赖是git，Maven和Node.js。<br>具体的安装步骤就不详述了。rpm安装（针对JDK）或私有YUM仓库安装都可以。<br>例如私有YUM仓库中openjdk，直接运行<code>yum install java-1.8.0-openjdk.x86_64</code> 即可。  </p>
+<p><strong>Maven私有仓库配置</strong><br>Maven打包的时候默认会从公网的仓库拉取依赖的第三方库。我们需要将其改为指向私有仓库。<br>首先可以通过如下两条命令之一获得配置文件地址： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mvn --version</span><br><span class="line">mvn -e -X</span><br></pre></td></tr></table></figure>
+<p>假设<code>settings.xml</code>文件的位置在<code>/etc/maven/</code>路径下。<br>编辑该文件内容：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/maven/settings.xml</span><br></pre></td></tr></table></figure>
+<p>我们首先需要在<code>&lt;profiles&gt;</code>和<code>&lt;/profiles&gt;</code>之间添加私有仓库地址（包括仓库和插件仓库）：  </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">id</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>local-nexus<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://10.16.34.197:8081/repository/maven-central/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span>&gt;</span>central<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>Internal Mirror of Central Plugins Repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://10.16.34.197:8081/repository/maven-central/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后在最后的<code>&lt;/settings&gt;</code>上添加当前活跃的profile：  </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activeProfiles</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">activeProfile</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">activeProfile</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activeProfiles</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>npm私有仓库配置</strong><br>npm配置私有仓库就简单多了，一条命令搞定：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm set registry http://10.16.34.197:8081/repository/npm-central</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-安装Jenkins"><a href="#1-2-安装Jenkins" class="headerlink" title="1.2 安装Jenkins"></a>1.2 安装Jenkins</h4><p>Jenkins离线rpm安装包下载地址：<a target="_blank" rel="noopener" href="https://jenkins.io/zh/download/">https://jenkins.io/zh/download/</a><br>然后rpm安装jenkins（根据你下载的具体rpm包名更新命令）：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh jenkins-2.176.2-1.1.noarch.rpm</span><br></pre></td></tr></table></figure>
+<p>然后启动jenkins：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start jenkins</span><br></pre></td></tr></table></figure>
+<p>确保防火墙已关闭或开放端口8080，然后就可以访问<code>http://ip:8080/</code>来访问jenkins首页了。<br>万一没有成功启动，可以通过<code>systemctl status jenkins</code>来确认失败的原因。  </p>
+<h3 id="2-配置"><a href="#2-配置" class="headerlink" title="2. 配置"></a>2. 配置</h3><h4 id="2-1-启动配置"><a href="#2-1-启动配置" class="headerlink" title="2.1 启动配置"></a>2.1 启动配置</h4><p>在启动Jenkins后，首先需要解锁。<br>在服务器上执行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /var/lib/jenkins/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure>
+<p>然后输入到Unlock Jenkins的Administrator password框。<br>由于我们是离线模式安装，Jenkins会提醒“This Jenkins instance appears to be offline”。我们先点击“Skip Plugin Installations”跳过插件安装。<br>然后创建管理员用户，点击下一步。<br>如果有域名的话，在当前步骤的“Jenkins URL”中填写域名。我们这里直接点击“Save and Finish”。<br>Welcome to Jenkins:)  </p>
+<h4 id="2-2-插件配置"><a href="#2-2-插件配置" class="headerlink" title="2.2 插件配置"></a>2.2 插件配置</h4><p>在左侧菜单点击<code>Manage Jenkins</code>，然后点击<code>Manage Plugins</code>-&gt;<code>Advanced</code>。我们可以在这边上传所需插件的hpi文件。hpi文件可以从<code>https://plugins.jenkins.io</code>下载。<br>需要注意有一些包具有依赖。<br>我们需要的几个插件：</p>
+<ul>
+<li>Publish Over SSH</li>
+<li>build-pipeline-plugin</li>
+<li>cron_column</li>
+<li>git</li>
+<li>nodejs</li>
+</ul>
+<p>插件安装先后顺序如下：</p>
+<ul>
+<li>structs</li>
+<li>credentials</li>
+<li>ssh-credentials</li>
+<li>publish-over</li>
+<li>publish-over-ssh</li>
+<li>jquery</li>
+<li>scm-api</li>
+<li>workflow-step-api</li>
+<li>workflow-api</li>
+<li>junit</li>
+<li>javadoc</li>
+<li>display-url-api</li>
+<li>mailer</li>
+<li>apache-httpcomponents-client-4-api</li>
+<li>maven-plugin</li>
+<li>matrix-project</li>
+<li>token-macro</li>
+<li>run-condition</li>
+<li>conditional-buildstep</li>
+<li>parameterized-trigger</li>
+<li>build-pipeline-plugin</li>
+<li>cron_column</li>
+<li>git-client</li>
+<li>workflow-scm-step</li>
+<li>git</li>
+<li>config-file-provider</li>
+<li>nodejs</li>
+</ul>
+<p>当中根据提示可能需要重启数次Jenkins，也可以等所有插件都安装完再重启Jenkins。  </p>
+<h4 id="2-3-配置工具"><a href="#2-3-配置工具" class="headerlink" title="2.3 配置工具"></a>2.3 配置工具</h4><p>在左侧菜单点击<code>Manage Jenkins</code>，然后点击<code>Global Tool Configuration</code>，配置JDK、Maven和NodeJS（Git默认已配置）。<br>注意配置的时候取消“Install Automatically”。  </p>
+<p><strong>配置JDK</strong><br>执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alternatives --config java</span><br></pre></td></tr></table></figure>
+<p>如果是OpenJDK，Command那列括号里<code>/jre/bin/java</code>之前的内容就是JAVA_HOME</p>
+<p><strong>配置git</strong><br><code>Path to Git executable</code>可以填<code>git</code>或<code>usr/bin/git</code>都可以。  </p>
+<p><strong>配置Maven</strong><br>执行如下命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn --version</span><br></pre></td></tr></table></figure>
+<p>返回的结果里取Maven home即可。  </p>
+<p><strong>配置node</strong><br>可以通过<code>npm config list</code>命令查看当前的npm配置。<code>node bin location</code>后的就是node的位置。  </p>
+<p>至此Jenkins的安装和基本配置就完成了。  </p>
+<h1 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h1><p>这篇整理完才发现Nexus Repository Manager真强大，除了maven之外，docker&#x2F;npm&#x2F;pypi&#x2F;yum都可以proxy。<br>虽然也有单独npm代理的方案，比如：<a target="_blank" rel="noopener" href="https://liaolongdong.com/2019/01/24/build-private-package.html">使用verdaccio搭建npm私有仓库 - Better’s study fairyland</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/08/14/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" data-id="clzhqggeb0016ng6o76b7acta" data-title="持续集成-Jenkins离线安装与配置" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-MySQL-没有必要的varchar-255-长度及存储汉字问题汇总" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/07/30/MySQL-%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E7%9A%84varchar-255-%E9%95%BF%E5%BA%A6%E5%8F%8A%E5%AD%98%E5%82%A8%E6%B1%89%E5%AD%97%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/" class="article-date">
+  <time class="dt-published" datetime="2019-07-29T16:00:00.000Z" itemprop="datePublished">2019-07-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/07/30/MySQL-%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E7%9A%84varchar-255-%E9%95%BF%E5%BA%A6%E5%8F%8A%E5%AD%98%E5%82%A8%E6%B1%89%E5%AD%97%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/">MySQL-没有必要的varchar(255)长度及存储汉字问题汇总</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>最近在整理代码规范，按照之前oracle的习惯，定了以下的字段长度设定规范：  </p>
+<ul>
+<li>名称字段：varchar(200)</li>
+<li>较长的名称字段&#x2F;简介字段：varchar(500)</li>
+<li>特别长的描述字段： varchar(2000)</li>
+<li>超过2000中文字的字段：text<br>为什么是200长度，而不是100或300，也是拍脑袋想的，类似DND里的房规。<br>但在被问起为什么不设置为经常见到的varchar(255)时，一时回答不上来。趁这个机会，把字段长度这块的知识汇总梳理一下。</li>
+</ul>
+<h1 id="为什么会经常被设置为varchar-255"><a href="#为什么会经常被设置为varchar-255" class="headerlink" title="为什么会经常被设置为varchar(255)"></a>为什么会经常被设置为varchar(255)</h1><p>MySQL 4.1版本之前，varchar的最大长度是255 byte字节（也有一说是5.0.3版本之前）。查了下这个版本发布都是2004年的事情了。惯性真恐怖，我可不相信还有多少系统是从2004年升级过来的。  </p>
+<h1 id="varchar-50-和varchar-255-有性能上的差别么？"><a href="#varchar-50-和varchar-255-有性能上的差别么？" class="headerlink" title="varchar(50)和varchar(255)有性能上的差别么？"></a>varchar(50)和varchar(255)有性能上的差别么？</h1><p>对于INNODB，<code>varchar(50)</code>和<code>varchar(255)</code>这两者在存放方式上完全一样：1-2 byte保存长度，实际的字符串存放在另外的位置，每个字符1 byte到4 byte不定（视编码和实际存储的字符而定）。所以将一个字段从varchar(50)长度改成varchar(100)长度不会导致表的重建。但如果把长度从varchar(50)改成varchar(256)就不一样了，表示长度会需要用到2 byte或更多。  </p>
+<p>既然255长度以下对INNODB都一样，而且我们平时基本上也不太会使用到MYISAM，那么是不是为了省心，我们就可以把255长度以下的字段的类型都设置成varchar(255)了呢？<br>非也。<br>因为内存表介意。<br>虽然我们不会明文创建内存表，但所有的中间结果都会被数据库引擎存放在内存表。我们可以通过EXPLAIN或者SHOW STATUS可以查看MYSQL是否使用了内存表用来帮助完成某个操作。<br>而内存表会按照固定长度来保存。以utf-8编码为例，对于varchar(255)，每一行所占用的内存就是长度的2 byte + 3 * 255 byte。对于100条数据，光一个varchar字段就占约1GB内存。如果我们该用varchar(50)，就可以剩下来约80%的内存空间。<br>除此之外，255长度也可能会对索引造成坑。MySQL在5.6版本及之前的最大长度是767 byte。但MySQL 5.5版本后开始支持4个byte的字符集utf8mb4（沙雕表情用到的字符太多，长度不够用）。255 * 4 &gt; 767，所以索引就放不下varchar(255)长度的字段了。虽然MySQL在5.7版本后将限制改成了3072 byte，但如果是多字段的联合索引还是有可能会超过这个限制。  </p>
+<p>所以我们的结论就是：在长度够用的情况下，越短越好。    </p>
+<h1 id="varchar的最大长度是多少"><a href="#varchar的最大长度是多少" class="headerlink" title="varchar的最大长度是多少"></a>varchar的最大长度是多少</h1><p>varchar的最大长度是65535 byte。所以</p>
+<ul>
+<li>字符类型若为gbk，每个字符最多占2个字节，最大长度不能超过32766字符</li>
+<li>字符类型若为utf8，每个字符最多占3个字节，最大长度不能超过21845字符</li>
+<li>字符类型若为utf8mb，每个字符最多占4个字节，最大长度不能超过16383字符<br>但通常导致varchar长度限制的通常是一行定义的长度,就是表里所有字段定义的长度总和。这个限制也是65535 byte。如果超出长度，会报错：  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR 1118 (42000): Row size too large. The maximum row size for the used table type, not counting BLOBs, is 65535. You have to change some columns to TEXT or BLOBs。</span><br></pre></td></tr></table></figure>
+这也是为什么阿里开发规范中这么要求：  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">【强制】varchar是可变长字符串，不预先分配存储空间，长度不要超过5000，如果存储长度大于此值，定义字段类型为text，独立出来一张表，用主键来对应，避免影响其它字段索引效率。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="varchar-50-是能保存16个汉字，还是25个，抑或50个？"><a href="#varchar-50-是能保存16个汉字，还是25个，抑或50个？" class="headerlink" title="varchar(50)是能保存16个汉字，还是25个，抑或50个？"></a>varchar(50)是能保存16个汉字，还是25个，抑或50个？</h1><p>以前SQL Server的nvarchar转Oracle的varchar2时造成的固有印象，让我一直觉得varchar保存中文字时长度需要打对折或除以3。<br>但这个也是MySQL 5.0版本之前的事。现在varchar(n)是几，就能存几个中文字。<br>不过也需要注意统计字数使用CHARACTER_LENGTH而非LENGTH</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 返回为12</span></span><br><span class="line"><span class="keyword">SELECT</span> LENGTH(&quot;轻松工作&quot;);</span><br><span class="line"><span class="comment">-- 返回为4</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">CHARACTER_LENGTH</span>(&quot;轻松工作&quot;);</span><br></pre></td></tr></table></figure>
+
+<h1 id="为什么还是用MySQL"><a href="#为什么还是用MySQL" class="headerlink" title="为什么还是用MySQL"></a>为什么还是用MySQL</h1><p>为什么MySQL坑那么多，不改用PostgreSQL？<br>相比MySQL，我个人更偏好PostgreSQL，能从各种设计细节就感觉得到很规范。但无奈国内分布式数据库方案基本都是基于MySQL的。。。虽然我们的场景在今年年内暂时也看不到用分布式的必要性，但万一有了呢。。。<br>先发优势真是可怕。  </p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>感谢这篇stackexchange的详细回答<br><a target="_blank" rel="noopener" href="https://dba.stackexchange.com/questions/76469/mysql-varchar-length-and-performance">database design - MySQL - varchar length and performance - Database Administrators Stack Exchange</a>  </p>
+<p>关于内存表的详细介绍<br><a target="_blank" rel="noopener" href="http://mysql.taobao.org/monthly/2016/06/07/">MySQL · 特性分析 · 内部临时表</a>  </p>
+<p>为什么索引长度会有767 byte或3072 byte的限制的详细解释<br><a target="_blank" rel="noopener" href="https://dinglin.iteye.com/blog/1681332">关于InnoDB索引长度限制的tips - 追风刀·丁奇 - ITeye博客</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/07/30/MySQL-%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E7%9A%84varchar-255-%E9%95%BF%E5%BA%A6%E5%8F%8A%E5%AD%98%E5%82%A8%E6%B1%89%E5%AD%97%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/" data-id="clzhqggeb0014ng6ohmnj07f3" data-title="MySQL-没有必要的varchar(255)长度及存储汉字问题汇总" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-前端-通过自定义协议URI-Scheme-点击Chrome中的链接打开IE" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/07/11/%E5%89%8D%E7%AB%AF-%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AEURI-Scheme-%E7%82%B9%E5%87%BBChrome%E4%B8%AD%E7%9A%84%E9%93%BE%E6%8E%A5%E6%89%93%E5%BC%80IE/" class="article-date">
+  <time class="dt-published" datetime="2019-07-10T16:00:00.000Z" itemprop="datePublished">2019-07-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/07/11/%E5%89%8D%E7%AB%AF-%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AEURI-Scheme-%E7%82%B9%E5%87%BBChrome%E4%B8%AD%E7%9A%84%E9%93%BE%E6%8E%A5%E6%89%93%E5%BC%80IE/">前端-通过自定义协议URI Scheme,点击Chrome中的链接打开IE</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>有部分老Web系统只有在IE下才能正常打开。其中有一部分是即使polyfill也没法搞定的兼容性原因，另一部分就是因为使用到了ActiveX。后者中我接触到的就有金格控件和泛微OA的。<br>对于新开发的Portal系统，没有余力为了迁就IE，对每个功能还额外做兼容性测试。于是剩下的方案就是在单点登录跳转到相应的页面的时候，指定使用IE打开。<br>其实这个功能并不罕见。比如腾讯的网站上经常有点击图标打开QQ，而淘宝网页上也有很多点击打开阿里旺旺。从原理上，这是利用到了Windows自定义协议URI Scheme。  </p>
+<h1 id="URI-Scheme"><a href="#URI-Scheme" class="headerlink" title="URI Scheme"></a>URI Scheme</h1><p>自定义协议从本质上就是修改注册表。官方资料可以参考这篇<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa767914(v=vs.85)">Registering an Application to a URI Scheme (Windows) | Microsoft Docs</a><br>官方给了一个范例，注册一个alert:&#x2F;&#x2F;的协议，点击后打开自定义的alert.exe。  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">HKEY_CLASSES_ROOT</span><br><span class="line">   alert</span><br><span class="line">      (Default) = &quot;URL:Alert Protocol&quot;</span><br><span class="line">      URL Protocol = &quot;&quot;</span><br><span class="line">      DefaultIcon</span><br><span class="line">         (Default) = &quot;alert.exe,1&quot;</span><br><span class="line">      shell</span><br><span class="line">         open</span><br><span class="line">            command</span><br><span class="line">               (Default) = &quot;C:\Program Files\Alert\alert.exe&quot; &quot;%1&quot;</span><br></pre></td></tr></table></figure>
+
+<h1 id="方案1"><a href="#方案1" class="headerlink" title="方案1"></a>方案1</h1><p>能看出这是一种比较通用的方案。能打开自定义的alert.exe，自然也能打开IE。所以只要将以下内容保存为test.reg，点击运行后就能将注册表项导入：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00  </span><br><span class="line">   </span><br><span class="line">[HKEY_CLASSES_ROOT\openIE]  </span><br><span class="line">@=&quot;URL:OpenIE Protocol&quot;  </span><br><span class="line">&quot;URL Protocol&quot;=&quot;&quot;  </span><br><span class="line">   </span><br><span class="line">[HKEY_CLASSES_ROOT\openIE\DefaultIcon]  </span><br><span class="line">@=&quot;iexplore.exe,1&quot;  </span><br><span class="line">   </span><br><span class="line">[HKEY_CLASSES_ROOT\openIE\shell]  </span><br><span class="line">   </span><br><span class="line">[HKEY_CLASSES_ROOT\openIE\shell\open]  </span><br><span class="line">   </span><br><span class="line">[HKEY_CLASSES_ROOT\openIE\shell\open\command]  </span><br><span class="line">@=&quot;cmd /c set m=%1 &amp; call set m=%%m:openIE:=%% &amp; call \&quot;C:\\Program Files\\Internet Explorer\\iexplore.exe\&quot; %%m%% &amp; exit&quot;  </span><br></pre></td></tr></table></figure>
+<p>与微软官方范例的差别在于将协议改为了openIE:&#x2F;&#x2F;（这个不重要），以及最后的命令改为了一串很长的：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmd /c set m=%1 &amp; call set m=%%m:openIE:=%% &amp; call \&quot;C:\\Program Files\\Internet Explorer\\iexplore.exe\&quot; %%m%% &amp; exit</span><br></pre></td></tr></table></figure>
+<p><code>/c</code>参数表示执行完命令后关闭窗口。所以运行的时候你会看到先弹出一个命令行窗口。该命令接收了openIE:&#x2F;&#x2F;后的参数，然后传递给IE浏览器。  </p>
+<p>对应的超链接HTML如下：  </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;openIE:www.baidu.com&quot;</span>&gt;</span>网络联通性测试<span class="tag">&lt;/<span class="name">a</span>&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<h3 id="方案1的问题"><a href="#方案1的问题" class="headerlink" title="方案1的问题"></a>方案1的问题</h3><p>除了会弹出一个命令行窗口的问题之外，还有一个比较严重的问题：无法正确处理特殊字符&amp;。<br>比如url是<a target="_blank" rel="noopener" href="https://www.baidu.com/?key1=value&key2=value%EF%BC%8C%E9%82%A3%E4%B9%88%E7%AC%AC%E4%BA%8C%E4%B8%AA%E5%8F%82%E6%95%B0%E5%B0%B1%E4%BC%9A%E4%B8%A2%E5%A4%B1%E3%80%82%E6%9C%89%E4%BA%9B%E6%96%87%E7%AB%A0%E6%8F%90%E5%87%BA%E7%94%A8%5E&%E6%9B%BF%E4%BB%A3&%E5%8F%AF%E4%BB%A5%E8%BD%AC%E4%B9%89%EF%BC%8C%E5%AE%9E%E6%B5%8B%E6%97%A0%E6%95%88%E3%80%82%E8%80%8C%E5%A4%A7%E9%83%A8%E5%88%86%E7%9A%84%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95URL%E5%90%8E%E9%83%BD%E6%98%AF%E8%B7%9F%E7%9D%80%E4%B8%80%E4%B8%B2%E5%8F%82%E6%95%B0%E3%80%82%E6%89%80%E4%BB%A5%E8%AF%A5%E6%96%B9%E6%A1%88%E6%97%A0%E6%95%88%E3%80%82">https://www.baidu.com?key1=value&amp;key2=value，那么第二个参数就会丢失。有些文章提出用^&amp;替代&amp;可以转义，实测无效。而大部分的单点登录URL后都是跟着一串参数。所以该方案无效。</a>  </p>
+<h1 id="方案2"><a href="#方案2" class="headerlink" title="方案2"></a>方案2</h1><p>方案2做了两个改动。一个是将改动从HKEY_CLASSES_ROOT改到了HKEY_CURRENT_USER\Software\Classes下。我理解影响范围会小一些。<br>另一个改动是在cmd参数里将也用引号包起来，并用反斜杠转义。<br>修改后的注册表导入内容如下：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00</span><br><span class="line"></span><br><span class="line">[HKEY_CURRENT_USER\Software\Classes\ie]</span><br><span class="line">&quot;URL Protocol&quot;=&quot;&quot;</span><br><span class="line">@=&quot;URL:IE Protocol&quot;</span><br><span class="line"></span><br><span class="line">[HKEY_CURRENT_USER\Software\Classes\ie\shell]</span><br><span class="line"></span><br><span class="line">[HKEY_CURRENT_USER\Software\Classes\ie\shell\open]</span><br><span class="line"></span><br><span class="line">[HKEY_CURRENT_USER\Software\Classes\ie\shell\open\command]</span><br><span class="line">@=&quot;cmd /c set url=\&quot;%1\&quot; &amp; call set url=%%url:ie:=%% &amp; call start iexplore -nosessionmerging -noframemerging %%url%%&quot;</span><br></pre></td></tr></table></figure>
+<p>对应的HTML超链接如下：  </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;ie:https://www.baidu.com?key1=value&amp;key2=value2&quot;</span>&gt;</span>网络联通性测试<span class="tag">&lt;/<span class="name">a</span>&gt;</span>  </span><br></pre></td></tr></table></figure>
+
+<p>事实证明方案2可以正确处理URL参数。  </p>
+<p>最后提一下，标题中的Chrome只是指代我们常用的浏览器。并不表示Firefox或那一坨国产浏览器（恕不列举）就不能打开了。  </p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>方案2的来源<br><a target="_blank" rel="noopener" href="https://superuser.com/questions/1437499/registry-how-to-register-internet-explorer-as-a-uri-scheme-and-call-from-chrom">windows - Registry - How to register Internet Explorer as a URI scheme and call from chrome? - Super User</a>  </p>
+<p>方案1的来源<br><a target="_blank" rel="noopener" href="https://www.lisen.me/implementation-of-chrome-opening-ie-using-custom-protocol.html">使用自定义协议实现Chrome打开IE_木子网</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/07/11/%E5%89%8D%E7%AB%AF-%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AEURI-Scheme-%E7%82%B9%E5%87%BBChrome%E4%B8%AD%E7%9A%84%E9%93%BE%E6%8E%A5%E6%89%93%E5%BC%80IE/" data-id="clzhqggeb0012ng6o758r1olj" data-title="前端-通过自定义协议URI Scheme,点击Chrome中的链接打开IE" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IE/" rel="tag">IE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-容器-13-Kubernetes实战-静态网站部署优化2-InitContainer" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/07/04/%E5%AE%B9%E5%99%A8-13-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%962-InitContainer/" class="article-date">
+  <time class="dt-published" datetime="2019-07-03T16:00:00.000Z" itemprop="datePublished">2019-07-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/07/04/%E5%AE%B9%E5%99%A8-13-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%962-InitContainer/">容器-13-Kubernetes实战-静态网站部署优化2-InitContainer</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我们在上一篇已经将Dockerfile精简为了：  </p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./dist /usr/share/nginx/html</span></span><br></pre></td></tr></table></figure>
+
+<p>但相信你也发现了，内容中还是对web服务器有着强依赖。当我们想换成其他版本的Nginx镜像，或换成其他Web服务器，就必须修改源代码中的Dockerfile，重新制作镜像。<br>这种情况并非不可能。典型的场景之一：我们镜像所依赖的Nginx或tomcat版本出现了某个安全事故，而该问题可以通过将web服务器或web容器版本升级到最新版本解决。<br>所以我们希望能在Dockerfile中将Nginx的痕迹彻底抹除，只在Kubernetes的YAML中指定web服务器。  </p>
+<p>一个很自然的想法就是：我们使用一个默认的web服务器镜像。在使用该镜像的容器启动之前，将静态网站的文件拷贝到相应目录，就像在前一篇从ConfigMap获取配置文件一样。<br>这就是initContainer的作用。  </p>
+<h2 id="1-initContainer"><a href="#1-initContainer" class="headerlink" title="1. initContainer"></a>1. initContainer</h2><p>我们首先将镜像改为alpine，并修改COPY的路径：  </p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> alpine:latest</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./dist /html</span></span><br></pre></td></tr></table></figure>
+
+<p>重新编译为latest版本（这是为了强制每次重新拉取镜像）：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t 10.16.34.197:5000/staticsite .</span><br></pre></td></tr></table></figure>
+
+<p>然后我们将deployment的YAML修改为如下：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">poc-web</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">initContainers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="number">10.16</span><span class="number">.34</span><span class="number">.197</span><span class="string">:5000/staticsite:latest</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">poc-web-dist</span></span><br><span class="line">        <span class="attr">command:</span> [<span class="string">&quot;cp&quot;</span>, <span class="string">&quot;/html&quot;</span>, <span class="string">&quot;/website&quot;</span>]</span><br><span class="line">        <span class="attr">args:</span> [<span class="string">&quot;-r&quot;</span>]</span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/website&quot;</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">poc-web-volume</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:latest</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">web</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">poc-web-config</span></span><br><span class="line">          <span class="attr">mountPath:</span> <span class="string">/etc/nginx/conf.d</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">poc-web-volume</span></span><br><span class="line">          <span class="attr">mountPath:</span> <span class="string">&quot;/usr/share/nginx&quot;</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">poc-web-config</span></span><br><span class="line">        <span class="attr">configMap:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">poc-web-config</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">poc-web-volume</span></span><br><span class="line">        <span class="attr">emptyDir:</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解释一下几个改动点。  </p>
+<h3 id="1-1-挂载emptyDir"><a href="#1-1-挂载emptyDir" class="headerlink" title="1.1 挂载emptyDir"></a>1.1 挂载emptyDir</h3><p>首先我们除了ConfigMap之外，增加挂载了一个类型为emptyDir的卷。emptyDir是一个生命周期和Pod相同的空目录，作用是为多容器Pod内的容器提供一个公共盘来共享文件。当Pod从Node上被移除后，emptyDir也会随之被永久删除。缺省情况下，emptyDir使用主机磁盘进行存储的。也可以设置emptyDir.medium字段的值为Memory，来提高IO速度：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumes:</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">poc-web-volume</span></span><br><span class="line">  <span class="attr">emptyDir:</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-增加initContainer和复制命令"><a href="#1-2-增加initContainer和复制命令" class="headerlink" title="1.2 增加initContainer和复制命令"></a>1.2 增加initContainer和复制命令</h3><p>然后我们在containers的平级增加一个initContainers。initContainer内定义的容器会比spec.containers内定义的容器先启动。启动的流程图可以参见下图：<br><img src="/images/%E5%AE%B9%E5%99%A8-13-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%962-InitContainer/kubernetsinit-time.png" alt="Kubernetes Pod Init Process">   </p>
+<p>在poc-web-dist这个容器启动后，会将emptyDir挂载到&#x2F;website路径，并执行以下命令：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r /html /website</span><br></pre></td></tr></table></figure>
+
+<p>即将包含所有的静态网站文件的html目录复制到emptyDir中。<br>PS. 我尝试过将command和args参数改为：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">command:</span> [<span class="string">&quot;cp&quot;</span>, <span class="string">&quot;/html/*&quot;</span>, <span class="string">&quot;/website&quot;</span>]</span><br><span class="line"><span class="attr">args:</span> [<span class="string">&quot;-r&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>这会导致Pod启动报错。明明<code>cp -r /html/* /website</code>这个命令是可以正常执行的。。。目前还没找到原因。  </p>
+<h3 id="1-3-将镜像改为nginx并挂载emptyDir"><a href="#1-3-将镜像改为nginx并挂载emptyDir" class="headerlink" title="1.3 将镜像改为nginx并挂载emptyDir"></a>1.3 将镜像改为nginx并挂载emptyDir</h3><p>在执行完命令后initContainer完成使命退出。然后spec.container内的容器开始启动。<br>我们将自定义镜像改为普通的nginx镜像，并在镜像的<code>/usr/share/nginx</code>路径上挂载emptyDir。emptyDir中的html目录会替换nginx镜像的<code>/usr/share/nginx/html</code>目录，达成和之前相同的效果。  </p>
+<p>在添加了initContainer后，启动速度略微变慢，会经历一个为时十几秒的PodInitializing状态，然后正常启动：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">poc-web-657d957f68-6m7xw     0/1     PodInitializing         0          12s</span><br></pre></td></tr></table></figure>
+
+<p>万事开头难。虽然我们目前只完成了一个静态网站的部署，但应该已经对Kubernetes有了基本的认识。  </p>
+<h2 id="2-参考资料"><a href="#2-参考资料" class="headerlink" title="2. 参考资料"></a>2. 参考资料</h2><p>官方的Demo，通过wget下载网页后也是加载到&#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html目录<br><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-initialization/">Configure Pod Initialization - Kubernetes</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/07/04/%E5%AE%B9%E5%99%A8-13-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%962-InitContainer/" data-id="clzhqggea000zng6oe1wnehfx" data-title="容器-13-Kubernetes实战-静态网站部署优化2-InitContainer" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-容器-12-Kubernetes实战-静态网站部署优化1-ConfigMap-Secret与TLS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/07/03/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/" class="article-date">
+  <time class="dt-published" datetime="2019-07-02T16:00:00.000Z" itemprop="datePublished">2019-07-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/07/03/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/">容器-12-Kubernetes实战-静态网站部署优化1:ConfigMap,Secret与TLS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>虽然我们已经成功地将一个静态网站成功地在Kubernetes里部署起来了，但还有很多细节可以完善。我们就在这一节里逐步优化。  </p>
+<h2 id="1-ConfigMap"><a href="#1-ConfigMap" class="headerlink" title="1. ConfigMap"></a>1. ConfigMap</h2><p>问题最明显的是。重温一下我们静态网站之前使用的Dockerfile：  </p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> default.conf /etc/nginx/conf.d/default.conf</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./dist /usr/share/nginx/html</span></span><br></pre></td></tr></table></figure>
+
+<p>首先是Nginx配置default.conf。<br>网站的源代码不应该干涉网站怎么部署。到底部署在Apache，Nginx还是Node.js，是否要在部署的时候添加自定义Header，都不该是开发者关注的事情。我们也不希望修改网站的timeout配置还需要动到源代码。从耦合性的角度来看，这个Nginx网站的配置文件不应该放到源代码中。<br>对于这类配置文件，Kubernetes里有专门的对象ConfigMap来保存。  </p>
+<p>从ConfigMap这个名字就可以猜得到，它存储的是配置信息，存储的格式是Map类型，即键值对。<br>配置信息可以是像本篇中的Nginx config配置，可以设置环境变量，可以是Java的properties和application.yml配置文件，可以是Redis和MySQL的配置文件。它很适合需要在一套Kubernetes集群上部署多个环境（例如特性分支&#x2F;sit&#x2F;uat）的情况。（当然我们的Java应用将使用Spring Cloud Config配置中心，所以目前不会用ConfigMap管理配置）<br>本篇POC的ConfigMap如下：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ConfigMap</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">poc-web-config</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">default.conf:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    server &#123;</span></span><br><span class="line"><span class="string">        listen       80;</span></span><br><span class="line"><span class="string">        server_name  localhost;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line">        <span class="string">charset</span> <span class="string">utf-8;</span></span><br><span class="line">        <span class="comment">#access_log  /var/log/nginx/log/host.access.log  main;</span></span><br><span class="line"></span><br><span class="line">        <span class="string">location</span> <span class="string">/</span> &#123;</span><br><span class="line">            <span class="string">root</span>   <span class="string">/usr/share/nginx/html;</span></span><br><span class="line">            <span class="string">index</span>  <span class="string">index.html</span> <span class="string">index.htm;</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#error_page  404              /404.html;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># redirect server error pages to the static page /50x.html</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="string">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  <span class="string">/50x.html;</span></span><br><span class="line">        <span class="string">location</span> <span class="string">=</span> <span class="string">/50x.html</span> &#123;</span><br><span class="line">            <span class="string">root</span>   <span class="string">/usr/share/nginx/html;</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>default.conf为key（键），下面的内容为value（值）。结构非常简单。<br>在Kubernetes中，ConfigMap是一种特殊的Volume（卷）：Projected Volume。可以认为ConfigMap是Kubernetes中的数据被投射（Project）到容器中的。<br>关于Volume我们会在后续展开讨论，这里只是先提一下：要在容器中使用volume，需要先在spec中定义，然后mount到容器中。所以添加了ConfigMap后的Deployment定义YAML如下：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">poc-web</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">poc-web</span></span><br><span class="line">        <span class="attr">image:</span> <span class="number">10.16</span><span class="number">.34</span><span class="number">.197</span><span class="string">:5000/staticsite:latest</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">web</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">poc-web-config</span></span><br><span class="line">          <span class="attr">mountPath:</span> <span class="string">/etc/nginx/conf.d</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">poc-web-config</span></span><br><span class="line">        <span class="attr">configMap:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">poc-web-config</span></span><br></pre></td></tr></table></figure>
+
+<p>poc-web-config中的default.conf被挂到了Nginx镜像的&#x2F;etc&#x2F;nginx&#x2F;conf.d目录下。<br>Nginx的nginx.conf中定义了会加载conf.d下所有conf后缀的Nginx配置：  </p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">include</span> /etc/nginx/conf.d/<span class="regexp">*.conf</span>;</span><br></pre></td></tr></table></figure>
+
+<p>而Projected Volume的挂载是在容器启动步骤最开始就进行的。所以当容器启动之前，会从ConfigMap中获取default.conf配置文件，放到&#x2F;etc&#x2F;nginx&#x2F;conf.d目录中。当Nginx进程启动的时候，就会读到该站点的配置。<br>既然Nginx的配置已经由ConfigMap提供，我们就可以不需要在源代码中包含。于是Dockerfile就被精简为：  </p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./dist /usr/share/nginx/html</span></span><br></pre></td></tr></table></figure>
+
+<p>不管Pod在哪台宿主机上，都可以访问到ConfigMap，所以我们很容易就能猜到ConfigMap的数据保存在etcd上。<br>除了以YAML方式定义，还可以通过–from-file参数将文件创建为ConfigMap。<br>在一般情况下ConfigMap会先覆盖掉挂载目录然后再将ConfigMap中的内容作为文件挂载进行。如果想要不覆盖原本文件夹下的文件可以使用subPath参数。  </p>
+<h3 id="1-1-热更新"><a href="#1-1-热更新" class="headerlink" title="1.1 热更新"></a>1.1 热更新</h3><p>更新ConfigMap不会触发Pod的滚动更新，所以每次需要修改Pod Annotation的方式来强制触发滚动更新。具体命令如：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl patch deployment &lt;Deployment名&gt; --patch &#x27;&#123;&quot;spec&quot;: &#123;&quot;template&quot;: &#123;&quot;metadata&quot;: &#123;&quot;annotations&quot;: &#123;&quot;version/config&quot;: &quot;20180411&quot; &#125;&#125;&#125;&#125;&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>更多可以参考：<br><a target="_blank" rel="noopener" href="https://jimmysong.io/kubernetes-handbook/concepts/configmap-hot-update.html">ConfigMap的热更新</a>  </p>
+<p>从这个角度来说，ConfigMap不太适合保存频繁更新的配置。  </p>
+<h2 id="2-Secret"><a href="#2-Secret" class="headerlink" title="2. Secret"></a>2. Secret</h2><p>除了ConfigMap之外，还有一种Projected Volume：Secret。从名字就可以猜得到，保存的是敏感信息，包括密码，认证token，密钥key等。<br>像这些比较敏感的信息，直接写在Kubernetes的Deployment YAML定义里肯定不合适。放在Secret中会比较安全和灵活。除了保存信息是加密的之外，Secret和ConfigMap并没有太大差别。<br>Kubernetes官网有一个生成用户名和密码的简单范例：<a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/tasks/inject-data-application/distribute-credentials-secure/">使用 Secret 安全地分发凭证 - Kubernetes</a>，这里就不多复述了。<br>这里介绍Secret，主要是因为我们接下来要给网站添加强制HTTPS访问。<br>要开启HTTPS访问，就先需要一个SSL证书。如果我们没有SSL证书的话，可以自己签发一个：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj &quot;/CN=traefik-ui.demosite.net&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们就可以通过如下的命令，根据SSL证书生成Secret：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret tls traefik-cert --key=tls.key --cert=tls.crt -n kube-system</span><br></pre></td></tr></table></figure>
+
+<p>由于是供Traefik用的，所以创建在kube-system的namespace里。接下来我们修改Traefik配置。  </p>
+<h2 id="3-配置TLS"><a href="#3-配置TLS" class="headerlink" title="3. 配置TLS"></a>3. 配置TLS</h2><h3 id="3-1-配置traefik-toml"><a href="#3-1-配置traefik-toml" class="headerlink" title="3.1 配置traefik.toml"></a>3.1 配置traefik.toml</h3><p>我们接下来为Traefik Ingress Controller配置证书。<br>Traefik的配置文件是traefik.toml。我们按照第1节的方式，将其配置为ConfigMap：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ConfigMap</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">traefik-conf</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">traefik.toml:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    # 设置insecureSkipVerify = true，可以配置backend为443(比如dashboard)的ingress规则</span></span><br><span class="line"><span class="string">    insecureSkipVerify = true</span></span><br><span class="line"><span class="string">    defaultEntryPoints = [&quot;http&quot;, &quot;https&quot;]</span></span><br><span class="line"><span class="string">    [entryPoints]</span></span><br><span class="line"><span class="string">      [entryPoints.http]</span></span><br><span class="line"><span class="string">        address = &quot;:80&quot;</span></span><br><span class="line"><span class="string">        ### 配置http 强制跳转 https</span></span><br><span class="line"><span class="string">        [entryPoints.http.redirect]</span></span><br><span class="line"><span class="string">          entryPoint = &quot;https&quot;</span></span><br><span class="line"><span class="string">        ### 配置只信任trustedIPs传递过来X-Forwarded-*，默认全部信任；为了防止客户端地址伪造，需开启这个</span></span><br><span class="line"><span class="string">        #[entryPoints.http.forwardedHeaders]</span></span><br><span class="line"><span class="string">        #  trustedIPs = [&quot;10.1.0.0/16&quot;, &quot;172.20.0.0/16&quot;, &quot;192.168.1.3&quot;]</span></span><br><span class="line"><span class="string">      [entryPoints.https]</span></span><br><span class="line"><span class="string">        address = &quot;:443&quot;</span></span><br><span class="line"><span class="string">        [entryPoints.https.tls]</span></span><br><span class="line"><span class="string">          [[entryPoints.https.tls.certificates]]</span></span><br><span class="line"><span class="string">            CertFile = &quot;/ssl/tls.crt&quot;</span></span><br><span class="line"><span class="string">            KeyFile = &quot;/ssl/tls.key&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中的<code>[entryPoints.http.redirect]</code>就是强制重定向的配置。<br>更多可选配置可以参考<a target="_blank" rel="noopener" href="https://docs.traefik.io/configuration/backends/kubernetes/">官方文档</a>。  </p>
+<h3 id="3-2-修改Traefik-Ingress-Controller配置"><a href="#3-2-修改Traefik-Ingress-Controller配置" class="headerlink" title="3.2 修改Traefik Ingress Controller配置"></a>3.2 修改Traefik Ingress Controller配置</h3><p>在Ingress Controller引入ConfigMap中的配置和Secret中的证书，增加443端口。先上个配置全文：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ServiceAccount</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">DaemonSet</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">k8s-app:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">k8s-app:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">serviceAccountName:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line">      <span class="attr">terminationGracePeriodSeconds:</span> <span class="number">60</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">ssl</span></span><br><span class="line">        <span class="attr">secret:</span></span><br><span class="line">          <span class="attr">secretName:</span> <span class="string">traefik-cert</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">config</span></span><br><span class="line">        <span class="attr">configMap:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">traefik-conf</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">traefik</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/ssl&quot;</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">&quot;ssl&quot;</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/config&quot;</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">&quot;config&quot;</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">http</span></span><br><span class="line">          <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">hostPort:</span> <span class="number">80</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">admin</span></span><br><span class="line">          <span class="attr">containerPort:</span> <span class="number">8080</span></span><br><span class="line">          <span class="attr">hostPort:</span> <span class="number">8080</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">https</span></span><br><span class="line">          <span class="attr">containerPort:</span> <span class="number">443</span></span><br><span class="line">          <span class="attr">hostPort:</span> <span class="number">443</span></span><br><span class="line">        <span class="attr">securityContext:</span></span><br><span class="line">          <span class="attr">capabilities:</span></span><br><span class="line">            <span class="attr">drop:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">ALL</span></span><br><span class="line">            <span class="attr">add:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">NET_BIND_SERVICE</span></span><br><span class="line">        <span class="attr">args:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--api</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--kubernetes</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--logLevel=INFO</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--configfile=/config/traefik.toml</span></span><br><span class="line">      <span class="attr">nodeSelector:</span></span><br><span class="line">        <span class="attr">node:</span> <span class="string">edge</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">traefik-ingress-service</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">k8s-app:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">http</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">443</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">https</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">admin</span></span><br></pre></td></tr></table></figure>
+
+<p>首先把ConfigMap和Secret以Projected Volume的形式挂上：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumes:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">ssl</span></span><br><span class="line">  <span class="attr">secret:</span></span><br><span class="line">    <span class="attr">secretName:</span> <span class="string">traefik-cert</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">config</span></span><br><span class="line">  <span class="attr">configMap:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">traefik-conf</span></span><br></pre></td></tr></table></figure>
+
+<p>然后mount到container上：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumeMounts:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/ssl&quot;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&quot;ssl&quot;</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/config&quot;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&quot;config&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>在container和service里增加443端口：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumeMounts:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/ssl&quot;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&quot;ssl&quot;</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/config&quot;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&quot;config&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>启动参数里增加config文件：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">args:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">--api</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">--kubernetes</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">--logLevel=INFO</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">--configfile=/config/traefik.toml</span></span><br></pre></td></tr></table></figure>
+
+<p>因为不太确定怎么热加载Ingress Controller，所以我采用了先delete然后重新apply。然后我们就能以https形式访问了。<br>顺带着Traefik Admin UI也变成https了：<br><img src="/images/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/traefik-admin-ui-https.jpg" alt="Traefik Admin UI(https)">  </p>
+<h2 id="4-参考资料"><a href="#4-参考资料" class="headerlink" title="4. 参考资料"></a>4. 参考资料</h2><p>其他加载ConfigMap的方式，以及加载为环境变量的Demo<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/JetpropelledSnake/p/11080995.html">K8S学习笔记之Kubernetes 配置管理 ConfigMap - 时光飞逝，逝者如斯 - 博客园</a>  </p>
+<p>ConfigMap加载为命令行参数和非覆盖加载的Demo<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/cf8705a93c6b">Kubernetes对象之ConfigMap - 简书</a>  </p>
+<p>官方的ConfigMap Demo<br><a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/tutorials/configuration/configure-redis-using-configmap/">使用ConfigMap来配置Redis - Kubernetes</a>  </p>
+<p>网上有些配置较为过时，配置后虽然没有报错，但访问https地址就是遇到Connection Refused。下面这篇比较新一些，是本篇的主要参考：<br><a target="_blank" rel="noopener" href="https://github.com/easzlab/kubeasz/blob/master/docs/guide/ingress-tls.md">kubeasz&#x2F;ingress-tls.md at master · easzlab&#x2F;kubeasz</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/07/03/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/" data-id="clzhqggea000yng6o9fakc87b" data-title="容器-12-Kubernetes实战-静态网站部署优化1:ConfigMap,Secret与TLS" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-容器-11-Kubernetes实战-Ingress与Traefik" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/27/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/" class="article-date">
+  <time class="dt-published" datetime="2019-06-26T16:00:00.000Z" itemprop="datePublished">2019-06-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/06/27/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/">容器-11-Kubernetes实战-Ingress与Traefik</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上一篇中，通过NodePort模式，其实我们已经可以将一系列Pod暴露给集群外。但Service最多只能做好OSI 4层的负载均衡。而OSI 7层的负载均衡需要交给Ingress。<br>简单解释一下，2层的负载均衡就是虚拟MAC地址接收请求；3层的负载均衡就是虚拟IP地址；4层就是基于IP + 端口；7层就涉及URI等应用层。<br>以下文会提到的Traefik官方的一张图来说明，Ingress的作用就是根据不同的域名，正确找到对应的后台的Service：<br><img src="/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/traefik-architecture.png" alt="Traefik作用"><br>在Service接到请求后，再负责转交给Pod：<br><img src="/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/k8s-ingress-service.png" alt="Kubernetes Service与Deployment">  </p>
+<p>要使用Ingress需要先安装一个Ingress Controller。一般比较常用的有两个：Nginx Ingress Controller和Traefik Ingress Controller。在我做POC的过程中一开始选择Nginx Ingress Controller，但总是curl调不通，于是最终选择了Traefik。Traefik还多带了一个UI不错的后台管理admin dashboard。而Nginx的不少功能需要用Nginx Plus版的才有。虽然也很理解，毕竟Nginx也是要恰饭的。。。<br>需要说明一点：虽然Nginx本身可以同时担任静态网站web server和反向代理两种职责，但Nginx Ingress Controller只负责反向代理。<br>Ingress Controller除了这两个之外，还是有F5的、Kong的和Voyager等等。从这里就可以看到Kubernetes的一大特点：指定了方向，让各厂家和开源开发者发挥自己的特长来做实现。  </p>
+<h2 id="1-Traefik-Ingress安装"><a href="#1-Traefik-Ingress安装" class="headerlink" title="1. Traefik Ingress安装"></a>1. Traefik Ingress安装</h2><p>安装按照<a target="_blank" rel="noopener" href="https://docs.traefik.io/v1.7/user-guide/kubernetes/">官方文档</a>一步步做就行了。<br>先配置RBAC（关于RBAC我们之后详细介绍）：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://raw.githubusercontent.com/containous/traefik/v1.7/examples/k8s/traefik-rbac.yaml</span><br></pre></td></tr></table></figure>
+
+<p>然后配置Ingress Controller和对应的Service，对外暴露http的80端口和admin的8080端口。<br>Ingress Controller有两种部署方式：Deployment和DaemonSet。DaemonSet是一种特殊的Pod：</p>
+<ul>
+<li>在每个节点上有且仅有一个Pod实例</li>
+<li>当有新Worker节点加入时，自动在新节点上创建；旧节点被删除后，上面的DaemonSet Pod会被自动回收</li>
+</ul>
+<p>两种方式各有各的好处。官方文档上都有详细比较，并在最后很贴心地对选择困难症给了建议：遇事不决先用DaemonSet试试。那么作为POC我就却之不恭选择DaemonSet了。反正要吃后悔药也就是几个命令的事情。  </p>
+<p>最后部署一个Traefik Dashboard的UI。配置的时候需要注意根据自己的情况调整host域名，然后我们就能通过域名访问admin Dashboard了。  </p>
+<h2 id="2-Ingress-YAML定义"><a href="#2-Ingress-YAML定义" class="headerlink" title="2. Ingress YAML定义"></a>2. Ingress YAML定义</h2><p>对于Ingress来说，最关键的就是定义找服务的规则：IngressRule。<br>下面是最简单的Ingress模板：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">piVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&lt;ingress-name&gt;</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">&lt;host-name&gt;</span></span><br><span class="line">    <span class="attr">http:</span></span><br><span class="line">      <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/</span></span><br><span class="line">        <span class="attr">backend:</span></span><br><span class="line">          <span class="attr">serviceName:</span> <span class="string">&lt;service-name&gt;</span></span><br><span class="line">          <span class="attr">servicePort:</span> <span class="string">http</span></span><br></pre></td></tr></table></figure>
+
+<p>如果配置过Nginx的话就很容易理解这个配置文件了。<br>需要注意的是：Nginx的server_name可以是ip，但Ingress的spec.rules.host必须是一个域名格式（FQDN），不能是ip。<br>我们的POC项目按照这个模板配置一下：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">poc-ingress</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">poc.demosite.net</span></span><br><span class="line">    <span class="attr">http:</span></span><br><span class="line">      <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/</span></span><br><span class="line">        <span class="attr">backend:</span></span><br><span class="line">          <span class="attr">serviceName:</span> <span class="string">poc-web-service</span></span><br><span class="line">          <span class="attr">servicePort:</span> <span class="string">http</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后配置一个DNS指向任何一个Worker节点的ip，或修改本地的hosts，就可以访问我们的静态网站了。<br>如果是本机测试没有域名，可以将YAML简化为：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">poc-ingress</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">backend:</span></span><br><span class="line">    <span class="attr">serviceName:</span> <span class="string">poc-web-service</span></span><br><span class="line">    <span class="attr">servicePort:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-Ingress-Controller高可用"><a href="#3-Ingress-Controller高可用" class="headerlink" title="3. Ingress Controller高可用"></a>3. Ingress Controller高可用</h2><p>我们在上文使用的DNS指定节点的方式会有不少弊端。虽然我们可以给每个域名都配置所有Worker节点的ip，即Round-robin DNS方式。但Round-robin本身就不是一个故障转移方案。在Kubernetes官方的<a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/services-networking/service/#why-not-use-round-robin-dns">Service章节</a>就有提到其他缺陷。  </p>
+<p>一般有两种方式：  </p>
+<h3 id="3-1-Deployment方式部署Ingress-Controller，Service类型指定为LoadBalancer"><a href="#3-1-Deployment方式部署Ingress-Controller，Service类型指定为LoadBalancer" class="headerlink" title="3.1 Deployment方式部署Ingress Controller，Service类型指定为LoadBalancer"></a>3.1 Deployment方式部署Ingress Controller，Service类型指定为LoadBalancer</h3><p>如果使用公有云，或私有服务器有自己的LoadBalancer，一般就使用该方案了。云会给每个LoadBalancer类型的Service分配公网ip地址。但公有云的LoadBalancer服务是要收费的，而自己很难部署。  </p>
+<h3 id="3-2-DaemonSet方式在边缘节点部署Ingress-Controller，外部通过虚拟ip和keepalived访问边缘节点"><a href="#3-2-DaemonSet方式在边缘节点部署Ingress-Controller，外部通过虚拟ip和keepalived访问边缘节点" class="headerlink" title="3.2 DaemonSet方式在边缘节点部署Ingress Controller，外部通过虚拟ip和keepalived访问边缘节点"></a>3.2 DaemonSet方式在边缘节点部署Ingress Controller，外部通过虚拟ip和keepalived访问边缘节点</h3><p>首先我们可以通过label命令，选定几台服务器作为边缘节点：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl label node docker-5 node=edge</span><br><span class="line">kubectl label node docker-6 node=edge</span><br></pre></td></tr></table></figure>
+
+<p>然后修改traefik-ds.yaml，将通过nodeSelector，限定Ingress Controller部署在边缘节点上：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">k8s-app:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">serviceAccountName:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line">      <span class="comment"># 中间省略</span></span><br><span class="line">      <span class="attr">nodeSelector:</span></span><br><span class="line">        <span class="attr">node:</span> <span class="string">edge</span></span><br></pre></td></tr></table></figure>
+
+<p>在重新apply后，可以看到traefik-ingress-controller的Pod数量降低到了2个。<br>然后参考这篇部署keepalived即可：<a target="_blank" rel="noopener" href="https://github.com/rootsongjc/kubernetes-handbook/blob/master/practice/edge-node-configuration.md">边缘节点配置</a>  </p>
+<p><img src="/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/k8s-edge-node-architecture.png" alt="Kubernetes Edge Node Architecture">  </p>
+<h2 id="4-参考资料"><a href="#4-参考资料" class="headerlink" title="4. 参考资料"></a>4. 参考资料</h2><p>Kubernetes Ingress Controller的使用介绍及高可用落地 · Service Mesh|服务网格中文社区<br><a target="_blank" rel="noopener" href="http://www.servicemesher.com/blog/kubernetes-ingress-controller-deployment-and-ha/">http://www.servicemesher.com/blog/kubernetes-ingress-controller-deployment-and-ha/</a>  </p>
+<p>Traefik Ingress Controller的安装和使用官方文档<br><a target="_blank" rel="noopener" href="https://docs.traefik.io/user-guide/kubernetes/">Kubernetes - Traefik</a>  </p>
+<p>Nginx Ingress Controller的一个范例，虽然最后没跑起来<br><a target="_blank" rel="noopener" href="https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-ingress-guide-nginx-example.html">Kubernetes Ingress with Nginx Example - Kubernetes Book</a><br>Nginx Ingress Controller的排查手册<br><a target="_blank" rel="noopener" href="https://kubernetes.github.io/ingress-nginx/troubleshooting/">Troubleshooting - NGINX Ingress Controller</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/06/27/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/" data-id="clzhqggea000xng6o0jk3dzuo" data-title="容器-11-Kubernetes实战-Ingress与Traefik" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-容器-10-Kubernetes实战-Service" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/26/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/" class="article-date">
+  <time class="dt-published" datetime="2019-06-25T16:00:00.000Z" itemprop="datePublished">2019-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/06/26/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/">容器-10-Kubernetes实战-Service</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Deployment只是保证了支撑服务的Pod的数量，但是没有解决如何访问这些服务的问题。一个Pod只是一个运行服务的实例，随时可能在一个节点上停止，在另一个节点以一个新的IP启动一个新的Pod。因此不能以确定的IP和端口号提供服务。<br>要稳定地提供服务，需要服务发现和负载均衡能力。服务发现是一个微服务中很基础的概念，即当服务提供者网络发生变化时，服务消费者能及时获得最新的位置信息。对于k8s来说，服务提供者就是Pod，提供服务发现能力的是Service。Deployment和Service分别负责Pod的部署和访问策略，互不相关。<br>所以从下面这张图也可以看出来，Service和Deployment并不是上下层级的关系。  </p>
+<p><img src="/images/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/k8s-deployment-service.png" alt="Kubernetes Service与Deployment">  </p>
+<h2 id="1-Service-YAML"><a href="#1-Service-YAML" class="headerlink" title="1. Service YAML"></a>1. Service YAML</h2><p>一个简单的Service YAML模板如下：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&lt;endpoint-name&gt;</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="string">&lt;port&gt;</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">&lt;port-name&gt;</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="string">&lt;target-port-number&gt;</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">&lt;app-name&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到它是由selector.app来选择需要暴露的Pod。spec.ports.port是service对外暴露的端口，而targetPort是Pod的端口。默认使用TCP协议。<br>对于我们的POC的网站，service YAML定义如下：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">poc-web-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">web</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">80</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">poc-web</span></span><br></pre></td></tr></table></figure>
+
+<p>当我们查看已部署的service的时候，可以看到该service对应的ip：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 poc]# kubectl get service -o wide</span><br><span class="line">NAME              TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE     SELECTOR</span><br><span class="line">hostnames         ClusterIP   10.99.149.202   &lt;none&gt;        80/TCP    14d     app=hostnames</span><br><span class="line">kubernetes        ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP   28d     &lt;none&gt;</span><br><span class="line">poc-web-service   ClusterIP   10.110.52.238   &lt;none&gt;        80/TCP    4m43s   app=poc-web</span><br></pre></td></tr></table></figure>
+
+<p>甚至YAML中selector也不是必须的。可以额外定义一个映射到外部ip&#x2F;域名+端口的EndPoint，然后将Service指向这个EndPoint。这个特性我理解是类似于对集群内的反向代理。如果有一个服务在测试环境调用集群内服务，生产环境调用集群外服务，只需要在service里定义两套namespace或env的label就可以解决了。  </p>
+<h2 id="2-kube-proxy"><a href="#2-kube-proxy" class="headerlink" title="2. kube-proxy"></a>2. kube-proxy</h2><p>每个Pod有自己独一无二的ip。但当一组Pod组成了一个Service对外提供服务时，只能保持一个ip对外。当我们请求这个ip时，Kubernetes需要将我们的请求相对平均地分发给每个Pod。<br>这个听上去像什么？没错，就是虚ip（virtual ip） + 反向代理（reverse proxy）。Kubernetes中为service提供虚ip + 反向代理的就是kube-proxy。<br>kube-proxy有三种实现方式：  </p>
+<ul>
+<li>userspace</li>
+<li>iptables</li>
+<li>ipvs</li>
+</ul>
+<p>iptables是当前版本的默认。从名称上就可以猜到是通过在宿主机上设置iptables规则来实现的。由于是内核态，所以性能比用户态的userspace方式高。但节点和Pod多了之后刷新iptables规则就变成了瓶颈。所以待ipvs成熟后应该会改为ipvs。<br>以下这张就是的示意图：<br><img src="/images/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/kube-proxy.png" alt="kube-proxy">  </p>
+<h2 id="3-Service对外发布服务的方式"><a href="#3-Service对外发布服务的方式" class="headerlink" title="3. Service对外发布服务的方式"></a>3. Service对外发布服务的方式</h2><p>Service可以通过type属性，以不同的方式对外发布服务，包括：  </p>
+<ul>
+<li>ClusterIP</li>
+<li>NodePort</li>
+<li>LoadBalancer</li>
+<li>ExternalName</li>
+</ul>
+<h3 id="3-1-ClusterIP"><a href="#3-1-ClusterIP" class="headerlink" title="3.1 ClusterIP"></a>3.1 ClusterIP</h3><p>这是不指定type时的默认方式。暴露为一个集群内部的ip，只能在集群内部访问。这个也是我们POC采用的方式。<br><img src="/images/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/k8s-service-clusterip.png" alt="Kubernetes Service ClusterIP">  </p>
+<h3 id="3-2-NodePort"><a href="#3-2-NodePort" class="headerlink" title="3.2 NodePort"></a>3.2 NodePort</h3><p>通过NAT的方式，在选定的数个节点上以IP形式暴露。可以通过那几个宿主机节点中的任意一个的ip+端口访问。该模式经常用于外部还有一个独立的负载均衡服务的时候使用。<br><img src="/images/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/k8s-service-nodeport.png" alt="Kubernetes Service NodePort">  </p>
+<p>如果我们现在就急不可待想从集群外访问看一下，就可以稍微改一下配置，在<code>ports</code>的同一级加一个<code>type: NodePort</code>。  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 poc]# kubectl get service</span><br><span class="line">NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE</span><br><span class="line">kubernetes              ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP        28d</span><br><span class="line">poc-web-service         NodePort    10.105.188.12   &lt;none&gt;        80:30611/TCP   24s</span><br></pre></td></tr></table></figure>
+
+<p>如果没有指定端口的话，会随机分配一个30000-32767之间的端口。查好被分配的端口，然后就可以通过<a target="_blank" rel="noopener" href="http://任意一个worker节点的ip:30611/">http://任意一个Worker节点的ip:30611/</a> 访问我们的网站了。<br>可以自己通过nodePort参数指定固定端口。但如果不在30000-32767的范围，就会报错：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The Service &quot;poc-web-service&quot; is invalid: spec.ports[0].nodePort: Invalid value: 80: provided port is not in the valid range. The range of valid ports is 30000-32767</span><br></pre></td></tr></table></figure>
+
+<p>为什么是任何一个Worker节点的ip都可以有效，是因为分为两种情况：  </p>
+<ul>
+<li>Pod在该宿主机节点上</li>
+<li>Pod不在该宿主机节点上</li>
+</ul>
+<p>如果Pod在该节点上，那么没问题IP包直接给Pod。如果不再该节点上，节点之间会做SNAT，即原地址转换。IP包会由接收到的节点转给带有Pod的宿主机节点。  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">          client</span><br><span class="line">            \ ^</span><br><span class="line">             \ \</span><br><span class="line">              v \</span><br><span class="line">  node 1 &lt;--- node 2</span><br><span class="line">   | ^   SNAT</span><br><span class="line">   | |   ---&gt;</span><br><span class="line">   v |</span><br><span class="line">endpoint</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-LoadBalancer"><a href="#3-3-LoadBalancer" class="headerlink" title="3.3 LoadBalancer"></a>3.3 LoadBalancer</h3><p>借用外部云服务的负载均衡能力，暴露一个固定的ip。使用公有云服务基本使用该方式。<br><img src="/images/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/k8s-service-loadbalancer.png" alt="Kubernetes Service LoadBalancer">  </p>
+<h3 id="3-4-ExternalName"><a href="#3-4-ExternalName" class="headerlink" title="3.4 ExternalName"></a>3.4 ExternalName</h3><p>通过一个固定的CNAME记录暴露，kube-dns 1.7版本之后的特性，方便实现上文提到的无selector Service。  </p>
+<h2 id="4-参考资料"><a href="#4-参考资料" class="headerlink" title="4. 参考资料"></a>4. 参考资料</h2><p>Kubernetes Service的官方文档<br><a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/concepts/services-networking/service/">Service - Kubernetes</a><br><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/tutorials/kubernetes-basics/expose/expose-intro/">Using a Service to Expose Your App - Kubernetes</a>  </p>
+<p>ExternalName的一些范例<br><a target="_blank" rel="noopener" href="https://akomljen.com/kubernetes-tips-part-1/">Kubernetes Tips - Part 1</a></p>
+<p>各种service type的更详细介绍<br><a target="_blank" rel="noopener" href="https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.1/manage_network/kubernetes_types.html">Kubernetes service types</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/06/26/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/" data-id="clzhqggea000ung6o7q889y3w" data-title="容器-10-Kubernetes实战-Service" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/" class="article-date">
+  <time class="dt-published" datetime="2019-06-24T16:00:00.000Z" itemprop="datePublished">2019-06-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/">容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我们上一章部署都是通过神奇的kubectl命令。我们这章就探寻一下，当我们拍下kubectl命令到Pod成功启动之间，Kubernetes究竟做了一些什么事情。<br>先上一张总的架构图，下面提到每个组件的时候可以在这张架构图上找位置，以及和其他组件间的关联关系：<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-architecture.png" alt="Kubernetes component architecture">  </p>
+<h2 id="1-全流程"><a href="#1-全流程" class="headerlink" title="1. 全流程"></a>1. 全流程</h2><h3 id="1-1-Kubectl"><a href="#1-1-Kubectl" class="headerlink" title="1.1 Kubectl"></a>1.1 Kubectl</h3><p>kubectl是用于针对Kubernetes集群运行命令的命令行接口。<br>虽然我们是在Master节点上执行运行的kubectl，但其实kubectl也可以在本地安装，与k8s的api server远程通信交互。<br>kubectl在接到apply命令后，会先做一个基本的验证。如果要创建的资源不合法，或YAML格式错误，就会快速失败。<br>除了通过kubectl之外，也可以直接调用api，或通过dashboard UI等多种方式与api server通信。  </p>
+<p>在通信之前，kubectl需要先进行身份认证。认证信息保存在$HOME&#x2F;.kube&#x2F;config文件里，大致内容如下：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 .kube]# pwd</span><br><span class="line">/root/.kube</span><br><span class="line">[root@docker-4 .kube]# cat config</span><br><span class="line">apiVersion: v1</span><br><span class="line">clusters:</span><br><span class="line">- cluster:</span><br><span class="line">    certificate-authority-data: &lt;证书授权信息&gt;</span><br><span class="line">    server: https://10.16.34.54:6443</span><br><span class="line">  name: kubernetes</span><br><span class="line">contexts:</span><br><span class="line">- context:</span><br><span class="line">    cluster: kubernetes</span><br><span class="line">    user: kubernetes-admin</span><br><span class="line">  name: kubernetes-admin@kubernetes</span><br><span class="line">current-context: kubernetes-admin@kubernetes</span><br><span class="line">kind: Config</span><br><span class="line">preferences: &#123;&#125;</span><br><span class="line">users:</span><br><span class="line">- name: kubernetes-admin</span><br><span class="line">  user:</span><br><span class="line">    client-certificate-data: &lt;客户端证书数据&gt;</span><br></pre></td></tr></table></figure>
+
+<p>config文件中的clusters.cluster.server就是要访问的api server的地址</p>
+<h3 id="1-2-kube-apiserver"><a href="#1-2-kube-apiserver" class="headerlink" title="1.2 kube-apiserver"></a>1.2 kube-apiserver</h3><p>API Server对外暴露了Kubernetes API，用于提供查询&#x2F;操作&#x2F;监控服务。<br>当接收到来自kubectl的请求后，API Server会先做三件事：  </p>
+<ul>
+<li>验证认证信息</li>
+<li>确认授权，即发送请求的用户有权限进行这个操作</li>
+<li>准入控制，封装了一系列额外的检查以确保操作不会产生意外或负面结果。还可以自定义插件实现自己的准入控制</li>
+</ul>
+<h3 id="1-3-etcd"><a href="#1-3-etcd" class="headerlink" title="1.3 etcd"></a>1.3 etcd</h3><p>etcd是一种高可用分布式存储，用于共享配置和服务发现。<br>之前在研究服务注册的时候还比较过它与Consul。etcd和Consul一样都是在CAP中保证CP，都是用Go语言开发的，一致性协议也都是用raft。Consul相比etcd多了多数据中心的支持。当然在k8s出现的时候还没有Consul，只有在zookeeper和etcd之间选。etcd相比zookeeper能稳定提供更大的吞吐量和延迟，而且和k8s使用的开发语言都是Go，这大概是最终选择了etcd的主要原因吧。  </p>
+<p>k8s集群将etcd当做数据库来使用，把所有的数据都存储在etcd上。当执行kubectl get命令时，结果就是从etcd中获取的。<br>假设kubectl执行的是创建上一篇中nginx-deployment的行为，那么最终etcd中保存的是4个对象：  </p>
+<ul>
+<li>1个Deployment对象</li>
+<li>1个ReplicaSet对象</li>
+<li>2个Pod对象<br>关于为什么还多了一个ReplicaSet对象，我们在下面说明。</li>
+</ul>
+<h3 id="1-4-Initializer初始化"><a href="#1-4-Initializer初始化" class="headerlink" title="1.4 Initializer初始化"></a>1.4 Initializer初始化</h3><p>在Pod还处于Pending状态，可以对Pod进行一些修改。例如给容器插入一个Sidecar容器，添加一些环境变量，挂载volume等等。Initializer初始器就是负责这个工作的。<br>最热门的Service Mesh–Istio项目就是通过Initializer，将Envoy容器作为Sidecar插入到每个启动的Pod中的。</p>
+<h3 id="1-5-控制循环"><a href="#1-5-控制循环" class="headerlink" title="1.5 控制循环"></a>1.5 控制循环</h3><p>Kubernetes内部始终在运行着一个“控制循环”来实现资源的调整。<br>控制循环，就是控制平面的死循环。每次循环过程中，都会通过将k8s的“当前状态”和“期望状态”进行比对，来决定下一步进行什么操作。<br>用伪代码来描述就是：  </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">  实际状态 := 获取集群中对象 X 的实际状态（Actual State）</span><br><span class="line">  期望状态 := 获取集群中对象 X 的期望状态（Desired State）</span><br><span class="line">  <span class="keyword">if</span> 实际状态 == 期望状态&#123;</span><br><span class="line">    什么都不做</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    执行编排动作，将实际状态调整为期望状态</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例如当刚接收到nginx-deployment的命令时，期望是要部署2个pod，实际状态是0个pod已Ready，差额是2个：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 deployment]# kubectl get deployment</span><br><span class="line">NAME                      READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">nginx-deployment          0/2     2            0           3s</span><br></pre></td></tr></table></figure>
+
+<p>当部署完成后，期望状态&#x3D;&#x3D;实际状态，部署结束：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 deployment]# kubectl get deployment</span><br><span class="line">NAME                      READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">nginx-deployment          2/2     2            2           19s</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-6-DeploymentController与ReplicaSet"><a href="#1-6-DeploymentController与ReplicaSet" class="headerlink" title="1.6 DeploymentController与ReplicaSet"></a>1.6 DeploymentController与ReplicaSet</h3><p>对于每个对象类型，由kube-controller-manager对应的controller来创建。例如Deployment就对应DeploymentController。<br>在一些比较早的文章里，你还能看到ReplicationController，但现在它已经不再被使用。DeploymentController是其升级版，在包含了ReplicationController所有功能的基础上还增加了回滚暂停等功能。  </p>
+<p>在说明DeploymentController之前，先提一下上一章里没有提到的一个细节：Deployment和Pod之间还隔了一层ReplicaSet。<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-replicaset.png" alt="Kubernetes ReplicaSet">  </p>
+<p>保持副本数量其实主要是靠ReplicaSet。从一个ReplicaSet的YAML可以看到，几乎和Deployment一模一样：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ReplicaSet</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-set</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.7.9</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>但我们之所以不直接使用ReplicaSet部署，是由于ReplicaSet的功能比较简陋。当我们想实现滚动更新的时候，就需要更上一层的Deployment支援了。  </p>
+<p>DeploymentController通过一个叫Informer的模块对Deployment、ReplicaSet和Pod的变更进行监听。<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-deploymentcontroller.png" alt="Kubernetes DeploymentController"><br>假设上述范例中poc-deployment里的应用升级了一个版本，从v1升级到了v2。控制循环会获得一个新的期望：部署两个v2的Pod。现状是有两个v1的Pod。但此时不能立即把v1的Pod停止了，不然服务就会有一段时间不可用了。在整个滚动更新的过程中，需要保证至少有两个Pod可用，无论是v1还是v2。<br>所以这时候Deployment会创建一个v2的ReplicaSet，包含v2的Pod。<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-replicaset-v2.png" alt="Kubernetes ReplicaSet V2"><br>当v2的ReplicaSet中Pod的状态Ready后，v1的ReplicaSet就可以进行缩容为0个Pod了。  </p>
+<p>PS. 我们实际场景中可能会有会话黏连（session sticky）的情况存在。会话还处于活跃状态的Pod不应该被直接下线。怎么处理就是后话了。  </p>
+<h3 id="1-7-kube-scheduler"><a href="#1-7-kube-scheduler" class="headerlink" title="1.7 kube-scheduler"></a>1.7 kube-scheduler</h3><p>Pod创建好之后，还没有被分派节点。kube-scheduler就是用来将待分派的Pod调度到指定Worker节点，并将节点与Pod的绑定信息也记录到etcd。<br>Master上的工作到此为止。  </p>
+<h3 id="1-8-kubelet"><a href="#1-8-kubelet" class="headerlink" title="1.8 kubelet"></a>1.8 kubelet</h3><p>每个Worker节点上会有一个Kubelet服务进程。kube-scheduler下发的任务就是由kubelet接收的。除此之外，它还负责：  </p>
+<ul>
+<li>挂载Pod所需要的volume</li>
+<li>下载Pod的secret</li>
+<li>运行容器</li>
+<li>对容器生命周期进行检测</li>
+<li>回报节点和Pod的状态<br>可以把Kubelet当成一种特殊的Controller。</li>
+</ul>
+<p>至此容器正常启动，整个流程结束。  </p>
+<h2 id="2-声明式API"><a href="#2-声明式API" class="headerlink" title="2. 声明式API"></a>2. 声明式API</h2><p>kubectl apply和docker run看上去是两句很类似的命令，但表现出来的理念截然不同。<br>docker run是命令式的。你发出命令，服务器接收，并按照命令创建出容器。<br>但Kuberentes的API是所谓的“声明式”，即你向Kubernetes提交一个定义好的API对象，声明自己想要达到的目标状态。当Kubernetes接收到这个目标状态后，自己内部协调各种组件，达成并保持这个状态。  </p>
+<p>声明式对于分布式系统有着重大的意义。  </p>
+<ul>
+<li>首先是能实现自动化调整。分布式系统的每个组件都可能会随时发生故障。假设一个节点在部署某个Pod的过程中突然挂掉了，如果采用的是命令式API，就需要人工干预：“我换个节点再重新拍命令。等恢复那个节点后再进行之前操作的回滚”。但对于使用了声明式API的Kubernetes，会在每个控制循环的开始检查：“之前部署Pod的任务还没完成，和kubelet联系一下，问问看Node进展如何了？怎么联系不上Node？换个Node部署吧。”在挂掉的Node恢复后，它会自动调用API Server获取当前状态并进行分析：“之前要我部署的Pod已经在其他Node上部署好了？如果我继续部署的话，Pod数量就比目标多了。那么我把自己进行到一半的操作回滚吧。”整个过程完全无需外界干预。  </li>
+<li>其次，对于命令式API，每个命令都是独占且阻塞的。只有先等前一个命令执行完之后才能执行下一个命令，不然就有出现冲突的可能。而声明式API使得多个写操作都能并行执行，使得处理效率大大提升。  </li>
+<li>此外，声明式API还支持操作的合并。你可以设置一个YAML为基础YAML，在用户提交YAML后会和基础YAML合并，然后再提交给API Server。我感觉这有点像Java里的自定义拦截器。知名的Istio项目是主要实现原理也就是靠这种方式注入Envoy。</li>
+</ul>
+<p><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/kustomize.jpg" alt="Kubernetes kustomize">   </p>
+<h2 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h2><p>本篇主要参考了<a target="_blank" rel="noopener" href="https://github.com/jamiehannaford/what-happens-when-k8s">jamiehannaford&#x2F;what-happens-when-k8s: What happens when I type kubectl run?</a><br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzU1MzY4NzQ1OA==&mid=2247484192&idx=1&sn=91c70c17c8d1c87950f321284083201a&chksm=fbee43edcc99cafb0d9545ca0727c03f1249729635d99373c79a4a0dab3ab122df8191f04437&mpshare=1&scene=1&srcid=&key=55c5aac104b43cbd3c53056a63edc606f9a6a33d4c9869f4f1d73cf0752a59e1b388d154653af734bea9ecf943efba56f96932bd5c85ecca9016603557ddfac21503c0347d2b62176f2a1870e52f24c4&ascene=1&uin=MTI2MzU5MTI4MA==&devicetype=Windows+10&version=62060833&lang=zh_CN&pass_ticket=QXPk0d9qyCPvIVu28S2CGQLMg+qFH8Z6fcaxHhhfwKaUOGhlAZlZPlBXKAnDcSTA">翻译版</a>  </p>
+<p>对k8s如何使用etcd的简要介绍<br><a target="_blank" rel="noopener" href="https://matthewpalmer.net/kubernetes-app-developer/articles/how-does-kubernetes-use-etcd.html">How Does Kubernetes Use etcd?</a>  </p>
+<p>Deployment原理主要是参考这篇<br><a target="_blank" rel="noopener" href="https://draveness.me/kubernetes-deployment">详解 Kubernetes Deployment 的实现原理</a>  </p>
+<p>关于Informer机制的更详细介绍<br><a target="_blank" rel="noopener" href="https://www.kubernetes.org.cn/2693.html">Kubernetes Informer 详解_Kubernetes中文社区</a>  </p>
+<p>这篇是Kubernetes的开发者介绍的Kubernetes设计原则，值得完整读一下<br><a target="_blank" rel="noopener" href="https://www.yangcs.net/posts/kubernetes-design-and-development-explained/">Kubernetes 设计与开发原则 - 杨传胜的博客|Cloud Native|yangcs.net</a><br>原文是这篇：<br><a target="_blank" rel="noopener" href="https://thenewstack.io/kubernetes-design-and-development-explained/">Kubernetes Design and Development Explained - The New Stack</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/" data-id="clzhqggea000sng6o8x54703a" data-title="容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-容器-8-Kubernetes实战-k8s核心概念之Node-Pod与Deployment" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/" class="article-date">
+  <time class="dt-published" datetime="2019-06-23T16:00:00.000Z" itemprop="datePublished">2019-06-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/">容器-8-Kubernetes实战-k8s核心概念之Node,Pod与Deployment</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本篇我们开始用k8s的方式部署静态网站镜像，并通过这个过程了解k8s为什么会抽象出那么多概念。  </p>
+<h2 id="1-Node"><a href="#1-Node" class="headerlink" title="1. Node"></a>1. Node</h2><p>k8s首先需要选定在哪一台或哪几台服务器上部署。<br>如我们在kubeadm部署k8s集群的时候就已知的，k8s集群是由1-N台Master节点和N个Worker节点组成的。<br><img src="/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-physics-architecture.jpeg" alt="Kubernetes节点">  </p>
+<p>k8s的设计原则之一就是不挑Worker节点的硬件配置。毕竟当初Google搭Borg集群的时候淘到的服务器硬件各式各样都有。（想起来当初搭Hadoop的时候也有人问过我是不是什么硬件都可以。。。以Hadoop MapReduce的吃硬盘和网络程度，实体机+专用万兆宽带跑出来的性能比虚拟机快出好几倍。当然配置低也的确能跑起来不死。）<br>你手头的机器可能是什么歪瓜裂枣都有：<br><img src="/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-nodes-1.png" alt="Kubernetes Nodes物理硬件"><br>不管是实体机还是虚拟机，不管什么硬件配置，不管高的矮的胖的瘦的，k8s都将其一视同仁地抽象为一个Node（曾经也有一个专有名词minion）。<br><img src="/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-nodes-2.png" alt="Kubernetes Nodes抽象">  </p>
+<p>一个典型的Node信息如下（部分删减）：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Name:               docker-7</span><br><span class="line">Roles:              worker</span><br><span class="line">Conditions:</span><br><span class="line">  Type             Status  LastHeartbeatTime                 LastTransitionTime                Reason                       Message</span><br><span class="line">  ----             ------  -----------------                 ------------------                ------                       -------</span><br><span class="line">  MemoryPressure   False   Fri, 21 Jun 2019 16:58:54 +0800   Fri, 21 Jun 2019 16:57:54 +0800   KubeletHasSufficientMemory   kubelet has sufficient memory available</span><br><span class="line">  DiskPressure     False   Fri, 21 Jun 2019 16:58:54 +0800   Fri, 21 Jun 2019 16:57:54 +0800   KubeletHasNoDiskPressure     kubelet has no disk pressure</span><br><span class="line">  PIDPressure      False   Fri, 21 Jun 2019 16:58:54 +0800   Fri, 21 Jun 2019 16:57:54 +0800   KubeletHasSufficientPID      kubelet has sufficient PID available</span><br><span class="line">  Ready            True    Fri, 21 Jun 2019 16:58:54 +0800   Fri, 21 Jun 2019 16:57:54 +0800   KubeletReady                 kubelet is posting ready status</span><br><span class="line">Addresses:</span><br><span class="line">  InternalIP:  10.16.34.59</span><br><span class="line">  Hostname:    docker-7</span><br><span class="line">Capacity:</span><br><span class="line"> cpu:                4</span><br><span class="line"> ephemeral-storage:  101729776Ki</span><br><span class="line"> hugepages-2Mi:      0</span><br><span class="line"> memory:             8010576Ki</span><br><span class="line"> pods:               110</span><br><span class="line">Allocatable:</span><br><span class="line"> cpu:                4</span><br><span class="line"> ephemeral-storage:  93754161407</span><br><span class="line"> hugepages-2Mi:      0</span><br><span class="line"> memory:             7908176Ki</span><br><span class="line"> pods:               110</span><br><span class="line">Allocated resources:</span><br><span class="line">  (Total limits may be over 100 percent, i.e., overcommitted.)</span><br><span class="line">  Resource           Requests    Limits</span><br><span class="line">  --------           --------    ------</span><br><span class="line">  cpu                320m (8%)   300m (7%)</span><br><span class="line">  memory             150Mi (1%)  150Mi (1%)</span><br><span class="line">  ephemeral-storage  0 (0%)      0 (0%)</span><br></pre></td></tr></table></figure>
+
+<p>Master节点不断轮询更新每个Node的状态信息：“你还活着么？压力大不大？CPU&#x2F;内存&#x2F;存储已经分配了多少？还剩下多少？”<br>这样当Master节点为了新的容器需求征兵时，就能很容易地知道哪几个节点还够压榨。  </p>
+<h2 id="2-Pod"><a href="#2-Pod" class="headerlink" title="2. Pod"></a>2. Pod</h2><p>Pod是Kubernetes中的原子调度单位。最简单的Pod就等于一个容器。这么表述也就意味着Pod里也可以放多个容器。<br>看为什么Kubernetes会发明出来Pod这个概念？因为有些容器之间有共享网络和存储的需求。  </p>
+<p>举个最典型的例子：日志收集器。例如我们的静态网站容器会在被访问的时候生成access.log文件。如果是在虚机里部署，那么就会在服务器上另外起一个logstash，收集这些日志文件后汇总到Elasticsearch。<br>如果logstash和Nginx不在同一台宿主机上部署，虽然也不是不可行，但就会很折腾：后文会提到挂载PV，可以在logstash和Nginx的Pod上都挂载同一个PV。但这个折腾毫无必要。日志文件并不那么重要，不值得永久存储，生命周期跟着容器即可。当容器被销毁时，日志也可以跟着被销毁。  </p>
+<p>那么我们是不是可以把Nginx和logstash打包到同一个容器中呢？这会产生一个问题：当logstash进程挂掉时，k8s的监控怎么表示容器的状态？如果显示Failure然后重启容器，则无辜的Nginx进程也受到了牵连；如果显示正常，那么要单独重启容器里的某一个进程就会变得很麻烦。<br>所以我们需要将Nginx和logstash单独打包为容器，部署成一个Pod。k8s会将一个Pod里的容器都部署在同一台宿主机上。  </p>
+<p><img src="/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-pod.png" alt="Kubernetes Pod">  </p>
+<p>k8s的<a target="_blank" rel="noopener" href="https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/">官方博客</a>将多容器Pod的类型列为三种：  </p>
+<ul>
+<li>Sidecar（边车）容器</li>
+<li>Ambassador（大使）容器</li>
+<li>Adapter（适配器）容器<br>k8s Pod的实现方式特别适合我们将一些控制平面的功能放到Sidecar中。近几年很知名的Service Mesh项目就是完全通过Sidecar模式支撑起来的。我们以后再详细讨论这个话题。</li>
+</ul>
+<p>其实对于Pod不用想得太复杂，可以认为它就是逻辑上的一台虚机的概念。只有必须部署在同一台虚机上的，才会被并到一个Pod里。<br>例如虽然MySQL和Java应用虽然也可以部署在同一台虚机上，但从best practice考量，一般不会这么部署，所以就不是一个Pod。MySQL的Master和Slave一般是部署在两台服务器上，所以也是两个独立的Pod。  </p>
+<h3 id="2-1-Pod-YAML"><a href="#2-1-Pod-YAML" class="headerlink" title="2.1 Pod YAML"></a>2.1 Pod YAML</h3><p>要部署一个Pod，我们需要先写一个YAML描述文件，然后用k8s的命令部署。<br>我从Spring Boot的配置开始就已经接触了挺久的YAML，所以这边就不详细介绍YAML的语法了。如果有对语法部署的可以参考<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/YAML">Wiki</a>。<br>一个最简单的Nginx Pod部署YAML如下：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-pod</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:latest</span></span><br></pre></td></tr></table></figure>
+
+<p>这个YAML第一层的元素有四个：apiVersion, kind, metadata和spec。<br>apiVersion的v1表示是稳定版。（像之前kubeadm的apiVersion就是kubeadm.k8s.io&#x2F;v1beta1，还在快速迭代中）。<br>kind就是想要创建的对象的类型。<br>metadata是用来识别对象的唯一性。<br>spec字段是对象规约，内容随着每个Kubernetes对象而不同。对于该Nginx Pod来说，需要指定使用的唯一镜像以及镜像的版本。关于镜像和镜像版本可以在<a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a>上查到。  </p>
+<h3 id="2-2-部署命令"><a href="#2-2-部署命令" class="headerlink" title="2.2 部署命令"></a>2.2 部署命令</h3><p>我们可以使用如下的命令部署：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f nginx-pod.yaml</span><br></pre></td></tr></table></figure>
+
+<p>然后就可以通过如下命令查看Pod创建进展：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod</span><br></pre></td></tr></table></figure>
+
+<p>以及通过如下命令查看Pod详细信息：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe pod &lt;Pod名&gt;</span><br></pre></td></tr></table></figure>
+
+<p>想进入Pod，就是用exec -it命令：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl exec -it nginx-pod /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>如果不需要这个Pod了，可以用以下命令取消部署：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete -f nginx-pod.yaml</span><br></pre></td></tr></table></figure>
+
+<p>k8s的命令虽然很多，但都非常有规律。基本格式都是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl 动作 对象类型</span><br></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl 动作 [-参数] 对象类型 对象名</span><br></pre></td></tr></table></figure>
+
+<p>对于非default namespace的对象，再加一个namespace参数：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl 动作 对象类型 对象名 -n namespace名</span><br></pre></td></tr></table></figure>
+
+<p>基本不怎么需要特别记忆。  </p>
+<p>另外提一下，在使用了k8s后，最好不要再打Docker命令了。当然自己本地开发机上跑容器的时候还是需要拍Docker命令。<br>在本次POC中，我们不将Nginx部署为Pod。原因在下一章中说明。  </p>
+<h3 id="2-3-验证"><a href="#2-3-验证" class="headerlink" title="2.3 验证"></a>2.3 验证</h3><p>此时Pod已部署成功，但我们还没法从容器外部访问。想验证的话可以稍微修改一下YAML，增加一个验证的shell容器，然后共享PID Namespace：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-pod</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">shareProcessNamespace:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">shell</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">busybox</span></span><br><span class="line">    <span class="attr">stdin:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">tty:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>上述配置在spec下增加了shareProcessNamespace: true，表示PID Namespace共享。最底下还增加一个镜像为busybox的容器。（busybox和alpine由于体积比较小，在k8s部署的时候有广泛的用途）<br>要部署之前，我们需要先kubectl delete -f nginx-pod.yaml把pod删除，不然会得到告警：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spec.containers: Forbidden: pod updates may not add or remove containers</span><br></pre></td></tr></table></figure>
+
+<p>在重新apply后使用如下的命令进入Pod</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl attach -it nginx-pod -c shell</span><br></pre></td></tr></table></figure>
+
+<p>进入busybox容器后执行ps aux，就可以看到Nginx的进程了：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/ # ps aux</span><br><span class="line">PID   USER     TIME  COMMAND</span><br><span class="line">    1 root      0:00 /pause</span><br><span class="line">    6 root      0:00 nginx: master process nginx -g daemon off;</span><br><span class="line">   11 101       0:00 nginx: worker process</span><br><span class="line">   12 root      0:00 sh</span><br><span class="line">   17 root      0:00 ps aux</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-infra容器：pause"><a href="#2-4-infra容器：pause" class="headerlink" title="2.4 infra容器：pause"></a>2.4 infra容器：pause</h3><p>上一节进程的查询结果中有一个pause进程需要说明一下。<br>当我们使用docker ps查看容器时，会发现有相当多的pause容器在启动。该容器和我们前几节提到的多容器Pod有关。<br>以我们上面修改后的nginx-pod范例为例。当我们需要让两个容器共享Namespace（不仅仅是IPC，还包括Network等其他Namespace），方法之一是让一个容器先启动，然后将另外一个容器的Namespace设置为前一个容器的Namespace。从技术上可行，但这个会导致这两个容器之间的关系不再是对等拓扑关系。<br>所以需要有个中间容器，也就是pause容器存在。pause容器非常小，也基本干不了什么事。它唯一的作用就是在Pod启动的最开始就启动，然后在其他容器启动后和它们共享自己的Namespace。在所有的容器启动完成后就暂停自己，不再消耗资源。<br><img src="/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-infra-container.png" alt="Kubernetes Infra Container">  </p>
+<h2 id="3-Deployment"><a href="#3-Deployment" class="headerlink" title="3. Deployment"></a>3. Deployment</h2><p>Pod的副本实例数是在Deployment中定义的。<br>假设我们从负载和高可用的角度考虑，想要在k8s中部署2个Nginx的实例，那么只需要在Deployment的配置中定义replicas: 2即可。  </p>
+<p>我们实际写k8s yaml配置的时候，不推荐直接部署为Pod。即使是只有一个副本，也推荐部署为replicas为1的Deployment。这是由于k8s的调度机制是通过Deployment来确保副本数量。万一Pod所在的服务器挂了，k8s会检测到副本数不足1，于是将Pod调度到健康的Node上。  </p>
+<p><img src="/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-deployment.png" alt="Kubernetes Deployment">  </p>
+<h3 id="3-1-Deployment-YAML"><a href="#3-1-Deployment-YAML" class="headerlink" title="3.1 Deployment YAML"></a>3.1 Deployment YAML</h3><p>一个Nginx Deployment的精简版的YAML如下：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-deployment</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:latest</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">web</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到spec下有一个replicas，表述副本数量。  </p>
+<p>看到这个YAML，我第一反应是有些晕：为什么spec套了一层spec，template下还有一层metadata。<br>这篇<a target="_blank" rel="noopener" href="https://medium.com/@zwhitchcox/matchlabels-labels-and-selectors-explained-in-detail-for-beginners-d421bdd05362">matchLabels, labels, and selectors explained in detail, for beginners</a>解释了为什么这个YAML有点绕的原因。关键点是这个Deployment YAML中的template其实是podTemplate。这样你就会发现template中的部分只要加上apiVersion和kind，基本就是Pod的YAML。<br><img src="/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-deployment-pod-yaml.png" alt="Kubernetes YAML template">  </p>
+<p>与template平级的还有一个selector选择器属性。这个selector选择器表示deployment部署的是label里带app的podTemplate。<br>label作为一个非唯一的标签属性，可以使Kubernetes的运维更加灵活。这个我们后续再详细研究。  </p>
+<p>我们现在可以总结出一个最简单版的deployment yaml模板：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">&lt;deployment-name&gt;</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="string">&lt;replicas-number&gt;</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">&lt;app-name&gt;</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">&lt;app-name&gt;</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">&lt;app-name&gt;</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">&lt;image-name&gt;:&lt;tag-name&gt;</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="string">&lt;container-port&gt;</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">&lt;container-port-name&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-部署命令"><a href="#3-2-部署命令" class="headerlink" title="3.2 部署命令"></a>3.2 部署命令</h3><p>部署命令和Pod基本一样：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f nginx-deployment.yaml</span><br></pre></td></tr></table></figure>
+
+<p>然后查看到ready的deployment了：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 pod]# kubectl get deployment</span><br><span class="line">NAME               READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">nginx-deployment   2/2     2            2           16h</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-部署POC-Nginx镜像"><a href="#3-3-部署POC-Nginx镜像" class="headerlink" title="3.3 部署POC Nginx镜像"></a>3.3 部署POC Nginx镜像</h3><p>要部署POC的Nginx镜像，只需要将image修改为私有仓库的镜像即可：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">poc-web</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">poc-web</span></span><br><span class="line">        <span class="attr">image:</span> <span class="number">10.16</span><span class="number">.34</span><span class="number">.197</span><span class="string">:5000/staticsite:1.0</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">web</span></span><br></pre></td></tr></table></figure>
+
+<p>如果使用Docker Hub作为Docker Registry，则首先创建secret（什么是secret会在<a href="https://galaxyyao.github.io/2019/07/03/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/">容器-12-Kubernetes实战-静态网站部署优化1:ConfigMap,Secret与TLS | Galaxy</a> 中详细说明）：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret docker-registry regcred --docker-username=账号 --docker-password=密码 --docker-email=Docker邮箱 -n 命名空间默认default</span><br></pre></td></tr></table></figure>
+
+<p>然后在pod定义的同一级加上imagePullSecrets，例如：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">poc-web</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">poc-web</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">galaxyyao/demosite:1.0</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">web</span></span><br><span class="line">      <span class="attr">imagePullSecrets:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">regcred</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-参考资料"><a href="#4-参考资料" class="headerlink" title="4. 参考资料"></a>4. 参考资料</h2><p>Kubernetes Node的官方文档概念介绍<br><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/architecture/nodes/">Nodes - Kubernetes</a>  </p>
+<p>Kubernetes Pod的官方文档概念介绍<br><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/">Pod Overview - Kubernetes</a>  </p>
+<p>Kubernetes Deployment的官方文档概念介绍<br><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployments - Kubernetes</a>  </p>
+<p>这是一篇关于Pause容器的详细介绍<br><a target="_blank" rel="noopener" href="https://www.ianlewis.org/en/almighty-pause-container">The Almighty Pause Container - Ian Lewis</a>  </p>
+<p>本篇部分有趣的图来自这篇。很简要易懂的科普文。<br><a target="_blank" rel="noopener" href="https://medium.com/@geraldcroes/kubernetes-traefik-101-when-simplicity-matters-957eeede2cf8">Kubernetes &amp; Traefik 101— When Simplicity Matters – Gérald Croës – Medium</a>  </p>
+<p>如果想补习YAML的话可以参考这篇：<br><a target="_blank" rel="noopener" href="https://developer.ibm.com/tutorials/yaml-basics-and-usage-in-kubernetes/">YAML basics in Kubernetes – IBM Developer</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/" data-id="clzhqggea000qng6odo00dgtn" data-title="容器-8-Kubernetes实战-k8s核心概念之Node,Pod与Deployment" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">下一页 &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/" rel="tag">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/" rel="tag">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/" rel="tag">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/" rel="tag">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/%E4%B8%AD%E5%8F%B0/" style="font-size: 10px;">中台</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 20px;">容器</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 11.67px;">运维</a> <a href="/tags/%E9%87%91%E8%9E%8D/" style="font-size: 10px;">金融</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/">Resume以及ARTS</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">金融业务-不动产保理业务入门和系统设计</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/">运维-运维体系标准化之故障管理</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/">运维-运营体系标准化之配置管理CMDB</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/">管理-远程办公项目管理经验总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 姚皓(Hao Yao)<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>容器-7-Kubernetes实战-私有仓库和打包镜像 | Galaxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="我们先从比较简单的部分开始做。静态网站是一个比较合适的开端。独立，有界面方便验证，而且无状态。   1. 搭建Docker私有仓库按照容器的思路，我们需要先做一个静态网站文件+Nginx的镜像，然后在服务器上把镜像拖下来后实例化为容器运行。   从安全和网络速度上考虑，我们做的这个镜像不太适合放到公网的Docker Hub上。所以要先搭个私有仓库。   我们先在一台虚机上按照kubeadm部署指南">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器-7-Kubernetes实战-私有仓库和打包镜像">
+<meta property="og:url" content="https://galaxyyao.github.io/2019/06/18/%E5%AE%B9%E5%99%A8-7-Kubernetes%E5%AE%9E%E6%88%98-%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93%E5%92%8C%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="我们先从比较简单的部分开始做。静态网站是一个比较合适的开端。独立，有界面方便验证，而且无状态。   1. 搭建Docker私有仓库按照容器的思路，我们需要先做一个静态网站文件+Nginx的镜像，然后在服务器上把镜像拖下来后实例化为容器运行。   从安全和网络速度上考虑，我们做的这个镜像不太适合放到公网的Docker Hub上。所以要先搭个私有仓库。   我们先在一台虚机上按照kubeadm部署指南">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-7-Kubernetes%E5%AE%9E%E6%88%98-%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93%E5%92%8C%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F/docker-cicd-process.jpg">
+<meta property="article:published_time" content="2019-06-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-30T05:34:34.000Z">
+<meta property="article:author" content="姚皓(Hao Yao)">
+<meta property="article:tag" content="容器">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-7-Kubernetes%E5%AE%9E%E6%88%98-%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93%E5%92%8C%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F/docker-cicd-process.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Galaxy</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://galaxyyao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-容器-7-Kubernetes实战-私有仓库和打包镜像" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/18/%E5%AE%B9%E5%99%A8-7-Kubernetes%E5%AE%9E%E6%88%98-%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93%E5%92%8C%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F/" class="article-date">
+  <time class="dt-published" datetime="2019-06-17T16:00:00.000Z" itemprop="datePublished">2019-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      容器-7-Kubernetes实战-私有仓库和打包镜像
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我们先从比较简单的部分开始做。静态网站是一个比较合适的开端。独立，有界面方便验证，而且无状态。  </p>
+<h2 id="1-搭建Docker私有仓库"><a href="#1-搭建Docker私有仓库" class="headerlink" title="1. 搭建Docker私有仓库"></a>1. 搭建Docker私有仓库</h2><p>按照容器的思路，我们需要先做一个静态网站文件+Nginx的镜像，然后在服务器上把镜像拖下来后实例化为容器运行。  </p>
+<p>从安全和网络速度上考虑，我们做的这个镜像不太适合放到公网的<a href="hub.docker.com">Docker Hub</a>上。所以要先搭个私有仓库。  </p>
+<p>我们先在一台虚机上按照<a href="/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0">kubeadm部署指南</a>中的“2.1 安装Docker”和“2.2 启动Docker服务”两节安装docker。然后关闭防火墙。最后执行一句docker run就解决了：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 5000:5000 --restart=always --name docker-registry registry</span><br></pre></td></tr></table></figure>
+
+<p>一开始没有关闭防火墙，在启动的时候报错了。再次启动的时候提示容器已存在。这时候只需要将docker run命令改为docker start命令就可以了。<br>PS. 如果是要在Windows上运行，要把端口从5000映射到5001，不然会因为和Docker Desktop端口冲突而容器启动失败。<br>我把Docker Registry私有仓库部署在10.16.34.197服务器上，于是现在访问<a target="_blank" rel="noopener" href="http://10.16.34.197:5000/v2/_catalog">http://10.16.34.197:5000/v2/_catalog</a>，就可以看到当前还没有镜像：  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;repositories&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-镜像打包服务器配置"><a href="#2-镜像打包服务器配置" class="headerlink" title="2. 镜像打包服务器配置"></a>2. 镜像打包服务器配置</h2><p>在要打包和push镜像的服务器上（一般是Gitlab或Jenkins服务器吧），需要执行以下命令（要替换ip）：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt; /etc/docker/daemon.json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;insecure-registries&quot;: [</span><br><span class="line">        &quot;10.16.34.197:5000&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<p>要不然之后push的时候就会遇到报错信息：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 vue-hello-world]# docker push 10.16.34.197:5000/staticsite</span><br><span class="line">The push refers to repository [10.16.34.197:5000/staticsite]</span><br><span class="line">Get https://10.16.34.197:5000/v2/: http: server gave HTTP response to HTTPS client</span><br></pre></td></tr></table></figure>
+
+<p>另外也需要在k8s的每个master和worker节点上都执行。不然在部署的时候也会遇到报错信息。  </p>
+<h2 id="3-打包网站镜像"><a href="#3-打包网站镜像" class="headerlink" title="3. 打包网站镜像"></a>3. 打包网站镜像</h2><p>略过不相关的web项目创建和提交代码过程，我们在Gitlab服务器上得到了需要部署的静态网站文件：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 dist]# pwd</span><br><span class="line">/git/vue-hello-world/dist</span><br><span class="line">[root@docker-4 dist]# ll</span><br><span class="line">total 12</span><br><span class="line">drwxr-xr-x. 2 root root   30 Jun 13 01:42 css</span><br><span class="line">-rw-r--r--. 1 root root 4286 Jun 13 01:42 favicon.ico</span><br><span class="line">drwxr-xr-x. 2 root root   31 Jun 13 01:42 img</span><br><span class="line">-rw-r--r--. 1 root root  730 Jun 13 01:42 index.html</span><br><span class="line">drwxr-xr-x. 2 root root  126 Jun 13 01:42 js</span><br><span class="line">[root@docker-4 dist]#</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1-添加Nginx配置和Dockerfile"><a href="#3-1-添加Nginx配置和Dockerfile" class="headerlink" title="3.1 添加Nginx配置和Dockerfile"></a>3.1 添加Nginx配置和Dockerfile</h3><p>要将该网站host在Nginx上，只需要做两个步骤：  </p>
+<ul>
+<li>将dist里的文件复制到Nginx的&#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html目录下</li>
+<li>做一个conf配置，根目录&#x2F;指向&#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html，并设置默认首页网页文件名index.html</li>
+</ul>
+<p>于是在网站下增加了一个default.conf文件：  </p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  localhost;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">charset</span> utf-<span class="number">8</span>;</span><br><span class="line">    <span class="comment">#access_log  /var/log/nginx/log/host.access.log  main;</span></span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#error_page  404              /404.html;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># redirect server error pages to the static page /50x.html</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外增加了一个Dockerfile：  </p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> default.conf /etc/nginx/conf.d/default.conf</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./dist /usr/share/nginx/html</span></span><br></pre></td></tr></table></figure>
+
+<p>nginx:alpine是Nginx官方的轻量级镜像。  </p>
+<h3 id="3-2-执行打包命令"><a href="#3-2-执行打包命令" class="headerlink" title="3.2 执行打包命令"></a>3.2 执行打包命令</h3><p>然后到Dockerfile所在目录构建镜像并推送到私有仓库：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t 10.16.34.197:5000/staticsite:1.0 .</span><br><span class="line">docker push 10.16.34.197:5000/staticsite</span><br></pre></td></tr></table></figure>
+
+<p>现在访问私有仓库的<a target="_blank" rel="noopener" href="http://10.16.34.197:5000/v2/_catalog">catalog目录</a>，就能看到repositories中已增加了一个静态网站的镜像：  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;repositories&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="string">&quot;staticsite&quot;</span><span class="punctuation">]</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以不指定镜像版本，那么打出来的版本就是latest：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t 10.16.34.197:5000/staticsite .</span><br></pre></td></tr></table></figure>
+
+<p>可以通过如下的URL查看该镜像的所有可用版本：<br><a target="_blank" rel="noopener" href="http://10.16.34.197:5000/v2/staticsite/tags/list">http://10.16.34.197:5000/v2/staticsite/tags/list</a><br>（要访问其他镜像替换staticsite这个镜像名就可以了）  </p>
+<h2 id="4-接下来的步骤"><a href="#4-接下来的步骤" class="headerlink" title="4. 接下来的步骤"></a>4. 接下来的步骤</h2><p>如果只用docker，那么执行如下的命令就结束了：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd --name staticsite --publish 8080:80 10.16.34.197:5000/staticsite:1.0</span><br></pre></td></tr></table></figure>
+
+<p>但到此为止的话，我们还是需要明确地指定在哪台机器上部署该容器。如果需要在多台机器上部署为高可用，就需要重复N遍同样的操作。为了保持高可用，还需要在部署容器的服务器前面额外部署负载均衡。<br>作为懒人，我很希望只要定义好需要的副本数量以及每个容器的硬件需求，就有人能替我把这些事情都包办了。万一哪个容器挂了还能迅速自动重启。<br>k8s就是这样的集群容器管家。我们下一章继续。  </p>
+<p>PS. Private Registry也可以部署在k8s上（所以上一章的架构图中它也在虚线框内），但为了简化POC的流程，我们先把这个放在后面做。  </p>
+<h2 id="5-使用Docker-Hub作为Docker-Registry"><a href="#5-使用Docker-Hub作为Docker-Registry" class="headerlink" title="5. 使用Docker Hub作为Docker Registry"></a>5. 使用Docker Hub作为Docker Registry</h2><p>自己Demo的时候也可以省掉这个步骤，直接将镜像上传到Docker Hub，然后K8S从Docker Hub上拉取镜像。<br>在注册Docker Hub账号之后，如果是Windows机器，需要打开Docker Desktop，然后输入<code>docker login</code>就可以直接登录了，不需要再输入密码。如果是Linux上，则需要在<code>docker login</code>命令后输入用户名和密码。<br>构建镜像和推送命令需要改为：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t 账号/staticsite:1.0 .</span><br><span class="line">docker push 账号/staticsite</span><br></pre></td></tr></table></figure>
+
+<p>在K8S集群里拉取镜像的步骤在下一章再介绍。  </p>
+<p>更详细步骤可以参考<a target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-secret-in-the-cluster-that-holds-your-authorization-token">Pull an Image from a Private Registry - Kubernetes</a>  </p>
+<h2 id="6-流程图"><a href="#6-流程图" class="headerlink" title="6. 流程图"></a>6. 流程图</h2><p>画了一下按角色划分的发布流程图。不管用的是k8s还是docker swarm，CI&#x2F;CD的流程还是基本类似的。<br><img src="/images/%E5%AE%B9%E5%99%A8-7-Kubernetes%E5%AE%9E%E6%88%98-%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93%E5%92%8C%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F/docker-cicd-process.jpg" alt="容器CI/CD流程">  </p>
+<h2 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7. 参考资料"></a>7. 参考资料</h2><p>这是本篇参考的一个最精简的静态网站的Docker配置<br><a target="_blank" rel="noopener" href="https://github.com/nishanttotla/DockerStaticSite">nishanttotla&#x2F;DockerStaticSite: A simple static website using Docker and Nginx</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/06/18/%E5%AE%B9%E5%99%A8-7-Kubernetes%E5%AE%9E%E6%88%98-%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93%E5%92%8C%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F/" data-id="clzhqgge9000png6o4w8baza2" data-title="容器-7-Kubernetes实战-私有仓库和打包镜像" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          容器-8-Kubernetes实战-k8s核心概念之Node,Pod与Deployment
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/17/Nginx-%E6%9B%BF%E6%8D%A2response%20header%E4%B8%AD%E7%9A%84Content-Disposition%E5%80%BC/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">Nginx-替换response header中的Content-Disposition值</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/" rel="tag">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/" rel="tag">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/" rel="tag">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/" rel="tag">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/%E4%B8%AD%E5%8F%B0/" style="font-size: 10px;">中台</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 20px;">容器</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 11.67px;">运维</a> <a href="/tags/%E9%87%91%E8%9E%8D/" style="font-size: 10px;">金融</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/">Resume以及ARTS</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">金融业务-不动产保理业务入门和系统设计</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/">运维-运维体系标准化之故障管理</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/">运维-运营体系标准化之配置管理CMDB</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/">管理-远程办公项目管理经验总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 姚皓(Hao Yao)<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
