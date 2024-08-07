@@ -6,7 +6,7 @@
   <link href="https://galaxyyao.github.io/atom.xml" rel="self"/>
   
   <link href="https://galaxyyao.github.io/"/>
-  <updated>2024-08-05T12:20:37.852Z</updated>
+  <updated>2024-08-07T09:48:27.112Z</updated>
   <id>https://galaxyyao.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Terraform IaC 学习Tips</title>
+    <link href="https://galaxyyao.github.io/2024/08/07/Terraform-IaC-%E5%AD%A6%E4%B9%A0Tips/"/>
+    <id>https://galaxyyao.github.io/2024/08/07/Terraform-IaC-%E5%AD%A6%E4%B9%A0Tips/</id>
+    <published>2024-08-06T16:00:00.000Z</published>
+    <updated>2024-08-07T09:48:27.112Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="IaC" scheme="https://galaxyyao.github.io/tags/IaC/"/>
+    
+  </entry>
   
   <entry>
     <title>Resume以及ARTS</title>
@@ -471,33 +494,6 @@
     <link href="https://galaxyyao.github.io/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/"/>
     <id>https://galaxyyao.github.io/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/</id>
     <published>2019-06-24T16:00:00.000Z</published>
-    <updated>2021-04-30T05:34:34.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
-    
-    
-    
-    
-    <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
-    
-    <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
-    
-    <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>容器-8-Kubernetes实战-k8s核心概念之Node,Pod与Deployment</title>
-    <link href="https://galaxyyao.github.io/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/"/>
-    <id>https://galaxyyao.github.io/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/</id>
-    <published>2019-06-23T16:00:00.000Z</published>
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
