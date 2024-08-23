@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Galaxy</title>
+  
+  <subtitle>姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</subtitle>
+  <link href="https://galaxyyao.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://galaxyyao.github.io/"/>
+  <updated>2024-08-23T03:06:24.467Z</updated>
+  <id>https://galaxyyao.github.io/</id>
+  
+  <author>
+    <name>姚皓(Hao Yao)</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>大数据的因果性和相关性</title>
+    <link href="https://galaxyyao.github.io/2024/08/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%80%A7%E5%92%8C%E7%9B%B8%E5%85%B3%E6%80%A7/"/>
+    <id>https://galaxyyao.github.io/2024/08/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%80%A7%E5%92%8C%E7%9B%B8%E5%85%B3%E6%80%A7/</id>
+    <published>2024-08-22T16:00:00.000Z</published>
+    <updated>2024-08-23T03:06:24.467Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="大数据" scheme="https://galaxyyao.github.io/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Terraform IaC 学习Tips</title>
+    <link href="https://galaxyyao.github.io/2024/08/07/Terraform-IaC-%E5%AD%A6%E4%B9%A0Tips/"/>
+    <id>https://galaxyyao.github.io/2024/08/07/Terraform-IaC-%E5%AD%A6%E4%B9%A0Tips/</id>
+    <published>2024-08-06T16:00:00.000Z</published>
+    <updated>2024-08-12T12:02:48.255Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="IaC" scheme="https://galaxyyao.github.io/tags/IaC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Resume以及ARTS</title>
+    <link href="https://galaxyyao.github.io/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/"/>
+    <id>https://galaxyyao.github.io/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/</id>
+    <published>2024-08-04T16:00:00.000Z</published>
+    <updated>2024-08-05T12:20:37.852Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>金融业务-不动产保理业务入门和系统设计</title>
+    <link href="https://galaxyyao.github.io/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/"/>
+    <id>https://galaxyyao.github.io/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/</id>
+    <published>2020-07-31T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="金融" scheme="https://galaxyyao.github.io/tags/%E9%87%91%E8%9E%8D/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>运维-运维体系标准化之故障管理</title>
+    <link href="https://galaxyyao.github.io/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/"/>
+    <id>https://galaxyyao.github.io/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/</id>
+    <published>2020-07-29T16:00:00.000Z</published>
+    <updated>2021-05-21T05:43:19.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="运维" scheme="https://galaxyyao.github.io/tags/%E8%BF%90%E7%BB%B4/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>运维-运营体系标准化之配置管理CMDB</title>
+    <link href="https://galaxyyao.github.io/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/"/>
+    <id>https://galaxyyao.github.io/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/</id>
+    <published>2020-07-28T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="运维" scheme="https://galaxyyao.github.io/tags/%E8%BF%90%E7%BB%B4/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>管理-远程办公项目管理经验总结</title>
+    <link href="https://galaxyyao.github.io/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/"/>
+    <id>https://galaxyyao.github.io/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/</id>
+    <published>2020-03-01T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="项目管理" scheme="https://galaxyyao.github.io/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>中台-读《说透中台》和《企业IT架构转型之道》有感</title>
+    <link href="https://galaxyyao.github.io/2020/02/05/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/"/>
+    <id>https://galaxyyao.github.io/2020/02/05/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/</id>
+    <published>2020-02-04T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="中台" scheme="https://galaxyyao.github.io/tags/%E4%B8%AD%E5%8F%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-14-国内Windows10环境安装Minikube</title>
+    <link href="https://galaxyyao.github.io/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/"/>
+    <id>https://galaxyyao.github.io/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/</id>
+    <published>2020-01-21T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+    <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+    <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java-从FeignClient的Ambiguous mapping报错,重温RequestMapping原理</title>
+    <link href="https://galaxyyao.github.io/2019/12/23/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/"/>
+    <id>https://galaxyyao.github.io/2019/12/23/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/</id>
+    <published>2019-12-22T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="Java" scheme="https://galaxyyao.github.io/tags/Java/"/>
+    
+    <category term="Spring" scheme="https://galaxyyao.github.io/tags/Spring/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java-Feign+服务注册的多环境方案</title>
+    <link href="https://galaxyyao.github.io/2019/12/09/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/"/>
+    <id>https://galaxyyao.github.io/2019/12/09/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/</id>
+    <published>2019-12-08T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="Java" scheme="https://galaxyyao.github.io/tags/Java/"/>
+    
+    <category term="Spring Cloud" scheme="https://galaxyyao.github.io/tags/Spring-Cloud/"/>
+    
+    <category term="Feign" scheme="https://galaxyyao.github.io/tags/Feign/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据库-转到PostgreSQL的新手Tips</title>
+    <link href="https://galaxyyao.github.io/2019/09/22/%E6%95%B0%E6%8D%AE%E5%BA%93-%E8%BD%AC%E5%88%B0PostgreSQL%E7%9A%84%E6%96%B0%E6%89%8B/"/>
+    <id>https://galaxyyao.github.io/2019/09/22/%E6%95%B0%E6%8D%AE%E5%BA%93-%E8%BD%AC%E5%88%B0PostgreSQL%E7%9A%84%E6%96%B0%E6%89%8B/</id>
+    <published>2019-09-21T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="Java" scheme="https://galaxyyao.github.io/tags/Java/"/>
+    
+    <category term="PostgreSQL" scheme="https://galaxyyao.github.io/tags/PostgreSQL/"/>
+    
+    <category term="pgsql" scheme="https://galaxyyao.github.io/tags/pgsql/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Maven-组织内部项目统一配置DistributionManagement</title>
+    <link href="https://galaxyyao.github.io/2019/09/18/Maven-%E7%BB%84%E7%BB%87%E5%86%85%E9%83%A8%E9%A1%B9%E7%9B%AE%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AEDistributionManagement/"/>
+    <id>https://galaxyyao.github.io/2019/09/18/Maven-%E7%BB%84%E7%BB%87%E5%86%85%E9%83%A8%E9%A1%B9%E7%9B%AE%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AEDistributionManagement/</id>
+    <published>2019-09-17T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="Maven" scheme="https://galaxyyao.github.io/tags/Maven/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>持续集成-Jenkins离线安装与配置</title>
+    <link href="https://galaxyyao.github.io/2019/08/14/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/"/>
+    <id>https://galaxyyao.github.io/2019/08/14/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</id>
+    <published>2019-08-13T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="持续集成" scheme="https://galaxyyao.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"/>
+    
+    <category term="CI" scheme="https://galaxyyao.github.io/tags/CI/"/>
+    
+    <category term="Jenkins" scheme="https://galaxyyao.github.io/tags/Jenkins/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-没有必要的varchar(255)长度及存储汉字问题汇总</title>
+    <link href="https://galaxyyao.github.io/2019/07/30/MySQL-%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E7%9A%84varchar-255-%E9%95%BF%E5%BA%A6%E5%8F%8A%E5%AD%98%E5%82%A8%E6%B1%89%E5%AD%97%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/"/>
+    <id>https://galaxyyao.github.io/2019/07/30/MySQL-%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E7%9A%84varchar-255-%E9%95%BF%E5%BA%A6%E5%8F%8A%E5%AD%98%E5%82%A8%E6%B1%89%E5%AD%97%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/</id>
+    <published>2019-07-29T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="数据库" scheme="https://galaxyyao.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    <category term="MySQL" scheme="https://galaxyyao.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>前端-通过自定义协议URI Scheme,点击Chrome中的链接打开IE</title>
+    <link href="https://galaxyyao.github.io/2019/07/11/%E5%89%8D%E7%AB%AF-%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AEURI-Scheme-%E7%82%B9%E5%87%BBChrome%E4%B8%AD%E7%9A%84%E9%93%BE%E6%8E%A5%E6%89%93%E5%BC%80IE/"/>
+    <id>https://galaxyyao.github.io/2019/07/11/%E5%89%8D%E7%AB%AF-%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AEURI-Scheme-%E7%82%B9%E5%87%BBChrome%E4%B8%AD%E7%9A%84%E9%93%BE%E6%8E%A5%E6%89%93%E5%BC%80IE/</id>
+    <published>2019-07-10T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="IE" scheme="https://galaxyyao.github.io/tags/IE/"/>
+    
+    <category term="Windows" scheme="https://galaxyyao.github.io/tags/Windows/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-13-Kubernetes实战-静态网站部署优化2-InitContainer</title>
+    <link href="https://galaxyyao.github.io/2019/07/04/%E5%AE%B9%E5%99%A8-13-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%962-InitContainer/"/>
+    <id>https://galaxyyao.github.io/2019/07/04/%E5%AE%B9%E5%99%A8-13-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%962-InitContainer/</id>
+    <published>2019-07-03T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+    <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+    <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-12-Kubernetes实战-静态网站部署优化1:ConfigMap,Secret与TLS</title>
+    <link href="https://galaxyyao.github.io/2019/07/03/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/"/>
+    <id>https://galaxyyao.github.io/2019/07/03/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/</id>
+    <published>2019-07-02T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+    <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+    <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-11-Kubernetes实战-Ingress与Traefik</title>
+    <link href="https://galaxyyao.github.io/2019/06/27/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/"/>
+    <id>https://galaxyyao.github.io/2019/06/27/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/</id>
+    <published>2019-06-26T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+    <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+    <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>容器-10-Kubernetes实战-Service</title>
+    <link href="https://galaxyyao.github.io/2019/06/26/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/"/>
+    <id>https://galaxyyao.github.io/2019/06/26/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/</id>
+    <published>2019-06-25T16:00:00.000Z</published>
+    <updated>2021-04-30T05:34:34.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+    <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
+    
+    <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
+    
+  </entry>
+  
+</feed>

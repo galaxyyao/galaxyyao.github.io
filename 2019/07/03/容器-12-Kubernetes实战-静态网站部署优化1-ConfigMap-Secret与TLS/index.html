@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>容器-12-Kubernetes实战-静态网站部署优化1:ConfigMap,Secret与TLS | Galaxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="虽然我们已经成功地将一个静态网站成功地在Kubernetes里部署起来了，但还有很多细节可以完善。我们就在这一节里逐步优化。   1. ConfigMap问题最明显的是。重温一下我们静态网站之前使用的Dockerfile：   123FROM nginx:alpineCOPY default.conf &#x2F;etc&#x2F;nginx&#x2F;conf.d&#x2F;default.confCOPY .&#x2F;dist &#x2F;usr&#x2F;s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器-12-Kubernetes实战-静态网站部署优化1:ConfigMap,Secret与TLS">
+<meta property="og:url" content="https://galaxyyao.github.io/2019/07/03/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="虽然我们已经成功地将一个静态网站成功地在Kubernetes里部署起来了，但还有很多细节可以完善。我们就在这一节里逐步优化。   1. ConfigMap问题最明显的是。重温一下我们静态网站之前使用的Dockerfile：   123FROM nginx:alpineCOPY default.conf &#x2F;etc&#x2F;nginx&#x2F;conf.d&#x2F;default.confCOPY .&#x2F;dist &#x2F;usr&#x2F;s">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/traefik-admin-ui-https.jpg">
+<meta property="article:published_time" content="2019-07-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-30T05:34:34.000Z">
+<meta property="article:author" content="姚皓(Hao Yao)">
+<meta property="article:tag" content="容器">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/traefik-admin-ui-https.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Galaxy</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://galaxyyao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-容器-12-Kubernetes实战-静态网站部署优化1-ConfigMap-Secret与TLS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/07/03/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/" class="article-date">
+  <time class="dt-published" datetime="2019-07-02T16:00:00.000Z" itemprop="datePublished">2019-07-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      容器-12-Kubernetes实战-静态网站部署优化1:ConfigMap,Secret与TLS
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>虽然我们已经成功地将一个静态网站成功地在Kubernetes里部署起来了，但还有很多细节可以完善。我们就在这一节里逐步优化。  </p>
+<h2 id="1-ConfigMap"><a href="#1-ConfigMap" class="headerlink" title="1. ConfigMap"></a>1. ConfigMap</h2><p>问题最明显的是。重温一下我们静态网站之前使用的Dockerfile：  </p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> default.conf /etc/nginx/conf.d/default.conf</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./dist /usr/share/nginx/html</span></span><br></pre></td></tr></table></figure>
+
+<p>首先是Nginx配置default.conf。<br>网站的源代码不应该干涉网站怎么部署。到底部署在Apache，Nginx还是Node.js，是否要在部署的时候添加自定义Header，都不该是开发者关注的事情。我们也不希望修改网站的timeout配置还需要动到源代码。从耦合性的角度来看，这个Nginx网站的配置文件不应该放到源代码中。<br>对于这类配置文件，Kubernetes里有专门的对象ConfigMap来保存。  </p>
+<p>从ConfigMap这个名字就可以猜得到，它存储的是配置信息，存储的格式是Map类型，即键值对。<br>配置信息可以是像本篇中的Nginx config配置，可以设置环境变量，可以是Java的properties和application.yml配置文件，可以是Redis和MySQL的配置文件。它很适合需要在一套Kubernetes集群上部署多个环境（例如特性分支&#x2F;sit&#x2F;uat）的情况。（当然我们的Java应用将使用Spring Cloud Config配置中心，所以目前不会用ConfigMap管理配置）<br>本篇POC的ConfigMap如下：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ConfigMap</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">poc-web-config</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">default.conf:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    server &#123;</span></span><br><span class="line"><span class="string">        listen       80;</span></span><br><span class="line"><span class="string">        server_name  localhost;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line">        <span class="string">charset</span> <span class="string">utf-8;</span></span><br><span class="line">        <span class="comment">#access_log  /var/log/nginx/log/host.access.log  main;</span></span><br><span class="line"></span><br><span class="line">        <span class="string">location</span> <span class="string">/</span> &#123;</span><br><span class="line">            <span class="string">root</span>   <span class="string">/usr/share/nginx/html;</span></span><br><span class="line">            <span class="string">index</span>  <span class="string">index.html</span> <span class="string">index.htm;</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#error_page  404              /404.html;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># redirect server error pages to the static page /50x.html</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="string">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  <span class="string">/50x.html;</span></span><br><span class="line">        <span class="string">location</span> <span class="string">=</span> <span class="string">/50x.html</span> &#123;</span><br><span class="line">            <span class="string">root</span>   <span class="string">/usr/share/nginx/html;</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>default.conf为key（键），下面的内容为value（值）。结构非常简单。<br>在Kubernetes中，ConfigMap是一种特殊的Volume（卷）：Projected Volume。可以认为ConfigMap是Kubernetes中的数据被投射（Project）到容器中的。<br>关于Volume我们会在后续展开讨论，这里只是先提一下：要在容器中使用volume，需要先在spec中定义，然后mount到容器中。所以添加了ConfigMap后的Deployment定义YAML如下：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">poc-web</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">poc-web</span></span><br><span class="line">        <span class="attr">image:</span> <span class="number">10.16</span><span class="number">.34</span><span class="number">.197</span><span class="string">:5000/staticsite:latest</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">web</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">poc-web-config</span></span><br><span class="line">          <span class="attr">mountPath:</span> <span class="string">/etc/nginx/conf.d</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">poc-web-config</span></span><br><span class="line">        <span class="attr">configMap:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">poc-web-config</span></span><br></pre></td></tr></table></figure>
+
+<p>poc-web-config中的default.conf被挂到了Nginx镜像的&#x2F;etc&#x2F;nginx&#x2F;conf.d目录下。<br>Nginx的nginx.conf中定义了会加载conf.d下所有conf后缀的Nginx配置：  </p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">include</span> /etc/nginx/conf.d/<span class="regexp">*.conf</span>;</span><br></pre></td></tr></table></figure>
+
+<p>而Projected Volume的挂载是在容器启动步骤最开始就进行的。所以当容器启动之前，会从ConfigMap中获取default.conf配置文件，放到&#x2F;etc&#x2F;nginx&#x2F;conf.d目录中。当Nginx进程启动的时候，就会读到该站点的配置。<br>既然Nginx的配置已经由ConfigMap提供，我们就可以不需要在源代码中包含。于是Dockerfile就被精简为：  </p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./dist /usr/share/nginx/html</span></span><br></pre></td></tr></table></figure>
+
+<p>不管Pod在哪台宿主机上，都可以访问到ConfigMap，所以我们很容易就能猜到ConfigMap的数据保存在etcd上。<br>除了以YAML方式定义，还可以通过–from-file参数将文件创建为ConfigMap。<br>在一般情况下ConfigMap会先覆盖掉挂载目录然后再将ConfigMap中的内容作为文件挂载进行。如果想要不覆盖原本文件夹下的文件可以使用subPath参数。  </p>
+<h3 id="1-1-热更新"><a href="#1-1-热更新" class="headerlink" title="1.1 热更新"></a>1.1 热更新</h3><p>更新ConfigMap不会触发Pod的滚动更新，所以每次需要修改Pod Annotation的方式来强制触发滚动更新。具体命令如：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl patch deployment &lt;Deployment名&gt; --patch &#x27;&#123;&quot;spec&quot;: &#123;&quot;template&quot;: &#123;&quot;metadata&quot;: &#123;&quot;annotations&quot;: &#123;&quot;version/config&quot;: &quot;20180411&quot; &#125;&#125;&#125;&#125;&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>更多可以参考：<br><a target="_blank" rel="noopener" href="https://jimmysong.io/kubernetes-handbook/concepts/configmap-hot-update.html">ConfigMap的热更新</a>  </p>
+<p>从这个角度来说，ConfigMap不太适合保存频繁更新的配置。  </p>
+<h2 id="2-Secret"><a href="#2-Secret" class="headerlink" title="2. Secret"></a>2. Secret</h2><p>除了ConfigMap之外，还有一种Projected Volume：Secret。从名字就可以猜得到，保存的是敏感信息，包括密码，认证token，密钥key等。<br>像这些比较敏感的信息，直接写在Kubernetes的Deployment YAML定义里肯定不合适。放在Secret中会比较安全和灵活。除了保存信息是加密的之外，Secret和ConfigMap并没有太大差别。<br>Kubernetes官网有一个生成用户名和密码的简单范例：<a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/tasks/inject-data-application/distribute-credentials-secure/">使用 Secret 安全地分发凭证 - Kubernetes</a>，这里就不多复述了。<br>这里介绍Secret，主要是因为我们接下来要给网站添加强制HTTPS访问。<br>要开启HTTPS访问，就先需要一个SSL证书。如果我们没有SSL证书的话，可以自己签发一个：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj &quot;/CN=traefik-ui.demosite.net&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们就可以通过如下的命令，根据SSL证书生成Secret：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret tls traefik-cert --key=tls.key --cert=tls.crt -n kube-system</span><br></pre></td></tr></table></figure>
+
+<p>由于是供Traefik用的，所以创建在kube-system的namespace里。接下来我们修改Traefik配置。  </p>
+<h2 id="3-配置TLS"><a href="#3-配置TLS" class="headerlink" title="3. 配置TLS"></a>3. 配置TLS</h2><h3 id="3-1-配置traefik-toml"><a href="#3-1-配置traefik-toml" class="headerlink" title="3.1 配置traefik.toml"></a>3.1 配置traefik.toml</h3><p>我们接下来为Traefik Ingress Controller配置证书。<br>Traefik的配置文件是traefik.toml。我们按照第1节的方式，将其配置为ConfigMap：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ConfigMap</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">traefik-conf</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">traefik.toml:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    # 设置insecureSkipVerify = true，可以配置backend为443(比如dashboard)的ingress规则</span></span><br><span class="line"><span class="string">    insecureSkipVerify = true</span></span><br><span class="line"><span class="string">    defaultEntryPoints = [&quot;http&quot;, &quot;https&quot;]</span></span><br><span class="line"><span class="string">    [entryPoints]</span></span><br><span class="line"><span class="string">      [entryPoints.http]</span></span><br><span class="line"><span class="string">        address = &quot;:80&quot;</span></span><br><span class="line"><span class="string">        ### 配置http 强制跳转 https</span></span><br><span class="line"><span class="string">        [entryPoints.http.redirect]</span></span><br><span class="line"><span class="string">          entryPoint = &quot;https&quot;</span></span><br><span class="line"><span class="string">        ### 配置只信任trustedIPs传递过来X-Forwarded-*，默认全部信任；为了防止客户端地址伪造，需开启这个</span></span><br><span class="line"><span class="string">        #[entryPoints.http.forwardedHeaders]</span></span><br><span class="line"><span class="string">        #  trustedIPs = [&quot;10.1.0.0/16&quot;, &quot;172.20.0.0/16&quot;, &quot;192.168.1.3&quot;]</span></span><br><span class="line"><span class="string">      [entryPoints.https]</span></span><br><span class="line"><span class="string">        address = &quot;:443&quot;</span></span><br><span class="line"><span class="string">        [entryPoints.https.tls]</span></span><br><span class="line"><span class="string">          [[entryPoints.https.tls.certificates]]</span></span><br><span class="line"><span class="string">            CertFile = &quot;/ssl/tls.crt&quot;</span></span><br><span class="line"><span class="string">            KeyFile = &quot;/ssl/tls.key&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中的<code>[entryPoints.http.redirect]</code>就是强制重定向的配置。<br>更多可选配置可以参考<a target="_blank" rel="noopener" href="https://docs.traefik.io/configuration/backends/kubernetes/">官方文档</a>。  </p>
+<h3 id="3-2-修改Traefik-Ingress-Controller配置"><a href="#3-2-修改Traefik-Ingress-Controller配置" class="headerlink" title="3.2 修改Traefik Ingress Controller配置"></a>3.2 修改Traefik Ingress Controller配置</h3><p>在Ingress Controller引入ConfigMap中的配置和Secret中的证书，增加443端口。先上个配置全文：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ServiceAccount</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">DaemonSet</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">k8s-app:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">k8s-app:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">serviceAccountName:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line">      <span class="attr">terminationGracePeriodSeconds:</span> <span class="number">60</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">ssl</span></span><br><span class="line">        <span class="attr">secret:</span></span><br><span class="line">          <span class="attr">secretName:</span> <span class="string">traefik-cert</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">config</span></span><br><span class="line">        <span class="attr">configMap:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">traefik-conf</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">traefik</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/ssl&quot;</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">&quot;ssl&quot;</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/config&quot;</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">&quot;config&quot;</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">http</span></span><br><span class="line">          <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">hostPort:</span> <span class="number">80</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">admin</span></span><br><span class="line">          <span class="attr">containerPort:</span> <span class="number">8080</span></span><br><span class="line">          <span class="attr">hostPort:</span> <span class="number">8080</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">https</span></span><br><span class="line">          <span class="attr">containerPort:</span> <span class="number">443</span></span><br><span class="line">          <span class="attr">hostPort:</span> <span class="number">443</span></span><br><span class="line">        <span class="attr">securityContext:</span></span><br><span class="line">          <span class="attr">capabilities:</span></span><br><span class="line">            <span class="attr">drop:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">ALL</span></span><br><span class="line">            <span class="attr">add:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">NET_BIND_SERVICE</span></span><br><span class="line">        <span class="attr">args:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--api</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--kubernetes</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--logLevel=INFO</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--configfile=/config/traefik.toml</span></span><br><span class="line">      <span class="attr">nodeSelector:</span></span><br><span class="line">        <span class="attr">node:</span> <span class="string">edge</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">traefik-ingress-service</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">k8s-app:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">http</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">443</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">https</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">admin</span></span><br></pre></td></tr></table></figure>
+
+<p>首先把ConfigMap和Secret以Projected Volume的形式挂上：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumes:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">ssl</span></span><br><span class="line">  <span class="attr">secret:</span></span><br><span class="line">    <span class="attr">secretName:</span> <span class="string">traefik-cert</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">config</span></span><br><span class="line">  <span class="attr">configMap:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">traefik-conf</span></span><br></pre></td></tr></table></figure>
+
+<p>然后mount到container上：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumeMounts:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/ssl&quot;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&quot;ssl&quot;</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/config&quot;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&quot;config&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>在container和service里增加443端口：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumeMounts:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/ssl&quot;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&quot;ssl&quot;</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">&quot;/config&quot;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&quot;config&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>启动参数里增加config文件：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">args:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">--api</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">--kubernetes</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">--logLevel=INFO</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">--configfile=/config/traefik.toml</span></span><br></pre></td></tr></table></figure>
+
+<p>因为不太确定怎么热加载Ingress Controller，所以我采用了先delete然后重新apply。然后我们就能以https形式访问了。<br>顺带着Traefik Admin UI也变成https了：<br><img src="/images/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/traefik-admin-ui-https.jpg" alt="Traefik Admin UI(https)">  </p>
+<h2 id="4-参考资料"><a href="#4-参考资料" class="headerlink" title="4. 参考资料"></a>4. 参考资料</h2><p>其他加载ConfigMap的方式，以及加载为环境变量的Demo<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/JetpropelledSnake/p/11080995.html">K8S学习笔记之Kubernetes 配置管理 ConfigMap - 时光飞逝，逝者如斯 - 博客园</a>  </p>
+<p>ConfigMap加载为命令行参数和非覆盖加载的Demo<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/cf8705a93c6b">Kubernetes对象之ConfigMap - 简书</a>  </p>
+<p>官方的ConfigMap Demo<br><a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/tutorials/configuration/configure-redis-using-configmap/">使用ConfigMap来配置Redis - Kubernetes</a>  </p>
+<p>网上有些配置较为过时，配置后虽然没有报错，但访问https地址就是遇到Connection Refused。下面这篇比较新一些，是本篇的主要参考：<br><a target="_blank" rel="noopener" href="https://github.com/easzlab/kubeasz/blob/master/docs/guide/ingress-tls.md">kubeasz&#x2F;ingress-tls.md at master · easzlab&#x2F;kubeasz</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/07/03/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/" data-id="cm065a55w000yd26o5r9ca1il" data-title="容器-12-Kubernetes实战-静态网站部署优化1:ConfigMap,Secret与TLS" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/07/04/%E5%AE%B9%E5%99%A8-13-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%962-InitContainer/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          容器-13-Kubernetes实战-静态网站部署优化2-InitContainer
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/27/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">容器-11-Kubernetes实战-Ingress与Traefik</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/" rel="tag">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/" rel="tag">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IaC/" rel="tag">IaC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/" rel="tag">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/" rel="tag">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/IaC/" style="font-size: 10px;">IaC</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/%E4%B8%AD%E5%8F%B0/" style="font-size: 10px;">中台</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 20px;">容器</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 11.67px;">运维</a> <a href="/tags/%E9%87%91%E8%9E%8D/" style="font-size: 10px;">金融</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/08/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%80%A7%E5%92%8C%E7%9B%B8%E5%85%B3%E6%80%A7/">大数据的因果性和相关性</a>
+          </li>
+        
+          <li>
+            <a href="/2024/08/07/Terraform-IaC-%E5%AD%A6%E4%B9%A0Tips/">Terraform IaC 学习Tips</a>
+          </li>
+        
+          <li>
+            <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/">Resume以及ARTS</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">金融业务-不动产保理业务入门和系统设计</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/">运维-运维体系标准化之故障管理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 姚皓(Hao Yao)<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

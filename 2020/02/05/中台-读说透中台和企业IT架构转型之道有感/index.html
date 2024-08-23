@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>中台-读《说透中台》和《企业IT架构转型之道》有感 | Galaxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="春节期间看完了极客时间的《说透中台》的课程，顺便也读了《企业IT架构转型之道-阿里巴巴中台战略思想与架构实战》一书。这篇从实际项目的角度来想象一下，如果让我来负责公司的中台，应该怎么做。首先说下评价：这个课程符合我对ThoughtWorks的刻板印象：有点滥用理论术语，干货不多；问题题了不少，解决方案不落地。可能是都是给其他公司做的项目，有保密协议的缘故。能理解，但还是不推荐。阿里的那本中台书更加">
+<meta property="og:type" content="article">
+<meta property="og:title" content="中台-读《说透中台》和《企业IT架构转型之道》有感">
+<meta property="og:url" content="https://galaxyyao.github.io/2020/02/05/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="春节期间看完了极客时间的《说透中台》的课程，顺便也读了《企业IT架构转型之道-阿里巴巴中台战略思想与架构实战》一书。这篇从实际项目的角度来想象一下，如果让我来负责公司的中台，应该怎么做。首先说下评价：这个课程符合我对ThoughtWorks的刻板印象：有点滥用理论术语，干货不多；问题题了不少，解决方案不落地。可能是都是给其他公司做的项目，有保密协议的缘故。能理解，但还是不推荐。阿里的那本中台书更加">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-service-plugin-1.jpg">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-service-plugin-2.jpg">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-tenant.jpg">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-config-template.jpg">
+<meta property="article:published_time" content="2020-02-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-30T05:34:34.000Z">
+<meta property="article:author" content="姚皓(Hao Yao)">
+<meta property="article:tag" content="中台">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://galaxyyao.github.io/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-service-plugin-1.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Galaxy</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://galaxyyao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-中台-读说透中台和企业IT架构转型之道有感" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/02/05/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/" class="article-date">
+  <time class="dt-published" datetime="2020-02-04T16:00:00.000Z" itemprop="datePublished">2020-02-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      中台-读《说透中台》和《企业IT架构转型之道》有感
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>春节期间看完了极客时间的《说透中台》的课程，顺便也读了《企业IT架构转型之道-阿里巴巴中台战略思想与架构实战》一书。这篇从实际项目的角度来想象一下，如果让我来负责公司的中台，应该怎么做。<br>首先说下评价：这个课程符合我对ThoughtWorks的刻板印象：有点滥用理论术语，干货不多；问题题了不少，解决方案不落地。可能是都是给其他公司做的项目，有保密协议的缘故。能理解，但还是不推荐。阿里的那本中台书更加实在。  </p>
+<h2 id="1-中台概念整理"><a href="#1-中台概念整理" class="headerlink" title="1. 中台概念整理"></a>1. 中台概念整理</h2><h3 id="1-1-中台的目的"><a href="#1-1-中台的目的" class="headerlink" title="1.1 中台的目的"></a>1.1 中台的目的</h3><p>中台的目的就是企业能力复用。  </p>
+<h3 id="1-2-中台的分类"><a href="#1-2-中台的分类" class="headerlink" title="1.2 中台的分类"></a>1.2 中台的分类</h3><p>中台主流分为两大类：业务中台&#x2F;数据中台。业务中台产生数据，数据中台做数据的二次加工，并将结果再服务于业务中台。<br>也有“技术中台”的概念，可以理解为一些技术中间件的整合和封装，但我倾向于不将其认定为中台。<br>中台强调一个复用。如果根本没有系统从零开始建设，一上来就搞中台很容易会过度设计。  </p>
+<h2 id="2-中台的抓手"><a href="#2-中台的抓手" class="headerlink" title="2. 中台的抓手"></a>2. 中台的抓手</h2><p>中台会面对所有业务线的需求。虽然中台有企业级的属性，但不代表建设中台的时候必须梳理企业的全业务线。中台的愿景是能力复用，那么最好有具体的新业务作为抓手。  </p>
+<ul>
+<li>阿里是以聚划算作为抓手</li>
+<li><a target="_blank" rel="noopener" href="https://time.geekbang.org/dailylesson/detail/100040819">蘑菇街</a>的新增抓手是直播电商</li>
+<li>美菜网是遇到了生鲜和2B的一些新玩法需求</li>
+</ul>
+<h2 id="2-1-对当前所在公司构建业务中台的构想"><a href="#2-1-对当前所在公司构建业务中台的构想" class="headerlink" title="2.1 对当前所在公司构建业务中台的构想"></a>2.1 对当前所在公司构建业务中台的构想</h2><p>《说透中台》中虚拟出来了一个极客地产。极客地产做中台的抓手是有新增的长租公寓的需求。长租公寓需要复用已有的地产投资和物业能力，但工程设计&#x2F;招采&#x2F;建设&#x2F;装修&#x2F;租赁等是从零开始。那么就可以针对地产投资和物业这两块来建设中台。而另外独立发展的业务线可以先跳过。<br>极客地产这个例子其实和当前所在公司挺像（为了避免再被信息安全“训诫”，这里就不提公司名字了）。已有的业务是投资，金融和运营三个板块，而现在新增了商业地产板块。是不是可以趁这个机会也建设中台？我觉得可以有针对性发展少数几个业务中台，主要做数据中台。<br>楼宇项目信息可能是少数比较共通的部分，但投前和投后在剩余的部分的交集有限。没有复用，还不如将功能独立建设在自己各自板块的应用里。当然现在对其他三个板块了解也有限，可能在了解更多后会推翻这个判断。  </p>
+<h2 id="3-中心与服务如何划分"><a href="#3-中心与服务如何划分" class="headerlink" title="3. 中心与服务如何划分"></a>3. 中心与服务如何划分</h2><p>在具体动手开始搭建中台后，我们首先面临的问题是服务中心怎么划分怎么建设。<br>淘宝的经历是首先四个服务中心：  </p>
+<ul>
+<li>用户中心</li>
+<li>商品中心</li>
+<li>交易中心</li>
+<li>店铺中心</li>
+</ul>
+<p>用户中心因为调用频繁收效大，而且复杂性和重要性较小，不出意外成为了最开始的试点。商品中心后来又拆出了评价中心。交易中心拆出了营销中心。另外还增加了一个库存中心。<br>中心的划分的原则是：“高内聚、低耦合”。如果只有增删改查这样的简单需求，不建议单独拆出一个中心。像是积分这种，等发展到足够丰富或对其他业务中心的影响已经不可忽视再拆。<br>每个中心也可以由多个服务组成。例如交易中心可以分为订单服务和购物车服务。服务中心是业务领域的概念，是为了业务和数据的完整性而设立的。而包含的子服务模块是根据系统架构设计的层面来考虑的。但一开始不要拆得太细。  </p>
+<h2 id="4-中台的其他技术考量点"><a href="#4-中台的其他技术考量点" class="headerlink" title="4. 中台的其他技术考量点"></a>4. 中台的其他技术考量点</h2><h3 id="4-1-服务插件"><a href="#4-1-服务插件" class="headerlink" title="4.1 服务插件"></a>4.1 服务插件</h3><p>《<a target="_blank" rel="noopener" href="https://time.geekbang.org/dailylesson/detail/100040824">京东服务技术中台探索与实践</a>》的视频中提到了他们建设中台的时候有一个“服务插件”的概念。简单来说就是对于非常个性化的需求（例如对用户体验的预警），提供插件协议，由相应前台团队自己来开发插件。  </p>
+<p><img src="/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-service-plugin-1.jpg" alt="服务插件1">  </p>
+<p>这种中台的场景可能更适合中台把前端页面也包揽的情况。下图是插件在实际页面上的规定展示区域。  </p>
+<p><img src="/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-service-plugin-2.jpg" alt="服务插件2">  </p>
+<h3 id="4-2-租户"><a href="#4-2-租户" class="headerlink" title="4.2 租户"></a>4.2 租户</h3><p>还是《京东服务技术中台探索与实践》的视频。为了防止某些用户在大促的时候把中台资源（包括计算资源和存储资源）给吃完，引入了租户的概念。<br>租户的设计对于有2C秒杀大促等场景的企业可能是必要的，毕竟不能在中台层面产生雪崩。  </p>
+<p><img src="/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-tenant.jpg" alt="租户">  </p>
+<h3 id="4-3-配置化"><a href="#4-3-配置化" class="headerlink" title="4.3 配置化"></a>4.3 配置化</h3><p>包括蘑菇街和京东服务中台的例子中，都提到了中台可以成为业务逻辑的下沉，前台应用做配置。<br>像蘑菇街就是将促销的逻辑做成模板：  </p>
+<p><img src="/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-config-template.jpg" alt="配置化">  </p>
+<h2 id="5-中台的实施路径"><a href="#5-中台的实施路径" class="headerlink" title="5. 中台的实施路径"></a>5. 中台的实施路径</h2><p>阿里的中台实施路径分为三个阶段：  </p>
+<ul>
+<li>API as Service</li>
+<li>Product as Service</li>
+<li>Solution as Service</li>
+</ul>
+<p>第一个阶段比较好实现，第三个阶段是到一定层次后的追求，我觉得关键是第二个阶段，就是将中台打造成一个产品。<br>打造成产品，意味着将API进行场景化的组装。如果只是一堆API列表，无法达成快速支持前台的目的。<br>除此以外，产品化也意味着：  </p>
+<ul>
+<li>产品有自己的定位，可以选择性地实现前台需求</li>
+<li>产品要想方设法为客户（前台）体现价值，保持用户满意度才能生存下来。如果一定期限内无法获取前台用户，或前台用户不满意，则及时中止建设止损</li>
+<li>产品要讲究易用性，提供完善的文档和手册</li>
+</ul>
+<p>中台的绩效考核可以参考阿里的做法：  </p>
+<ul>
+<li>服务稳定40%</li>
+<li>业务创新25%（适当允许因此带来的上线事故）</li>
+<li>服务接入量20%</li>
+<li>客户满意度15%</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2020/02/05/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/" data-id="cm065a561003pd26odwt37z21" data-title="中台-读《说透中台》和《企业IT架构转型之道》有感" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          管理-远程办公项目管理经验总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">容器-14-国内Windows10环境安装Minikube</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/" rel="tag">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/" rel="tag">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IaC/" rel="tag">IaC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/" rel="tag">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/" rel="tag">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/IaC/" style="font-size: 10px;">IaC</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/%E4%B8%AD%E5%8F%B0/" style="font-size: 10px;">中台</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 20px;">容器</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 11.67px;">运维</a> <a href="/tags/%E9%87%91%E8%9E%8D/" style="font-size: 10px;">金融</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/08/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%80%A7%E5%92%8C%E7%9B%B8%E5%85%B3%E6%80%A7/">大数据的因果性和相关性</a>
+          </li>
+        
+          <li>
+            <a href="/2024/08/07/Terraform-IaC-%E5%AD%A6%E4%B9%A0Tips/">Terraform IaC 学习Tips</a>
+          </li>
+        
+          <li>
+            <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/">Resume以及ARTS</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">金融业务-不动产保理业务入门和系统设计</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/">运维-运维体系标准化之故障管理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 姚皓(Hao Yao)<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

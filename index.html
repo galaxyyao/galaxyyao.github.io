@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Galaxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="姚皓的技术博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Galaxy">
+<meta property="og:url" content="https://galaxyyao.github.io/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="姚皓的技术博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="姚皓(Hao Yao)">
+<meta property="article:tag" content="galaxyyao,姚皓">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Galaxy</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://galaxyyao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-大数据的因果性和相关性" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/08/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%80%A7%E5%92%8C%E7%9B%B8%E5%85%B3%E6%80%A7/" class="article-date">
+  <time class="dt-published" datetime="2024-08-22T16:00:00.000Z" itemprop="datePublished">2024-08-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/08/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%80%A7%E5%92%8C%E7%9B%B8%E5%85%B3%E6%80%A7/">大数据的因果性和相关性</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="大数据的相关性特性"><a href="#大数据的相关性特性" class="headerlink" title="大数据的相关性特性"></a>大数据的相关性特性</h2><p>挺巧的是，最近从不同来源听到了这个理论两次。</p>
+<p>第一次是ACE题库里的一道题：“美国海军军官莫里通过对前人航海日志的分析，绘制了新的航海日志图，表明了大风与洋流可能发生的地点，这体现了大数据分析理念中的：”<br>这道题的标准答案是：在分析方法上，更注重相关分析而不是因果分析。</p>
+<p>第二次是听播客“纵横四海”，讲瑞幸数字化。瑞幸除了把甜度、浓稠度等饮料的指标做了数字化之外，也将其和销量的反馈结合起来。但在结合的时候，并不会试图推断出甜度与销量的因果关系，而是相信数据给出的指引。<br>播客里还举了几个典型的案例，比如沃尔玛发现飓风前人们喜欢屯蛋挞。至于为什么是蛋挞，而不是薯片，也不是可乐，从因果性没法给出很好的解释。<br>还有亚马逊的案例中书籍推荐之间的相关性，医疗保险方面买车与遵医嘱信用分的相关性。<br>这时候就要反人类的本能，放弃对因果性的追究，去全身心拥抱大数据。</p>
+<p>从某个角度，LLM中对Few Shot有效性的解释，也可以从这个角度来理解。Few Shot本身并没有改变模型，但得到的结果就是更好了。即Few Shot与结果的有效性之间存在相关性。但当前的理论模型只能给出一些猜测，还无法完美证明。</p>
+<h2 id="个人对因果性与相关性的看法"><a href="#个人对因果性与相关性的看法" class="headerlink" title="个人对因果性与相关性的看法"></a>个人对因果性与相关性的看法</h2><p>对于这个现象，我的个人看法分为两点：</p>
+<ul>
+<li>接受这个事实，从实用性角度先利用起来。</li>
+<li>关注业界对于其背后原理的研究进展。</li>
+</ul>
+<p>背后的逻辑是：</p>
+<ol>
+<li>承认人类对于现实世界的理解是有限的。的确存在只发现了现象，但暂时无法完全探明其原理的事务。</li>
+<li>时间是有限的，机会是稍纵即逝的。很多时候如果一定要掌握因果性才做决策，机会点就丢失了。务实为先。</li>
+<li>但不盲信，不将现象宗教化。坚信其中被后的原理早晚是会被人类解答的。</li>
+</ol>
+<p>舍恩伯格在《大数据时代》中的观点是放弃对因果性的理解：我们没有必要非得知道现象背后的原因，而是要让数据自己发声；<br>其译者周涛的观点是不能放弃：放弃了对因果的追求，就是放弃了人凌驾计算机之上的智力优势，是人类自身的放纵和堕落。</p>
+<p>我个人还是认同不能放弃对因果性追求的观点。即使是从实用性角度，了解数据之间的因果关系，也有利于建立起更好的模型，避免明显的伪相关性。<br>典型的案例就是“冰淇淋销售量和溺水次数”的相关性，与“降雨和骑自行车的人数”的相关性。溺水预测模型明显应该排除冰激凌销量的数据，而降雨预测模型也应该排除骑自行车人数。</p>
+<p>在搜索相关观点的过程中，甚至看到了一些比较极端的观点，比如：“世界可能根本没有因果性”。对这种观点就不予置评了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对这个topic也只是在听完播客后的理解巩固。在工作中暂时没有实际的运用场景。<br>就先推荐一下相关的不错的深入阅读文章吧。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>7.8 相关关系、因果关系和预测 | 预测：方法与实践（第三版）<br><a target="_blank" rel="noopener" href="https://otexts.com/fpp3cn/causality-cn.html">https://otexts.com/fpp3cn/causality-cn.html</a><br>这本书在澳大利亚莫纳什大学用作商学本科三年级的课程教材，还贴心地有中文翻译，值得后续进一步详细阅读。在B站上还有教师英文讲课视频可以锻炼英语听力。</p>
+<p>相关性不一定等于因果性：从 Yule-Simpson’s Paradox 讲起 - 郑瀚Andrew - 博客园<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/LittleHann/p/11992311.html">https://www.cnblogs.com/LittleHann/p/11992311.html</a><br>这篇文章对相关性与因果性的相关理论总结得很不错，详略得当，并加入了自己对于安全领域实践的理解。看了下作者，是阿里云安全团队的。对我司的人员能力还真的是可以信任的。</p>
+<p>EP06 瑞幸：数字化重生之路，一切无关于咖啡 - 纵横四海丨Ready Go | 小宇宙 - 听播客，上小宇宙<br><a target="_blank" rel="noopener" href="https://www.xiaoyuzhoufm.com/episode/66b97c3733591c27be654491">https://www.xiaoyuzhoufm.com/episode/66b97c3733591c27be654491</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2024/08/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%80%A7%E5%92%8C%E7%9B%B8%E5%85%B3%E6%80%A7/" data-id="cm065a5620043d26o92a18oxu" data-title="大数据的因果性和相关性" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Terraform-IaC-学习Tips" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/08/07/Terraform-IaC-%E5%AD%A6%E4%B9%A0Tips/" class="article-date">
+  <time class="dt-published" datetime="2024-08-06T16:00:00.000Z" itemprop="datePublished">2024-08-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/08/07/Terraform-IaC-%E5%AD%A6%E4%B9%A0Tips/">Terraform IaC 学习Tips</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在之前参与资产市场产品迭代的时候，就资产市场与研发平台的打通，研发团队就提出过使用IaC，实现“一键下行”。一键下行，指的是在下行复用组件资产的时候，将组件所依赖的资源也同时自动化开通，然后自动将组件部署在新开通的资源上。<br>举个例子：假设4A组件需要依赖RDS、Redis、OSS，就在后台配置的云资源环境自动申请RDS、Redis、OSS。站在研发的视角，隐藏了资源申请的复杂性，加速了复用流程，提升了研发体验。<br>但在资产市场对外输出时，对接的云资源往往没有那么理想，必定是阿里云公共云资源，所以但是考虑过使用IaC，以适配不同的云环境。</p>
+<p>接下来即将开始的工作，可能也会涉及大量而频繁的云资源开通。最近在做Demo的时候，就深感开通和销毁云资源这个繁琐的事情有多浪费时间。<br>以程序员的偷懒本性，自然想到了使用IaC来提升效率。</p>
+<p>概念和快速入门指引可以直接查阅<a href="#ref">参考资料</a>，就不copy &amp; paste了。只记录一些个人觉得实践时需要关注的点。<br>由于自家的关系，以下云资源默认为阿里公共云。</p>
+<h3 id="Terraform-vs-阿里云ROS"><a href="#Terraform-vs-阿里云ROS" class="headerlink" title="Terraform vs. 阿里云ROS"></a>Terraform vs. 阿里云ROS</h3><p>对于个人而言，暂时没精力掌握两种IaC语法。考虑到跨云平台的资源编排和管理，优先选择了Terraform。</p>
+<h2 id="业务场景"><a href="#业务场景" class="headerlink" title="业务场景"></a>业务场景</h2><p>IaC核心是版本控制和可重复，实现提效、降低误操作、一致性与合规安全。<br>适合IaC的业务场景是什么？企业上云、环境复制、环境重建、合规管控等。</p>
+<h3 id="Terraform-vs-Ansible"><a href="#Terraform-vs-Ansible" class="headerlink" title="Terraform vs. Ansible"></a>Terraform vs. Ansible</h3><p>Ansible于 2015 年被Red Hat收购。从当前的厂商Redhat自己的说法，两者可以结合。</p>
+<ol>
+<li>使用Terraform创建云资源：使用Terraform创建虚拟机、网络、存储等云资源，确保环境的一致性和可重复性。</li>
+<li>使用Ansible配置软件：在创建完云资源后，使用Ansible来安装、配置和管理软件，确保每个虚拟机都具有所需的配置。<br>如果需要在虚拟机之间进行复杂的配置和协调，可以优先考虑使用Ansible，因为它在主机内部执行操作，更适合执行复杂的系统管理任务。</li>
+</ol>
+<p>不过我的个人未经实践的粗浅见解是，同时运用两套解决方案对于运维的学习成本会更高（特别是新手）。在云原生时代，直接通过镜像拉起容器，在主机内部执行操作是需要尽量减少的运维行为。<br>以国内的运维条件，直接到主机内部执行操作肯定还是无法避免。不过如果这种是低频偶发操作，是不是靠人工+文档，比引入Ansible成本更低？如果是基于纯阿里公共云的话，还有OOS（系统运维管理）云产品可以替代Ansible。<br>Anyhow，当前我个人做demo的时候还是以纯Terraform的方案。</p>
+<p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://bestsrc.com/?p=3332">Ansible与Terraform的应用场景和优劣势 - bestsrc</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.redhat.com/zh/topics/automation/ansible-vs-terraform">一文了解 Terraform 与 Ansible 的区别是什么？</a></li>
+</ul>
+<h3 id="Terraform与应用部署"><a href="#Terraform与应用部署" class="headerlink" title="Terraform与应用部署"></a>Terraform与应用部署</h3><p>阿里云的官方文档有使用Terraform分别在ECS和K8S集群上部署Wordpress的实践教程。典型案例里也有使用Terraform快速拉起幻兽帕鲁服务的案例。但实际搜索应用编排，主要内容是在云效的<a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/2248627.html">AppStack文档</a>中。即从阿里云的业务逻辑来看，应用编排从逻辑上更贴合DevOps。<br>我个人还是认同这个逻辑的。上面案例中，不管是部署Wordpress，还是幻兽帕鲁的服务，都是比较成熟的服务。而对于快速迭代的企业应用，还是适合配合DevOps来落地应用编排，而非ROS（资源编排服务）。<br>不过也有对Terraform深度探索使用的企业（特别是游戏行业），不仅云资源，DevOps部署应用也使用Terraform编排完成。</p>
+<p>讲到了应用编排，顺带一提，在查资料的时候看到了华为对其资源编排的分享的<a target="_blank" rel="noopener" href="https://itdks.su.bcebos.com/27a5023401b844ab817e7613f78f77ea.pdf">材料</a>，发现一个挺有意思的细节。<br>在那份材料里，华为将资源编排与应用编排分为两个不同的产品，并按照Shell脚本（命令行级别自动化）-&gt;配置管理自动化（Puppet&#x2F;Chef&#x2F;Ansible&#x2F;Salt）-&gt;资源供给自动化（Terraform&#x2F;Docker Compose）-&gt;资源编排（AWS-Cloudformation&#x2F;Ali-ROS&#x2F;HC-RTS）-&gt;应用编排（AWS-CFN&#x2F;Pivotal-BOSH&#x2F;HC-AOS）的逻辑，来描述编排服务的发展趋势来描绘云上自动化。但从这张图很容易误解资源编排和应用编排是有发展递进关系。当前，资源编排和应用编排已经都合并到华为的同一个资源编排服务（RFS）的产品里，估计也是做了云产品治理与整合。但应用编排的产品页和产品代号理论上应该随之下线，但还保留着，透露出内部组织调整的影子。</p>
+<h2 id="几个知识点"><a href="#几个知识点" class="headerlink" title="几个知识点"></a>几个知识点</h2><p>在实践了几个Hello world级的demo后，整理了几个个人关注的知识点。</p>
+<h3 id="身份认证"><a href="#身份认证" class="headerlink" title="身份认证"></a>身份认证</h3><p>在提到身份认证之前，记录一下自己遇到过的弱智问题。<br>使用Terraform在创建VPC的时候，发现可以通过页面创建上海区域可用区的VPC，但没法使用Terraform创建，会报错：”Message: code: 400, Resource you requested is not available in this region or zone. “。但在杭州区域区域，不管是页面还是Terraform都可以成功创建。提了工单，经过售后工程师提醒才发现，Terraform初始配置的时候需要配置一个环境变量：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export ALICLOUD_REGION=&quot;cn-hangzhou&quot;</span><br></pre></td></tr></table></figure>
+<p>隔了一个周末自己忘记了。。。在写HCL脚本的时候还在奇怪，怎么VPC不需要指定区域的。</p>
+<p>这里就涉及到初始化本地Terraform的时候一个设置，就是将AK和SK设置到本机的环境变量里。<br>Terraform要操作云资源，操作交互自然是需要带身份认证的。<br>官方文档介绍了几种方案，包括通过terraform命令传参方式（-var参数）、环境变量。如果是在ECS上执行，还可以通过ECS服务角色、角色扮演、OIDC角色扮演。这3个也是生产环境到的建议方式，无需直接暴露AK&#x2F;SK。<br>不过话又说回来，我能理解需要将AK和SK放到环境变量里，还是不太理解为什么默认要将区域也放到环境变量里，而不是也放到脚本里维护。猜测是由于ROS的HCL脚本本身就是按区域分别维护的原因。但在初学者教程里这么配置，比较容易让人踩坑。</p>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>HCL2中，变量可以不用加花括号了。即可以直接用<code>var.region</code>，而不需要使用<code>&quot;$&#123;var.region&#125;&quot;</code>。（这是IntelliJ IDEA里提示后才知道的）</p>
+<h3 id="模块化"><a href="#模块化" class="headerlink" title="模块化"></a>模块化</h3><p>Terraform也支持代码复用，形式就是模块。模块可以理解为包含一个或多个资源的模板，对应Terraform代码里的一个目录。<br>模块使用的典型场景，包括：</p>
+<ul>
+<li>需要重复创建多个相同资源（可以配合count或for each语法）</li>
+<li>在不同的环境，调用相同的模块，通过传入不同环境的参数区分<br>从实践来说，推荐每个module尽可能只包含同一产品的相关资源。</li>
+</ul>
+<p>阿里云的常用module其实可以直接从terraform官网引用，参见：<a target="_blank" rel="noopener" href="https://registry.terraform.io/browse/modules?provider=alibaba">Browse Modules | Terraform Registry</a>，可以在线引用，例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">module &quot;vpc&quot; &#123;</span><br><span class="line">  source  = &quot;alibaba/vpc/alicloud&quot;</span><br></pre></td></tr></table></figure>
+<p>用在线的，还是用自己封装的，就看个人判断了。阿里云的<code>alibabacloud-automation</code>项目里的module的代码风格也多少有些差异。可以作为参考，但如果要自己用得顺手，可能还是需要自己按照实际业务场景+个人偏好自行封装。</p>
+<h3 id="Terraform后台（Backend）"><a href="#Terraform后台（Backend）" class="headerlink" title="Terraform后台（Backend）"></a>Terraform后台（Backend）</h3><p>默认情况下，Terraform 状态文件（<code>.tfstate</code>，即Terraform State，保存了资源配置和生成资源的元数据）会存储在本地文件系统上。然而，在团队环境中，需要更安全、持久或可共享的状态管理。<br>使用Git托管是不行的，会产生团队多人同时操作情况下产生的状态文件更新及时性问题。例如A刚运行完apply，本地更新了state文件，还没来得及上传git，这时候B也运行的话，就可能导致A创建的资源被销毁。<br>最佳实践是放到OSS Bucket远程存储，配置后台通常在 Terraform 配置文件（terraform.tf 或 backend.tf）中完成。<br>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/2837060.html#f048194e6fv1j">Terraform State-阿里云帮助中心</a>。</li>
+<li><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/145541.html">如何使用Terraform OSS Backend_Terraform(Terraform)-阿里云帮助中心</a></li>
+</ul>
+<h3 id="Data：存量资源导入Terraform"><a href="#Data：存量资源导入Terraform" class="headerlink" title="Data：存量资源导入Terraform"></a>Data：存量资源导入Terraform</h3><p>除非是新创建或新迁云的企业，不然肯定会有相当数量的存量资源没有通过Terraform管理。此外还会遇到：</p>
+<ul>
+<li>虽然资源已经使用Terraform管理，但由于某些情况，是通过控制台对云资源做了属性变更</li>
+<li>Terraform模版过于复杂而拆分</li>
+</ul>
+<p>这种情况下，就需要使用Terraform的DataSource来获取资源ID，声明要导入的资源，然后通过terraform import命令导入。</p>
+<p>参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://help.aliyun.com/zh/ros/user-guide/import-existing-resources-into-terraform-resource-stack">如何将资源导入Terraform资源栈_资源编排(ROS)-阿里云帮助中心</a></li>
+<li><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/146144.html">如何使用Terraform解决存量云资源管理难题_Terraform(Terraform)-阿里云帮助中心</a></li>
+</ul>
+<p>按照Google的建议，要避免导入现有资源。给出的理由是：因为这样做可能会很难完全了解手动创建的资源的来源和配置。应通过 Terraform 创建新资源并删除旧资源。当然这是理想情况，Google自己也没死板地要求一定要采用。</p>
+<h2 id="工程最佳实践"><a href="#工程最佳实践" class="headerlink" title="工程最佳实践"></a>工程最佳实践</h2><p>虽然在demo的时候，可以用一个main.tf搞定。但既然要系统性地学习，还是学彻底。所以也整合了Terraform工程最佳实践的资料。</p>
+<h3 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h3><p>从 <a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/2837051.html#1a450ebde0nw4">Terraform目录</a>，可以看到一般会分根模块和子模块。<br>每个模块里包含：</p>
+<ul>
+<li>CHANGELOG.md</li>
+<li>README.md</li>
+<li>locals.tf</li>
+<li>main.tf</li>
+<li>variables.tf</li>
+<li>outputs.tf<br>此外根模块里包含providers.tf。<br>如果资源复杂，资源配置代码较长，可以按照资源类型单独使用一个独立的 .tf 文件来存放，例如，用于 ECS 实例、OSS Bucket 和数据库的配置可以分别放在 instance.tf，oss.tf 和 database.tf 中。（这种情况是不是还不如封module？）</li>
+</ul>
+<h4 id="Google方案参考"><a href="#Google方案参考" class="headerlink" title="Google方案参考"></a>Google方案参考</h4><p>按照Google的建议，使用environments目录来方每个环境的配置。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">-- SERVICE-DIRECTORY/</span><br><span class="line">   -- OWNERS</span><br><span class="line">   -- modules/</span><br><span class="line">      -- &lt;service-name&gt;/</span><br><span class="line">         -- main.tf</span><br><span class="line">         -- variables.tf</span><br><span class="line">         -- outputs.tf</span><br><span class="line">         -- provider.tf</span><br><span class="line">         -- README</span><br><span class="line">      -- ...other…</span><br><span class="line">   -- environments/</span><br><span class="line">      -- dev/</span><br><span class="line">         -- backend.tf</span><br><span class="line">         -- main.tf</span><br><span class="line"></span><br><span class="line">      -- qa/</span><br><span class="line">         -- backend.tf</span><br><span class="line">         -- main.tf</span><br><span class="line"></span><br><span class="line">      -- prod/</span><br><span class="line">         -- backend.tf</span><br><span class="line">         -- main.tf</span><br></pre></td></tr></table></figure>
+<p>此外，按照Google的风格，也是建议使用MonoRepo来管理所有的Terraform代码，并且由单个平台工程团队管理这个MonoRepo。<br>也可以将Terraform配置拆分到不同的代码库。<br>基础代码库：<br><img src="/images/Terraform-IaC-%E5%AD%A6%E4%B9%A0Tips/repo-1-foundations.svg" alt="基础代码库"><br>特定于应用和团队的代码库：<br><img src="/images/Terraform-IaC-%E5%AD%A6%E4%B9%A0Tips/repo-n-application-platform-team-specific.svg" alt="特定于应用和团队的代码库"></p>
+<p>我将个人测试自用的项目，参考Google的MonoRepo+基础代码库+项目（服务）的目录结构方案，暂时拟定了个自用的目录结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">-- foundations/</span><br><span class="line">   -- vpc/</span><br><span class="line">      -- examples/</span><br><span class="line">         -- main.tf</span><br><span class="line">         -- outputs.tf</span><br><span class="line">      -- CHANGELOG.md</span><br><span class="line">      -- locals.tf</span><br><span class="line">      -- main.tf</span><br><span class="line">      -- outputs.tf</span><br><span class="line">      -- README.md</span><br><span class="line">      -- variables.tf</span><br><span class="line">   -- ecs-instance/</span><br><span class="line">   -- ...other/</span><br><span class="line">   -- template/</span><br><span class="line">-- projects/</span><br><span class="line">   -- project-1/</span><br><span class="line">      -- modules/</span><br><span class="line">         -- main.tf</span><br><span class="line">         -- outputs.tf</span><br><span class="line">      -- CHANGELOG.md</span><br><span class="line">      -- environments/</span><br><span class="line">         -- dev/</span><br><span class="line">            -- backend.tf</span><br><span class="line">            -- main.tf</span><br><span class="line">         -- sit/</span><br><span class="line">            -- backend.tf</span><br><span class="line">            -- main.tf</span><br><span class="line">         -- prod/</span><br><span class="line">            -- backend.tf</span><br><span class="line">            -- main.tf</span><br><span class="line">      -- locals.tf</span><br><span class="line">      -- main.tf</span><br><span class="line">      -- outputs.tf</span><br><span class="line">      -- provider.tf</span><br><span class="line">      -- README.md</span><br><span class="line">      -- variables.tf</span><br><span class="line">   -- ...other/</span><br><span class="line">   -- template/</span><br></pre></td></tr></table></figure>
+<p>foundations（基础设施）和projects里都包含了个template目录。新建模块和子项目的时候，可以从template里快速复制出来一份。<br>根据实际使用体验再调整。</p>
+<h3 id="代码格式化"><a href="#代码格式化" class="headerlink" title="代码格式化"></a>代码格式化</h3><p>代码格式化的规则不用记，运行<code>terraform fmt -recursive</code>就可以了。</p>
+<h3 id="gitignore文件"><a href="#gitignore文件" class="headerlink" title="gitignore文件"></a>gitignore文件</h3><p>.gitignore文件参考：<a target="_blank" rel="noopener" href="https://github.com/github/gitignore/blob/main/Terraform.gitignore">gitignore&#x2F;Terraform.gitignore at main · github&#x2F;gitignore</a><br>稍微修改了一下，增加了个人用的IDE的IntelliJ Idea的gitignore配置，以及感觉也需要加入的.terraform.lock.hcl文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Local .terraform directories</span></span><br><span class="line">**/.terraform/*</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">.tfstate files</span></span><br><span class="line">*.tfstate</span><br><span class="line">*.tfstate.*</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Crash <span class="built_in">log</span> files</span></span><br><span class="line">crash.log</span><br><span class="line">crash.*.log</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Exclude all .tfvars files, <span class="built_in">which</span> are likely to contain sensitive data, such as</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">password, private keys, and other secrets. These should not be part of version</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">control as they are data points <span class="built_in">which</span> are potentially sensitive and subject</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">to change depending on the environment.</span></span><br><span class="line">*.tfvars</span><br><span class="line">*.tfvars.json</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Ignore override files as they are usually used to override resources locally and so</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">are not checked <span class="keyword">in</span></span></span><br><span class="line">override.tf</span><br><span class="line">override.tf.json</span><br><span class="line">*_override.tf</span><br><span class="line">*_override.tf.json</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Ignore transient lock info files created by terraform apply</span></span><br><span class="line">.terraform.tfstate.lock.info</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Include override files you <span class="keyword">do</span> wish to add to version control using negated pattern</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">!example_override.tf</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Include tfplan files to ignore the plan output of <span class="built_in">command</span>: terraform plan -out=tfplan</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">example: *tfplan*</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Ignore CLI configuration files</span></span><br><span class="line">.terraformrc</span><br><span class="line">terraform.rc</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">IDE</span></span><br><span class="line">.idea/*</span><br></pre></td></tr></table></figure>
+
+<p>注意点：<br><code>.terraform.lock.hcl</code>这个是依赖项锁文件，需要纳入版本控制，有助于跟踪和审核指定配置的提供商选择变化。</p>
+<h3 id="其他最佳实践定义"><a href="#其他最佳实践定义" class="headerlink" title="其他最佳实践定义"></a>其他最佳实践定义</h3><p>变量相关：</p>
+<ul>
+<li>为变量设置type字段：避免变量类型错误</li>
+<li>如果参数包含敏感信息，在其对应的变量中将sensitive设置为true</li>
+<li>表示数值的输入、局部变量和输出（例如磁盘大小或 RAM 大小）必须使用单位命名（例如 ram_size_gb）</li>
+<li>对于具有与环境无关的值的变量（例如磁盘大小），请提供默认值</li>
+<li>对于具有特定于环境的值的变量（例如 project_id），请勿提供默认值。这样，调用模块必须提供有意义的值。</li>
+<li>对于根模块，请使用 .tfvars 变量文件提供变量。为了保持一致性，请将变量文件命名为 terraform.tfvars。命令行选项是临时性的，容易忘记。使用默认变量文件更容易预测。<br>模块相关：</li>
+<li>在每个模块中，添加 Markdown 格式的 README.md 文件。在 README.md 文件中，添加有关模块的基本文档</li>
+<li>使用资源各自的文件和描述性名称（例如 network.tf、instance.tf 或 loadbalancer.tf）创建资源的逻辑分组</li>
+<li>将示例放在 examples&#x2F; 文件夹中，并为每个示例提供单独的子目录。对于每个示例，请添加详细的 README.md 文件。<br>命令相关：</li>
+<li>使用下划线命名所有配置对象，以分隔多个字词</li>
+<li>将资源名称设为单数形式</li>
+<li>在资源名称中，请不要重复资源类型。例如避免：<code>resource &quot;google_compute_global_address&quot; &quot;main_global_address&quot; &#123; … &#125;</code><br>输出：</li>
+<li>请勿直接通过输入变量传递输出，因为这样做会阻止输出正确地添加到依赖关系图中<br>数据源：</li>
+<li>将数据源放在引用它们的资源旁边。</li>
+<li>如果数据源数量很大，请考虑将它们移动到专用 data.tf 文件中。<br>自定义脚本：</li>
+<li>限制自定义脚本的使用。Terraform 不会考虑或管理通过脚本创建的资源的状态。</li>
+<li>将 Terraform 调用的自定义脚本放在 scripts&#x2F; 目录中。<br>其他：</li>
+<li>建议指定Provider版本：防止Provider更新引入问题，保障稳定性</li>
+<li>将静态文件放在单独的目录中</li>
+<li>最大限度地减少每个根模块中的资源数量。一般规则：在单个状态下，最好不要超过十几个。</li>
+<li>不要手动修改 Terraform 状态</li>
+</ul>
+<h3 id="个人未采用的一些建议："><a href="#个人未采用的一些建议：" class="headerlink" title="个人未采用的一些建议："></a>个人未采用的一些建议：</h3><p>与特定云的实现有关的：</p>
+<ul>
+<li>不建议在.tf文件中声明阿里云（alicloud）Provider</li>
+<li>把仅供本地使用的代码放入以.debug.tf结尾的文件</li>
+<li>不建议使用.tfvars文件，而是通过ROS参数传递变量值</li>
+</ul>
+<h3 id="无网络情况下运行"><a href="#无网络情况下运行" class="headerlink" title="无网络情况下运行"></a>无网络情况下运行</h3><p>客户专有云环境，特别是生产环境，基本都是无法连互联网的。<br>首先在有网络环境的机器把当前目录的插件复制到特定目录：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">terraform providers mirror /data/terraform/plugins</span><br></pre></td></tr></table></figure>
+<p>拷贝到无网络环境的机器，运行时指定插件目录：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">terraform init -plugin-dir=/data/terraform/plugins</span><br></pre></td></tr></table></figure>
+
+<p>参考资料：<a target="_blank" rel="noopener" href="https://www.pkslow.com/archives/terraform-101-providers">《Terraform 101 从入门到实践》 第二章 Providers插件管理 - 南瓜慢说官网</a></p>
+<h3 id="Terraform故障恢复"><a href="#Terraform故障恢复" class="headerlink" title="Terraform故障恢复"></a>Terraform故障恢复</h3><p>和K8S不同，Terraform 不提供自动故障恢复功能，必须依赖故障时运行的脚本。<br>不过故障的检测能力还是具备的。可以使用<code>terraform state</code>命令，检查Terraform管理的当前资源状态：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">terraform state list</span><br></pre></td></tr></table></figure>
+<p>这将输出一个列表，其中包含了资源类型和资源的唯一标识符（例如aws_instance.example）。<br>如果想查看某个特定资源的详细状态，可以使用<code>terraform state show</code>命令，并提供该资源的地址作为参数。例如，如果要查看名为example的AWS EC2实例的状态，可以执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">terraform state show aws_instance.example</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上内容都只是Demo+搜索后的整理，完全未经历实践的验证，只能算是纸上谈兵。如果后续有机会在真实客户或项目中实践，会修正其中错误的内容。</p>
+<p><a id="ref"></a></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><h3 id="Terraform入门"><a href="#Terraform入门" class="headerlink" title="Terraform入门"></a>Terraform入门</h3><p>什么是Terraform_Terraform(Terraform)-阿里云帮助中心<br><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/95820.html">https://help.aliyun.com/document_detail/95820.html</a></p>
+<p>为什么选择Terraform_资源编排(ROS)-阿里云帮助中心<br><a target="_blank" rel="noopener" href="https://help.aliyun.com/zh/ros/user-guide/overview-2">https://help.aliyun.com/zh/ros/user-guide/overview-2</a></p>
+<p>如何在本地安装和配置Terraform_Terraform(Terraform)-阿里云帮助中心<br><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/95825.html">https://help.aliyun.com/document_detail/95825.html</a></p>
+<h3 id="快速手册"><a href="#快速手册" class="headerlink" title="快速手册"></a>快速手册</h3><p>Terraform有哪些常用命令_Terraform(Terraform)-阿里云帮助中心<br><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/145531.html">https://help.aliyun.com/document_detail/145531.html</a></p>
+<p>常见的Terraform模板示例有哪些_资源编排(ROS)-阿里云帮助中心<br><a target="_blank" rel="noopener" href="https://help.aliyun.com/zh/ros/user-guide/examples-of-terraform-templates">https://help.aliyun.com/zh/ros/user-guide/examples-of-terraform-templates</a></p>
+<p>Terraform 身份认证-阿里云帮助中心<br><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/2837050.html">https://help.aliyun.com/document_detail/2837050.html</a></p>
+<p>《Terraform 101 从入门到实践》 第五章 HCL语法 - 南瓜慢说官网<br><a target="_blank" rel="noopener" href="https://www.pkslow.com/archives/terraform-101-hcl">https://www.pkslow.com/archives/terraform-101-hcl</a></p>
+<h3 id="最佳实践参考"><a href="#最佳实践参考" class="headerlink" title="最佳实践参考"></a>最佳实践参考</h3><p>Terraform代码的开发方式和建议是什么_资源编排(ROS)-阿里云帮助中心<br><a target="_blank" rel="noopener" href="https://help.aliyun.com/zh/ros/user-guide/methods-and-suggestions-for-terraform-code-development">https://help.aliyun.com/zh/ros/user-guide/methods-and-suggestions-for-terraform-code-development</a></p>
+<p>使用 Terraform 的最佳实践  |  Google Cloud<br><a target="_blank" rel="noopener" href="https://cloud.google.com/docs/terraform/best-practices-for-terraform?hl=zh-cn">https://cloud.google.com/docs/terraform/best-practices-for-terraform?hl=zh-cn</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2024/08/07/Terraform-IaC-%E5%AD%A6%E4%B9%A0Tips/" data-id="cm065a5620045d26obuux95lx" data-title="Terraform IaC 学习Tips" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IaC/" rel="tag">IaC</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Resume以及ARTS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/" class="article-date">
+  <time class="dt-published" datetime="2024-08-04T16:00:00.000Z" itemprop="datePublished">2024-08-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/">Resume以及ARTS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>从上一次中止博客更新，已经有整整4年了。上一次更新是2020年8月。而现在，我即将迎来入职4周年。</p>
+<p>在这4年里，肯定不是没有成长。不如说，在阿里度过的这4年，体感时间远远超过4年。<br>我给自己起的花名，期望自己能够做不一样的事情。从结果来看，也是实现了我自己的目标。涉猎的领域包括并不限于：</p>
+<ul>
+<li>生态</li>
+<li>数据指标设计</li>
+<li>运营</li>
+<li>交付业务</li>
+<li>售前</li>
+<li>方法论</li>
+</ul>
+<p>但不得不承认，离我原先的立身之本：代码，都有些距离。<br>但由于阿里云的方向发生了变化，为了“活下去”，经过考虑后，还是重新选择了方向，更加贴近“云”的方向。<br>过去的这些经验对未来的工作没有直接的帮助。基本是从零开始，重新回归靠技术吃饭。<br>不过，那没有虚度的4年的经验，还是能成为我的养料。我也相信自己依然保持快速学习能力。</p>
+<p>于是决心重启这个博客的更新。</p>
+<p>回看博客的第一篇，有些感慨提出ARTS的陈皓的故去。按照自己的技术方向，调整一下ARTS的目标：</p>
+<ul>
+<li>Algorithm：每周至少写一段代码，保持编程手感</li>
+<li>Review：每周阅读并点评至少一篇英文技术文章</li>
+<li>Tip：每周学习至少一个技术技巧</li>
+<li>Share：每周分享一篇有观点和思考的技术文章</li>
+</ul>
+<p>除此之外，保持每周锻炼至少3次。</p>
+<p>和技术无关的个人Kick Off就写这么一篇吧。接下来就是重新起航了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/" data-id="cm065a561003wd26oe9bv6l95" data-title="Resume以及ARTS" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-金融业务-不动产保理业务入门和系统设计" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="article-date">
+  <time class="dt-published" datetime="2020-07-31T16:00:00.000Z" itemprop="datePublished">2020-08-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">金融业务-不动产保理业务入门和系统设计</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-保理的概念"><a href="#1-保理的概念" class="headerlink" title="1.保理的概念"></a>1.保理的概念</h2><p>保理，从本质上来说，就是应收账款的融资服务。<br>举个场景:某桂园向某混凝土公司A采购了2000吨水泥，应收账款100万。但由于账期原因，应收账款是按照季度结算。但公司A因为款项没有即时结清，产生了资金周转问题。于是公司A就将应收账款以折扣价转让给了保理商B。保理商B给供应公司A提供了融资，并通知某桂园回款后续不再打给公司A，而是打给保理商自己。季末某桂园将回款打给了保理商B。保理商B在融资和回款的差价里赚到了收益。<br>整个流程可以参见下图</p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/factoring-process.jpeg" alt="保理业务流程">  </p>
+<p>在这个最基础的流程中，有三方：  </p>
+<ul>
+<li>卖方:某混凝公司A，也可以称为债权方、上游</li>
+<li>买方:某桂园，也可以称为债务方、下游</li>
+<li>保理商:分为商业机构进行的商业保理和银行保理</li>
+</ul>
+<h3 id="1-1-正向保理和反向保理"><a href="#1-1-正向保理和反向保理" class="headerlink" title="1.1 正向保理和反向保理"></a>1.1 正向保理和反向保理</h3><p>保理这个概念产生的时候，都是由拥有融资需要的卖方主动发起的。但卖方拿到融资却不供货转身跑路的情况，也不是不会发生。这种情况下，买方当然也不会为没有收到的货而白白付钱。保理为了尽量避坏账，会对卖方的资质和规模进行要求。<br>但现实中很常见的情况是：上游的卖方是中小企业，无法达成资质规模要求，尽调难度也很大；而下游买方是龙头企业，拥有较高的资信程度。为了在这种场景下也能让保理商放心融资，会由卖方（混凝土公司A）找买方（某桂园）做担保，由买方主动发起保理申请。买方为了保证上游供应链的稳定，出面找保理商做担保：公司A确实是我的上游供应商，我们有商务合作。如果你能信得过我的话（大企业的授信担保），就给公司A融资，然后在一定时间段后到我这里兑回款。保理商相信了A的资信，给公司A提供了融资。<br>在这里出现了一个<strong>核心企业</strong>的概念。核心企业是供应链中的概念,是供应链中的关键节点，资信程度较高（AA＋是基本门槛）。  </p>
+<p>在保理流程中，核心企业是保理的发起方。核心企业的类型也是区分正向保理和反向保理的关键判断因素。核心企业是卖家，就是正向保理；核心企业是买家，就是反向保理。这里的“正”和“反”指的是相关交易链的方向。  </p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/reverse-factoring.jpg" alt="正向保理-反向保理">  </p>
+<p>相比正向保理，反向保理几个优势：  </p>
+<ul>
+<li>上游量中小企业融资难的问题得以解决</li>
+<li>便于建立长期的战略合作伙伴关系，供应链更加稳定</li>
+<li>提高了保理业务的工作效率。保理商不再需要着重审核供应商的财务情况。反而需要更关注核心企业贸易背景的真实性，预防核心企业和上游供应串谋欺诈风险</li>
+<li>核心企业的资金运用效率得以提升，减少核心企业的财务管理成本</li>
+</ul>
+<p>此外，由于保理业务需要债务人确权，所以在正向保理中可能会发生债务人不愿意配合的情况。不愿意配合的主要原因是在转让前，买卖双方的应收账款仅属于商业信用，强势买方在账款到期后，有继续延期支付的可能。在这种情况下，卖方为自身经营利益考虑，也只能被动同意。但是若将应收账款转给保理商之后，商业信用负债就变成了需要刚性兑付的金融负债，到期不还款就会被起诉的可能。所以买方是很不情愿将债权转给保理商的。但反向保理中，由于本身就是债务人发起的，所以基本不会存在类似的问题。  </p>
+<h3 id="1-2-ABS资产证券化和专项计划"><a href="#1-2-ABS资产证券化和专项计划" class="headerlink" title="1.2 ABS资产证券化和专项计划"></a>1.2 ABS资产证券化和专项计划</h3><p>放款给卖方的资金可以是保理商的自有资金，但相较把应收账款捂1年等买方回款，还有其他资金周转率更高的方式，例如将应收账款进行资产证券化（ABS）。<br>ABS，即“Asset Backed Securitization”（资产证券化），是一种非常常见的融资方式。常见的保理ABS交易架构如下：  </p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/abs.jpg" alt="ABS交易架构范例">  </p>
+<p>我们扩展一下之前提到的混凝土公司A和某桂园的案例：  </p>
+<ol>
+<li>公司A提供给对某桂园水泥，应收账款债权100万。如果不通过保理，正常还款账期是3个月</li>
+<li>为了更快收回款项，公司A将应收账款债权折价至94万，转让给了保理商B，使账期缩短到了半个月</li>
+<li>保理商B以95万元的价格将应收账款债权打包发行ABS（即票面发行利率5%），设立专项计划。通过资产证券化过程中履行合同审核、确权等义务，收取1万元的中介费。如果债务人是某桂园的子公司的话，会加入母公司作为共同付款人来增信</li>
+<li>ABS发行一年后，某桂园偿还本息100万元或更多</li>
+<li>价差的5万，在扣除管理费&#x2F;销售成本&#x2F;增值税&#x2F;律师费&#x2F;评级费&#x2F;托管费等费用后，剩余的就是证券持有人的收益</li>
+<li>从形式上，这个保理流程中，公司A贴息5万元，但实际由于某桂园的账期从3个月延长到了1年，所以可能会以某种形式承担部分利息，返还至公司A</li>
+</ol>
+<p>归纳整个流程，实现了买方&#x2F;卖方&#x2F;保理商三方的共赢：</p>
+<ul>
+<li>对卖方：实现了快速融资。换个角度，等于公司A做了2.5个月的融资，利息6万，相比从银行融资更容易成功，成本更低。并与核心企业建立了更牢固的合作伙伴关系</li>
+<li>对买方：变相拉长了账期。换个角度，等于某桂园以极低的成本融到了9个月的100万元资金。作为牵头发起保理的代价，还可以向卖方后续要求优先供货权等利益</li>
+<li>对保理商：获得了低风险的收益</li>
+</ul>
+<p>以上范例仅为简化版的范例，实际并不会对单个供应商的应收账款建立ABS。一个ABS产品中通常会包含数十笔到数百笔不等的应收账款。资产池至少包含10个相互之间不存在关联关系的债权人（供应商）。  </p>
+<h3 id="1-3-再保理"><a href="#1-3-再保理" class="headerlink" title="1.3 再保理"></a>1.3 再保理</h3><p>除了将债权ABS化之外，还有另一种处理方式是将转给其他保理商，即再保理。常见的是转给银行，即银行再保理。  </p>
+<p>与国外相反，国内由大部分金融资源集中在银行，加上政策原因，所以是银行率先开展保理业务。而商业保理是从2012年之后商务部发文批准后才开始发展。由于起步较晚，商业保理公司普遍轻资产，资产负债率较高，无法直接从银行获得贷款。但如果拥有银行认可的优质保理资产，可以通过再保理的形式，将这些资产转计给银行或其他保理商，获得融资。具体流程如下：  </p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/refactoring.jpg" alt="再保理">  </p>
+<p>我们从再保理的角度扩展一下混凝公司A、某桂园和保理商B的案例：  </p>
+<ol>
+<li>保理商B除了为混凝公司A之外，还为某桂园的一系列供应商提供保理服务，例如混凝土公司X，装修公司Y和园林公司Z</li>
+<li>保理商B想进一步扩大业务规模，希望基于银行C与某园合作的基础上，将自己手头的公司XYZ的应收账款转给银行C，获得融资</li>
+<li>保理商B与银行C签订再保理合作协议，向银行C提供与供应商签的保理合司和票据等材料</li>
+<li>某桂园向银行C出具应收账款转让确认书，确认银行C为新的债权人</li>
+<li>银行C向保理商B发放融资</li>
+<li>保理商B将融资用于扩大业务规模，向更多的公司U公司V公司W提供保理业务</li>
+</ol>
+<p>其实从标准的保理概念上，应该称之为“双保理”。即保理商B是卖方保理，银行保理C为买方保理。  </p>
+<h2 id="2不动产保理业务和保理系统的特点"><a href="#2不动产保理业务和保理系统的特点" class="headerlink" title="2不动产保理业务和保理系统的特点"></a>2不动产保理业务和保理系统的特点</h2><p>对于不动产保理ABS业务，实践中通常有以下几个特点：  </p>
+<ul>
+<li>以反向保理为主：通常采用“1＋N”模式。1即供应链核心企业，N为上游供应商</li>
+<li>具有类信用债特点：通常直接债务人为由核心企业针对特定地产项目创建的项目公司。对核心企业主体信用依赖强，供应商往往规模小，追索权意义不大，所以大多采用了无追索权保理的形式</li>
+<li>平层结构为主：即通常不设外部增信。同样由于强依赖核心企业主的还款力和意愿，对于优先级证券的信用级别没有提升作用，保证担保差额补等外部措施也并不会起到增信作用</li>
+<li>通常采用到期一次还本付息的本息兑付方式。主要是由于项目期限短（通常为1年或1年以下）</li>
+<li>多采用了储架发行模式和“黑红池”机制。主要是由于存在期限短、单笔金额小、笔数多、同质化高的特点<ul>
+<li>储架发行，即“一次备案，多次发行”</li>
+<li>黑红池机制中“红池”指前期审批报备阶段所使用的基础资产池，而“黑池”则是在证券发行时使用的基础资产池</li>
+</ul>
+</li>
+</ul>
+<p>这些特点使得不动产保理系统在设计过程中产生了以下几个特点：  </p>
+<ul>
+<li>需要包含供买方&#x2F;卖方&#x2F;核心企业使用的外部客户门户系统</li>
+<li>核心企业成为买方和资产的必填要素</li>
+<li>需要与核心企业进行系统对接</li>
+<li>保理产品的设计较单纯（相较其他一些公私募产品）</li>
+<li>尽调管理以核心企业为查询维度</li>
+<li>还款管理和催收管理弱化</li>
+</ul>
+<h2 id="3-资产的属性及和其他业务对象的关联关系"><a href="#3-资产的属性及和其他业务对象的关联关系" class="headerlink" title="3.资产的属性及和其他业务对象的关联关系"></a>3.资产的属性及和其他业务对象的关联关系</h2><p>不动产保理中的核心概念是<strong>资产</strong>。<br>资产就是应收账款。资产本身的主要因素包括:发票编号、发票金额、资产转让金额等。  </p>
+<p>资产与众多业务对象之间都有关联关系：</p>
+<p><img src="/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/refactoring-relation.jpg" alt="资产-业务对象关联关系">  </p>
+<p>接下来围绕资产和不同业务对象的关联关系展开描述。  </p>
+<h3 id="3-1-供应商-项目公司-核心企业"><a href="#3-1-供应商-项目公司-核心企业" class="headerlink" title="3.1 供应商&#x2F;项目公司&#x2F;核心企业"></a>3.1 供应商&#x2F;项目公司&#x2F;核心企业</h3><p>这里的项目公司即上文提到的买方（债务人），供应商即卖方（债权人）。所以资产和三者的关系是：  </p>
+<ul>
+<li>供应商卖出资产</li>
+<li>项目公司买入资产</li>
+<li>核心企业增信资产</li>
+</ul>
+<p>在资产导入阶段，如果资产对应的供应商和项目公司未进行准入审核，会生成审核任务，并通过短信通知供应商和项目公司登录客户门户自助补充资料（实物、银行账户、联系人等）。完成准入审核是合同签订的必要前置条件。  </p>
+<p>准入审核的关键信息包括：公司名称、统一社会信用代码、用印方式、营业执照、资质证书、法人身份证、授权用印经办人授权书影像、授权用印经办人身份证影像等。其中对非结构化数据（例如营业执照的影像资料）的审核也被称为实物审核。  </p>
+<p>在新增项目公司和供应商后，内部也会开展尽调（尽职调查）。除了对公司的尽调外，也会对资产进行尽调，以确保不是通过虚假交易骗保（理）。<br>在企业准入成功后，会在电子签章系统里为其注册账号，用于后续的合同签署。  </p>
+<h3 id="3-2-产品-投资项目-项目-资产包"><a href="#3-2-产品-投资项目-项目-资产包" class="headerlink" title="3.2 产品&#x2F;投资项目&#x2F;项目&#x2F;资产包"></a>3.2 产品&#x2F;投资项目&#x2F;项目&#x2F;资产包</h3><p>产品&#x2F;投资项目&#x2F;项目&#x2F;资产包，这几个概念从上往下，从抽象到具体。  </p>
+<h4 id="产品"><a href="#产品" class="headerlink" title="产品"></a>产品</h4><p>产品可以是针对某个核心企业的业务模式，比如“某桂园私募ABS反向保理”，“某科再保理”等。  </p>
+<p>产品的关键信息包括产品类型、还款方式、宽限期、资金规模、债权期限天数、利率范围等。其中产品类型是针对主体（正向&#x2F;反向保理）+资产处置方式类别。例如：  </p>
+<ul>
+<li>公募ABS反向保理</li>
+<li>私募契约型基金反向保理</li>
+<li>私募信托反向保理</li>
+<li>供应链ABS正向保理</li>
+<li>银行再保理</li>
+</ul>
+<h4 id="投资项目"><a href="#投资项目" class="headerlink" title="投资项目"></a>投资项目</h4><p>投资项目，是保理商公司内部进行投决（投资决策）的投资活动单位。<br>所以投资项目的关键因素包括立项会、投决会等会议的信息、审批规模、投资团队、资金来源等。  </p>
+<h4 id="项目资产包"><a href="#项目资产包" class="headerlink" title="项目资产包"></a>项目资产包</h4><p>根据保理的不同阶段，项目可以分为保理项目和资产处置项目。<br>保理项目是合同签署的对象单位。对于保理项目，关键信息包括签约方式，资产到期日、折现期、折价率等。<br>资产处置项目是将资产金融化的对象单位，会补充对应的金融产品的信息，包括金融产品代码（例如基金代码）评级、服务费、律师事务所、托管人、评级机构、专项计划户名账号等等。  </p>
+<h4 id="资产包"><a href="#资产包" class="headerlink" title="资产包"></a>资产包</h4><p>项目和资产包对应。保理项目和资产处置项目分别对应预备资产包和（处置）资产包。<br>资产包是应收账款的组合。会从预备资产池中选出符合要求的应收账款进行打包处理。上文也提到过，如果要包装为ABS产品的话资产包中至少需要包含10个相互之间不存在关联关系的供应商。当资产包中的资产确定，进行合同签署后，就会转为（处置）资产包。后续资产包中的资产就不可再发生变化。  </p>
+<h3 id="3-3-中登登记"><a href="#3-3-中登登记" class="headerlink" title="3.3 中登登记"></a>3.3 中登登记</h3><p>《民法典草案》第七百六十八条规定：应收账款债权人同一应收账款订立多个保理合同，致使多个保理人主张权利的，已经登记的先于未登记的取得应收账款；均已经登记的，按照登记时间的先后顺序取得应收账款，均未登记的，由最先到达应收账款债务人的转让通知中载明的保理人取得应收账款；既未登记也未通知的，按照保理融资款或者服务报酬的比例取得应收账款。  </p>
+<p>这里的<strong>登记</strong>，指的就是到国家公认的中登网进行登记。<br>中登网，全名中国人民银行征信中心动产融资统一登记平台。中登网的主要作用是用于以融资为目的的动产登记公示。<br>对于保理业务来说，中登网的主要作用是收质押登记和应收账款转让。如果没有在中登网上进行登记，那么万一项目公司背着保理商，偷偷将应收账款进行多次质押引起纠纷，在法律上就会处于不利地位。  </p>
+<p>当资产成功导入且包含发票，就需要进行中登查询和登记。<br>首先进行中登查询。中登查询不通过的话就会进入到退单流程；而中登查询通过的话就进入登记流程。<br>中登登记的关键因素包括：应收账款的出让人信息（供应商企业信息）、资产信息、受让人信息（保理商企业信息）等。  </p>
+<h3 id="3-4-合同"><a href="#3-4-合同" class="headerlink" title="3.4 合同"></a>3.4 合同</h3><p>《民法典草案》第七百六十二条规定：保理合同的内容一般包括业务类型、服务范围、服务期限、基础交易合同情况、应收账款信息、转让价款、服务报酬及支付方式等条款。<br>合同签约包括两种方式:纸质和在线。保理商分别于如果是在线签，为了确保合同的合规，会通过第三万电子签章服务进行合同的签署和生成（如E签宝、上上签）。  </p>
+<h3 id="3-5-放款还款"><a href="#3-5-放款还款" class="headerlink" title="3.5 放款还款"></a>3.5 放款还款</h3><p>当资产和实物审核通过，并在中登网登记成功，内部合同用印完毕后，即可进入向供应商的放款申请审批。由于放款申请所需的绝大部分信息在该步骤之前都已补充完华（供应商信息&#x2F;资产转让金额），所以只需要补充支付方式（商票支付&#x2F;现金支付）即可。<br>当处置资产的到期日到达后，会创建还款登记和确认任务。还款登记的主要因素包括本次还款日期还款金额、还款凭证等。还款登记完成后，就可以进行财务流水匹配和制证处理。  </p>
+<h2 id="4-保理流程"><a href="#4-保理流程" class="headerlink" title="4. 保理流程"></a>4. 保理流程</h2><p>经过前一章的介绍，我们就可以将资产在整个保理流程中的流转过程梳理出来</p>
+<ol>
+<li>首先在前置阶段，预先配置好资产所属和核心企业以及上层的产品&#x2F;投决项目信息</li>
+<li>在投前（保理项目）阶段，进行供应商和项目公司的信息补充和审核。同步进行资产导入和审核，并将资产到中登网上进行登记</li>
+<li>进入合同签署，资产包里的资产固定，进入投后（处置项目）阶段。在该阶段进行放款资产出售以及收款</li>
+</ol>
+<p>在保理流程的不同阶段，资产包的类型也会发生变化。在投前阶段，是从预备资产池生成预备资产包，并退回审核不通过的资产；在投后阶段，预备资产包变为处置资产包</p>
+<h2 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h2><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/298194999">正向保理和反向保理有什么不一样</a>  </p>
+<p><a target="_blank" rel="noopener" href="https://www.sohu.com/a/226643976_530652">供应链金融之反向保理资产证券化模式</a>  </p>
+<p><a target="_blank" rel="noopener" href="https://www.sohu.com/a/163127543_743870">浅析“再保理”业务</a>  </p>
+<p><a target="_blank" rel="noopener" href="http://www.cairongquan.com/Article/view/94131.html">一文读懂：房地产供应链应付账款ABS</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" data-id="cm065a5610041d26o61w1ak2v" data-title="金融业务-不动产保理业务入门和系统设计" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-运维-运维体系标准化之故障管理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2020-07-29T16:00:00.000Z" itemprop="datePublished">2020-07-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/">运维-运维体系标准化之故障管理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本文是极客时间<a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/63">《赵成的运维体系管理课》</a>的读后体会之二 。  </p>
+<h2 id="1-对故障的认识"><a href="#1-对故障的认识" class="headerlink" title="1.对故障的认识"></a>1.对故障的认识</h2><p>ITIL的10个重要的IT管理关键模块之一就是故障管理。<br><strong>故障永远只是表面现象，其背后技术和管理上的问题才是根因</strong>  </p>
+<p>即当技术和管理上的问题积累到一定程度后，就会以故障的形式爆发出来。所以不能仅将眼光限于故障本身和直接责任人。  </p>
+<ul>
+<li>管理者要先自我反省:员工只是执行者，管理者的责任永远大于执行者</li>
+<li>强调用技术解决问题，而不是单纯地靠增加管理流程和检查环节来解决问题<ul>
+<li>短期可以辅以一些管理措施，比如靠宣传学习必要的Double Check&#x2F;制定复杂操作的Checklist等。但是这些只能作为辅助手段，一定不能是常态</li>
+<li>随着系统复杂度越来越高，迟早有一天会超出单纯人力的认知范围和掌控能力，各种人力的管理成本也会随之上升，所以最终必须将这些人为动作转化到技术平台中去</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-故障的定级"><a href="#2-故障的定级" class="headerlink" title="2.故障的定级"></a>2.故障的定级</h2><p>故障需要有标准化的流程来指导我们的处理过程。  </p>
+<p>这里有个关键组织:故障应急小组。这个组织有4个职责：  </p>
+<ul>
+<li>制定故障定级定责标准</li>
+<li>对线上故障做出定级和定责</li>
+<li>跟踪线上故障处理</li>
+<li>组织故障复盘</li>
+</ul>
+<p>故障应急小组需要有个负责人。在部分公司，这个负责人属于研发效率团队。<br>定级定责标准等同于法律条款，而这个角色等同于法官。法官依法办事，做到公平公正。<br>现实情况中，因为各方受到故障的影响不同，对故障影响的理解也不同，所以复盘过程中经常会出现下面这两种争执场景：  </p>
+<ul>
+<li>技术支持判定故障很严重，但是责任方认为没什么大不了的，不应该把故障等级判定到如此之高</li>
+<li>技术支持认为故障影响较小，但是受影响方却认为十分严重，不应该将故障等级判定得这么低</li>
+</ul>
+<p>所以需要有严格而明确的判定标准。故障定级标准的目标是要判定故障的影响程度，使各相关利益方能够基于统一的标准判断和评估。<br>故障等级常见可以分为PO-P4共5个级别。PO最高P4最低。定级主要看3点：功能的核心程度，影响面，以及影响时间。核心程度有一些共通的标准（例如登录），也有各系统独有的业务衡量标准，所以需要基于每个系统与业务部门分别制定。影响时间是包含故障发生到完全解决的总时间。根据实际况，也可以调整为只计算工作时间的时间长度。如果影响时间超过一定时长，要进行故障升级。<br>P故障通常是两个或以上P1故障的叠加造成。  </p>
+<h3 id="2-1-故障定级范例"><a href="#2-1-故障定级范例" class="headerlink" title="2.1 故障定级范例"></a>2.1 故障定级范例</h3><p>下面是两个定级参考范例。首先是交易系统，主要以钱为衡量指标。  </p>
+<p><img src="/images/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/accident-rank-deal.png" alt="故障定级-交易">  </p>
+<p>另一个是IM即时通信App的故障定级标准。  </p>
+<p><img src="/images/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/accident-rank-im.png" alt="故障定级-IM">  </p>
+<p>再次强调一下，为了避免日后引起争执，需要将定级标准在业务部门、产品团队、开发团队、测试团队和运维团队之间进行逐点的细节讨论，并达成最终一致的认可。<br>这个标准可能覆盖不到有些特例，这个时候需要由应急小组的负责人根据已达成一致的标准＋自己的经验进行独立裁量。同时，在每季度或半年对标准进行一轮修订。需要注意的是要对故障应急小组，特别是应急小组的负责人树立绝对的话语权和决策权的制度。  </p>
+<h2 id="3-故障应急处理"><a href="#3-故障应急处理" class="headerlink" title="3.故障应急处理"></a>3.故障应急处理</h2><p>故障发生后可能会产生很大的外部压力，并传递到研发团队。如果没有很好的故障应对措施，很容易陷入慌乱。  </p>
+<h3 id="3-1-故障应急的原则"><a href="#3-1-故障应急的原则" class="headerlink" title="3.1 故障应急的原则"></a>3.1 故障应急的原则</h3><p>在故障应急状态下，坚守的第一原则是：优先恢复业务而非定位问题。<br>这需要事先有充足的预案准备以及故障模拟演练，也涉及各种稳定性保障措施，例如扩容，开关，限流降级等。  </p>
+<h3 id="3-2-故障应急流程"><a href="#3-2-故障应急流程" class="headerlink" title="3.2 故障应急流程"></a>3.2 故障应急流程</h3><p>故障应急流程由故障应急小组来主导。对外同步信息，包括大致原因，影响面和预估恢复时长，同时屏蔽各方对故障处理人员的干扰；对内组织协调各团队相关人员集中处理。  </p>
+<p>故障的应急流程主要分为以下几个步骤：  </p>
+<ul>
+<li>确认故障的有效性</li>
+<li>登记生产缺陷</li>
+<li>将故障上报到可用性保障群里<ul>
+<li>故障的原因排查和讨论在该群里或者单独拉一个独立的故障处理群处理。如果相关人员比较集中在一个办公场所，则集中到会议室</li>
+</ul>
+</li>
+<li>对于处理时间比较长的故障，应急处理小组每隔15-30分钟对相关业务部门同步一次故障处理进程，并判断是否需要升级故障</li>
+<li>确定故障处理方案，包括:正常业务流程处理提交数据修改单&#x2F;修改配置&#x2F;回滚&#x2F;紧急版本&#x2F;放到大版本</li>
+<li>在故障确认处理完成后，关闭生产缺陷</li>
+<li>组织故障复盘，产出故障分析报告，将问题记录到事件管理。故障分析报告需要同步给技术副总监、PMO，以及其他的产品、开发、测试和运维，以便后续吸取教训</li>
+<li>根据事件管理的记录，进行故障数据分析<ul>
+<li>分析角度包括:每月故障数对比、每月故障处理时间对比近两月故障等级占比分布、近两月故障类别占比分布、近两月故障来源对比和近两月各业务组故障数对比</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-3-故障的信息通报"><a href="#3-3-故障的信息通报" class="headerlink" title="3.3 故障的信息通报"></a>3.3 故障的信息通报</h3><p>对于每一级故障的知会人员的标准参考如下：  </p>
+<ul>
+<li>P0&#x2F;P1：技术总监&#x2F;PMO</li>
+<li>P2：技术副总监&#x2F;PMO&#x2F;测试主管&#x2F;运维主管</li>
+<li>P3&#x2F;P4：技术经理&#x2F;产品经理</li>
+</ul>
+<h2 id="4-故障的复盘"><a href="#4-故障的复盘" class="headerlink" title="4.故障的复盘"></a>4.故障的复盘</h2><p>首先要明确复盘的目的。复盘的目的是为了从故障中学习我到我们技术和管理上的不足，然后不断改进。切总将复盘过程和目的搞成追究责任或实施惩罚，这对于团队氛围和员工积极性的打击是非常大的。<br>在复盘过程中，故障应急小组要起到关键作用，组织复盘会议。<br>对于低级别的生产事故，在晨会夕会之后顺带进行；对于高级别的生产事故，需要专门安排时间进行。  </p>
+<p>复盘会议的环节包括：  </p>
+<ul>
+<li>故障的回顾<ul>
+<li>包括故障发生时间点，故障影响面，恢复时长，主要处理人或团队</li>
+</ul>
+</li>
+<li>故障处理时间线回顾<ul>
+<li>故障应急小组在整个过程记录时间点，以便真实再现整个故障处理过程</li>
+</ul>
+</li>
+<li>针对时间线合理讨论<ul>
+<li>比如为什么没有告警而是用户反馈的，响应时长是否符合规范，是否有预案和预案执行完成度，测试环节为什么没有发现等</li>
+<li>故障应急小组负责人注意控制场面，务必注意对事不对人，及时干预和警告，避免演变成批斗会</li>
+</ul>
+</li>
+<li>确定故障根因</li>
+<li>故障定级定责<ul>
+<li>对于高级别生产故障定责时可以仅少数相关人在场时进行，考虑责任人个人感受</li>
+</ul>
+</li>
+<li>产出故障分析报告</li>
+<li>将问题记录到事件管理</li>
+</ul>
+<p>对故障根因的讨论可以诸如：  </p>
+<ul>
+<li>是否是人员对业务不熟悉导致？</li>
+<li>是否有人为操作导致？如果是的话，是否能改为自动化？</li>
+<li>是否在代码静态扫描中包含但被忽略了？</li>
+<li>为什么容量不足没有更早发现？</li>
+<li>为什么没法快速定位？是监控不够，还是告警太多人员麻木？</li>
+<li>管理上，人员的on call机制是否及时？应对故障的协作方式上是否还能改进？</li>
+</ul>
+<p>此外，按季度、半年和全年的周期，需要进行周期内的故障案例总结会。总结会的目的包括：  </p>
+<ul>
+<li>分析故障趋势，观察是否需要进行人员安排的调整</li>
+<li>发现共性的问题，贡献给整个研发团队</li>
+</ul>
+<h2 id="5-故障的定责"><a href="#5-故障的定责" class="headerlink" title="5.故障的定责"></a>5.故障的定责</h2><p>定责的目的是为了责任到人，并且使责任人能够真真切切地认识到自己的不足之处，能够主导改进措施的落地。<br>相比故障复盘的对事不对人，定责就是对人不对事了，所以不能一刀切，不能上纲上线，一定要慎重。<br>对于故障的定责方式，也要根据故障的类型来划分。  </p>
+<h3 id="5-1-高压线规则"><a href="#5-1-高压线规则" class="headerlink" title="5.1 高压线规则"></a>5.1 高压线规则</h3><p>有一类是绝对不允许触碰的底线。对于这类高压线规则，需要让每个成员牢记在心，并经常重复提醒。例如：  </p>
+<ul>
+<li>未经发布系统，私自变更线上代码和配置</li>
+<li>未经授权、严格的方案准备和评审，私自在业务高峰期进行硬件和网络设备变更</li>
+<li>未经授权，私自在生产环境进行调测性质的操作</li>
+<li>未经授权，私自变更生产环境数据</li>
+</ul>
+<p>通过高压线去加强安全稳定意识，目的是要让每一个人对线上都心存敬畏。从经验来看，绝大多数的严重故障都是因为无意识或意识薄弱导致的，并不是因为单纯的技术能力不足等技术因素。很多人事后复盘时候最常讲的话就是：“我以为是没问题的，我以为是没影响的。”其实恰恰就是因为这种“想当然”，导致了严重故障。  </p>
+<p>对于高压线问题，碰一次就要疼一次。  </p>
+<h3 id="5-2-鼓励做事，而不是处罚错误"><a href="#5-2-鼓励做事，而不是处罚错误" class="headerlink" title="5.2 鼓励做事，而不是处罚错误"></a>5.2 鼓励做事，而不是处罚错误</h3><p>Google的专家有一句名言:理解一个系统应该如何工作并不能使人成为专家，只能靠调查系统为何不能正常工作才行。  </p>
+<p>每个人的技术能力提升，基本都是伴随着大大小小故障的发生、处理、复盘和改进。虽然我们不希望有故障发生，但是真的没有了故障，我们也就没有了真刀真枪实战成长的机会。我们对待故障一定要客观和辩证地理解，特别是对于管理者来说，对于故障，一定要有容忍度，一定要有耐心。<br>我们的团队和人员，在这样一次次痛苦的经历后，各方面的能力都得到了锻炼，素养也一定会有大幅度提升。所以，对故障有容忍度，有耐心，我们的团队就会变得越来越强，对于故障的应对也会变得更加游刃有余。而一出故障就劈头盖脸地把团队和责任人骂一通，并且还要严厉处罚的方式，最后的效果就是严重打击士气，适得其反。<br>特别是以下这些原因造成的故障：  </p>
+<ul>
+<li>员工积极主动地承担了一些极具挑战性的工作，需要尝试某个新技术或解决方案</li>
+<li>业务高速发展时期，业务量成指数级增长时，团队人员能和经验水平整体上还没法很好地应对。这个时候可能任何一个小变动都是最后一根稻草</li>
+</ul>
+<p>何况，如果不出问题，可能很多主管压根都没有关注过员工在做的事情，过程中是否有困难，是否需要支持等等，这本身就是管理者的失责。<br>员工努力做事的积极性一旦被打击，变得畏首畏尾起来，也就谈不上什么技术进步和突破了而且想要再恢复起来也会非常困难，最终很大概率上会导致优秀人才流失。  </p>
+<h3 id="5-3-定责和绩效非强挂钩"><a href="#5-3-定责和绩效非强挂钩" class="headerlink" title="5.3 定责和绩效非强挂钩"></a>5.3 定责和绩效非强挂钩</h3><p>在故障后直接谈及处罚，员工的情绪很可能会消极和抵触。例如“反正都是我的错，你说咋样就咋样”，或“凭什么罚我却不罚别人，又不是我一个人的问题”。员工害怕、甚至拒绝承担责任，宁可少做不做，也不愿多做多错，团队沟通成本上升，运作效率自然下降。特别是一个故障如果是涉及多方的，扯皮推诿就开始了，都想着把责任撇干净，甚至当众相互指责，这个负面效应杀伤力极大。<br>所以可以考虑将定责放到季度、半年为维度，根据事件管理中的记录来整体判断。如果员工整体的表现都是不错的，甚至是突出的，说明员工已经改正或者那件事情确实是偶尔的失误导致，这种情况下员工仍然会有好的绩效。但如果是频繁出问题，这种情况就基于事实反馈，也会更加容易沟通。  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/" data-id="cm065a561003yd26ohv6wg3m8" data-title="运维-运维体系标准化之故障管理" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-运维-运营体系标准化之配置管理CMDB" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/" class="article-date">
+  <time class="dt-published" datetime="2020-07-28T16:00:00.000Z" itemprop="datePublished">2020-07-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/">运维-运营体系标准化之配置管理CMDB</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本文是极客时间<a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/63">《赵成的运维体系管理课》</a>的读后体会之一。  </p>
+<h2 id="运维配置管理实践中一些混乱现象"><a href="#运维配置管理实践中一些混乱现象" class="headerlink" title="运维配置管理实践中一些混乱现象"></a>运维配置管理实践中一些混乱现象</h2><p>在公司的运维配置管理实践中，存在一些混乱的现象：  </p>
+<ul>
+<li>信息安全收到fastjson的安全问题报告，但报告中的服务器对应的系统却有错位</li>
+<li>信息安全收到了报告，发现tomcat的某个版本出现了漏洞需要升级，但不知道到底影响到哪些系统，只能逐个请每个系统的负责人判断</li>
+<li>部分服务器（特别是开发坏境服务器）已经基本可以确认不再被使用，但服务器资源没有回收，每月持续占用硬件预算</li>
+<li>某系统上线后发现中漏配置了一个域名，导致部分用户打开首页报错</li>
+<li>redis缺少规划，多个系统公用一个redis集群的情况下，无法根据键（key）来区分每个系统占用了多少缓存。遇到内存不足的情况很难深入排查是哪个系统导致</li>
+<li>生产消息队列中不少queue堆积着大量消息，但不知道是否还在用，不敢随意删除</li>
+</ul>
+<p>这些情况很可能短期甚至长期内不会直接导致什么问题。可能就是让信息安全整理材料多费一点时间，开发排查多绕一点弯路，或多花一些硬件维持或扩容费用。但有些时候这些问题就是给未来出现的生产问题埋下隐患。<br>硬件的归属，服务器的使用情况，应用域名管理，软件版本，应用与中间件的关联等等，都属于广义上的配置管理。所以归根到底，是配置管理的混乱。  </p>
+<h2 id="ITIL和配置管理CMDB"><a href="#ITIL和配置管理CMDB" class="headerlink" title="ITIL和配置管理CMDB"></a>ITIL和配置管理CMDB</h2><p>在ITIL（Information Technology Infrastrueture Library）中，有10个重要的IT管理关键模块。其中配置管理（CMDB）通常被认为是其他IT流程的基础。<br>CMDB（Configuration Managoment DataBase），配置管理数据库，是与IT系统所有组件相关的信息库。它包含IT基础架构配置项的详细信息。<br>在传统运维时代，CMDB的核心对象是资源，即网络和硬件设备。但在云计算和互联网运维时代，CMB的核心已经转变为了“应用”。随着微服务架构的推广，以应用为核心的注册中心、缓存、消息队列、数据库等都需要纳入配置管理的管理范畴。  </p>
+<p>以应用为核心的配置管理标准化可以包括：  </p>
+<ul>
+<li>元数据属性:系统名、 BA Owner&#x2F;开发Owner&#x2F;运维Owner</li>
+<li>环境属性:拥有几套环境</li>
+<li>逻辑实体属性:架构评审和变更设计</li>
+<li>硬件和网络属性:服务器配置、SLB、域名、ip等</li>
+<li>代码属性:编程语言、代码库地址、需求空间地址</li>
+<li>应用日录属性:日志日录、应用目录、临时目录等</li>
+<li>应用配置属性:端口号、jvm参数等</li>
+<li>中间件属性:web容器、注册中心、缓存、消息队列、数据库等</li>
+</ul>
+<p>最终目标是能达成传统CMDB和应用视角CMDB的统一。<br><img src="/images/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/CMDB-unite.jpeg" alt="CMDB统一">  </p>
+<p>也有开源的CMDB，比如腾讯的<a target="_blank" rel="noopener" href="https://bk.tencent.com/">蓝鲸智云</a>。<br>可以参考它的架构</p>
+<p><img src="/images/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/cmdb-framework.jpg" alt="腾讯蓝鲸架构">  </p>
+<h2 id="CMDB的维护和流转"><a href="#CMDB的维护和流转" class="headerlink" title="CMDB的维护和流转"></a>CMDB的维护和流转</h2><p>CMDB并不能只靠运维团队内部封闭来做，而要站在怎么能够打造和发挥出整个技术架构体系运维能力的视角。有部分信息也需要开发来提供，例如消息队列的queue名等。所以CMDB需要跨团队协作。一方面运维团队要主动出击，去沟通，去推进；另一方面，必须能得到上级主管甚至是更高层技术领导的支持。<br>配置数据也需要保持持续维护。过时的配置数据等于没有，甚至更差。这个首先需要在所有运维人员的重要性认识上保持统一。此外，也对每个应用的负责运维和研发人员提出相应的问责机制。<br>和货币类似，只是维护信息不会产生价值。只有把信息流转到开发，测试和信息安全等角色，对整体的研发效能和故障率做出贡献，才能使配置管理免于成为运维的纯负担。  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2020/07/29/%E8%BF%90%E7%BB%B4-%E8%BF%90%E8%90%A5%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86CMDB/" data-id="cm065a561003td26odjv3bh4n" data-title="运维-运营体系标准化之配置管理CMDB" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-管理-远程办公项目管理经验总结" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/" class="article-date">
+  <time class="dt-published" datetime="2020-03-01T16:00:00.000Z" itemprop="datePublished">2020-03-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/">管理-远程办公项目管理经验总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>疫情期间积累了一些远程办公条件下的项目管理经验，稍微整理一下。我司从企业文化到网络硬件，不太具备远程办公的基因，要补课的地方就额外多。  </p>
+<h2 id="1-按小团队划分并设定第一责任人"><a href="#1-按小团队划分并设定第一责任人" class="headerlink" title="1. 按小团队划分并设定第一责任人"></a>1. 按小团队划分并设定第一责任人</h2><p>亚马逊CEO贝索斯提到过一个原则：如果两个披萨饼都喂不饱一个团队，那么这个团队可能就太大了。按照这个逻辑，我的团队可能只能容纳两个人。。。<br>玩笑开完了。但事实就是，对于一般人来说，能较好管理5~6个就已经是不错了。当团队人数超过这个规模，需要将团队拆分为6-10人的小团队规模，增加汇报层级，才能管得过来。<br>每个小团队可以包含前端、后端和测试，而数据库、UI等共享资源单独一个团队。  </p>
+<p>对每个小团队需要指定一个第一责任人（以下简称“责任人”）。这个责任人需要有以下的素质：  </p>
+<ul>
+<li>对小团队成员知根知底</li>
+<li>快速响应的执行力和跟进能力</li>
+<li>对任务目标有充分的理解</li>
+</ul>
+<h2 id="2-通知走大群，信息收集走小群"><a href="#2-通知走大群，信息收集走小群" class="headerlink" title="2. 通知走大群，信息收集走小群"></a>2. 通知走大群，信息收集走小群</h2><h3 id="2-1-通知"><a href="#2-1-通知" class="headerlink" title="2.1 通知"></a>2.1 通知</h3><p>远程办公期间的通知事项会比较多。邮件通知方式不能确保所有人都会在第一时间查看邮件。<br>通过即时通信的群通知，可以确保绝大部分人都能第一时间看到并响应。<br>即时通信大群的注意点：  </p>
+<ul>
+<li>大群要求对于一般消息不要回复“收到”、“1”、“了解”等确认信息</li>
+<li>不得灌水，仅作通知用</li>
+<li>有疑问可以提。这样回复了一个人后，其他有同样问题的人也可以得到回复了</li>
+</ul>
+<h3 id="2-2-信息收集"><a href="#2-2-信息收集" class="headerlink" title="2.2 信息收集"></a>2.2 信息收集</h3><p>当需要收集例如“疫情期间所在地”、“可以使用的远程办公方式”、“工作日报”等信息，还是通过小团队来分别收集效率较高。<br>如果只将问卷发在大群里，到了截止时间总会有那么一两个人没填。这就要靠负责人call电话等方式来催。  </p>
+<h2 id="3-小团队工作形式"><a href="#3-小团队工作形式" class="headerlink" title="3. 小团队工作形式"></a>3. 小团队工作形式</h2><p>分派工作也以小团队为粒度。<br>当责任人收到任务后，需要进行以下的日常管理工作：  </p>
+<ul>
+<li>给出所承担工作的评估结果及具体计划</li>
+<li>制定具体开发人员的工作计划</li>
+<li>小团队内每日晨会，跟进进度，整理问题</li>
+<li>晚上下班前收取工作日报</li>
+<li>将小团队内部无法解决的问题向上反应到项目经理，并及时跟进进展</li>
+</ul>
+<h2 id="4-每日晨会"><a href="#4-每日晨会" class="headerlink" title="4. 每日晨会"></a>4. 每日晨会</h2><p>网络会议的特点就是很容易发生两个人同时讲话，然后两个人注意到后又同时沉默。这会影响会议效率。所以每日晨会建议由一个人单独主持。内容包括：  </p>
+<ul>
+<li>整体通知事项</li>
+<li>小团队各人当前的问题和风险</li>
+<li>前一天收集到的问题的反馈</li>
+<li>自由发言，收集当天新的问题</li>
+</ul>
+<p>项目经理&#x2F;责任人在会后私下和提出问题的人沟通，并在第二天晨会上公布问题进展。<br>晨会尽量固定时间，保持精简，尽量不超过15分钟。  </p>
+<h2 id="5-进度检视会-专题事项会"><a href="#5-进度检视会-专题事项会" class="headerlink" title="5. 进度检视会&#x2F;专题事项会"></a>5. 进度检视会&#x2F;专题事项会</h2><ul>
+<li>主持人或项目经理提前1天发会议邀约</li>
+<li>大团队的管理者和项目经理需要制定项目整体跟踪事项表。事项表列出具体事项、责任团队、各阶段时间节点、进度百分比等</li>
+<li>每周1次或2次开大团队的进度检视会，小团队责任人参加。内容包含团队内同步各事项进度。着重解决需要团队间协同的事项</li>
+<li>会议中安排1个人记录会议纪要，并在会后发给所有与会人员</li>
+</ul>
+<h2 id="6-协同"><a href="#6-协同" class="headerlink" title="6. 协同"></a>6. 协同</h2><p>远程办公带来的最大挑战是协同。对协同最重要的是文档。<br>文档的形式可以是传统Word或Excel文档，也可以是API平台上的接口文档等。<br>文档的注意点主要有：  </p>
+<ul>
+<li>工作内容尽量形成文档或表格，包括且不限于进度表、需求文档、详细设计、数据库设计、测试用例等</li>
+<li>文档放在svn等可以版本管理和便于查看的平台上</li>
+<li>尽量文档由专人负责编辑，以防提交时冲突</li>
+<li>如果必须由多人编辑的文档，可以考虑找在线系统方案替代。例如文档协同、API接口平台等</li>
+</ul>
+<h2 id="7-到场"><a href="#7-到场" class="headerlink" title="7. 到场"></a>7. 到场</h2><p>在限制到场人数的情况下，优先安排以下两类人员到现场：  </p>
+<ul>
+<li>有管理职责</li>
+<li>自我驱动能力差</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2020/03/02/%E7%AE%A1%E7%90%86-%E8%BF%9C%E7%A8%8B%E5%8A%9E%E5%85%AC%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/" data-id="cm065a561003rd26o0ide3d80" data-title="管理-远程办公项目管理经验总结" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-中台-读说透中台和企业IT架构转型之道有感" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/02/05/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/" class="article-date">
+  <time class="dt-published" datetime="2020-02-04T16:00:00.000Z" itemprop="datePublished">2020-02-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/02/05/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/">中台-读《说透中台》和《企业IT架构转型之道》有感</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>春节期间看完了极客时间的《说透中台》的课程，顺便也读了《企业IT架构转型之道-阿里巴巴中台战略思想与架构实战》一书。这篇从实际项目的角度来想象一下，如果让我来负责公司的中台，应该怎么做。<br>首先说下评价：这个课程符合我对ThoughtWorks的刻板印象：有点滥用理论术语，干货不多；问题题了不少，解决方案不落地。可能是都是给其他公司做的项目，有保密协议的缘故。能理解，但还是不推荐。阿里的那本中台书更加实在。  </p>
+<h2 id="1-中台概念整理"><a href="#1-中台概念整理" class="headerlink" title="1. 中台概念整理"></a>1. 中台概念整理</h2><h3 id="1-1-中台的目的"><a href="#1-1-中台的目的" class="headerlink" title="1.1 中台的目的"></a>1.1 中台的目的</h3><p>中台的目的就是企业能力复用。  </p>
+<h3 id="1-2-中台的分类"><a href="#1-2-中台的分类" class="headerlink" title="1.2 中台的分类"></a>1.2 中台的分类</h3><p>中台主流分为两大类：业务中台&#x2F;数据中台。业务中台产生数据，数据中台做数据的二次加工，并将结果再服务于业务中台。<br>也有“技术中台”的概念，可以理解为一些技术中间件的整合和封装，但我倾向于不将其认定为中台。<br>中台强调一个复用。如果根本没有系统从零开始建设，一上来就搞中台很容易会过度设计。  </p>
+<h2 id="2-中台的抓手"><a href="#2-中台的抓手" class="headerlink" title="2. 中台的抓手"></a>2. 中台的抓手</h2><p>中台会面对所有业务线的需求。虽然中台有企业级的属性，但不代表建设中台的时候必须梳理企业的全业务线。中台的愿景是能力复用，那么最好有具体的新业务作为抓手。  </p>
+<ul>
+<li>阿里是以聚划算作为抓手</li>
+<li><a target="_blank" rel="noopener" href="https://time.geekbang.org/dailylesson/detail/100040819">蘑菇街</a>的新增抓手是直播电商</li>
+<li>美菜网是遇到了生鲜和2B的一些新玩法需求</li>
+</ul>
+<h2 id="2-1-对当前所在公司构建业务中台的构想"><a href="#2-1-对当前所在公司构建业务中台的构想" class="headerlink" title="2.1 对当前所在公司构建业务中台的构想"></a>2.1 对当前所在公司构建业务中台的构想</h2><p>《说透中台》中虚拟出来了一个极客地产。极客地产做中台的抓手是有新增的长租公寓的需求。长租公寓需要复用已有的地产投资和物业能力，但工程设计&#x2F;招采&#x2F;建设&#x2F;装修&#x2F;租赁等是从零开始。那么就可以针对地产投资和物业这两块来建设中台。而另外独立发展的业务线可以先跳过。<br>极客地产这个例子其实和当前所在公司挺像（为了避免再被信息安全“训诫”，这里就不提公司名字了）。已有的业务是投资，金融和运营三个板块，而现在新增了商业地产板块。是不是可以趁这个机会也建设中台？我觉得可以有针对性发展少数几个业务中台，主要做数据中台。<br>楼宇项目信息可能是少数比较共通的部分，但投前和投后在剩余的部分的交集有限。没有复用，还不如将功能独立建设在自己各自板块的应用里。当然现在对其他三个板块了解也有限，可能在了解更多后会推翻这个判断。  </p>
+<h2 id="3-中心与服务如何划分"><a href="#3-中心与服务如何划分" class="headerlink" title="3. 中心与服务如何划分"></a>3. 中心与服务如何划分</h2><p>在具体动手开始搭建中台后，我们首先面临的问题是服务中心怎么划分怎么建设。<br>淘宝的经历是首先四个服务中心：  </p>
+<ul>
+<li>用户中心</li>
+<li>商品中心</li>
+<li>交易中心</li>
+<li>店铺中心</li>
+</ul>
+<p>用户中心因为调用频繁收效大，而且复杂性和重要性较小，不出意外成为了最开始的试点。商品中心后来又拆出了评价中心。交易中心拆出了营销中心。另外还增加了一个库存中心。<br>中心的划分的原则是：“高内聚、低耦合”。如果只有增删改查这样的简单需求，不建议单独拆出一个中心。像是积分这种，等发展到足够丰富或对其他业务中心的影响已经不可忽视再拆。<br>每个中心也可以由多个服务组成。例如交易中心可以分为订单服务和购物车服务。服务中心是业务领域的概念，是为了业务和数据的完整性而设立的。而包含的子服务模块是根据系统架构设计的层面来考虑的。但一开始不要拆得太细。  </p>
+<h2 id="4-中台的其他技术考量点"><a href="#4-中台的其他技术考量点" class="headerlink" title="4. 中台的其他技术考量点"></a>4. 中台的其他技术考量点</h2><h3 id="4-1-服务插件"><a href="#4-1-服务插件" class="headerlink" title="4.1 服务插件"></a>4.1 服务插件</h3><p>《<a target="_blank" rel="noopener" href="https://time.geekbang.org/dailylesson/detail/100040824">京东服务技术中台探索与实践</a>》的视频中提到了他们建设中台的时候有一个“服务插件”的概念。简单来说就是对于非常个性化的需求（例如对用户体验的预警），提供插件协议，由相应前台团队自己来开发插件。  </p>
+<p><img src="/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-service-plugin-1.jpg" alt="服务插件1">  </p>
+<p>这种中台的场景可能更适合中台把前端页面也包揽的情况。下图是插件在实际页面上的规定展示区域。  </p>
+<p><img src="/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-service-plugin-2.jpg" alt="服务插件2">  </p>
+<h3 id="4-2-租户"><a href="#4-2-租户" class="headerlink" title="4.2 租户"></a>4.2 租户</h3><p>还是《京东服务技术中台探索与实践》的视频。为了防止某些用户在大促的时候把中台资源（包括计算资源和存储资源）给吃完，引入了租户的概念。<br>租户的设计对于有2C秒杀大促等场景的企业可能是必要的，毕竟不能在中台层面产生雪崩。  </p>
+<p><img src="/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-tenant.jpg" alt="租户">  </p>
+<h3 id="4-3-配置化"><a href="#4-3-配置化" class="headerlink" title="4.3 配置化"></a>4.3 配置化</h3><p>包括蘑菇街和京东服务中台的例子中，都提到了中台可以成为业务逻辑的下沉，前台应用做配置。<br>像蘑菇街就是将促销的逻辑做成模板：  </p>
+<p><img src="/images/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/middle-platform-config-template.jpg" alt="配置化">  </p>
+<h2 id="5-中台的实施路径"><a href="#5-中台的实施路径" class="headerlink" title="5. 中台的实施路径"></a>5. 中台的实施路径</h2><p>阿里的中台实施路径分为三个阶段：  </p>
+<ul>
+<li>API as Service</li>
+<li>Product as Service</li>
+<li>Solution as Service</li>
+</ul>
+<p>第一个阶段比较好实现，第三个阶段是到一定层次后的追求，我觉得关键是第二个阶段，就是将中台打造成一个产品。<br>打造成产品，意味着将API进行场景化的组装。如果只是一堆API列表，无法达成快速支持前台的目的。<br>除此以外，产品化也意味着：  </p>
+<ul>
+<li>产品有自己的定位，可以选择性地实现前台需求</li>
+<li>产品要想方设法为客户（前台）体现价值，保持用户满意度才能生存下来。如果一定期限内无法获取前台用户，或前台用户不满意，则及时中止建设止损</li>
+<li>产品要讲究易用性，提供完善的文档和手册</li>
+</ul>
+<p>中台的绩效考核可以参考阿里的做法：  </p>
+<ul>
+<li>服务稳定40%</li>
+<li>业务创新25%（适当允许因此带来的上线事故）</li>
+<li>服务接入量20%</li>
+<li>客户满意度15%</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2020/02/05/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/" data-id="cm065a561003pd26odwt37z21" data-title="中台-读《说透中台》和《企业IT架构转型之道》有感" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-容器-14-国内Windows10环境安装Minikube" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/" class="article-date">
+  <time class="dt-published" datetime="2020-01-21T16:00:00.000Z" itemprop="datePublished">2020-01-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/">容器-14-国内Windows10环境安装Minikube</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。<br>只靠Docker Desktop，平时开发的时候起个数据库或redis是足够用了，但像service mesh之类的就玩不了了。趁年前有空，搭了一套Minikube，把步骤顺便记录一下。原本想合并到之前kubeadm安装的<a href="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/">那篇</a>里，但可能会翻起来不方便，还是单独另开一篇吧。<br>后续“Kubernetes实战”系列都会基于minikube环境来搭建。  </p>
+<h2 id="1-软硬件条件"><a href="#1-软硬件条件" class="headerlink" title="1. 软硬件条件"></a>1. 软硬件条件</h2><p>现在内存也不值钱了，插个16G足够玩了。<br>操作系统上，虽然Windows 10家庭版+VirtualBox&#x2F;VMWare也可以，但从硬件利用率角度，还是用Windows 10企业版&#x2F;专业版&#x2F;教育版+Hyper-V比较好。<br>在控制面板-&gt;程序-&gt;启动或关闭Windows 功能 里面打开所有Hyper-V选项然后重启。<br>重启后运行systeminfo，看到如下内容，说明操作系统层面已经ok了：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hyper-V 要求:     已检测到虚拟机监控程序。将不显示 Hyper-V 所需的功能。</span><br></pre></td></tr></table></figure>
+
+<p>Docker Desktop是否安装不影响，但在安装Minikube的过程中最好不要启动。在安装过程中报过一个<code>create: precreate: no External vswitch nor Default Switch found</code>的报错，不确定是不是相关。<br>顺带提一句，如果装了Docker Desktop，可以在Settings-&gt;Daemon-&gt;Registry mirrors里填写：<code>https://dockerhub.azk8s.cn</code>、<code>http://hub-mirror.c.163.com</code>和<code>https://docker.mirrors.ustc.edu.cn</code><br>另外感谢这篇<a target="_blank" rel="noopener" href="https://xuxinkun.github.io/2019/06/11/cn-registry/">docker&#x2F;kubernetes国内源&#x2F;镜像源解决方式 - xinkun的博客 | Xinkun Blog</a>的整理，我也复制一下备忘：  </p>
+<table>
+<thead>
+<tr>
+<th>global</th>
+<th>proxy in China</th>
+<th>format</th>
+<th>example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>dockerhub (docker.io)</td>
+<td>dockerhub.azk8s.cn</td>
+<td><code>dockerhub.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
+<td>dockerhub.azk8s.cn&#x2F;microsoft&#x2F;azure-cli:2.0.61 dockerhub.azk8s.cn&#x2F;library&#x2F;nginx:1.15</td>
+</tr>
+<tr>
+<td>gcr.io</td>
+<td>gcr.azk8s.cn</td>
+<td><code>gcr.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
+<td>gcr.azk8s.cn&#x2F;google_containers&#x2F;hyperkube-amd64:v1.13.5</td>
+</tr>
+<tr>
+<td>quay.io</td>
+<td>quay.azk8s.cn</td>
+<td><code>quay.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
+<td>quay.azk8s.cn&#x2F;deis&#x2F;go-dev:v1.10.0</td>
+</tr>
+</tbody></table>
+<h2 id="2-网络条件"><a href="#2-网络条件" class="headerlink" title="2. 网络条件"></a>2. 网络条件</h2><p>以防万一请先关闭Windows防火墙。<br>因为你懂的那个原因，需要本地搞个SS的梯子。如果哪个步骤因为网络原因卡住了，可以切成代理再试一次。  </p>
+<h2 id="3-安装步骤"><a href="#3-安装步骤" class="headerlink" title="3. 安装步骤"></a>3. 安装步骤</h2><h3 id="3-1-安装Minikube"><a href="#3-1-安装Minikube" class="headerlink" title="3.1 安装Minikube"></a>3.1 安装Minikube</h3><p>首先注意一下，后续的步骤都需要用管理员权限的命令行来执行。Powershell应该也行。<br>安装步骤在<a target="_blank" rel="noopener" href="https://minikube.sigs.k8s.io/docs/start/windows/">官方文档</a>里有详细描述，但似乎遗漏了需要先安装Kubernetes Cli的提示。<br>所以最彻底的方法是通过Chocolatey来安装，它会帮忙把该装的都装好：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">choco install minikube</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-Minikube初始启动"><a href="#3-2-Minikube初始启动" class="headerlink" title="3.2 Minikube初始启动"></a>3.2 Minikube初始启动</h3><p>接下来就可以通过start命令来启动了。第一次启动可能会因为kubeadm和kubelet镜像下载失败而失败。不过不用担心，可以反复执行的，大不了用minikube delete重置重来。第一次启动主要是看个版本号。  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube start --vm-driver=hyperv --cpus=2 --memory=6g --image-repository=&quot;registry.cn-hangzhou.aliyuncs.com/google_containers&quot;</span><br></pre></td></tr></table></figure>
+
+<p>PS1. memory参数建议在start的时候就加上。通过<code>minikube config set memory 4096</code>来调整，需要delete了重新start。<br>PS2. 有些步骤里会加上一个<code>--registry-mirror=https://registry.docker-cn.com</code>的参数。但实际Docker的国内站已经挂了（公司都快撑不下去了，有点惨），加个image-repository的参数就足够了。这里image-repository用的是阿里的镜像。<br>PS3. 如果怀疑是网络问题想通过代理下载，可以添加HTTP_PROXY等参数，例如：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube start --vm-driver=hyperv --cpus=2 --memory=6g --image-repository=&quot;registry.cn-hangzhou.aliyuncs.com/google_containers&quot; --docker-env HTTP_PROXY=http://127.0.0.1:1080 --docker-env HTTPS_PROXY=http://127.0.0.1:1080 --docker-env NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-手动下载kubeadm和kubelet"><a href="#3-3-手动下载kubeadm和kubelet" class="headerlink" title="3.3 手动下载kubeadm和kubelet"></a>3.3 手动下载kubeadm和kubelet</h3><p>第一次启动可能会非常花时间（视你的网络而定）。如果失败的话，可以根据kubeadm和kubelet下载失败报错信息，来确定k8s的版本。我安装的minikube使用的版本是v1.17.0。<br>然后可以手动从googleapis网站下载（Windows机器默认没有curl，也可以通过Chocolatey安装，参考<a target="_blank" rel="noopener" href="https://chocolatey.org/packages/curl">这篇</a>：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -Lo kubeadm http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubeadm</span><br><span class="line">curl -Lo kubelet http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubelet</span><br></pre></td></tr></table></figure>
+
+<p>下载后扔到<code>C:\Users\用户名\.minikube\cache\版本号</code>的目录里。<br>如果其他K8S的组件下载失败，也可以使用类似的方式下载后扔到<code>C:\Users\用户名\.minikube\cache\images\registry.cn-hangzhou.aliyuncs.com\google_containers</code>的目录里。例如kube-proxy：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -Lo kube-proxy_v1.17.0 http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kube-proxy</span><br></pre></td></tr></table></figure>
+
+<p>但这招对版本号不一样的例如etcd没用。这个我是靠重试多次硬抗的。<br>对于国内网络来说，这个步骤很花时间，不要急慢慢等。  </p>
+<h3 id="3-4-更新minikube-kubectl"><a href="#3-4-更新minikube-kubectl" class="headerlink" title="3.4 更新minikube kubectl"></a>3.4 更新minikube kubectl</h3><p>如果同时装了Docker Desktop和minkube，会提示Docker下的kubectl.exe的版本不够高。  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">* 完成！kubectl 已经配置至 &quot;minikube&quot;</span><br><span class="line">! C:\Program Files\Docker\Docker\Resources\bin\kubectl.exe is version 1.14.0, and is incompatible with Kubernetes 1.17.0. You will need to update C:\Program Files\Docker\Docker\Resources\bin\kubectl.exe or use &#x27;minikube kubectl&#x27; to connect with this cluster</span><br></pre></td></tr></table></figure>
+
+<p>接下来先用<code>minikube stop</code>停止，然后用<code>minikube kubectl options</code>的命令，会提示下载最新版本的kubectl：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ minikube kubectl options</span><br><span class="line">* 正在下载 kubectl.exe v1.17.0</span><br></pre></td></tr></table></figure>
+
+<p>最新版的kubectl会下载到<code>C:\Users\用户\.minikube\cache\v版本</code>的目录里，然后复制到Docker的bin目录（例如C:\Program Files\Docker\Docker\Resources\bin\）里覆盖即可。  </p>
+<h2 id="4-验证"><a href="#4-验证" class="headerlink" title="4. 验证"></a>4. 验证</h2><p>安装好后就可以验证了。先看看是不是所有系统容器都启动了：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl get pod -A</span></span><br><span class="line">NAMESPACE              NAME                                         READY   STATUS    RESTARTS   AGE</span><br><span class="line">kube-system            coredns-7f9c544f75-j6cfj                     1/1     Running   1          6h10m</span><br><span class="line">kube-system            coredns-7f9c544f75-wpcn7                     1/1     Running   1          6h10m</span><br><span class="line">kube-system            etcd-minikube                                1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-addon-manager-minikube                  1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-apiserver-minikube                      1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-controller-manager-minikube             1/1     Running   2          6h10m</span><br><span class="line">kube-system            kube-proxy-kbnsr                             1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-scheduler-minikube                      1/1     Running   1          6h10m</span><br><span class="line">kube-system            storage-provisioner                          1/1     Running   1          6h10m</span><br><span class="line">kubernetes-dashboard   dashboard-metrics-scraper-7b64584c5c-6k8f8   1/1     Running   1          6h4m</span><br><span class="line">kubernetes-dashboard   kubernetes-dashboard-79d9cd965-565j6         1/1     Running   2          6h4m</span><br></pre></td></tr></table></figure>
+
+<p>然后可以看看dashboard。本机就是好不用token：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube dashboard</span><br></pre></td></tr></table></figure>
+
+<p>然后也可以照<a target="_blank" rel="noopener" href="https://minikube.sigs.k8s.io/docs/examples/">官方的Example</a>里的，创建个echo server来验证。需要注意image里的<code>k8s.gcr.io</code>需要替换为<code>registry.cn-hangzhou.aliyuncs.com/google_containers</code>：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl create deployment hello-minikube --image=registry.cn-hangzhou.aliyuncs.com/google_containers/echoserver:1.4</span><br><span class="line">kubectl expose deployment hello-minikube --type=NodePort --port=8080</span><br><span class="line">minikube service hello-minikube</span><br></pre></td></tr></table></figure>
+
+<p>最后一句<code>minikube service &lt;service名&gt;</code>的作用是获取本地集群中指定服务的kubernetes URL。对于以NodePort对外暴露的服务，会自动打开浏览器并跳转到对应的ip+端口。注意对应的ip是Hyper-V管理器中的“vEthernet (Default Switch)”。  </p>
+<h2 id="5-启用ingress"><a href="#5-启用ingress" class="headerlink" title="5. 启用ingress"></a>5. 启用ingress</h2><p>minikube启用ingress还是挺简单的，可以参考<a target="_blank" rel="noopener" href="https://kubernetes.github.io/ingress-nginx/deploy/">Installation Guide - NGINX Ingress Controller</a>，一句命令启动：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube addons enable ingress</span><br></pre></td></tr></table></figure>
+
+<p>但有可能会遇到<code>Back-off pulling image</code>的报错信息。看到image的名字里包含&lt;quay.io&gt;就可以知道又是被墙拦住了。对于类似的问题，可以采用以下的步骤，从Azure拉取后打tag。对于ingress，命令如下：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">minikube ssh</span><br><span class="line">docker pull quay.azk8s.cn/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1</span><br><span class="line">docker tag quay.azk8s.cn/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1 quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1</span><br></pre></td></tr></table></figure>
+
+<p>部署完成后可以通过<code>kubectl get pod -n kube-system</code>的命令来确认ingress是否有安装成功。如果失败的话，最坏结果有可能需要minikube delete后重新start。  </p>
+<h2 id="6-常见问题"><a href="#6-常见问题" class="headerlink" title="6. 常见问题"></a>6. 常见问题</h2><h3 id="6-1-minikube-delete失败"><a href="#6-1-minikube-delete失败" class="headerlink" title="6.1 minikube delete失败"></a>6.1 minikube delete失败</h3><p>遇到过一次minikube delete失败，报的是C:\Users\用户名.minikube\machines下某个conf文件找不到。尝试手动删除该目录会报文件被锁定，无法删除。重启后文件夹依然被锁定。<br>这个时候打开services.msc，停止“Hyper-V 虚拟机管理”服务后，就可以删除了。删除完把这个服务重新启用即可。  </p>
+<h3 id="6-2-Unable-to-connect-to-the-server"><a href="#6-2-Unable-to-connect-to-the-server" class="headerlink" title="6.2 Unable to connect to the server"></a>6.2 Unable to connect to the server</h3><p>在kubectl apply命令的时候有些时候会出现<code>Unable to connect to the server</code>的报错。这种情况下<code>kubectl get node</code>的命令也会失败。电脑重启后问题解决。原因暂不明。。。可能是minikube的bug。  </p>
+<h2 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7. 参考资料"></a>7. 参考资料</h2><p>常用操作可以参考这个官方文档：<br><a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/setup/learning-environment/minikube/">使用 Minikube 安装 Kubernetes - Kubernetes</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/" data-id="cm065a560003fd26o5txd5w98" data-title="容器-14-国内Windows10环境安装Minikube" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Java-从FeignClient的Ambiguous-mapping报错-重温RequestMapping原理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/23/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2019-12-22T16:00:00.000Z" itemprop="datePublished">2019-12-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/23/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/">Java-从FeignClient的Ambiguous mapping报错,重温RequestMapping原理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="1-微服务的公共API模块"><a href="#1-微服务的公共API模块" class="headerlink" title="1. 微服务的公共API模块"></a>1. 微服务的公共API模块</h1><p>微服务之间调用进程会出现DTO实体类的重复定义。比如服务A的接口返回User实体，服务B接收的时候，也需要定义一个同样的User实体。<br>在引入了Feign后，就有了一个避免项目间重复定义实体类的简单方案：我们可以在服务A开发的时候专门抽出来一个API模块。  </p>
+<p><img src="/images/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/java-project-dependency.jpg" alt="API公共模块">  </p>
+<p>这个API模块可以包含接口方法定义，URI以及和对外实体类定义（DTO），可以认为是A和B之间互通的约定。<br>一个最简单的API模块代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoDto</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String text;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/demo&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">DemoApiService</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/hello&quot;)</span></span><br><span class="line">    DemoDto <span class="title function_">hello</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>服务A的Controller负责对接口定义进行实现：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoProducerController</span> <span class="keyword">implements</span> <span class="title class_">DemoApiService</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> DemoDto <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">DemoDto</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>服务A项目将API模块发布到Maven私服上。服务B项目只需要对API模块添加依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.galaxy.demo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>feign-demo-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>并且扩展一下该接口并添加<code>@FeignClient</code>注解：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient(name = &quot;demo&quot;, contextId = &quot;demoSpiService&quot;, url = &quot;http://localhost:8080/&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">DemoSpiService</span> <span class="keyword">extends</span> <span class="title class_">DemoApiService</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>就可以很轻松地像调用本地方法一样调用A应用的接口了。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Resource</span></span><br><span class="line"><span class="keyword">private</span> DemoSpiService demoSpiService;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GetMapping(&quot;/hello&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> demoSpiService.hello().toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-Ambiguous-mapping报错"><a href="#2-Ambiguous-mapping报错" class="headerlink" title="2. Ambiguous mapping报错"></a>2. Ambiguous mapping报错</h1><p>如果你像我上面描述的那样实现，就会在消费者服务B启动的时候遇到如下的报错信息：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java.lang.IllegalStateException: Ambiguous mapping. Cannot map &#x27;com.galaxy.demo.feign.consumer.spi.DemoSpiService&#x27; method </span><br><span class="line">com.galaxy.demo.feign.consumer.spi.DemoSpiService#hello()</span><br><span class="line">to &#123;GET /demo/hello&#125;: There is already &#x27;demoConsumerController&#x27; bean method</span><br></pre></td></tr></table></figure>
+<p>报错信息很直白：同一个URI被重复映射了两次。一次是在DemoConsumerController，一次是在DemoSpiService。<br><strong>But Why?</strong> DemoSpiService里只是一个FeignClient，不是RestController啊？</p>
+<h1 id="3-RestController，-Controller，-RequestMapping原理重温"><a href="#3-RestController，-Controller，-RequestMapping原理重温" class="headerlink" title="3. @RestController，@Controller，@RequestMapping原理重温"></a>3. @RestController，@Controller，@RequestMapping原理重温</h1><p>我们通过这个问题，正好来重温一下@RestController，@Controller和@RequestMapping几个Spring中的经典概念。  </p>
+<h2 id="3-1-RestController"><a href="#3-1-RestController" class="headerlink" title="3.1 @RestController"></a>3.1 @RestController</h2><p>我们先来看一下@RestController的原代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(&#123;ElementType.TYPE&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> RestController &#123;</span><br><span class="line">    <span class="meta">@AliasFor(</span></span><br><span class="line"><span class="meta">        annotation = Controller.class</span></span><br><span class="line"><span class="meta">    )</span></span><br><span class="line">    String <span class="title function_">value</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到@RestController&#x3D;@Controller+@ResponseBody  </p>
+<p><img src="/images/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/spring-mvc-flow.png" alt="Spring MVC流"><br>上图是一个Spring MVC从接收请求到返回响应的完整流程。我理解对于SpringBoot的RestController来说，在第四步没有返回ModelAndView，而是直接返回了Json，并通过@ResponseBody将Json直接写到了响应Body，略过了第5步和第6步。  </p>
+<h2 id="3-2-Controller和-RequestMapping"><a href="#3-2-Controller和-RequestMapping" class="headerlink" title="3.2 @Controller和@RequestMapping"></a>3.2 @Controller和@RequestMapping</h2><p>如果只从@Controller的源代码来看，@Controller只是@Component的一个别名。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(&#123;ElementType.TYPE&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Controller &#123;</span><br><span class="line">    <span class="meta">@AliasFor(</span></span><br><span class="line"><span class="meta">        annotation = Component.class</span></span><br><span class="line"><span class="meta">    )</span></span><br><span class="line">    String <span class="title function_">value</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但注解怎么用不是看定义的。从Spring的AbstractHandlerMethodMapping.java的<a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/handler/AbstractHandlerMethodMapping.java">源代码</a>，我们可以看到Spring会根据一个名为isHandler方法的判断结果，对Handler处理器里的方法进行扫描，获得URL映射。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">		<span class="keyword">if</span> (beanType != <span class="literal">null</span> &amp;&amp; isHandler(beanType)) &#123;</span><br><span class="line">			detectHandlerMethods(beanName);</span><br><span class="line">		&#125;</span><br><span class="line"><span class="comment">// 省略部分</span></span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">detectHandlerMethods</span><span class="params">(Object handler)</span> &#123;</span><br><span class="line">		Class&lt;?&gt; handlerType = (handler <span class="keyword">instanceof</span> String ?</span><br><span class="line">				obtainApplicationContext().getType((String) handler) : handler.getClass());</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (handlerType != <span class="literal">null</span>) &#123;</span><br><span class="line">			Class&lt;?&gt; userType = ClassUtils.getUserClass(handlerType);</span><br><span class="line">			Map&lt;Method, T&gt; methods = MethodIntrospector.selectMethods(userType,</span><br><span class="line">					(MethodIntrospector.MetadataLookup&lt;T&gt;) method -&gt; &#123;</span><br><span class="line">						<span class="keyword">try</span> &#123;</span><br><span class="line">							<span class="keyword">return</span> getMappingForMethod(method, userType);</span><br></pre></td></tr></table></figure>
+<p>而isHandler的逻辑很简单，就是看Bean上是否有@Controller注解或@RequestMapping注解。参见<a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/mvc/method/annotation/RequestMappingHandlerMapping.java">源代码</a>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="type">boolean</span> <span class="title function_">isHandler</span><span class="params">(Class&lt;?&gt; beanType)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> (AnnotatedElementUtils.hasAnnotation(beanType, Controller.class) ||</span><br><span class="line">			AnnotatedElementUtils.hasAnnotation(beanType, RequestMapping.class));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-Ambiguous-mapping报错原因总结和解决方案"><a href="#4-Ambiguous-mapping报错原因总结和解决方案" class="headerlink" title="4. Ambiguous mapping报错原因总结和解决方案"></a>4. Ambiguous mapping报错原因总结和解决方案</h1><p>归根到底，Ambiguous mapping报错原因在于上面的那个逻辑中使用的是“或”（||），而不是“和”（&amp;&amp;）。<br>由于我们的DemoSpiService扩展了DemoApiService，而DemoApiService的接口定义上有@RequestMapping注解，于是DemoSpiService也被Spring MVC扫描Handler了。而偏生对于DemoSpiService和DemoConsumerController的URL路径都是“&#x2F;demo”，于是就产生了冲突。<br>知道了原因后，解决方案也就很简单了：修改一下DemoConsumerController的@RequestMapping的URL，例如改为<code>@RequestMapping(&quot;/consumer/demo&quot;)</code>，就可以成功启动了。  </p>
+<p>你可能会担心@FeignClient+API模块是否会暴露不该暴露的接口？直接访问的话会返回404：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;timestamp&quot;: &quot;2019-12-23T12:51:05.376+0000&quot;,</span><br><span class="line">    &quot;status&quot;: 404,</span><br><span class="line">    &quot;error&quot;: &quot;Not Found&quot;,</span><br><span class="line">    &quot;message&quot;: &quot;No message available&quot;,</span><br><span class="line">    &quot;path&quot;: &quot;/demo/hello&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也很容易理解：请求在找RequestMapping对应的View：”&#x2F;demo&#x2F;hello”。但View不存在，就只能返回404了。只有在DemoSpiService上主动添加@ResponseBody注解，才能对外暴露。  </p>
+<h1 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h1><p>这篇是主要参考资料。作者认为这是Spring MVC的锅。我理解指的是“或”的那个逻辑。但我觉得当初Spring这么写肯定是有原因的。。。虽然我没找到相关文章。<br><a target="_blank" rel="noopener" href="https://blog.ahao.moe/posts/FeignClient_and_Ambiguous_mapping.html">FeignClient 出现 Ambiguous mapping 重复映射 | Japari Park</a>  </p>
+<p>另外是两篇Spring原理解析参考<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/forwrader/p/6886581.html">SpringMVC在@RequestMapping配置两个相同路径 - Text_Dexter - 博客园</a>  </p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/J080624/article/details/56278461">Spring MVC — @RequestMapping原理讲解-1 - 小小默：进无止境</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/12/23/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/" data-id="cm065a560003jd26o0zckduok" data-title="Java-从FeignClient的Ambiguous mapping报错,重温RequestMapping原理" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/" rel="tag">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/" rel="tag">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IaC/" rel="tag">IaC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/" rel="tag">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/" rel="tag">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/IaC/" style="font-size: 10px;">IaC</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/%E4%B8%AD%E5%8F%B0/" style="font-size: 10px;">中台</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 20px;">容器</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 11.67px;">运维</a> <a href="/tags/%E9%87%91%E8%9E%8D/" style="font-size: 10px;">金融</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/08/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%80%A7%E5%92%8C%E7%9B%B8%E5%85%B3%E6%80%A7/">大数据的因果性和相关性</a>
+          </li>
+        
+          <li>
+            <a href="/2024/08/07/Terraform-IaC-%E5%AD%A6%E4%B9%A0Tips/">Terraform IaC 学习Tips</a>
+          </li>
+        
+          <li>
+            <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/">Resume以及ARTS</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">金融业务-不动产保理业务入门和系统设计</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/">运维-运维体系标准化之故障管理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 姚皓(Hao Yao)<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

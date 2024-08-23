@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>容器-11-Kubernetes实战-Ingress与Traefik | Galaxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在上一篇中，通过NodePort模式，其实我们已经可以将一系列Pod暴露给集群外。但Service最多只能做好OSI 4层的负载均衡。而OSI 7层的负载均衡需要交给Ingress。简单解释一下，2层的负载均衡就是虚拟MAC地址接收请求；3层的负载均衡就是虚拟IP地址；4层就是基于IP + 端口；7层就涉及URI等应用层。以下文会提到的Traefik官方的一张图来说明，Ingress的作用就是根据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器-11-Kubernetes实战-Ingress与Traefik">
+<meta property="og:url" content="https://galaxyyao.github.io/2019/06/27/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="在上一篇中，通过NodePort模式，其实我们已经可以将一系列Pod暴露给集群外。但Service最多只能做好OSI 4层的负载均衡。而OSI 7层的负载均衡需要交给Ingress。简单解释一下，2层的负载均衡就是虚拟MAC地址接收请求；3层的负载均衡就是虚拟IP地址；4层就是基于IP + 端口；7层就涉及URI等应用层。以下文会提到的Traefik官方的一张图来说明，Ingress的作用就是根据">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/traefik-architecture.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/k8s-ingress-service.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/k8s-edge-node-architecture.png">
+<meta property="article:published_time" content="2019-06-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-30T05:34:34.000Z">
+<meta property="article:author" content="姚皓(Hao Yao)">
+<meta property="article:tag" content="容器">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/traefik-architecture.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Galaxy</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://galaxyyao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-容器-11-Kubernetes实战-Ingress与Traefik" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/27/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/" class="article-date">
+  <time class="dt-published" datetime="2019-06-26T16:00:00.000Z" itemprop="datePublished">2019-06-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      容器-11-Kubernetes实战-Ingress与Traefik
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上一篇中，通过NodePort模式，其实我们已经可以将一系列Pod暴露给集群外。但Service最多只能做好OSI 4层的负载均衡。而OSI 7层的负载均衡需要交给Ingress。<br>简单解释一下，2层的负载均衡就是虚拟MAC地址接收请求；3层的负载均衡就是虚拟IP地址；4层就是基于IP + 端口；7层就涉及URI等应用层。<br>以下文会提到的Traefik官方的一张图来说明，Ingress的作用就是根据不同的域名，正确找到对应的后台的Service：<br><img src="/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/traefik-architecture.png" alt="Traefik作用"><br>在Service接到请求后，再负责转交给Pod：<br><img src="/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/k8s-ingress-service.png" alt="Kubernetes Service与Deployment">  </p>
+<p>要使用Ingress需要先安装一个Ingress Controller。一般比较常用的有两个：Nginx Ingress Controller和Traefik Ingress Controller。在我做POC的过程中一开始选择Nginx Ingress Controller，但总是curl调不通，于是最终选择了Traefik。Traefik还多带了一个UI不错的后台管理admin dashboard。而Nginx的不少功能需要用Nginx Plus版的才有。虽然也很理解，毕竟Nginx也是要恰饭的。。。<br>需要说明一点：虽然Nginx本身可以同时担任静态网站web server和反向代理两种职责，但Nginx Ingress Controller只负责反向代理。<br>Ingress Controller除了这两个之外，还是有F5的、Kong的和Voyager等等。从这里就可以看到Kubernetes的一大特点：指定了方向，让各厂家和开源开发者发挥自己的特长来做实现。  </p>
+<h2 id="1-Traefik-Ingress安装"><a href="#1-Traefik-Ingress安装" class="headerlink" title="1. Traefik Ingress安装"></a>1. Traefik Ingress安装</h2><p>安装按照<a target="_blank" rel="noopener" href="https://docs.traefik.io/v1.7/user-guide/kubernetes/">官方文档</a>一步步做就行了。<br>先配置RBAC（关于RBAC我们之后详细介绍）：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://raw.githubusercontent.com/containous/traefik/v1.7/examples/k8s/traefik-rbac.yaml</span><br></pre></td></tr></table></figure>
+
+<p>然后配置Ingress Controller和对应的Service，对外暴露http的80端口和admin的8080端口。<br>Ingress Controller有两种部署方式：Deployment和DaemonSet。DaemonSet是一种特殊的Pod：</p>
+<ul>
+<li>在每个节点上有且仅有一个Pod实例</li>
+<li>当有新Worker节点加入时，自动在新节点上创建；旧节点被删除后，上面的DaemonSet Pod会被自动回收</li>
+</ul>
+<p>两种方式各有各的好处。官方文档上都有详细比较，并在最后很贴心地对选择困难症给了建议：遇事不决先用DaemonSet试试。那么作为POC我就却之不恭选择DaemonSet了。反正要吃后悔药也就是几个命令的事情。  </p>
+<p>最后部署一个Traefik Dashboard的UI。配置的时候需要注意根据自己的情况调整host域名，然后我们就能通过域名访问admin Dashboard了。  </p>
+<h2 id="2-Ingress-YAML定义"><a href="#2-Ingress-YAML定义" class="headerlink" title="2. Ingress YAML定义"></a>2. Ingress YAML定义</h2><p>对于Ingress来说，最关键的就是定义找服务的规则：IngressRule。<br>下面是最简单的Ingress模板：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">piVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&lt;ingress-name&gt;</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">&lt;host-name&gt;</span></span><br><span class="line">    <span class="attr">http:</span></span><br><span class="line">      <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/</span></span><br><span class="line">        <span class="attr">backend:</span></span><br><span class="line">          <span class="attr">serviceName:</span> <span class="string">&lt;service-name&gt;</span></span><br><span class="line">          <span class="attr">servicePort:</span> <span class="string">http</span></span><br></pre></td></tr></table></figure>
+
+<p>如果配置过Nginx的话就很容易理解这个配置文件了。<br>需要注意的是：Nginx的server_name可以是ip，但Ingress的spec.rules.host必须是一个域名格式（FQDN），不能是ip。<br>我们的POC项目按照这个模板配置一下：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">poc-ingress</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">poc.demosite.net</span></span><br><span class="line">    <span class="attr">http:</span></span><br><span class="line">      <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/</span></span><br><span class="line">        <span class="attr">backend:</span></span><br><span class="line">          <span class="attr">serviceName:</span> <span class="string">poc-web-service</span></span><br><span class="line">          <span class="attr">servicePort:</span> <span class="string">http</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后配置一个DNS指向任何一个Worker节点的ip，或修改本地的hosts，就可以访问我们的静态网站了。<br>如果是本机测试没有域名，可以将YAML简化为：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">poc-ingress</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">backend:</span></span><br><span class="line">    <span class="attr">serviceName:</span> <span class="string">poc-web-service</span></span><br><span class="line">    <span class="attr">servicePort:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-Ingress-Controller高可用"><a href="#3-Ingress-Controller高可用" class="headerlink" title="3. Ingress Controller高可用"></a>3. Ingress Controller高可用</h2><p>我们在上文使用的DNS指定节点的方式会有不少弊端。虽然我们可以给每个域名都配置所有Worker节点的ip，即Round-robin DNS方式。但Round-robin本身就不是一个故障转移方案。在Kubernetes官方的<a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/services-networking/service/#why-not-use-round-robin-dns">Service章节</a>就有提到其他缺陷。  </p>
+<p>一般有两种方式：  </p>
+<h3 id="3-1-Deployment方式部署Ingress-Controller，Service类型指定为LoadBalancer"><a href="#3-1-Deployment方式部署Ingress-Controller，Service类型指定为LoadBalancer" class="headerlink" title="3.1 Deployment方式部署Ingress Controller，Service类型指定为LoadBalancer"></a>3.1 Deployment方式部署Ingress Controller，Service类型指定为LoadBalancer</h3><p>如果使用公有云，或私有服务器有自己的LoadBalancer，一般就使用该方案了。云会给每个LoadBalancer类型的Service分配公网ip地址。但公有云的LoadBalancer服务是要收费的，而自己很难部署。  </p>
+<h3 id="3-2-DaemonSet方式在边缘节点部署Ingress-Controller，外部通过虚拟ip和keepalived访问边缘节点"><a href="#3-2-DaemonSet方式在边缘节点部署Ingress-Controller，外部通过虚拟ip和keepalived访问边缘节点" class="headerlink" title="3.2 DaemonSet方式在边缘节点部署Ingress Controller，外部通过虚拟ip和keepalived访问边缘节点"></a>3.2 DaemonSet方式在边缘节点部署Ingress Controller，外部通过虚拟ip和keepalived访问边缘节点</h3><p>首先我们可以通过label命令，选定几台服务器作为边缘节点：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl label node docker-5 node=edge</span><br><span class="line">kubectl label node docker-6 node=edge</span><br></pre></td></tr></table></figure>
+
+<p>然后修改traefik-ds.yaml，将通过nodeSelector，限定Ingress Controller部署在边缘节点上：  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">k8s-app:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">traefik-ingress-lb</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">serviceAccountName:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line">      <span class="comment"># 中间省略</span></span><br><span class="line">      <span class="attr">nodeSelector:</span></span><br><span class="line">        <span class="attr">node:</span> <span class="string">edge</span></span><br></pre></td></tr></table></figure>
+
+<p>在重新apply后，可以看到traefik-ingress-controller的Pod数量降低到了2个。<br>然后参考这篇部署keepalived即可：<a target="_blank" rel="noopener" href="https://github.com/rootsongjc/kubernetes-handbook/blob/master/practice/edge-node-configuration.md">边缘节点配置</a>  </p>
+<p><img src="/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/k8s-edge-node-architecture.png" alt="Kubernetes Edge Node Architecture">  </p>
+<h2 id="4-参考资料"><a href="#4-参考资料" class="headerlink" title="4. 参考资料"></a>4. 参考资料</h2><p>Kubernetes Ingress Controller的使用介绍及高可用落地 · Service Mesh|服务网格中文社区<br><a target="_blank" rel="noopener" href="http://www.servicemesher.com/blog/kubernetes-ingress-controller-deployment-and-ha/">http://www.servicemesher.com/blog/kubernetes-ingress-controller-deployment-and-ha/</a>  </p>
+<p>Traefik Ingress Controller的安装和使用官方文档<br><a target="_blank" rel="noopener" href="https://docs.traefik.io/user-guide/kubernetes/">Kubernetes - Traefik</a>  </p>
+<p>Nginx Ingress Controller的一个范例，虽然最后没跑起来<br><a target="_blank" rel="noopener" href="https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-ingress-guide-nginx-example.html">Kubernetes Ingress with Nginx Example - Kubernetes Book</a><br>Nginx Ingress Controller的排查手册<br><a target="_blank" rel="noopener" href="https://kubernetes.github.io/ingress-nginx/troubleshooting/">Troubleshooting - NGINX Ingress Controller</a>  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://galaxyyao.github.io/2019/06/27/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/" data-id="cm065a55w000xd26obusmfn85" data-title="容器-11-Kubernetes实战-Ingress与Traefik" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/07/03/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          容器-12-Kubernetes实战-静态网站部署优化1:ConfigMap,Secret与TLS
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/26/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">容器-10-Kubernetes实战-Service</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feign/" rel="tag">Feign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IE/" rel="tag">IE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IaC/" rel="tag">IaC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/" rel="tag">Jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PostgreSQL/" rel="tag">PostgreSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud/" rel="tag">Spring Cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pgsql/" rel="tag">pgsql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E5%8F%B0/" rel="tag">中台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%91%E8%9E%8D/" rel="tag">金融</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CI/" style="font-size: 10px;">CI</a> <a href="/tags/Feign/" style="font-size: 10px;">Feign</a> <a href="/tags/IE/" style="font-size: 10px;">IE</a> <a href="/tags/IaC/" style="font-size: 10px;">IaC</a> <a href="/tags/Java/" style="font-size: 16.67px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/MyBatis/" style="font-size: 10px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/Spring-Cloud/" style="font-size: 13.33px;">Spring Cloud</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/k8s/" style="font-size: 18.33px;">k8s</a> <a href="/tags/kubernetes/" style="font-size: 18.33px;">kubernetes</a> <a href="/tags/pgsql/" style="font-size: 10px;">pgsql</a> <a href="/tags/%E4%B8%AD%E5%8F%B0/" style="font-size: 10px;">中台</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 20px;">容器</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" style="font-size: 11.67px;">持续集成</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 11.67px;">运维</a> <a href="/tags/%E9%87%91%E8%9E%8D/" style="font-size: 10px;">金融</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/08/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%80%A7%E5%92%8C%E7%9B%B8%E5%85%B3%E6%80%A7/">大数据的因果性和相关性</a>
+          </li>
+        
+          <li>
+            <a href="/2024/08/07/Terraform-IaC-%E5%AD%A6%E4%B9%A0Tips/">Terraform IaC 学习Tips</a>
+          </li>
+        
+          <li>
+            <a href="/2024/08/05/Resume%E4%BB%A5%E5%8F%8AARTS/">Resume以及ARTS</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/01/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">金融业务-不动产保理业务入门和系统设计</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/%E8%BF%90%E7%BB%B4-%E8%BF%90%E7%BB%B4%E4%BD%93%E7%B3%BB%E6%A0%87%E5%87%86%E5%8C%96%E4%B9%8B%E6%95%85%E9%9A%9C%E7%AE%A1%E7%90%86/">运维-运维体系标准化之故障管理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 姚皓(Hao Yao)<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
