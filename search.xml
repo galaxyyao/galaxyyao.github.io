@@ -27,48 +27,6 @@
       </tags>
   </entry>
   <entry>
-    <title>分布式配置中心 - 1. 配置中心介绍</title>
-    <url>/2019/03/26/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83-1-%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h2 id="实施计划"><a href="#实施计划" class="headerlink" title="实施计划"></a>实施计划</h2><ul>
-<li>先以测试环境一个应用作为试点，实施配置中心</li>
-<li>稳定运行至少两周后，在生产环境的该应用上实施配置中心</li>
-<li>再稳定运行两周后，在测试和生产环境的所有应用都改为使用配置中心</li>
-<li>配置中心先使用Spring Cloud Config。不够用的话再考虑评估Apollo和Nacos</li>
-</ul>
-<h2 id="选型的考量"><a href="#选型的考量" class="headerlink" title="选型的考量"></a>选型的考量</h2><p>Spring Cloud Config的原理和架构相对比较容易理解，所以先以Spring Cloud Config作为一个具体的实例，介绍一个简化版本的配置中心。如果只是小团队的话，Spring Cloud Config已经足够用了。<br>但对于大一些的团队来说，还是存在以下两个不足：</p>
-<ul>
-<li>UI只能依赖Gitlab的界面</li>
-<li>依赖于Git的权限控制粒度比较粗，也很难扩展</li>
-</ul>
-<h2 id="什么是配置中心"><a href="#什么是配置中心" class="headerlink" title="什么是配置中心"></a>什么是配置中心</h2><p>这里引用几篇配置中心的科普文。</p>
-<h4 id="第一篇"><a href="#第一篇" class="headerlink" title="第一篇"></a>第一篇</h4><p><a href="https://infoq.cn/article/the-foundation-of-dynamic-adjustment-configuration-center">动态调整的基础 —— 配置中心</a><br>这篇应该是淘宝在2016年之前的方案。<br>虽然相对于现在已经比较out-of-date，但其中提到的几点比较有意思：</p>
-<ul>
-<li>配置动态化的需求发展历程</li>
-<li>应用 - 平台 - 版本 - 模块的元信息模型。在spring cloud config里，对应{application}&#x2F;{profile}&#x2F;{label}的三个层次。在Apollo里，对应Namespace。</li>
-<li>把配置中心拆分成网关、核心服务和界面系统三个部分。在Apollo里，也拆分为Meta Server&#x2F;Config Service&#x2F;Admin Service三块。<br>去年的一次分享上听一个阿里的技术专家说，他进阿里第一个月做的事情就是写开关配置。光20多行的代码就加了5个开关。阿里的这个“不要写死”的要求，在加强了灵活性的同时，对配置管理也提出了很高的要求。</li>
-</ul>
-<h4 id="第二篇"><a href="#第二篇" class="headerlink" title="第二篇"></a>第二篇</h4><p>下面这篇提出了一个通用版的配置中心的架构图。<br><a href="https://blog.csdn.net/xlgen157387/article/details/82840553">为什么需要分布式配置中心？ - 徐刘根</a></p>
-<h4 id="第三篇"><a href="#第三篇" class="headerlink" title="第三篇"></a>第三篇</h4><p><a href="http://jm.taobao.org/2016/09/28/an-article-about-config-center/">一篇好TM长的关于配置中心的文章 | 阿里中间件团队博客</a><br>顺便提一句，文中提到的淘宝的开源配置中心项目Diamond，但已经5年没有维护了。。。</p>
-<h2 id="配置中心的优点与缺点"><a href="#配置中心的优点与缺点" class="headerlink" title="配置中心的优点与缺点"></a>配置中心的优点与缺点</h2><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
-<li>避免敏感信息在源代码中暴露，安全性提升</li>
-<li>可以实现不重启应用就动态刷新配置</li>
-<li>可以在应用间共享配置。原本只能在应用内共享配置</li>
-<li>配置集中化管理，易于全局管理所有配置</li>
-<li>对配置进行权限管理</li>
-</ul>
-<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
-<li>原本下载应用代码就可以启动，现在还增加依赖spring cloud config server服务&#x2F;Apollo服务</li>
-<li>如果config服务挂了，应用会无法重启</li>
-<li>不如配置放在项目中那么直观</li>
-<li>多分支开发的时候，处理不当的话可能会互相影响</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>Java</tag>
-        <tag>Spring Cloud</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>从Gitlab CI启动tomcat的坑，到tty与进程组</title>
     <url>/2019/03/28/Gitlab-CI-pipeline%E5%90%AF%E5%8A%A8tomcat%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/</url>
     <content><![CDATA[<h2 id="问题症状"><a href="#问题症状" class="headerlink" title="问题症状"></a>问题症状</h2><p>为了做一个Spring MVC的Java Web项目的CI，我写了个编译war包后启动tomcat的脚本。CI脚本很简单：</p>
@@ -116,6 +74,48 @@
 ]]></content>
       <tags>
         <tag>持续集成</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>分布式配置中心 - 1. 配置中心介绍</title>
+    <url>/2019/03/26/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83-1-%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h2 id="实施计划"><a href="#实施计划" class="headerlink" title="实施计划"></a>实施计划</h2><ul>
+<li>先以测试环境一个应用作为试点，实施配置中心</li>
+<li>稳定运行至少两周后，在生产环境的该应用上实施配置中心</li>
+<li>再稳定运行两周后，在测试和生产环境的所有应用都改为使用配置中心</li>
+<li>配置中心先使用Spring Cloud Config。不够用的话再考虑评估Apollo和Nacos</li>
+</ul>
+<h2 id="选型的考量"><a href="#选型的考量" class="headerlink" title="选型的考量"></a>选型的考量</h2><p>Spring Cloud Config的原理和架构相对比较容易理解，所以先以Spring Cloud Config作为一个具体的实例，介绍一个简化版本的配置中心。如果只是小团队的话，Spring Cloud Config已经足够用了。<br>但对于大一些的团队来说，还是存在以下两个不足：</p>
+<ul>
+<li>UI只能依赖Gitlab的界面</li>
+<li>依赖于Git的权限控制粒度比较粗，也很难扩展</li>
+</ul>
+<h2 id="什么是配置中心"><a href="#什么是配置中心" class="headerlink" title="什么是配置中心"></a>什么是配置中心</h2><p>这里引用几篇配置中心的科普文。</p>
+<h4 id="第一篇"><a href="#第一篇" class="headerlink" title="第一篇"></a>第一篇</h4><p><a href="https://infoq.cn/article/the-foundation-of-dynamic-adjustment-configuration-center">动态调整的基础 —— 配置中心</a><br>这篇应该是淘宝在2016年之前的方案。<br>虽然相对于现在已经比较out-of-date，但其中提到的几点比较有意思：</p>
+<ul>
+<li>配置动态化的需求发展历程</li>
+<li>应用 - 平台 - 版本 - 模块的元信息模型。在spring cloud config里，对应{application}&#x2F;{profile}&#x2F;{label}的三个层次。在Apollo里，对应Namespace。</li>
+<li>把配置中心拆分成网关、核心服务和界面系统三个部分。在Apollo里，也拆分为Meta Server&#x2F;Config Service&#x2F;Admin Service三块。<br>去年的一次分享上听一个阿里的技术专家说，他进阿里第一个月做的事情就是写开关配置。光20多行的代码就加了5个开关。阿里的这个“不要写死”的要求，在加强了灵活性的同时，对配置管理也提出了很高的要求。</li>
+</ul>
+<h4 id="第二篇"><a href="#第二篇" class="headerlink" title="第二篇"></a>第二篇</h4><p>下面这篇提出了一个通用版的配置中心的架构图。<br><a href="https://blog.csdn.net/xlgen157387/article/details/82840553">为什么需要分布式配置中心？ - 徐刘根</a></p>
+<h4 id="第三篇"><a href="#第三篇" class="headerlink" title="第三篇"></a>第三篇</h4><p><a href="http://jm.taobao.org/2016/09/28/an-article-about-config-center/">一篇好TM长的关于配置中心的文章 | 阿里中间件团队博客</a><br>顺便提一句，文中提到的淘宝的开源配置中心项目Diamond，但已经5年没有维护了。。。</p>
+<h2 id="配置中心的优点与缺点"><a href="#配置中心的优点与缺点" class="headerlink" title="配置中心的优点与缺点"></a>配置中心的优点与缺点</h2><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>避免敏感信息在源代码中暴露，安全性提升</li>
+<li>可以实现不重启应用就动态刷新配置</li>
+<li>可以在应用间共享配置。原本只能在应用内共享配置</li>
+<li>配置集中化管理，易于全局管理所有配置</li>
+<li>对配置进行权限管理</li>
+</ul>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>原本下载应用代码就可以启动，现在还增加依赖spring cloud config server服务&#x2F;Apollo服务</li>
+<li>如果config服务挂了，应用会无法重启</li>
+<li>不如配置放在项目中那么直观</li>
+<li>多分支开发的时候，处理不当的话可能会互相影响</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>Java</tag>
+        <tag>Spring Cloud</tag>
       </tags>
   </entry>
   <entry>
@@ -551,6 +551,55 @@
       </tags>
   </entry>
   <entry>
+    <title>容器-6-Kubernetes实战-POC目标</title>
+    <url>/2019/06/13/%E5%AE%B9%E5%99%A8-6-Kubernetes%E5%AE%9E%E6%88%98-POC%E7%9B%AE%E6%A0%87/</url>
+    <content><![CDATA[<p>在较为彻底地理解了Docker原理后，我曾经天真地以为再花差不多的时间就可以同样掌握k8s。直到我看到一张k8s的核心概念关系图：<br><img src="/images/%E5%AE%B9%E5%99%A8-6-Kubernetes%E5%AE%9E%E6%88%98-POC%E7%9B%AE%E6%A0%87/Kubernetes-core-concept-relation.png" alt="Kubernetes核心概念关系"><br>Docker只是其中粉红色的那一小块（Container）的一部分。。。  </p>
+<p>我也曾考虑过按照我的理解总结k8s优于Docker Swarm之处，以及为什么k8s能赢下容器编排大战。但很快发现这意味着我还需要先去熟悉Docker Swarm，才能较为准确地进行分析。这又何苦呢？我们已经知道了结论：Kubernetes是容器编排之战的最终战胜者。就算Docker Swarm有再多的优点，我们也不会采用。  </p>
+<p>我还考虑过类似Docker系列那样，先从原理开始整理。但k8s涉及的原理范围更广，从各种存储介质到OSI七层原理，先研究透再写的话估计还得花一个月。  </p>
+<p>所以我们跳过枯燥的原理介绍，先进行最有趣的实战环节，做一个包含接近完整功能的POC（Proof of Concept，概念验证）。在POC的过程中，我们再来逐渐熟悉k8s的架构设计和原理。  </p>
+<h2 id="POC目标"><a href="#POC目标" class="headerlink" title="POC目标"></a>POC目标</h2><p>我们的目标是把现在基于虚拟机的部署方式和基于脚本的打包方式，尝试用Docker容器+Kubernetes实现。<br>部署的时候还需要考虑：  </p>
+<ul>
+<li>服务高可用</li>
+<li>节点扩展与收缩</li>
+<li>安全性</li>
+<li>与代码版本管理平台（Gitlab）和持续集成系统（Gitlab CI&#x2F;Jenkins）的整合</li>
+<li>多版本应用维护</li>
+<li>日志收集</li>
+<li>监控</li>
+<li>数据备份</li>
+<li>…其他等等</li>
+</ul>
+<p>下面是一个我们当前应用架构的精简版：  </p>
+<ul>
+<li>Spring Boot（Java）应用作为后端，暴露接口地址供集群外的App调用。应用高可用部署。  </li>
+<li>Nginx上同时host了WebPack打包的静态网站。静态网站也会调用Java应用的接口。Nginx高可用部署。  </li>
+<li>Spring Boot应用也同时调用后台的MySQL数据库。MySQL数据库的物理部署架构为Master-Slave形式。Master写入，Slave读取。MySQL的数据库进行每日的全量备份到指定外部硬件存储上。  </li>
+<li>Java应用的日志汇总到Elasticsearch中存储，并可通过kibana查看。</li>
+<li>网络上，集群外可以访问静态网站，Java应用的接口，kibana页面。可以通过工具查询MySQL中的数据。</li>
+</ul>
+<p><img src="/images/%E5%AE%B9%E5%99%A8-6-Kubernetes%E5%AE%9E%E6%88%98-POC%E7%9B%AE%E6%A0%87/k8s-poc-target.jpg" alt="POC目标架构">  </p>
+<p>POC相对实际部署架构的调整：  </p>
+<ul>
+<li>暂时省略了Node.JS后台应用。  </li>
+<li>数据库暂时省略了MongoDB，并用MySQL替换了Oracle。  </li>
+<li>暂时省略了Spring Cloud的注册中心和配置中心。  </li>
+<li>代码版本管理平台&#x2F;持续集成系统&#x2F;Maven私服等服务暂时不部署在集群内，使用外部已有的实例。  </li>
+<li>暂时省略了Redis缓存和消息队列（RabbitMQ）。  </li>
+<li>暂时省略了ETL（Kettle）。</li>
+</ul>
+<p>使用<a href="/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0">上一章</a>中搭建完成的单主k8s集群进行部署。  </p>
+<h2 id="POC中的一个原则"><a href="#POC中的一个原则" class="headerlink" title="POC中的一个原则"></a>POC中的一个原则</h2><p>我们在POC及后续实际使用Kubernetes的过程中需要保持一个原则：<strong>只通过YAML修改Kubernetes对象</strong>。<br>换句话说，我们尽量避免像以往的运维那样，直接进入虚拟机进行操作。这样的操作是无法记录，不透明的。有可能我们下一次想部署同样的环境的时候遗漏了某个步骤，导致最终部署失败。即使我们写了操作手册也不能确保文字表达不会产生歧义。而YAML定义是透明且不会产生歧义的，且可以通过版本控制追溯历史的。  </p>
+<p>这也是我为什么会相信Kubernetes是未来的趋势的原因之一：以前的运维经验像口耳相传的秘笈，而未来基于Kubernetes的运维就是使用YAML编程。零散的运维知识点通过Kubernetes被整合成了体系化的知识。配合封装了底层各种优化的公有云，培训出一个合格运维的成本会大大降低。<br>以前有些中小公司中，只有某个老资格的运维对服务器了如指掌，即使工作态度很差也不敢换人。但Kubernetes化运维时代，只需要部署的YAML配置在，交接时间会大大缩短。（当然网络、底层硬件和存储之类的依然需要不少时间交接。另外还有无法Kubernetes化的Windows服务器）<br>Serverless和FaaS（Function as a Serivce）技术最近也火热发展中。或许以后都不需要运维了，开发只需要直接向云Kubernetes直接提交业务函数即可。不过目前这些技术还处于探索阶段。<br>这对运维来说不能说是一个利好消息。但不跟上这个潮流的话，就只有等着被历史的车轮碾过淘汰。  </p>
+<p>当然上述只是我理想中的情况。现实永远是一个泥潭，会逼得我们做各种dirty workaround。但只要愿景是美好的，我们终能一步步接近。  </p>
+<p>好了，我们开始吧。  </p>
+]]></content>
+      <tags>
+        <tag>容器</tag>
+        <tag>kubernetes</tag>
+        <tag>k8s</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>容器-5-kubeadm部署Kubernetes1.14.2集群踩坑记</title>
     <url>/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/</url>
     <content><![CDATA[<p>一般情况下我不喜欢把部署手册放到blog里。绝大多数情况下官网已经足够详尽，而且blog很可能因为版本陈旧误人子弟。曾经我写过Nginx的二进制部署手册，早就被轻松愉快的yum安装扫进了废纸堆。而使用了Docker和K8s后yum安装方式也被迅速淘汰。Hadoop的部署也被Cloudera全自动化部署替代了。<br>但kubernetes的部署由于涉及科学上网的问题，把原本几个命令就能解决的问题搞得相当复杂。所以希望这篇也能多少对还在被GFW恶心的人有些帮助。（当然可能更简单的方式是部署在墙外，比如AWS上）  </p>
@@ -796,52 +845,58 @@
       </tags>
   </entry>
   <entry>
-    <title>容器-6-Kubernetes实战-POC目标</title>
-    <url>/2019/06/13/%E5%AE%B9%E5%99%A8-6-Kubernetes%E5%AE%9E%E6%88%98-POC%E7%9B%AE%E6%A0%87/</url>
-    <content><![CDATA[<p>在较为彻底地理解了Docker原理后，我曾经天真地以为再花差不多的时间就可以同样掌握k8s。直到我看到一张k8s的核心概念关系图：<br><img src="/images/%E5%AE%B9%E5%99%A8-6-Kubernetes%E5%AE%9E%E6%88%98-POC%E7%9B%AE%E6%A0%87/Kubernetes-core-concept-relation.png" alt="Kubernetes核心概念关系"><br>Docker只是其中粉红色的那一小块（Container）的一部分。。。  </p>
-<p>我也曾考虑过按照我的理解总结k8s优于Docker Swarm之处，以及为什么k8s能赢下容器编排大战。但很快发现这意味着我还需要先去熟悉Docker Swarm，才能较为准确地进行分析。这又何苦呢？我们已经知道了结论：Kubernetes是容器编排之战的最终战胜者。就算Docker Swarm有再多的优点，我们也不会采用。  </p>
-<p>我还考虑过类似Docker系列那样，先从原理开始整理。但k8s涉及的原理范围更广，从各种存储介质到OSI七层原理，先研究透再写的话估计还得花一个月。  </p>
-<p>所以我们跳过枯燥的原理介绍，先进行最有趣的实战环节，做一个包含接近完整功能的POC（Proof of Concept，概念验证）。在POC的过程中，我们再来逐渐熟悉k8s的架构设计和原理。  </p>
-<h2 id="POC目标"><a href="#POC目标" class="headerlink" title="POC目标"></a>POC目标</h2><p>我们的目标是把现在基于虚拟机的部署方式和基于脚本的打包方式，尝试用Docker容器+Kubernetes实现。<br>部署的时候还需要考虑：  </p>
-<ul>
-<li>服务高可用</li>
-<li>节点扩展与收缩</li>
-<li>安全性</li>
-<li>与代码版本管理平台（Gitlab）和持续集成系统（Gitlab CI&#x2F;Jenkins）的整合</li>
-<li>多版本应用维护</li>
-<li>日志收集</li>
-<li>监控</li>
-<li>数据备份</li>
-<li>…其他等等</li>
-</ul>
-<p>下面是一个我们当前应用架构的精简版：  </p>
-<ul>
-<li>Spring Boot（Java）应用作为后端，暴露接口地址供集群外的App调用。应用高可用部署。  </li>
-<li>Nginx上同时host了WebPack打包的静态网站。静态网站也会调用Java应用的接口。Nginx高可用部署。  </li>
-<li>Spring Boot应用也同时调用后台的MySQL数据库。MySQL数据库的物理部署架构为Master-Slave形式。Master写入，Slave读取。MySQL的数据库进行每日的全量备份到指定外部硬件存储上。  </li>
-<li>Java应用的日志汇总到Elasticsearch中存储，并可通过kibana查看。</li>
-<li>网络上，集群外可以访问静态网站，Java应用的接口，kibana页面。可以通过工具查询MySQL中的数据。</li>
-</ul>
-<p><img src="/images/%E5%AE%B9%E5%99%A8-6-Kubernetes%E5%AE%9E%E6%88%98-POC%E7%9B%AE%E6%A0%87/k8s-poc-target.jpg" alt="POC目标架构">  </p>
-<p>POC相对实际部署架构的调整：  </p>
-<ul>
-<li>暂时省略了Node.JS后台应用。  </li>
-<li>数据库暂时省略了MongoDB，并用MySQL替换了Oracle。  </li>
-<li>暂时省略了Spring Cloud的注册中心和配置中心。  </li>
-<li>代码版本管理平台&#x2F;持续集成系统&#x2F;Maven私服等服务暂时不部署在集群内，使用外部已有的实例。  </li>
-<li>暂时省略了Redis缓存和消息队列（RabbitMQ）。  </li>
-<li>暂时省略了ETL（Kettle）。</li>
-</ul>
-<p>使用<a href="/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0">上一章</a>中搭建完成的单主k8s集群进行部署。  </p>
-<h2 id="POC中的一个原则"><a href="#POC中的一个原则" class="headerlink" title="POC中的一个原则"></a>POC中的一个原则</h2><p>我们在POC及后续实际使用Kubernetes的过程中需要保持一个原则：<strong>只通过YAML修改Kubernetes对象</strong>。<br>换句话说，我们尽量避免像以往的运维那样，直接进入虚拟机进行操作。这样的操作是无法记录，不透明的。有可能我们下一次想部署同样的环境的时候遗漏了某个步骤，导致最终部署失败。即使我们写了操作手册也不能确保文字表达不会产生歧义。而YAML定义是透明且不会产生歧义的，且可以通过版本控制追溯历史的。  </p>
-<p>这也是我为什么会相信Kubernetes是未来的趋势的原因之一：以前的运维经验像口耳相传的秘笈，而未来基于Kubernetes的运维就是使用YAML编程。零散的运维知识点通过Kubernetes被整合成了体系化的知识。配合封装了底层各种优化的公有云，培训出一个合格运维的成本会大大降低。<br>以前有些中小公司中，只有某个老资格的运维对服务器了如指掌，即使工作态度很差也不敢换人。但Kubernetes化运维时代，只需要部署的YAML配置在，交接时间会大大缩短。（当然网络、底层硬件和存储之类的依然需要不少时间交接。另外还有无法Kubernetes化的Windows服务器）<br>Serverless和FaaS（Function as a Serivce）技术最近也火热发展中。或许以后都不需要运维了，开发只需要直接向云Kubernetes直接提交业务函数即可。不过目前这些技术还处于探索阶段。<br>这对运维来说不能说是一个利好消息。但不跟上这个潮流的话，就只有等着被历史的车轮碾过淘汰。  </p>
-<p>当然上述只是我理想中的情况。现实永远是一个泥潭，会逼得我们做各种dirty workaround。但只要愿景是美好的，我们终能一步步接近。  </p>
-<p>好了，我们开始吧。  </p>
+    <title>Nginx-替换response header中的Content-Disposition值</title>
+    <url>/2019/06/17/Nginx-%E6%9B%BF%E6%8D%A2response%20header%E4%B8%AD%E7%9A%84Content-Disposition%E5%80%BC/</url>
+    <content><![CDATA[<p>我们有个需求要在打开合同PDF的时候，要将response的header里的Content-Disposition从  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">attachment;filename*=&quot;utf-8\&#x27; \&#x27;文件名&quot;</span><br></pre></td></tr></table></figure>
+<p>改为  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inline;filename*=&quot;utf-8\&#x27; \&#x27;文件名&quot;</span><br></pre></td></tr></table></figure>
+<p>这样文件就可以直接在浏览器里预览打开，而不是直接下载。<br>理论上最好的方式自然是从应用端解决。但我们提供文件的内容管理服务器不提供这个配置选项。虽然是开源软件，但我也不想为了这个修改源代码。除此之外，为了避免影响其他和文件相关的功能，减少回归测试量，我们也不想把全局修改这个header值。<br>那么剩下的办法就只有从Nginx反向代理层找解决方案了。理想的解决方案是对xxx.domain.com域名（内容管理服务器的域名），所有URL中带PDF关键字和“?inline&#x3D;1”参数的请求，修改header中Content-Disposition的值。（我们可以在前端请求的时候加?inline&#x3D;1这个path variable）<br>我模糊记得Nginx可以带if条件，所以原本估计就是个小case。事实证明我估计错得离谱【捂脸】。。。如果要直接看结论的请跳转到最后一节。  </p>
+<h1 id="教训1：Nginx“基本”不支持if里多个条件"><a href="#教训1：Nginx“基本”不支持if里多个条件" class="headerlink" title="教训1：Nginx“基本”不支持if里多个条件"></a>教训1：Nginx“基本”不支持if里多个条件</h1><p>我先找到了一段匹配文件后缀的正则表达式：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.*\.(后缀1|后缀2)$</span><br></pre></td></tr></table></figure>
+<p>后缀替换成pdf后，就尝试写了如下的代码：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if ($request_filename ~* &quot;.*\.(pdf)&quot; &amp;&amp; $request_uri ~ &quot;(.*)inline=1&quot;) &#123;</span><br><span class="line">    # 修改header值</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然而很快我就发现，Nginx不支持if(condition1 &amp;&amp; condition2)的语法【捂脸】。。。<br>其实也有一些奇淫技巧可以实现AND和OR，比如<a href="https://segmentfault.com/a/1190000002481473">这一篇</a>，通过拼字符串的方式：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">location = /test_and/ &#123;</span><br><span class="line">    default_type text/html;</span><br><span class="line">    set $a 0;</span><br><span class="line">    set $b 0;</span><br><span class="line">    if ( $remote_addr != &#x27;&#x27; )&#123;</span><br><span class="line">        set $a 1;</span><br><span class="line">    &#125;</span><br><span class="line">    if ( $http_x_forwarded_for != &#x27;&#x27; )&#123;</span><br><span class="line">        set $a 1$a;</span><br><span class="line">    &#125;</span><br><span class="line">    if ( $a = 11 )&#123;</span><br><span class="line">        set $b 1;</span><br><span class="line">    &#125;</span><br><span class="line">    echo $b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据Nginx企业官网的<a href="https://www.nginx.com/resources/wiki/start/topics/depth/ifisevil/">一篇文章：If Is Evil</a>，平时应该尽量谨慎用if。<br>除此以外，Nginx中要实现if…else…的语法也需要费一番周折。这里就不详细展开了。  </p>
+<h1 id="教训2：location不包含参数"><a href="#教训2：location不包含参数" class="headerlink" title="教训2：location不包含参数"></a>教训2：location不包含参数</h1><p>接下来尝试用正则表达式表现url中同时包含.pdf（不区分大小写）和“inline&#x3D;1”参数。<br>考虑到问号可能需要转义，就用.来替代。于是写了类似如下的正则表达式：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">location ~* &quot;.*\.(pdf).(inline=1)&quot;</span><br></pre></td></tr></table></figure>
+<p>但结果发现死活匹配不到inline&#x3D;1的那段。反复尝试了多种正则表达式后，才想起来location不包含URI参数。。。<br>最终决定通过location匹配后缀，在location内用if匹配URI参数（inline&#x3D;1）：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">location ~* &quot;.*\.(pdf)$&quot; &#123;</span><br><span class="line">    # 省略其他</span><br><span class="line">    if ($args ~ inline=) &#123;</span><br><span class="line">        # 替换header值逻辑</span><br><span class="line">    &#125;</span><br><span class="line">    # proxy_pass逻辑</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="教训3：当location为正则表达式时，proxy-pass不能包含URI部分"><a href="#教训3：当location为正则表达式时，proxy-pass不能包含URI部分" class="headerlink" title="教训3：当location为正则表达式时，proxy_pass不能包含URI部分"></a>教训3：当location为正则表达式时，proxy_pass不能包含URI部分</h1><p>在写proxy_pass的时候，参考了“location &#x2F;”的那段逻辑，写成了：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">proxy_pass  http://docsvr/;</span><br></pre></td></tr></table></figure>
+<p>nginx -s reload的时候报错：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[root@nginx-internal proxy]# nginx -s reload</span><br><span class="line">nginx: [emerg] &quot;proxy_pass&quot; cannot have URI part in location given by regular expression, or inside named location, or inside &quot;if&quot; statement, or inside &quot;limit_except&quot; block in /etc/nginx/conf.d/proxy/doc.conf:56</span><br></pre></td></tr></table></figure>
+<p>查了之后才得知当location为正则表达式时，proxy_pass不能包含URI部分。在此处“&#x2F;”也是URI部分。所以去除了<a href="http://docsvr/">http://docsvr/</a> 最后的斜杠，调整为：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">location ~* &quot;.*\.(pdf)$&quot; &#123;</span><br><span class="line">    # 省略其他</span><br><span class="line">    if ($args ~ inline=) &#123;</span><br><span class="line">        # 替换header值逻辑</span><br><span class="line">    &#125;</span><br><span class="line">    proxy_pass  http://docsvr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在location后使用~*是为了让后缀忽略大小写。  </p>
+<h1 id="教训4：proxy-set-header不能包含在if语句中"><a href="#教训4：proxy-set-header不能包含在if语句中" class="headerlink" title="教训4：proxy_set_header不能包含在if语句中"></a>教训4：proxy_set_header不能包含在if语句中</h1><p>接下来就是要替换Content-Disposition值了。<br>我们先尝试将该值替换成其他任意值：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if ($args ~ inline=) &#123;</span><br><span class="line">    proxy_set_header  &#x27;Content-Disposition&#x27; &#x27;bbb&#x27;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后就在nginx -s reload的时候收到了报错：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nginx: [emerg] &quot;proxy_set_header&quot; directive is not allowed here in /etc/nginx/conf.d/proxy/doc.conf:32</span><br></pre></td></tr></table></figure>
+<p>从这篇<a href="https://agentzh.blogspot.com/2011/03/how-nginx-location-if-works.html">How nginx “location if” works</a>，我们可以知道Nginx实现if是通过一个嵌入的location。而不允许proxy_set_header很可能是因为嵌套的location不支持。<br>顺带提一句，除了proxy_set_header外，proxy_hide_header也不能包含在if语句中。  </p>
+<p>看上去我们只能靠变量了。逻辑大概如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">set $is_inline_pdf 0</span><br><span class="line">set $content_disposition &#x27;attachment;filename*=&quot;utf-8\&#x27; \&#x27;attachement.pdf&quot;&#x27;;</span><br><span class="line">if ($args ~ inline=) &#123;</span><br><span class="line">    set $is_inline_pdf 1;</span><br><span class="line">    set $content_disposition &#x27;inline;filename*=&quot;utf-8\&#x27; \&#x27;inline.pdf&quot;&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">proxy_set_header &#x27;Content-Disposition&#x27; $content_disposition;</span><br></pre></td></tr></table></figure>
+
+<h1 id="教训5：proxy-set-header只能用来设置自定义header"><a href="#教训5：proxy-set-header只能用来设置自定义header" class="headerlink" title="教训5：proxy_set_header只能用来设置自定义header"></a>教训5：proxy_set_header只能用来设置自定义header</h1><p>上面那段配置测试后发现无效。事实上，不管proxy_set_header给Content-Disposition设置什么值都无效。<br>查询之后发现proxy_set_header可能只对自定义的header有效，但不能改非自定义的header。  </p>
+<p>改用add_header替换proxy_set_header，会因为出现两个Content-Disposition而无法正常展现。在Chrome下会显示ERR_RESPONSE_HEADERS_MULTIPLE_CONTENT_DISPOSITION的报错。  </p>
+<p>所以需要用proxy_hide_header + add_header，先隐藏后添加了。即：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">proxy_hide_header &#x27;Content-Disposition&#x27;;</span><br><span class="line">add_header &#x27;Content-Disposition&#x27; $content_disposition;</span><br></pre></td></tr></table></figure>
+
+<h1 id="教训6：if语句内外的add-header不会同时生效"><a href="#教训6：if语句内外的add-header不会同时生效" class="headerlink" title="教训6：if语句内外的add_header不会同时生效"></a>教训6：if语句内外的add_header不会同时生效</h1><p>附带发现了一个很神奇的现象：当在命中if条件时，只有if条件内的add_header语句会执行。例如在下面的这个例子中：    </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">add_header  &#x27;testa&#x27; &#x27;aaa&#x27;;</span><br><span class="line">if ($args ~ inline=) &#123;</span><br><span class="line">    add_header  &#x27;testb&#x27; &#x27;bbb&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">add_header  &#x27;testc&#x27; &#x27;ccc&#x27;;</span><br></pre></td></tr></table></figure>
+<p>按照我们其他语言中对if的理解，当符合条件($args ~ inline&#x3D;)这个条件时，应该是testa&#x2F;testb&#x2F;testc三个header都会显示。<br>但实际上，当符合($args ~ inline&#x3D;)这个条件时，只有testb这个header会显示；而如果不符合if条件时，testa和testc这两个header会显示。<br>原因应该也和<a href="https://agentzh.blogspot.com/2011/03/how-nginx-location-if-works.html">How nginx “location if” works</a>这篇中介绍的原理有关。  </p>
+<h1 id="最终成果"><a href="#最终成果" class="headerlink" title="最终成果"></a>最终成果</h1><p>最终语法如下：    </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">set $is_inline_pdf 0;</span><br><span class="line">if ($args ~ inline=) &#123;</span><br><span class="line">    set $is_inline_pdf 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">proxy_hide_header &#x27;Content-Disposition&#x27;;</span><br><span class="line">if ($is_inline_pdf = 1) &#123;</span><br><span class="line">    add_header &#x27;Content-Disposition&#x27; &#x27;inline;filename*=&quot;utf-8\&#x27; \&#x27;inline.pdf&quot;&#x27;;</span><br><span class="line">    proxy_pass  http://docsvr;</span><br><span class="line">&#125;</span><br><span class="line">add_header &#x27;Content-Disposition&#x27; &#x27;attachment;filename*=&quot;utf-8\&#x27; \&#x27;attachement.pdf&quot;&#x27;;</span><br><span class="line"></span><br><span class="line">proxy_pass  http://docsvr;</span><br></pre></td></tr></table></figure>
+<p>理论上要做的更好的话，可以用$request_filename或$request_uri中的文件名来替换Content-Disposition中的文件名。但实际发现Content-Disposition中的文件名不影响浏览器中显示，也不影响下载的文件名。而且要截取$request_filename中的filename所需要写的正则表达式有点变态，于是这个问题就先搁置不做优化了。  </p>
+<p>最终的感想：Nginx对if的支持太有限了。。。应该是Nginx为了解析速度和性能所必要的代价吧。  </p>
+<h1 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h1><p>在查资料的时候顺带查到一篇挺有意思的文章和一个挺有用的网站：  </p>
+<p>通过正则表达式来DDOS还挺有创意。。。<br><a href="https://zhuanlan.zhihu.com/p/46294360">一个由正则表达式引发的血案（解决版）</a>  </p>
+<p>看到知乎上尤雨溪推荐的JS正则可视化的工具，对理解复杂正则挺有帮助。<br><a href="https://regexper.com/">Regexper</a></p>
 ]]></content>
       <tags>
-        <tag>容器</tag>
-        <tag>kubernetes</tag>
-        <tag>k8s</tag>
+        <tag>Nginx</tag>
       </tags>
   </entry>
   <entry>
@@ -900,76 +955,6 @@
 <p>更详细步骤可以参考<a href="https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-secret-in-the-cluster-that-holds-your-authorization-token">Pull an Image from a Private Registry - Kubernetes</a>  </p>
 <h2 id="6-流程图"><a href="#6-流程图" class="headerlink" title="6. 流程图"></a>6. 流程图</h2><p>画了一下按角色划分的发布流程图。不管用的是k8s还是docker swarm，CI&#x2F;CD的流程还是基本类似的。<br><img src="/images/%E5%AE%B9%E5%99%A8-7-Kubernetes%E5%AE%9E%E6%88%98-%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93%E5%92%8C%E6%89%93%E5%8C%85%E9%95%9C%E5%83%8F/docker-cicd-process.jpg" alt="容器CI/CD流程">  </p>
 <h2 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7. 参考资料"></a>7. 参考资料</h2><p>这是本篇参考的一个最精简的静态网站的Docker配置<br><a href="https://github.com/nishanttotla/DockerStaticSite">nishanttotla&#x2F;DockerStaticSite: A simple static website using Docker and Nginx</a>  </p>
-]]></content>
-      <tags>
-        <tag>容器</tag>
-        <tag>kubernetes</tag>
-        <tag>k8s</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为</title>
-    <url>/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/</url>
-    <content><![CDATA[<p>我们上一章部署都是通过神奇的kubectl命令。我们这章就探寻一下，当我们拍下kubectl命令到Pod成功启动之间，Kubernetes究竟做了一些什么事情。<br>先上一张总的架构图，下面提到每个组件的时候可以在这张架构图上找位置，以及和其他组件间的关联关系：<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-architecture.png" alt="Kubernetes component architecture">  </p>
-<h2 id="1-全流程"><a href="#1-全流程" class="headerlink" title="1. 全流程"></a>1. 全流程</h2><h3 id="1-1-Kubectl"><a href="#1-1-Kubectl" class="headerlink" title="1.1 Kubectl"></a>1.1 Kubectl</h3><p>kubectl是用于针对Kubernetes集群运行命令的命令行接口。<br>虽然我们是在Master节点上执行运行的kubectl，但其实kubectl也可以在本地安装，与k8s的api server远程通信交互。<br>kubectl在接到apply命令后，会先做一个基本的验证。如果要创建的资源不合法，或YAML格式错误，就会快速失败。<br>除了通过kubectl之外，也可以直接调用api，或通过dashboard UI等多种方式与api server通信。  </p>
-<p>在通信之前，kubectl需要先进行身份认证。认证信息保存在$HOME&#x2F;.kube&#x2F;config文件里，大致内容如下：  </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@docker-4 .kube]# pwd</span><br><span class="line">/root/.kube</span><br><span class="line">[root@docker-4 .kube]# cat config</span><br><span class="line">apiVersion: v1</span><br><span class="line">clusters:</span><br><span class="line">- cluster:</span><br><span class="line">    certificate-authority-data: &lt;证书授权信息&gt;</span><br><span class="line">    server: https://10.16.34.54:6443</span><br><span class="line">  name: kubernetes</span><br><span class="line">contexts:</span><br><span class="line">- context:</span><br><span class="line">    cluster: kubernetes</span><br><span class="line">    user: kubernetes-admin</span><br><span class="line">  name: kubernetes-admin@kubernetes</span><br><span class="line">current-context: kubernetes-admin@kubernetes</span><br><span class="line">kind: Config</span><br><span class="line">preferences: &#123;&#125;</span><br><span class="line">users:</span><br><span class="line">- name: kubernetes-admin</span><br><span class="line">  user:</span><br><span class="line">    client-certificate-data: &lt;客户端证书数据&gt;</span><br></pre></td></tr></table></figure>
-
-<p>config文件中的clusters.cluster.server就是要访问的api server的地址</p>
-<h3 id="1-2-kube-apiserver"><a href="#1-2-kube-apiserver" class="headerlink" title="1.2 kube-apiserver"></a>1.2 kube-apiserver</h3><p>API Server对外暴露了Kubernetes API，用于提供查询&#x2F;操作&#x2F;监控服务。<br>当接收到来自kubectl的请求后，API Server会先做三件事：  </p>
-<ul>
-<li>验证认证信息</li>
-<li>确认授权，即发送请求的用户有权限进行这个操作</li>
-<li>准入控制，封装了一系列额外的检查以确保操作不会产生意外或负面结果。还可以自定义插件实现自己的准入控制</li>
-</ul>
-<h3 id="1-3-etcd"><a href="#1-3-etcd" class="headerlink" title="1.3 etcd"></a>1.3 etcd</h3><p>etcd是一种高可用分布式存储，用于共享配置和服务发现。<br>之前在研究服务注册的时候还比较过它与Consul。etcd和Consul一样都是在CAP中保证CP，都是用Go语言开发的，一致性协议也都是用raft。Consul相比etcd多了多数据中心的支持。当然在k8s出现的时候还没有Consul，只有在zookeeper和etcd之间选。etcd相比zookeeper能稳定提供更大的吞吐量和延迟，而且和k8s使用的开发语言都是Go，这大概是最终选择了etcd的主要原因吧。  </p>
-<p>k8s集群将etcd当做数据库来使用，把所有的数据都存储在etcd上。当执行kubectl get命令时，结果就是从etcd中获取的。<br>假设kubectl执行的是创建上一篇中nginx-deployment的行为，那么最终etcd中保存的是4个对象：  </p>
-<ul>
-<li>1个Deployment对象</li>
-<li>1个ReplicaSet对象</li>
-<li>2个Pod对象<br>关于为什么还多了一个ReplicaSet对象，我们在下面说明。</li>
-</ul>
-<h3 id="1-4-Initializer初始化"><a href="#1-4-Initializer初始化" class="headerlink" title="1.4 Initializer初始化"></a>1.4 Initializer初始化</h3><p>在Pod还处于Pending状态，可以对Pod进行一些修改。例如给容器插入一个Sidecar容器，添加一些环境变量，挂载volume等等。Initializer初始器就是负责这个工作的。<br>最热门的Service Mesh–Istio项目就是通过Initializer，将Envoy容器作为Sidecar插入到每个启动的Pod中的。</p>
-<h3 id="1-5-控制循环"><a href="#1-5-控制循环" class="headerlink" title="1.5 控制循环"></a>1.5 控制循环</h3><p>Kubernetes内部始终在运行着一个“控制循环”来实现资源的调整。<br>控制循环，就是控制平面的死循环。每次循环过程中，都会通过将k8s的“当前状态”和“期望状态”进行比对，来决定下一步进行什么操作。<br>用伪代码来描述就是：  </p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">  实际状态 := 获取集群中对象 X 的实际状态（Actual State）</span><br><span class="line">  期望状态 := 获取集群中对象 X 的期望状态（Desired State）</span><br><span class="line">  <span class="keyword">if</span> 实际状态 == 期望状态&#123;</span><br><span class="line">    什么都不做</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    执行编排动作，将实际状态调整为期望状态</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>例如当刚接收到nginx-deployment的命令时，期望是要部署2个pod，实际状态是0个pod已Ready，差额是2个：  </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@docker-4 deployment]# kubectl get deployment</span><br><span class="line">NAME                      READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">nginx-deployment          0/2     2            0           3s</span><br></pre></td></tr></table></figure>
-
-<p>当部署完成后，期望状态&#x3D;&#x3D;实际状态，部署结束：  </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@docker-4 deployment]# kubectl get deployment</span><br><span class="line">NAME                      READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">nginx-deployment          2/2     2            2           19s</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-6-DeploymentController与ReplicaSet"><a href="#1-6-DeploymentController与ReplicaSet" class="headerlink" title="1.6 DeploymentController与ReplicaSet"></a>1.6 DeploymentController与ReplicaSet</h3><p>对于每个对象类型，由kube-controller-manager对应的controller来创建。例如Deployment就对应DeploymentController。<br>在一些比较早的文章里，你还能看到ReplicationController，但现在它已经不再被使用。DeploymentController是其升级版，在包含了ReplicationController所有功能的基础上还增加了回滚暂停等功能。  </p>
-<p>在说明DeploymentController之前，先提一下上一章里没有提到的一个细节：Deployment和Pod之间还隔了一层ReplicaSet。<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-replicaset.png" alt="Kubernetes ReplicaSet">  </p>
-<p>保持副本数量其实主要是靠ReplicaSet。从一个ReplicaSet的YAML可以看到，几乎和Deployment一模一样：  </p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ReplicaSet</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-set</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.7.9</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>但我们之所以不直接使用ReplicaSet部署，是由于ReplicaSet的功能比较简陋。当我们想实现滚动更新的时候，就需要更上一层的Deployment支援了。  </p>
-<p>DeploymentController通过一个叫Informer的模块对Deployment、ReplicaSet和Pod的变更进行监听。<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-deploymentcontroller.png" alt="Kubernetes DeploymentController"><br>假设上述范例中poc-deployment里的应用升级了一个版本，从v1升级到了v2。控制循环会获得一个新的期望：部署两个v2的Pod。现状是有两个v1的Pod。但此时不能立即把v1的Pod停止了，不然服务就会有一段时间不可用了。在整个滚动更新的过程中，需要保证至少有两个Pod可用，无论是v1还是v2。<br>所以这时候Deployment会创建一个v2的ReplicaSet，包含v2的Pod。<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-replicaset-v2.png" alt="Kubernetes ReplicaSet V2"><br>当v2的ReplicaSet中Pod的状态Ready后，v1的ReplicaSet就可以进行缩容为0个Pod了。  </p>
-<p>PS. 我们实际场景中可能会有会话黏连（session sticky）的情况存在。会话还处于活跃状态的Pod不应该被直接下线。怎么处理就是后话了。  </p>
-<h3 id="1-7-kube-scheduler"><a href="#1-7-kube-scheduler" class="headerlink" title="1.7 kube-scheduler"></a>1.7 kube-scheduler</h3><p>Pod创建好之后，还没有被分派节点。kube-scheduler就是用来将待分派的Pod调度到指定Worker节点，并将节点与Pod的绑定信息也记录到etcd。<br>Master上的工作到此为止。  </p>
-<h3 id="1-8-kubelet"><a href="#1-8-kubelet" class="headerlink" title="1.8 kubelet"></a>1.8 kubelet</h3><p>每个Worker节点上会有一个Kubelet服务进程。kube-scheduler下发的任务就是由kubelet接收的。除此之外，它还负责：  </p>
-<ul>
-<li>挂载Pod所需要的volume</li>
-<li>下载Pod的secret</li>
-<li>运行容器</li>
-<li>对容器生命周期进行检测</li>
-<li>回报节点和Pod的状态<br>可以把Kubelet当成一种特殊的Controller。</li>
-</ul>
-<p>至此容器正常启动，整个流程结束。  </p>
-<h2 id="2-声明式API"><a href="#2-声明式API" class="headerlink" title="2. 声明式API"></a>2. 声明式API</h2><p>kubectl apply和docker run看上去是两句很类似的命令，但表现出来的理念截然不同。<br>docker run是命令式的。你发出命令，服务器接收，并按照命令创建出容器。<br>但Kuberentes的API是所谓的“声明式”，即你向Kubernetes提交一个定义好的API对象，声明自己想要达到的目标状态。当Kubernetes接收到这个目标状态后，自己内部协调各种组件，达成并保持这个状态。  </p>
-<p>声明式对于分布式系统有着重大的意义。  </p>
-<ul>
-<li>首先是能实现自动化调整。分布式系统的每个组件都可能会随时发生故障。假设一个节点在部署某个Pod的过程中突然挂掉了，如果采用的是命令式API，就需要人工干预：“我换个节点再重新拍命令。等恢复那个节点后再进行之前操作的回滚”。但对于使用了声明式API的Kubernetes，会在每个控制循环的开始检查：“之前部署Pod的任务还没完成，和kubelet联系一下，问问看Node进展如何了？怎么联系不上Node？换个Node部署吧。”在挂掉的Node恢复后，它会自动调用API Server获取当前状态并进行分析：“之前要我部署的Pod已经在其他Node上部署好了？如果我继续部署的话，Pod数量就比目标多了。那么我把自己进行到一半的操作回滚吧。”整个过程完全无需外界干预。  </li>
-<li>其次，对于命令式API，每个命令都是独占且阻塞的。只有先等前一个命令执行完之后才能执行下一个命令，不然就有出现冲突的可能。而声明式API使得多个写操作都能并行执行，使得处理效率大大提升。  </li>
-<li>此外，声明式API还支持操作的合并。你可以设置一个YAML为基础YAML，在用户提交YAML后会和基础YAML合并，然后再提交给API Server。我感觉这有点像Java里的自定义拦截器。知名的Istio项目是主要实现原理也就是靠这种方式注入Envoy。</li>
-</ul>
-<p><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/kustomize.jpg" alt="Kubernetes kustomize">   </p>
-<h2 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h2><p>本篇主要参考了<a href="https://github.com/jamiehannaford/what-happens-when-k8s">jamiehannaford&#x2F;what-happens-when-k8s: What happens when I type kubectl run?</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzU1MzY4NzQ1OA==&mid=2247484192&idx=1&sn=91c70c17c8d1c87950f321284083201a&chksm=fbee43edcc99cafb0d9545ca0727c03f1249729635d99373c79a4a0dab3ab122df8191f04437&mpshare=1&scene=1&srcid=&key=55c5aac104b43cbd3c53056a63edc606f9a6a33d4c9869f4f1d73cf0752a59e1b388d154653af734bea9ecf943efba56f96932bd5c85ecca9016603557ddfac21503c0347d2b62176f2a1870e52f24c4&ascene=1&uin=MTI2MzU5MTI4MA==&devicetype=Windows+10&version=62060833&lang=zh_CN&pass_ticket=QXPk0d9qyCPvIVu28S2CGQLMg+qFH8Z6fcaxHhhfwKaUOGhlAZlZPlBXKAnDcSTA">翻译版</a>  </p>
-<p>对k8s如何使用etcd的简要介绍<br><a href="https://matthewpalmer.net/kubernetes-app-developer/articles/how-does-kubernetes-use-etcd.html">How Does Kubernetes Use etcd?</a>  </p>
-<p>Deployment原理主要是参考这篇<br><a href="https://draveness.me/kubernetes-deployment">详解 Kubernetes Deployment 的实现原理</a>  </p>
-<p>关于Informer机制的更详细介绍<br><a href="https://www.kubernetes.org.cn/2693.html">Kubernetes Informer 详解_Kubernetes中文社区</a>  </p>
-<p>这篇是Kubernetes的开发者介绍的Kubernetes设计原则，值得完整读一下<br><a href="https://www.yangcs.net/posts/kubernetes-design-and-development-explained/">Kubernetes 设计与开发原则 - 杨传胜的博客|Cloud Native|yangcs.net</a><br>原文是这篇：<br><a href="https://thenewstack.io/kubernetes-design-and-development-explained/">Kubernetes Design and Development Explained - The New Stack</a>  </p>
 ]]></content>
       <tags>
         <tag>容器</tag>
@@ -1082,58 +1067,73 @@
       </tags>
   </entry>
   <entry>
-    <title>Nginx-替换response header中的Content-Disposition值</title>
-    <url>/2019/06/17/Nginx-%E6%9B%BF%E6%8D%A2response%20header%E4%B8%AD%E7%9A%84Content-Disposition%E5%80%BC/</url>
-    <content><![CDATA[<p>我们有个需求要在打开合同PDF的时候，要将response的header里的Content-Disposition从  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">attachment;filename*=&quot;utf-8\&#x27; \&#x27;文件名&quot;</span><br></pre></td></tr></table></figure>
-<p>改为  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inline;filename*=&quot;utf-8\&#x27; \&#x27;文件名&quot;</span><br></pre></td></tr></table></figure>
-<p>这样文件就可以直接在浏览器里预览打开，而不是直接下载。<br>理论上最好的方式自然是从应用端解决。但我们提供文件的内容管理服务器不提供这个配置选项。虽然是开源软件，但我也不想为了这个修改源代码。除此之外，为了避免影响其他和文件相关的功能，减少回归测试量，我们也不想把全局修改这个header值。<br>那么剩下的办法就只有从Nginx反向代理层找解决方案了。理想的解决方案是对xxx.domain.com域名（内容管理服务器的域名），所有URL中带PDF关键字和“?inline&#x3D;1”参数的请求，修改header中Content-Disposition的值。（我们可以在前端请求的时候加?inline&#x3D;1这个path variable）<br>我模糊记得Nginx可以带if条件，所以原本估计就是个小case。事实证明我估计错得离谱【捂脸】。。。如果要直接看结论的请跳转到最后一节。  </p>
-<h1 id="教训1：Nginx“基本”不支持if里多个条件"><a href="#教训1：Nginx“基本”不支持if里多个条件" class="headerlink" title="教训1：Nginx“基本”不支持if里多个条件"></a>教训1：Nginx“基本”不支持if里多个条件</h1><p>我先找到了一段匹配文件后缀的正则表达式：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.*\.(后缀1|后缀2)$</span><br></pre></td></tr></table></figure>
-<p>后缀替换成pdf后，就尝试写了如下的代码：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if ($request_filename ~* &quot;.*\.(pdf)&quot; &amp;&amp; $request_uri ~ &quot;(.*)inline=1&quot;) &#123;</span><br><span class="line">    # 修改header值</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然而很快我就发现，Nginx不支持if(condition1 &amp;&amp; condition2)的语法【捂脸】。。。<br>其实也有一些奇淫技巧可以实现AND和OR，比如<a href="https://segmentfault.com/a/1190000002481473">这一篇</a>，通过拼字符串的方式：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">location = /test_and/ &#123;</span><br><span class="line">    default_type text/html;</span><br><span class="line">    set $a 0;</span><br><span class="line">    set $b 0;</span><br><span class="line">    if ( $remote_addr != &#x27;&#x27; )&#123;</span><br><span class="line">        set $a 1;</span><br><span class="line">    &#125;</span><br><span class="line">    if ( $http_x_forwarded_for != &#x27;&#x27; )&#123;</span><br><span class="line">        set $a 1$a;</span><br><span class="line">    &#125;</span><br><span class="line">    if ( $a = 11 )&#123;</span><br><span class="line">        set $b 1;</span><br><span class="line">    &#125;</span><br><span class="line">    echo $b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>根据Nginx企业官网的<a href="https://www.nginx.com/resources/wiki/start/topics/depth/ifisevil/">一篇文章：If Is Evil</a>，平时应该尽量谨慎用if。<br>除此以外，Nginx中要实现if…else…的语法也需要费一番周折。这里就不详细展开了。  </p>
-<h1 id="教训2：location不包含参数"><a href="#教训2：location不包含参数" class="headerlink" title="教训2：location不包含参数"></a>教训2：location不包含参数</h1><p>接下来尝试用正则表达式表现url中同时包含.pdf（不区分大小写）和“inline&#x3D;1”参数。<br>考虑到问号可能需要转义，就用.来替代。于是写了类似如下的正则表达式：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">location ~* &quot;.*\.(pdf).(inline=1)&quot;</span><br></pre></td></tr></table></figure>
-<p>但结果发现死活匹配不到inline&#x3D;1的那段。反复尝试了多种正则表达式后，才想起来location不包含URI参数。。。<br>最终决定通过location匹配后缀，在location内用if匹配URI参数（inline&#x3D;1）：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">location ~* &quot;.*\.(pdf)$&quot; &#123;</span><br><span class="line">    # 省略其他</span><br><span class="line">    if ($args ~ inline=) &#123;</span><br><span class="line">        # 替换header值逻辑</span><br><span class="line">    &#125;</span><br><span class="line">    # proxy_pass逻辑</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <title>容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为</title>
+    <url>/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/</url>
+    <content><![CDATA[<p>我们上一章部署都是通过神奇的kubectl命令。我们这章就探寻一下，当我们拍下kubectl命令到Pod成功启动之间，Kubernetes究竟做了一些什么事情。<br>先上一张总的架构图，下面提到每个组件的时候可以在这张架构图上找位置，以及和其他组件间的关联关系：<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-architecture.png" alt="Kubernetes component architecture">  </p>
+<h2 id="1-全流程"><a href="#1-全流程" class="headerlink" title="1. 全流程"></a>1. 全流程</h2><h3 id="1-1-Kubectl"><a href="#1-1-Kubectl" class="headerlink" title="1.1 Kubectl"></a>1.1 Kubectl</h3><p>kubectl是用于针对Kubernetes集群运行命令的命令行接口。<br>虽然我们是在Master节点上执行运行的kubectl，但其实kubectl也可以在本地安装，与k8s的api server远程通信交互。<br>kubectl在接到apply命令后，会先做一个基本的验证。如果要创建的资源不合法，或YAML格式错误，就会快速失败。<br>除了通过kubectl之外，也可以直接调用api，或通过dashboard UI等多种方式与api server通信。  </p>
+<p>在通信之前，kubectl需要先进行身份认证。认证信息保存在$HOME&#x2F;.kube&#x2F;config文件里，大致内容如下：  </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@docker-4 .kube]# pwd</span><br><span class="line">/root/.kube</span><br><span class="line">[root@docker-4 .kube]# cat config</span><br><span class="line">apiVersion: v1</span><br><span class="line">clusters:</span><br><span class="line">- cluster:</span><br><span class="line">    certificate-authority-data: &lt;证书授权信息&gt;</span><br><span class="line">    server: https://10.16.34.54:6443</span><br><span class="line">  name: kubernetes</span><br><span class="line">contexts:</span><br><span class="line">- context:</span><br><span class="line">    cluster: kubernetes</span><br><span class="line">    user: kubernetes-admin</span><br><span class="line">  name: kubernetes-admin@kubernetes</span><br><span class="line">current-context: kubernetes-admin@kubernetes</span><br><span class="line">kind: Config</span><br><span class="line">preferences: &#123;&#125;</span><br><span class="line">users:</span><br><span class="line">- name: kubernetes-admin</span><br><span class="line">  user:</span><br><span class="line">    client-certificate-data: &lt;客户端证书数据&gt;</span><br></pre></td></tr></table></figure>
 
-<h1 id="教训3：当location为正则表达式时，proxy-pass不能包含URI部分"><a href="#教训3：当location为正则表达式时，proxy-pass不能包含URI部分" class="headerlink" title="教训3：当location为正则表达式时，proxy_pass不能包含URI部分"></a>教训3：当location为正则表达式时，proxy_pass不能包含URI部分</h1><p>在写proxy_pass的时候，参考了“location &#x2F;”的那段逻辑，写成了：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">proxy_pass  http://docsvr/;</span><br></pre></td></tr></table></figure>
-<p>nginx -s reload的时候报错：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[root@nginx-internal proxy]# nginx -s reload</span><br><span class="line">nginx: [emerg] &quot;proxy_pass&quot; cannot have URI part in location given by regular expression, or inside named location, or inside &quot;if&quot; statement, or inside &quot;limit_except&quot; block in /etc/nginx/conf.d/proxy/doc.conf:56</span><br></pre></td></tr></table></figure>
-<p>查了之后才得知当location为正则表达式时，proxy_pass不能包含URI部分。在此处“&#x2F;”也是URI部分。所以去除了<a href="http://docsvr/">http://docsvr/</a> 最后的斜杠，调整为：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">location ~* &quot;.*\.(pdf)$&quot; &#123;</span><br><span class="line">    # 省略其他</span><br><span class="line">    if ($args ~ inline=) &#123;</span><br><span class="line">        # 替换header值逻辑</span><br><span class="line">    &#125;</span><br><span class="line">    proxy_pass  http://docsvr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在location后使用~*是为了让后缀忽略大小写。  </p>
-<h1 id="教训4：proxy-set-header不能包含在if语句中"><a href="#教训4：proxy-set-header不能包含在if语句中" class="headerlink" title="教训4：proxy_set_header不能包含在if语句中"></a>教训4：proxy_set_header不能包含在if语句中</h1><p>接下来就是要替换Content-Disposition值了。<br>我们先尝试将该值替换成其他任意值：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if ($args ~ inline=) &#123;</span><br><span class="line">    proxy_set_header  &#x27;Content-Disposition&#x27; &#x27;bbb&#x27;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后就在nginx -s reload的时候收到了报错：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nginx: [emerg] &quot;proxy_set_header&quot; directive is not allowed here in /etc/nginx/conf.d/proxy/doc.conf:32</span><br></pre></td></tr></table></figure>
-<p>从这篇<a href="https://agentzh.blogspot.com/2011/03/how-nginx-location-if-works.html">How nginx “location if” works</a>，我们可以知道Nginx实现if是通过一个嵌入的location。而不允许proxy_set_header很可能是因为嵌套的location不支持。<br>顺带提一句，除了proxy_set_header外，proxy_hide_header也不能包含在if语句中。  </p>
-<p>看上去我们只能靠变量了。逻辑大概如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">set $is_inline_pdf 0</span><br><span class="line">set $content_disposition &#x27;attachment;filename*=&quot;utf-8\&#x27; \&#x27;attachement.pdf&quot;&#x27;;</span><br><span class="line">if ($args ~ inline=) &#123;</span><br><span class="line">    set $is_inline_pdf 1;</span><br><span class="line">    set $content_disposition &#x27;inline;filename*=&quot;utf-8\&#x27; \&#x27;inline.pdf&quot;&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">proxy_set_header &#x27;Content-Disposition&#x27; $content_disposition;</span><br></pre></td></tr></table></figure>
+<p>config文件中的clusters.cluster.server就是要访问的api server的地址</p>
+<h3 id="1-2-kube-apiserver"><a href="#1-2-kube-apiserver" class="headerlink" title="1.2 kube-apiserver"></a>1.2 kube-apiserver</h3><p>API Server对外暴露了Kubernetes API，用于提供查询&#x2F;操作&#x2F;监控服务。<br>当接收到来自kubectl的请求后，API Server会先做三件事：  </p>
+<ul>
+<li>验证认证信息</li>
+<li>确认授权，即发送请求的用户有权限进行这个操作</li>
+<li>准入控制，封装了一系列额外的检查以确保操作不会产生意外或负面结果。还可以自定义插件实现自己的准入控制</li>
+</ul>
+<h3 id="1-3-etcd"><a href="#1-3-etcd" class="headerlink" title="1.3 etcd"></a>1.3 etcd</h3><p>etcd是一种高可用分布式存储，用于共享配置和服务发现。<br>之前在研究服务注册的时候还比较过它与Consul。etcd和Consul一样都是在CAP中保证CP，都是用Go语言开发的，一致性协议也都是用raft。Consul相比etcd多了多数据中心的支持。当然在k8s出现的时候还没有Consul，只有在zookeeper和etcd之间选。etcd相比zookeeper能稳定提供更大的吞吐量和延迟，而且和k8s使用的开发语言都是Go，这大概是最终选择了etcd的主要原因吧。  </p>
+<p>k8s集群将etcd当做数据库来使用，把所有的数据都存储在etcd上。当执行kubectl get命令时，结果就是从etcd中获取的。<br>假设kubectl执行的是创建上一篇中nginx-deployment的行为，那么最终etcd中保存的是4个对象：  </p>
+<ul>
+<li>1个Deployment对象</li>
+<li>1个ReplicaSet对象</li>
+<li>2个Pod对象<br>关于为什么还多了一个ReplicaSet对象，我们在下面说明。</li>
+</ul>
+<h3 id="1-4-Initializer初始化"><a href="#1-4-Initializer初始化" class="headerlink" title="1.4 Initializer初始化"></a>1.4 Initializer初始化</h3><p>在Pod还处于Pending状态，可以对Pod进行一些修改。例如给容器插入一个Sidecar容器，添加一些环境变量，挂载volume等等。Initializer初始器就是负责这个工作的。<br>最热门的Service Mesh–Istio项目就是通过Initializer，将Envoy容器作为Sidecar插入到每个启动的Pod中的。</p>
+<h3 id="1-5-控制循环"><a href="#1-5-控制循环" class="headerlink" title="1.5 控制循环"></a>1.5 控制循环</h3><p>Kubernetes内部始终在运行着一个“控制循环”来实现资源的调整。<br>控制循环，就是控制平面的死循环。每次循环过程中，都会通过将k8s的“当前状态”和“期望状态”进行比对，来决定下一步进行什么操作。<br>用伪代码来描述就是：  </p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">  实际状态 := 获取集群中对象 X 的实际状态（Actual State）</span><br><span class="line">  期望状态 := 获取集群中对象 X 的期望状态（Desired State）</span><br><span class="line">  <span class="keyword">if</span> 实际状态 == 期望状态&#123;</span><br><span class="line">    什么都不做</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    执行编排动作，将实际状态调整为期望状态</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h1 id="教训5：proxy-set-header只能用来设置自定义header"><a href="#教训5：proxy-set-header只能用来设置自定义header" class="headerlink" title="教训5：proxy_set_header只能用来设置自定义header"></a>教训5：proxy_set_header只能用来设置自定义header</h1><p>上面那段配置测试后发现无效。事实上，不管proxy_set_header给Content-Disposition设置什么值都无效。<br>查询之后发现proxy_set_header可能只对自定义的header有效，但不能改非自定义的header。  </p>
-<p>改用add_header替换proxy_set_header，会因为出现两个Content-Disposition而无法正常展现。在Chrome下会显示ERR_RESPONSE_HEADERS_MULTIPLE_CONTENT_DISPOSITION的报错。  </p>
-<p>所以需要用proxy_hide_header + add_header，先隐藏后添加了。即：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">proxy_hide_header &#x27;Content-Disposition&#x27;;</span><br><span class="line">add_header &#x27;Content-Disposition&#x27; $content_disposition;</span><br></pre></td></tr></table></figure>
+<p>例如当刚接收到nginx-deployment的命令时，期望是要部署2个pod，实际状态是0个pod已Ready，差额是2个：  </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@docker-4 deployment]# kubectl get deployment</span><br><span class="line">NAME                      READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">nginx-deployment          0/2     2            0           3s</span><br></pre></td></tr></table></figure>
 
-<h1 id="教训6：if语句内外的add-header不会同时生效"><a href="#教训6：if语句内外的add-header不会同时生效" class="headerlink" title="教训6：if语句内外的add_header不会同时生效"></a>教训6：if语句内外的add_header不会同时生效</h1><p>附带发现了一个很神奇的现象：当在命中if条件时，只有if条件内的add_header语句会执行。例如在下面的这个例子中：    </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">add_header  &#x27;testa&#x27; &#x27;aaa&#x27;;</span><br><span class="line">if ($args ~ inline=) &#123;</span><br><span class="line">    add_header  &#x27;testb&#x27; &#x27;bbb&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">add_header  &#x27;testc&#x27; &#x27;ccc&#x27;;</span><br></pre></td></tr></table></figure>
-<p>按照我们其他语言中对if的理解，当符合条件($args ~ inline&#x3D;)这个条件时，应该是testa&#x2F;testb&#x2F;testc三个header都会显示。<br>但实际上，当符合($args ~ inline&#x3D;)这个条件时，只有testb这个header会显示；而如果不符合if条件时，testa和testc这两个header会显示。<br>原因应该也和<a href="https://agentzh.blogspot.com/2011/03/how-nginx-location-if-works.html">How nginx “location if” works</a>这篇中介绍的原理有关。  </p>
-<h1 id="最终成果"><a href="#最终成果" class="headerlink" title="最终成果"></a>最终成果</h1><p>最终语法如下：    </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">set $is_inline_pdf 0;</span><br><span class="line">if ($args ~ inline=) &#123;</span><br><span class="line">    set $is_inline_pdf 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">proxy_hide_header &#x27;Content-Disposition&#x27;;</span><br><span class="line">if ($is_inline_pdf = 1) &#123;</span><br><span class="line">    add_header &#x27;Content-Disposition&#x27; &#x27;inline;filename*=&quot;utf-8\&#x27; \&#x27;inline.pdf&quot;&#x27;;</span><br><span class="line">    proxy_pass  http://docsvr;</span><br><span class="line">&#125;</span><br><span class="line">add_header &#x27;Content-Disposition&#x27; &#x27;attachment;filename*=&quot;utf-8\&#x27; \&#x27;attachement.pdf&quot;&#x27;;</span><br><span class="line"></span><br><span class="line">proxy_pass  http://docsvr;</span><br></pre></td></tr></table></figure>
-<p>理论上要做的更好的话，可以用$request_filename或$request_uri中的文件名来替换Content-Disposition中的文件名。但实际发现Content-Disposition中的文件名不影响浏览器中显示，也不影响下载的文件名。而且要截取$request_filename中的filename所需要写的正则表达式有点变态，于是这个问题就先搁置不做优化了。  </p>
-<p>最终的感想：Nginx对if的支持太有限了。。。应该是Nginx为了解析速度和性能所必要的代价吧。  </p>
-<h1 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h1><p>在查资料的时候顺带查到一篇挺有意思的文章和一个挺有用的网站：  </p>
-<p>通过正则表达式来DDOS还挺有创意。。。<br><a href="https://zhuanlan.zhihu.com/p/46294360">一个由正则表达式引发的血案（解决版）</a>  </p>
-<p>看到知乎上尤雨溪推荐的JS正则可视化的工具，对理解复杂正则挺有帮助。<br><a href="https://regexper.com/">Regexper</a></p>
+<p>当部署完成后，期望状态&#x3D;&#x3D;实际状态，部署结束：  </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@docker-4 deployment]# kubectl get deployment</span><br><span class="line">NAME                      READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">nginx-deployment          2/2     2            2           19s</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-6-DeploymentController与ReplicaSet"><a href="#1-6-DeploymentController与ReplicaSet" class="headerlink" title="1.6 DeploymentController与ReplicaSet"></a>1.6 DeploymentController与ReplicaSet</h3><p>对于每个对象类型，由kube-controller-manager对应的controller来创建。例如Deployment就对应DeploymentController。<br>在一些比较早的文章里，你还能看到ReplicationController，但现在它已经不再被使用。DeploymentController是其升级版，在包含了ReplicationController所有功能的基础上还增加了回滚暂停等功能。  </p>
+<p>在说明DeploymentController之前，先提一下上一章里没有提到的一个细节：Deployment和Pod之间还隔了一层ReplicaSet。<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-replicaset.png" alt="Kubernetes ReplicaSet">  </p>
+<p>保持副本数量其实主要是靠ReplicaSet。从一个ReplicaSet的YAML可以看到，几乎和Deployment一模一样：  </p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ReplicaSet</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-set</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.7.9</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>但我们之所以不直接使用ReplicaSet部署，是由于ReplicaSet的功能比较简陋。当我们想实现滚动更新的时候，就需要更上一层的Deployment支援了。  </p>
+<p>DeploymentController通过一个叫Informer的模块对Deployment、ReplicaSet和Pod的变更进行监听。<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-deploymentcontroller.png" alt="Kubernetes DeploymentController"><br>假设上述范例中poc-deployment里的应用升级了一个版本，从v1升级到了v2。控制循环会获得一个新的期望：部署两个v2的Pod。现状是有两个v1的Pod。但此时不能立即把v1的Pod停止了，不然服务就会有一段时间不可用了。在整个滚动更新的过程中，需要保证至少有两个Pod可用，无论是v1还是v2。<br>所以这时候Deployment会创建一个v2的ReplicaSet，包含v2的Pod。<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-replicaset-v2.png" alt="Kubernetes ReplicaSet V2"><br>当v2的ReplicaSet中Pod的状态Ready后，v1的ReplicaSet就可以进行缩容为0个Pod了。  </p>
+<p>PS. 我们实际场景中可能会有会话黏连（session sticky）的情况存在。会话还处于活跃状态的Pod不应该被直接下线。怎么处理就是后话了。  </p>
+<h3 id="1-7-kube-scheduler"><a href="#1-7-kube-scheduler" class="headerlink" title="1.7 kube-scheduler"></a>1.7 kube-scheduler</h3><p>Pod创建好之后，还没有被分派节点。kube-scheduler就是用来将待分派的Pod调度到指定Worker节点，并将节点与Pod的绑定信息也记录到etcd。<br>Master上的工作到此为止。  </p>
+<h3 id="1-8-kubelet"><a href="#1-8-kubelet" class="headerlink" title="1.8 kubelet"></a>1.8 kubelet</h3><p>每个Worker节点上会有一个Kubelet服务进程。kube-scheduler下发的任务就是由kubelet接收的。除此之外，它还负责：  </p>
+<ul>
+<li>挂载Pod所需要的volume</li>
+<li>下载Pod的secret</li>
+<li>运行容器</li>
+<li>对容器生命周期进行检测</li>
+<li>回报节点和Pod的状态<br>可以把Kubelet当成一种特殊的Controller。</li>
+</ul>
+<p>至此容器正常启动，整个流程结束。  </p>
+<h2 id="2-声明式API"><a href="#2-声明式API" class="headerlink" title="2. 声明式API"></a>2. 声明式API</h2><p>kubectl apply和docker run看上去是两句很类似的命令，但表现出来的理念截然不同。<br>docker run是命令式的。你发出命令，服务器接收，并按照命令创建出容器。<br>但Kuberentes的API是所谓的“声明式”，即你向Kubernetes提交一个定义好的API对象，声明自己想要达到的目标状态。当Kubernetes接收到这个目标状态后，自己内部协调各种组件，达成并保持这个状态。  </p>
+<p>声明式对于分布式系统有着重大的意义。  </p>
+<ul>
+<li>首先是能实现自动化调整。分布式系统的每个组件都可能会随时发生故障。假设一个节点在部署某个Pod的过程中突然挂掉了，如果采用的是命令式API，就需要人工干预：“我换个节点再重新拍命令。等恢复那个节点后再进行之前操作的回滚”。但对于使用了声明式API的Kubernetes，会在每个控制循环的开始检查：“之前部署Pod的任务还没完成，和kubelet联系一下，问问看Node进展如何了？怎么联系不上Node？换个Node部署吧。”在挂掉的Node恢复后，它会自动调用API Server获取当前状态并进行分析：“之前要我部署的Pod已经在其他Node上部署好了？如果我继续部署的话，Pod数量就比目标多了。那么我把自己进行到一半的操作回滚吧。”整个过程完全无需外界干预。  </li>
+<li>其次，对于命令式API，每个命令都是独占且阻塞的。只有先等前一个命令执行完之后才能执行下一个命令，不然就有出现冲突的可能。而声明式API使得多个写操作都能并行执行，使得处理效率大大提升。  </li>
+<li>此外，声明式API还支持操作的合并。你可以设置一个YAML为基础YAML，在用户提交YAML后会和基础YAML合并，然后再提交给API Server。我感觉这有点像Java里的自定义拦截器。知名的Istio项目是主要实现原理也就是靠这种方式注入Envoy。</li>
+</ul>
+<p><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/kustomize.jpg" alt="Kubernetes kustomize">   </p>
+<h2 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h2><p>本篇主要参考了<a href="https://github.com/jamiehannaford/what-happens-when-k8s">jamiehannaford&#x2F;what-happens-when-k8s: What happens when I type kubectl run?</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzU1MzY4NzQ1OA==&mid=2247484192&idx=1&sn=91c70c17c8d1c87950f321284083201a&chksm=fbee43edcc99cafb0d9545ca0727c03f1249729635d99373c79a4a0dab3ab122df8191f04437&mpshare=1&scene=1&srcid=&key=55c5aac104b43cbd3c53056a63edc606f9a6a33d4c9869f4f1d73cf0752a59e1b388d154653af734bea9ecf943efba56f96932bd5c85ecca9016603557ddfac21503c0347d2b62176f2a1870e52f24c4&ascene=1&uin=MTI2MzU5MTI4MA==&devicetype=Windows+10&version=62060833&lang=zh_CN&pass_ticket=QXPk0d9qyCPvIVu28S2CGQLMg+qFH8Z6fcaxHhhfwKaUOGhlAZlZPlBXKAnDcSTA">翻译版</a>  </p>
+<p>对k8s如何使用etcd的简要介绍<br><a href="https://matthewpalmer.net/kubernetes-app-developer/articles/how-does-kubernetes-use-etcd.html">How Does Kubernetes Use etcd?</a>  </p>
+<p>Deployment原理主要是参考这篇<br><a href="https://draveness.me/kubernetes-deployment">详解 Kubernetes Deployment 的实现原理</a>  </p>
+<p>关于Informer机制的更详细介绍<br><a href="https://www.kubernetes.org.cn/2693.html">Kubernetes Informer 详解_Kubernetes中文社区</a>  </p>
+<p>这篇是Kubernetes的开发者介绍的Kubernetes设计原则，值得完整读一下<br><a href="https://www.yangcs.net/posts/kubernetes-design-and-development-explained/">Kubernetes 设计与开发原则 - 杨传胜的博客|Cloud Native|yangcs.net</a><br>原文是这篇：<br><a href="https://thenewstack.io/kubernetes-design-and-development-explained/">Kubernetes Design and Development Explained - The New Stack</a>  </p>
 ]]></content>
       <tags>
-        <tag>Nginx</tag>
+        <tag>容器</tag>
+        <tag>kubernetes</tag>
+        <tag>k8s</tag>
       </tags>
   </entry>
   <entry>
@@ -1492,93 +1492,6 @@
       </tags>
   </entry>
   <entry>
-    <title>容器-14-国内Windows10环境安装Minikube</title>
-    <url>/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/</url>
-    <content><![CDATA[<p>上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。<br>只靠Docker Desktop，平时开发的时候起个数据库或redis是足够用了，但像service mesh之类的就玩不了了。趁年前有空，搭了一套Minikube，把步骤顺便记录一下。原本想合并到之前kubeadm安装的<a href="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/">那篇</a>里，但可能会翻起来不方便，还是单独另开一篇吧。<br>后续“Kubernetes实战”系列都会基于minikube环境来搭建。  </p>
-<h2 id="1-软硬件条件"><a href="#1-软硬件条件" class="headerlink" title="1. 软硬件条件"></a>1. 软硬件条件</h2><p>现在内存也不值钱了，插个16G足够玩了。<br>操作系统上，虽然Windows 10家庭版+VirtualBox&#x2F;VMWare也可以，但从硬件利用率角度，还是用Windows 10企业版&#x2F;专业版&#x2F;教育版+Hyper-V比较好。<br>在控制面板-&gt;程序-&gt;启动或关闭Windows 功能 里面打开所有Hyper-V选项然后重启。<br>重启后运行systeminfo，看到如下内容，说明操作系统层面已经ok了：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Hyper-V 要求:     已检测到虚拟机监控程序。将不显示 Hyper-V 所需的功能。</span><br></pre></td></tr></table></figure>
-
-<p>Docker Desktop是否安装不影响，但在安装Minikube的过程中最好不要启动。在安装过程中报过一个<code>create: precreate: no External vswitch nor Default Switch found</code>的报错，不确定是不是相关。<br>顺带提一句，如果装了Docker Desktop，可以在Settings-&gt;Daemon-&gt;Registry mirrors里填写：<code>https://dockerhub.azk8s.cn</code>、<code>http://hub-mirror.c.163.com</code>和<code>https://docker.mirrors.ustc.edu.cn</code><br>另外感谢这篇<a href="https://xuxinkun.github.io/2019/06/11/cn-registry/">docker&#x2F;kubernetes国内源&#x2F;镜像源解决方式 - xinkun的博客 | Xinkun Blog</a>的整理，我也复制一下备忘：  </p>
-<table>
-<thead>
-<tr>
-<th>global</th>
-<th>proxy in China</th>
-<th>format</th>
-<th>example</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>dockerhub (docker.io)</td>
-<td>dockerhub.azk8s.cn</td>
-<td><code>dockerhub.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
-<td>dockerhub.azk8s.cn&#x2F;microsoft&#x2F;azure-cli:2.0.61 dockerhub.azk8s.cn&#x2F;library&#x2F;nginx:1.15</td>
-</tr>
-<tr>
-<td>gcr.io</td>
-<td>gcr.azk8s.cn</td>
-<td><code>gcr.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
-<td>gcr.azk8s.cn&#x2F;google_containers&#x2F;hyperkube-amd64:v1.13.5</td>
-</tr>
-<tr>
-<td>quay.io</td>
-<td>quay.azk8s.cn</td>
-<td><code>quay.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
-<td>quay.azk8s.cn&#x2F;deis&#x2F;go-dev:v1.10.0</td>
-</tr>
-</tbody></table>
-<h2 id="2-网络条件"><a href="#2-网络条件" class="headerlink" title="2. 网络条件"></a>2. 网络条件</h2><p>以防万一请先关闭Windows防火墙。<br>因为你懂的那个原因，需要本地搞个SS的梯子。如果哪个步骤因为网络原因卡住了，可以切成代理再试一次。  </p>
-<h2 id="3-安装步骤"><a href="#3-安装步骤" class="headerlink" title="3. 安装步骤"></a>3. 安装步骤</h2><h3 id="3-1-安装Minikube"><a href="#3-1-安装Minikube" class="headerlink" title="3.1 安装Minikube"></a>3.1 安装Minikube</h3><p>首先注意一下，后续的步骤都需要用管理员权限的命令行来执行。Powershell应该也行。<br>安装步骤在<a href="https://minikube.sigs.k8s.io/docs/start/windows/">官方文档</a>里有详细描述，但似乎遗漏了需要先安装Kubernetes Cli的提示。<br>所以最彻底的方法是通过Chocolatey来安装，它会帮忙把该装的都装好：  </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">choco install minikube</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-2-Minikube初始启动"><a href="#3-2-Minikube初始启动" class="headerlink" title="3.2 Minikube初始启动"></a>3.2 Minikube初始启动</h3><p>接下来就可以通过start命令来启动了。第一次启动可能会因为kubeadm和kubelet镜像下载失败而失败。不过不用担心，可以反复执行的，大不了用minikube delete重置重来。第一次启动主要是看个版本号。  </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">minikube start --vm-driver=hyperv --cpus=2 --memory=6g --image-repository=&quot;registry.cn-hangzhou.aliyuncs.com/google_containers&quot;</span><br></pre></td></tr></table></figure>
-
-<p>PS1. memory参数建议在start的时候就加上。通过<code>minikube config set memory 4096</code>来调整，需要delete了重新start。<br>PS2. 有些步骤里会加上一个<code>--registry-mirror=https://registry.docker-cn.com</code>的参数。但实际Docker的国内站已经挂了（公司都快撑不下去了，有点惨），加个image-repository的参数就足够了。这里image-repository用的是阿里的镜像。<br>PS3. 如果怀疑是网络问题想通过代理下载，可以添加HTTP_PROXY等参数，例如：  </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">minikube start --vm-driver=hyperv --cpus=2 --memory=6g --image-repository=&quot;registry.cn-hangzhou.aliyuncs.com/google_containers&quot; --docker-env HTTP_PROXY=http://127.0.0.1:1080 --docker-env HTTPS_PROXY=http://127.0.0.1:1080 --docker-env NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-3-手动下载kubeadm和kubelet"><a href="#3-3-手动下载kubeadm和kubelet" class="headerlink" title="3.3 手动下载kubeadm和kubelet"></a>3.3 手动下载kubeadm和kubelet</h3><p>第一次启动可能会非常花时间（视你的网络而定）。如果失败的话，可以根据kubeadm和kubelet下载失败报错信息，来确定k8s的版本。我安装的minikube使用的版本是v1.17.0。<br>然后可以手动从googleapis网站下载（Windows机器默认没有curl，也可以通过Chocolatey安装，参考<a href="https://chocolatey.org/packages/curl">这篇</a>：  </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -Lo kubeadm http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubeadm</span><br><span class="line">curl -Lo kubelet http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubelet</span><br></pre></td></tr></table></figure>
-
-<p>下载后扔到<code>C:\Users\用户名\.minikube\cache\版本号</code>的目录里。<br>如果其他K8S的组件下载失败，也可以使用类似的方式下载后扔到<code>C:\Users\用户名\.minikube\cache\images\registry.cn-hangzhou.aliyuncs.com\google_containers</code>的目录里。例如kube-proxy：  </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -Lo kube-proxy_v1.17.0 http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kube-proxy</span><br></pre></td></tr></table></figure>
-
-<p>但这招对版本号不一样的例如etcd没用。这个我是靠重试多次硬抗的。<br>对于国内网络来说，这个步骤很花时间，不要急慢慢等。  </p>
-<h3 id="3-4-更新minikube-kubectl"><a href="#3-4-更新minikube-kubectl" class="headerlink" title="3.4 更新minikube kubectl"></a>3.4 更新minikube kubectl</h3><p>如果同时装了Docker Desktop和minkube，会提示Docker下的kubectl.exe的版本不够高。  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* 完成！kubectl 已经配置至 &quot;minikube&quot;</span><br><span class="line">! C:\Program Files\Docker\Docker\Resources\bin\kubectl.exe is version 1.14.0, and is incompatible with Kubernetes 1.17.0. You will need to update C:\Program Files\Docker\Docker\Resources\bin\kubectl.exe or use &#x27;minikube kubectl&#x27; to connect with this cluster</span><br></pre></td></tr></table></figure>
-
-<p>接下来先用<code>minikube stop</code>停止，然后用<code>minikube kubectl options</code>的命令，会提示下载最新版本的kubectl：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ minikube kubectl options</span><br><span class="line">* 正在下载 kubectl.exe v1.17.0</span><br></pre></td></tr></table></figure>
-
-<p>最新版的kubectl会下载到<code>C:\Users\用户\.minikube\cache\v版本</code>的目录里，然后复制到Docker的bin目录（例如C:\Program Files\Docker\Docker\Resources\bin\）里覆盖即可。  </p>
-<h2 id="4-验证"><a href="#4-验证" class="headerlink" title="4. 验证"></a>4. 验证</h2><p>安装好后就可以验证了。先看看是不是所有系统容器都启动了：  </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl get pod -A</span></span><br><span class="line">NAMESPACE              NAME                                         READY   STATUS    RESTARTS   AGE</span><br><span class="line">kube-system            coredns-7f9c544f75-j6cfj                     1/1     Running   1          6h10m</span><br><span class="line">kube-system            coredns-7f9c544f75-wpcn7                     1/1     Running   1          6h10m</span><br><span class="line">kube-system            etcd-minikube                                1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-addon-manager-minikube                  1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-apiserver-minikube                      1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-controller-manager-minikube             1/1     Running   2          6h10m</span><br><span class="line">kube-system            kube-proxy-kbnsr                             1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-scheduler-minikube                      1/1     Running   1          6h10m</span><br><span class="line">kube-system            storage-provisioner                          1/1     Running   1          6h10m</span><br><span class="line">kubernetes-dashboard   dashboard-metrics-scraper-7b64584c5c-6k8f8   1/1     Running   1          6h4m</span><br><span class="line">kubernetes-dashboard   kubernetes-dashboard-79d9cd965-565j6         1/1     Running   2          6h4m</span><br></pre></td></tr></table></figure>
-
-<p>然后可以看看dashboard。本机就是好不用token：  </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">minikube dashboard</span><br></pre></td></tr></table></figure>
-
-<p>然后也可以照<a href="https://minikube.sigs.k8s.io/docs/examples/">官方的Example</a>里的，创建个echo server来验证。需要注意image里的<code>k8s.gcr.io</code>需要替换为<code>registry.cn-hangzhou.aliyuncs.com/google_containers</code>：  </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create deployment hello-minikube --image=registry.cn-hangzhou.aliyuncs.com/google_containers/echoserver:1.4</span><br><span class="line">kubectl expose deployment hello-minikube --type=NodePort --port=8080</span><br><span class="line">minikube service hello-minikube</span><br></pre></td></tr></table></figure>
-
-<p>最后一句<code>minikube service &lt;service名&gt;</code>的作用是获取本地集群中指定服务的kubernetes URL。对于以NodePort对外暴露的服务，会自动打开浏览器并跳转到对应的ip+端口。注意对应的ip是Hyper-V管理器中的“vEthernet (Default Switch)”。  </p>
-<h2 id="5-启用ingress"><a href="#5-启用ingress" class="headerlink" title="5. 启用ingress"></a>5. 启用ingress</h2><p>minikube启用ingress还是挺简单的，可以参考<a href="https://kubernetes.github.io/ingress-nginx/deploy/">Installation Guide - NGINX Ingress Controller</a>，一句命令启动：  </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">minikube addons enable ingress</span><br></pre></td></tr></table></figure>
-
-<p>但有可能会遇到<code>Back-off pulling image</code>的报错信息。看到image的名字里包含&lt;quay.io&gt;就可以知道又是被墙拦住了。对于类似的问题，可以采用以下的步骤，从Azure拉取后打tag。对于ingress，命令如下：  </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">minikube ssh</span><br><span class="line">docker pull quay.azk8s.cn/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1</span><br><span class="line">docker tag quay.azk8s.cn/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1 quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1</span><br></pre></td></tr></table></figure>
-
-<p>部署完成后可以通过<code>kubectl get pod -n kube-system</code>的命令来确认ingress是否有安装成功。如果失败的话，最坏结果有可能需要minikube delete后重新start。  </p>
-<h2 id="6-常见问题"><a href="#6-常见问题" class="headerlink" title="6. 常见问题"></a>6. 常见问题</h2><h3 id="6-1-minikube-delete失败"><a href="#6-1-minikube-delete失败" class="headerlink" title="6.1 minikube delete失败"></a>6.1 minikube delete失败</h3><p>遇到过一次minikube delete失败，报的是C:\Users\用户名.minikube\machines下某个conf文件找不到。尝试手动删除该目录会报文件被锁定，无法删除。重启后文件夹依然被锁定。<br>这个时候打开services.msc，停止“Hyper-V 虚拟机管理”服务后，就可以删除了。删除完把这个服务重新启用即可。  </p>
-<h3 id="6-2-Unable-to-connect-to-the-server"><a href="#6-2-Unable-to-connect-to-the-server" class="headerlink" title="6.2 Unable to connect to the server"></a>6.2 Unable to connect to the server</h3><p>在kubectl apply命令的时候有些时候会出现<code>Unable to connect to the server</code>的报错。这种情况下<code>kubectl get node</code>的命令也会失败。电脑重启后问题解决。原因暂不明。。。可能是minikube的bug。  </p>
-<h2 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7. 参考资料"></a>7. 参考资料</h2><p>常用操作可以参考这个官方文档：<br><a href="https://kubernetes.io/zh/docs/setup/learning-environment/minikube/">使用 Minikube 安装 Kubernetes - Kubernetes</a>  </p>
-]]></content>
-      <tags>
-        <tag>容器</tag>
-        <tag>kubernetes</tag>
-        <tag>k8s</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Maven-组织内部项目统一配置DistributionManagement</title>
     <url>/2019/09/18/Maven-%E7%BB%84%E7%BB%87%E5%86%85%E9%83%A8%E9%A1%B9%E7%9B%AE%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AEDistributionManagement/</url>
     <content><![CDATA[<p>搜了一下中文技术博客上似乎没有相关的文章，就简要翻译一下。  </p>
@@ -1604,131 +1517,6 @@
 ]]></content>
       <tags>
         <tag>Maven</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java-从FeignClient的Ambiguous mapping报错,重温RequestMapping原理</title>
-    <url>/2019/12/23/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<h1 id="1-微服务的公共API模块"><a href="#1-微服务的公共API模块" class="headerlink" title="1. 微服务的公共API模块"></a>1. 微服务的公共API模块</h1><p>微服务之间调用进程会出现DTO实体类的重复定义。比如服务A的接口返回User实体，服务B接收的时候，也需要定义一个同样的User实体。<br>在引入了Feign后，就有了一个避免项目间重复定义实体类的简单方案：我们可以在服务A开发的时候专门抽出来一个API模块。  </p>
-<p><img src="/images/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/java-project-dependency.jpg" alt="API公共模块">  </p>
-<p>这个API模块可以包含接口方法定义，URI以及和对外实体类定义（DTO），可以认为是A和B之间互通的约定。<br>一个最简单的API模块代码如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoDto</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String text;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/demo&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">DemoApiService</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/hello&quot;)</span></span><br><span class="line">    DemoDto <span class="title function_">hello</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>服务A的Controller负责对接口定义进行实现：  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoProducerController</span> <span class="keyword">implements</span> <span class="title class_">DemoApiService</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> DemoDto <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">DemoDto</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>服务A项目将API模块发布到Maven私服上。服务B项目只需要对API模块添加依赖：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.galaxy.demo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>feign-demo-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>并且扩展一下该接口并添加<code>@FeignClient</code>注解：  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@FeignClient(name = &quot;demo&quot;, contextId = &quot;demoSpiService&quot;, url = &quot;http://localhost:8080/&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">DemoSpiService</span> <span class="keyword">extends</span> <span class="title class_">DemoApiService</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>就可以很轻松地像调用本地方法一样调用A应用的接口了。  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Resource</span></span><br><span class="line"><span class="keyword">private</span> DemoSpiService demoSpiService;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GetMapping(&quot;/hello&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> demoSpiService.hello().toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-Ambiguous-mapping报错"><a href="#2-Ambiguous-mapping报错" class="headerlink" title="2. Ambiguous mapping报错"></a>2. Ambiguous mapping报错</h1><p>如果你像我上面描述的那样实现，就会在消费者服务B启动的时候遇到如下的报错信息：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Caused by: java.lang.IllegalStateException: Ambiguous mapping. Cannot map &#x27;com.galaxy.demo.feign.consumer.spi.DemoSpiService&#x27; method </span><br><span class="line">com.galaxy.demo.feign.consumer.spi.DemoSpiService#hello()</span><br><span class="line">to &#123;GET /demo/hello&#125;: There is already &#x27;demoConsumerController&#x27; bean method</span><br></pre></td></tr></table></figure>
-<p>报错信息很直白：同一个URI被重复映射了两次。一次是在DemoConsumerController，一次是在DemoSpiService。<br><strong>But Why?</strong> DemoSpiService里只是一个FeignClient，不是RestController啊？</p>
-<h1 id="3-RestController，-Controller，-RequestMapping原理重温"><a href="#3-RestController，-Controller，-RequestMapping原理重温" class="headerlink" title="3. @RestController，@Controller，@RequestMapping原理重温"></a>3. @RestController，@Controller，@RequestMapping原理重温</h1><p>我们通过这个问题，正好来重温一下@RestController，@Controller和@RequestMapping几个Spring中的经典概念。  </p>
-<h2 id="3-1-RestController"><a href="#3-1-RestController" class="headerlink" title="3.1 @RestController"></a>3.1 @RestController</h2><p>我们先来看一下@RestController的原代码：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Target(&#123;ElementType.TYPE&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> RestController &#123;</span><br><span class="line">    <span class="meta">@AliasFor(</span></span><br><span class="line"><span class="meta">        annotation = Controller.class</span></span><br><span class="line"><span class="meta">    )</span></span><br><span class="line">    String <span class="title function_">value</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到@RestController&#x3D;@Controller+@ResponseBody  </p>
-<p><img src="/images/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/spring-mvc-flow.png" alt="Spring MVC流"><br>上图是一个Spring MVC从接收请求到返回响应的完整流程。我理解对于SpringBoot的RestController来说，在第四步没有返回ModelAndView，而是直接返回了Json，并通过@ResponseBody将Json直接写到了响应Body，略过了第5步和第6步。  </p>
-<h2 id="3-2-Controller和-RequestMapping"><a href="#3-2-Controller和-RequestMapping" class="headerlink" title="3.2 @Controller和@RequestMapping"></a>3.2 @Controller和@RequestMapping</h2><p>如果只从@Controller的源代码来看，@Controller只是@Component的一个别名。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Target(&#123;ElementType.TYPE&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Controller &#123;</span><br><span class="line">    <span class="meta">@AliasFor(</span></span><br><span class="line"><span class="meta">        annotation = Component.class</span></span><br><span class="line"><span class="meta">    )</span></span><br><span class="line">    String <span class="title function_">value</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>但注解怎么用不是看定义的。从Spring的AbstractHandlerMethodMapping.java的<a href="https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/handler/AbstractHandlerMethodMapping.java">源代码</a>，我们可以看到Spring会根据一个名为isHandler方法的判断结果，对Handler处理器里的方法进行扫描，获得URL映射。  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">		<span class="keyword">if</span> (beanType != <span class="literal">null</span> &amp;&amp; isHandler(beanType)) &#123;</span><br><span class="line">			detectHandlerMethods(beanName);</span><br><span class="line">		&#125;</span><br><span class="line"><span class="comment">// 省略部分</span></span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">detectHandlerMethods</span><span class="params">(Object handler)</span> &#123;</span><br><span class="line">		Class&lt;?&gt; handlerType = (handler <span class="keyword">instanceof</span> String ?</span><br><span class="line">				obtainApplicationContext().getType((String) handler) : handler.getClass());</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (handlerType != <span class="literal">null</span>) &#123;</span><br><span class="line">			Class&lt;?&gt; userType = ClassUtils.getUserClass(handlerType);</span><br><span class="line">			Map&lt;Method, T&gt; methods = MethodIntrospector.selectMethods(userType,</span><br><span class="line">					(MethodIntrospector.MetadataLookup&lt;T&gt;) method -&gt; &#123;</span><br><span class="line">						<span class="keyword">try</span> &#123;</span><br><span class="line">							<span class="keyword">return</span> getMappingForMethod(method, userType);</span><br></pre></td></tr></table></figure>
-<p>而isHandler的逻辑很简单，就是看Bean上是否有@Controller注解或@RequestMapping注解。参见<a href="https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/mvc/method/annotation/RequestMappingHandlerMapping.java">源代码</a>：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="type">boolean</span> <span class="title function_">isHandler</span><span class="params">(Class&lt;?&gt; beanType)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> (AnnotatedElementUtils.hasAnnotation(beanType, Controller.class) ||</span><br><span class="line">			AnnotatedElementUtils.hasAnnotation(beanType, RequestMapping.class));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="4-Ambiguous-mapping报错原因总结和解决方案"><a href="#4-Ambiguous-mapping报错原因总结和解决方案" class="headerlink" title="4. Ambiguous mapping报错原因总结和解决方案"></a>4. Ambiguous mapping报错原因总结和解决方案</h1><p>归根到底，Ambiguous mapping报错原因在于上面的那个逻辑中使用的是“或”（||），而不是“和”（&amp;&amp;）。<br>由于我们的DemoSpiService扩展了DemoApiService，而DemoApiService的接口定义上有@RequestMapping注解，于是DemoSpiService也被Spring MVC扫描Handler了。而偏生对于DemoSpiService和DemoConsumerController的URL路径都是“&#x2F;demo”，于是就产生了冲突。<br>知道了原因后，解决方案也就很简单了：修改一下DemoConsumerController的@RequestMapping的URL，例如改为<code>@RequestMapping(&quot;/consumer/demo&quot;)</code>，就可以成功启动了。  </p>
-<p>你可能会担心@FeignClient+API模块是否会暴露不该暴露的接口？直接访问的话会返回404：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;timestamp&quot;: &quot;2019-12-23T12:51:05.376+0000&quot;,</span><br><span class="line">    &quot;status&quot;: 404,</span><br><span class="line">    &quot;error&quot;: &quot;Not Found&quot;,</span><br><span class="line">    &quot;message&quot;: &quot;No message available&quot;,</span><br><span class="line">    &quot;path&quot;: &quot;/demo/hello&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>也很容易理解：请求在找RequestMapping对应的View：”&#x2F;demo&#x2F;hello”。但View不存在，就只能返回404了。只有在DemoSpiService上主动添加@ResponseBody注解，才能对外暴露。  </p>
-<h1 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h1><p>这篇是主要参考资料。作者认为这是Spring MVC的锅。我理解指的是“或”的那个逻辑。但我觉得当初Spring这么写肯定是有原因的。。。虽然我没找到相关文章。<br><a href="https://blog.ahao.moe/posts/FeignClient_and_Ambiguous_mapping.html">FeignClient 出现 Ambiguous mapping 重复映射 | Japari Park</a>  </p>
-<p>另外是两篇Spring原理解析参考<br><a href="https://www.cnblogs.com/forwrader/p/6886581.html">SpringMVC在@RequestMapping配置两个相同路径 - Text_Dexter - 博客园</a>  </p>
-<p><a href="https://blog.csdn.net/J080624/article/details/56278461">Spring MVC — @RequestMapping原理讲解-1 - 小小默：进无止境</a>  </p>
-]]></content>
-      <tags>
-        <tag>Java</tag>
-        <tag>Spring</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java-Feign+服务注册的多环境方案</title>
-    <url>/2019/12/09/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<p>微服务的开发模式下，联调和服务注册一旦涉及多个环境（开发&#x2F;SIT&#x2F;UAT），就会变得有些复杂。本文总结一下我们在此问题上尝试过的几个workaround，以及最终推荐的方案。</p>
-<h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h1><p>以下描述的案例中，将我们所拥有的服务精简为三个：</p>
-<ul>
-<li>um：用户微服务</li>
-<li>ent：企业微服务</li>
-<li>bi：BI微服务<br>ent会调用um；bi会调用ent和um。<br>网络环境分成办公网段和开发环境网段。办公网段可以访问开发环境网段，但开发环境网段无法访问办公网段。<br>三个微服务都被打包成镜像，以单副本Pod的形式部署在K8S云的开发环境节点上。<br>服务注册使用Nacos，网关路由使用的是Zuul。</li>
-</ul>
-<p><img src="/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-1.jpg" alt="部署环境">  </p>
-<h1 id="2-单环境内部请求流程"><a href="#2-单环境内部请求流程" class="headerlink" title="2. 单环境内部请求流程"></a>2. 单环境内部请求流程</h1><p>如果只考虑SIT环境，整个服务注册+请求的处理流程可以简单描述如下：  </p>
-<ol>
-<li>um-sit服务（um的sit环境，下同）启动，将自己的service ip注册到Nacos服务端</li>
-<li>ent-sit服务启动，将自己的service ip注册到Nacos服务端</li>
-<li>前端web对http:&#x2F;&#x2F;域名&#x2F;api&#x2F;ent-sit 的某个接口发起请求</li>
-<li>通过K8S Ingress的域名映射，找到了Zuul应用</li>
-<li>Zuul向Nacos查询ent-sit的地址，得到ip：172.0.0.2。这个是ent-sit的service内部ip</li>
-<li>Zuul将请求转给ent-sit的service，Pod里的ent-sit容器中的应用接收到请求，开始处理</li>
-<li>ent-sit容器在处理过程中需要解析token，于是向Zuul请求um-sit</li>
-<li>Zuul向Nacos查询um-sit的地址，得到ip：172.0.0.1。这个是um-sit的service内部ip</li>
-<li>Zuul将请求转给um-sit。um处理完token，返回用户信息</li>
-<li>ent-sit处理结束，将结果返回给Zuul</li>
-<li>Zuul将结果转给前端web，流程结束</li>
-</ol>
-<p><img src="/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-2.jpg" alt="单环境内部请求流程">  </p>
-<h1 id="3-遇到的问题"><a href="#3-遇到的问题" class="headerlink" title="3. 遇到的问题"></a>3. 遇到的问题</h1><p>联调和测试过程中我们遇到了两个主要问题：</p>
-<ul>
-<li>联调会串服务</li>
-<li>无法和测试环境的服务联通</li>
-</ul>
-<h2 id="3-1-串服务"><a href="#3-1-串服务" class="headerlink" title="3.1 串服务"></a>3.1 串服务</h2><p>假设Alice和Bob都在开发ent，服务名都是ent-dev。于是Nacos记录了两个服务注册信息。<br>Cathy想和Alice联调。但如果Cathy配置调用的服务id也是ent-dev，请求就有一定几率会飘到Bob那里。那么很可能会发生Cathy的请求返回的结果不稳定，时对时错。  </p>
-<p>一种解决方案就是每个人在本地将自己的spring.application.name改为“服务名-姓名”，例如：ent-alice。  </p>
-<p><img src="/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/service-registration-workaround-1.jpg" alt="服务注册-workaround-1">  </p>
-<p>但这个方案也存在问题：很容易在提交代码的时候误提交了自己的个人配置。Git里这个配置文件修改频繁，一看log就是服务名从Alice改为Bob，然后又被改会Alice。<br>如果只是这个问题，还有办法可以搞定，例如将服务名放到环境变量等。下一个问题是真正具有阻碍性的。  </p>
-<h2 id="无法和测试环境的服务联通"><a href="#无法和测试环境的服务联通" class="headerlink" title="无法和测试环境的服务联通"></a>无法和测试环境的服务联通</h2><p>在办公网段开发过程中，会发现无法调通SIT的微服务。<br>究其原因，这个是由于办公网段无法访问到service内部ip导致的。  </p>
-<p><img src="/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-probem.jpg" alt="服务注册-问题">  </p>
-<p>办公网段ent-dev尝试调用um-sit服务的流程如下：</p>
-<ul>
-<li>um-sit服务启动，将自己的service ip（172.0.0.1）注册到Nacos服务端</li>
-<li>本地的ent-dev启动，将自己的ip（10.0.0.1）注册到Nacos服务端</li>
-<li>ent-dev通过name（um-sit）发起请求，向Nacos服务端查询um-sit的地址</li>
-<li>Nacos服务端返回172.0.0.1</li>
-<li>ent-dev尝试请求172.0.0.1，但由于这个地址是K8S的内部地址，外部无法访问，所以请求失败</li>
-</ul>
-<p>一个解决方案就是每个人自己本地也起一个um的服务，假设服务名为um-alice。然后将请求的服务名也改为同样的服务名。<br>这样当发起请求时，Nacos会返回本机的地址，自然请求就可以成功了。<br>但这个解决方案除了和上个解决方案有同样的问题（容易误提交自己的个人配置）之外，也会导致每个人开发过程中都需要启动一堆依赖的微服务。姑且不说开发机的性能压力，也容易因为没有及时更新依赖服务的代码，导致联调出错。  </p>
-<h1 id="4-解决方案"><a href="#4-解决方案" class="headerlink" title="4. 解决方案"></a>4. 解决方案</h1><h2 id="4-1-解决方案一：在容器之外再部署一套微服务"><a href="#4-1-解决方案一：在容器之外再部署一套微服务" class="headerlink" title="4.1 解决方案一：在容器之外再部署一套微服务"></a>4.1 解决方案一：在容器之外再部署一套微服务</h2><p>既然service的内部ip地址无法被办公网段访问，那么另外以非容器方式在ECS上另外部署一套dev环境，就可以解决网络访问的问题。<br>但这个解决方案不完美：</p>
-<ul>
-<li>没有解决个人配置的问题</li>
-<li>在基于容器的持续集成方案之外，多维护了一套持续集成方案</li>
-<li>需要多部署一套环境，消耗硬件资源</li>
-</ul>
-<h2 id="4-2-【推荐】解决方案二：不使用name方式访问，使用域名-ip方式"><a href="#4-2-【推荐】解决方案二：不使用name方式访问，使用域名-ip方式" class="headerlink" title="4.2 【推荐】解决方案二：不使用name方式访问，使用域名&#x2F;ip方式"></a>4.2 【推荐】解决方案二：不使用name方式访问，使用域名&#x2F;ip方式</h2><p>需要同时避免串服务和个人配置这两个看起来互相冲突的问题，看起来只有放弃通过服务name方式调用，改为url调用。<br>通过Feign可以简化调用的代码。只要在<code>@FeignClient</code>的参数里配置了url，就会优先使用url。范例如下：  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@FeignClient(name = &quot;jsonPlaceHolderClient&quot;, url = &quot;$&#123;feign-client.json-place-holder.url&#125;&quot;</span></span><br><span class="line"><span class="meta">        , contextId = &quot;JsonPlaceHolderClient&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">JsonPlaceHolderClient</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/posts&quot;)</span></span><br><span class="line">    List&lt;Post&gt; <span class="title function_">getPosts</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/posts/&#123;postId&#125;&quot;)</span></span><br><span class="line">    Post <span class="title function_">getPostById</span><span class="params">(<span class="meta">@PathVariable(&quot;postId&quot;)</span> Long postId)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在<code>application-dev.yml</code>配置文件中，<code>feign-client.json-place-holder.url</code>可以默认填写为sit测试环境的地址。这样如果只是作为基础服务来调用（例如用户服务），就不需要在本地启动了。同样以办公网段ent-dev调用um-sit服务的流程作为范例：</p>
-<ul>
-<li>um-sit服务启动，将自己的service ip（172.0.0.1）注册到Nacos服务端</li>
-<li>本地开发机的ent-dev启动</li>
-<li>ent-dev通过域名http:&#x2F;&#x2F;域名&#x2F;api&#x2F;um-sit，对um的某个接口发起请求</li>
-<li>Zuul收到请求，向Nacos查询um-sit的地址，得到ip：172.0.0.1。这个是um-sit的service内部ip</li>
-<li>Zuul将请求转给um-sit的service，Pod里的um-sit容器中的应用接收到请求，开始处理</li>
-<li>um-sit容器中的应用处理请求完毕，返回结果给Zuul</li>
-<li>Zuul将结果转给本地开发机<br>和K8S的Service不同，Ingress是可以被容器外访问到的，所以网络连通性上也没有任何问题。</li>
-</ul>
-<p>如果是需要本机服务联调或与其他开发进行联调，只需要将url改为localhost或其他开发的ip即可。这样就等同于不涉及服务注册的直连。<br>提交的时候把这个临时改动revert回来，就不会将个人配置提交到代码仓库了。  </p>
-<h1 id="5-Feign配置中的name和url"><a href="#5-Feign配置中的name和url" class="headerlink" title="5. Feign配置中的name和url"></a>5. Feign配置中的name和url</h1><p>在最新版的Spring Cloud OpenFeign中，<code>@FeignClient</code>的<code>name</code>属性是必需的。参见<a href="https://cloud.spring.io/spring-cloud-openfeign/reference/html/">Spring Cloud OpenFeign</a>：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Previously, using the url attribute, did not require the name attribute. Using name is now required.</span><br></pre></td></tr></table></figure>
-<p>上文提到了如果同时配置了name和url，会优先使用url，而不是通过name访问服务。原理我们可以通过源代码来说明。这段是<a href="https://github.com/spring-cloud/spring-cloud-openfeign/blob/master/spring-cloud-openfeign-core/src/main/java/org/springframework/cloud/openfeign/FeignClientFactoryBean.java">FeignClientFactoryBean</a>的源代码片段：  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> &lt;T&gt; the target type of the Feign client</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> a &#123;<span class="doctag">@link</span> Feign&#125; client created with the specified data and the context</span></span><br><span class="line"><span class="comment">	 * information</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	&lt;T&gt; T <span class="title function_">getTarget</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">//FeignContext在FeignAutoConfiguration中自动注册，FeignContext用于客户端配置类独立注册</span></span><br><span class="line">		<span class="type">FeignContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="built_in">this</span>.applicationContext.getBean(FeignContext.class);</span><br><span class="line">    <span class="comment">//创建Feign.Builder</span></span><br><span class="line">		Feign.<span class="type">Builder</span> <span class="variable">builder</span> <span class="operator">=</span> feign(context);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//如果@FeignClient注解没有设置url参数</span></span><br><span class="line">		<span class="keyword">if</span> (!StringUtils.hasText(<span class="built_in">this</span>.url)) &#123;</span><br><span class="line">      <span class="comment">//url为@FeignClient注解的name参数</span></span><br><span class="line">			<span class="keyword">if</span> (!<span class="built_in">this</span>.name.startsWith(<span class="string">&quot;http&quot;</span>)) &#123;</span><br><span class="line">				<span class="built_in">this</span>.url = <span class="string">&quot;http://&quot;</span> + <span class="built_in">this</span>.name;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="built_in">this</span>.url = <span class="built_in">this</span>.name;</span><br><span class="line">			&#125;</span><br><span class="line">      <span class="comment">//加上path</span></span><br><span class="line">			<span class="built_in">this</span>.url += cleanPath();</span><br><span class="line">      <span class="comment">//返回loadBalance客户端，也就是ribbon+eureka/Nacos的客户端</span></span><br><span class="line">			<span class="keyword">return</span> (T) loadBalance(builder, context,</span><br><span class="line">					<span class="keyword">new</span> <span class="title class_">HardCodedTarget</span>&lt;&gt;(<span class="built_in">this</span>.type, <span class="built_in">this</span>.name, <span class="built_in">this</span>.url));</span><br><span class="line">		&#125;</span><br><span class="line">    <span class="comment">//@FeignClient设置了url参数，不走服务注册的负载均衡</span></span><br><span class="line">		<span class="keyword">if</span> (StringUtils.hasText(<span class="built_in">this</span>.url) &amp;&amp; !<span class="built_in">this</span>.url.startsWith(<span class="string">&quot;http&quot;</span>)) &#123;</span><br><span class="line">			<span class="built_in">this</span>.url = <span class="string">&quot;http://&quot;</span> + <span class="built_in">this</span>.url;</span><br><span class="line">		&#125;</span><br><span class="line">    <span class="comment">//加上path</span></span><br><span class="line">		<span class="type">String</span> <span class="variable">url</span> <span class="operator">=</span> <span class="built_in">this</span>.url + cleanPath();</span><br><span class="line">    <span class="comment">//从FeignContext中获取client</span></span><br><span class="line">		<span class="type">Client</span> <span class="variable">client</span> <span class="operator">=</span> getOptional(context, Client.class);</span><br><span class="line">		<span class="keyword">if</span> (client != <span class="literal">null</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (client <span class="keyword">instanceof</span> LoadBalancerFeignClient) &#123;</span><br><span class="line">				<span class="comment">// not load balancing because we have a url,</span></span><br><span class="line">				<span class="comment">// but ribbon is on the classpath, so unwrap</span></span><br><span class="line">				client = ((LoadBalancerFeignClient) client).getDelegate();</span><br><span class="line">			&#125;</span><br><span class="line">			builder.client(client);</span><br><span class="line">		&#125;</span><br><span class="line">    <span class="comment">//从FeignContext中获取Targeter</span></span><br><span class="line">		<span class="type">Targeter</span> <span class="variable">targeter</span> <span class="operator">=</span> get(context, Targeter.class);</span><br><span class="line">    <span class="comment">//生成客户端代理</span></span><br><span class="line">		<span class="keyword">return</span> (T) targeter.target(<span class="built_in">this</span>, builder, context,</span><br><span class="line">				<span class="keyword">new</span> <span class="title class_">HardCodedTarget</span>&lt;&gt;(<span class="built_in">this</span>.type, <span class="built_in">this</span>.name, url));</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>从代码可以看到，只有没有设置url的情况下，才会通过loadBalance方法生成Ribbon的动态代理。<br>更多关于Spring Cloud OpenFeign的源代码分析，可以参见本文最后的参考资料。  </p>
-<h1 id="6-一些想法"><a href="#6-一些想法" class="headerlink" title="6. 一些想法"></a>6. 一些想法</h1><p>实际调用过程中会发现第一次通过域名调用会较慢（2-3秒），但第二次就很快了。这是由于Zuul会通过SpringMVC对请求进行缓存。<br>但其实Zuul的路由功能Ingress本身已经实现得很好了。多引入一个Zuul会增加运维架构的复杂度，也会带来潜在的性能瓶颈。不过这个目前不在我们的控制范围。。。Zuul除了路由之外也可以做一些通用的token校验等，也并不是完全冗余，只是我们目前没有这么使用。  </p>
-<h1 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7. 参考资料"></a>7. 参考资料</h1><p><a href="http://techblog.ppdai.com/2018/05/28/20180528/">spring-cloud-openfeign原理分析 | 拍拍贷基础框架团队博客</a>  </p>
-]]></content>
-      <tags>
-        <tag>Java</tag>
-        <tag>Spring Cloud</tag>
-        <tag>Feign</tag>
       </tags>
   </entry>
   <entry>
@@ -1943,6 +1731,218 @@
         <tag>Java</tag>
         <tag>PostgreSQL</tag>
         <tag>pgsql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java-Feign+服务注册的多环境方案</title>
+    <url>/2019/12/09/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<p>微服务的开发模式下，联调和服务注册一旦涉及多个环境（开发&#x2F;SIT&#x2F;UAT），就会变得有些复杂。本文总结一下我们在此问题上尝试过的几个workaround，以及最终推荐的方案。</p>
+<h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h1><p>以下描述的案例中，将我们所拥有的服务精简为三个：</p>
+<ul>
+<li>um：用户微服务</li>
+<li>ent：企业微服务</li>
+<li>bi：BI微服务<br>ent会调用um；bi会调用ent和um。<br>网络环境分成办公网段和开发环境网段。办公网段可以访问开发环境网段，但开发环境网段无法访问办公网段。<br>三个微服务都被打包成镜像，以单副本Pod的形式部署在K8S云的开发环境节点上。<br>服务注册使用Nacos，网关路由使用的是Zuul。</li>
+</ul>
+<p><img src="/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-1.jpg" alt="部署环境">  </p>
+<h1 id="2-单环境内部请求流程"><a href="#2-单环境内部请求流程" class="headerlink" title="2. 单环境内部请求流程"></a>2. 单环境内部请求流程</h1><p>如果只考虑SIT环境，整个服务注册+请求的处理流程可以简单描述如下：  </p>
+<ol>
+<li>um-sit服务（um的sit环境，下同）启动，将自己的service ip注册到Nacos服务端</li>
+<li>ent-sit服务启动，将自己的service ip注册到Nacos服务端</li>
+<li>前端web对http:&#x2F;&#x2F;域名&#x2F;api&#x2F;ent-sit 的某个接口发起请求</li>
+<li>通过K8S Ingress的域名映射，找到了Zuul应用</li>
+<li>Zuul向Nacos查询ent-sit的地址，得到ip：172.0.0.2。这个是ent-sit的service内部ip</li>
+<li>Zuul将请求转给ent-sit的service，Pod里的ent-sit容器中的应用接收到请求，开始处理</li>
+<li>ent-sit容器在处理过程中需要解析token，于是向Zuul请求um-sit</li>
+<li>Zuul向Nacos查询um-sit的地址，得到ip：172.0.0.1。这个是um-sit的service内部ip</li>
+<li>Zuul将请求转给um-sit。um处理完token，返回用户信息</li>
+<li>ent-sit处理结束，将结果返回给Zuul</li>
+<li>Zuul将结果转给前端web，流程结束</li>
+</ol>
+<p><img src="/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-2.jpg" alt="单环境内部请求流程">  </p>
+<h1 id="3-遇到的问题"><a href="#3-遇到的问题" class="headerlink" title="3. 遇到的问题"></a>3. 遇到的问题</h1><p>联调和测试过程中我们遇到了两个主要问题：</p>
+<ul>
+<li>联调会串服务</li>
+<li>无法和测试环境的服务联通</li>
+</ul>
+<h2 id="3-1-串服务"><a href="#3-1-串服务" class="headerlink" title="3.1 串服务"></a>3.1 串服务</h2><p>假设Alice和Bob都在开发ent，服务名都是ent-dev。于是Nacos记录了两个服务注册信息。<br>Cathy想和Alice联调。但如果Cathy配置调用的服务id也是ent-dev，请求就有一定几率会飘到Bob那里。那么很可能会发生Cathy的请求返回的结果不稳定，时对时错。  </p>
+<p>一种解决方案就是每个人在本地将自己的spring.application.name改为“服务名-姓名”，例如：ent-alice。  </p>
+<p><img src="/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/service-registration-workaround-1.jpg" alt="服务注册-workaround-1">  </p>
+<p>但这个方案也存在问题：很容易在提交代码的时候误提交了自己的个人配置。Git里这个配置文件修改频繁，一看log就是服务名从Alice改为Bob，然后又被改会Alice。<br>如果只是这个问题，还有办法可以搞定，例如将服务名放到环境变量等。下一个问题是真正具有阻碍性的。  </p>
+<h2 id="无法和测试环境的服务联通"><a href="#无法和测试环境的服务联通" class="headerlink" title="无法和测试环境的服务联通"></a>无法和测试环境的服务联通</h2><p>在办公网段开发过程中，会发现无法调通SIT的微服务。<br>究其原因，这个是由于办公网段无法访问到service内部ip导致的。  </p>
+<p><img src="/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-probem.jpg" alt="服务注册-问题">  </p>
+<p>办公网段ent-dev尝试调用um-sit服务的流程如下：</p>
+<ul>
+<li>um-sit服务启动，将自己的service ip（172.0.0.1）注册到Nacos服务端</li>
+<li>本地的ent-dev启动，将自己的ip（10.0.0.1）注册到Nacos服务端</li>
+<li>ent-dev通过name（um-sit）发起请求，向Nacos服务端查询um-sit的地址</li>
+<li>Nacos服务端返回172.0.0.1</li>
+<li>ent-dev尝试请求172.0.0.1，但由于这个地址是K8S的内部地址，外部无法访问，所以请求失败</li>
+</ul>
+<p>一个解决方案就是每个人自己本地也起一个um的服务，假设服务名为um-alice。然后将请求的服务名也改为同样的服务名。<br>这样当发起请求时，Nacos会返回本机的地址，自然请求就可以成功了。<br>但这个解决方案除了和上个解决方案有同样的问题（容易误提交自己的个人配置）之外，也会导致每个人开发过程中都需要启动一堆依赖的微服务。姑且不说开发机的性能压力，也容易因为没有及时更新依赖服务的代码，导致联调出错。  </p>
+<h1 id="4-解决方案"><a href="#4-解决方案" class="headerlink" title="4. 解决方案"></a>4. 解决方案</h1><h2 id="4-1-解决方案一：在容器之外再部署一套微服务"><a href="#4-1-解决方案一：在容器之外再部署一套微服务" class="headerlink" title="4.1 解决方案一：在容器之外再部署一套微服务"></a>4.1 解决方案一：在容器之外再部署一套微服务</h2><p>既然service的内部ip地址无法被办公网段访问，那么另外以非容器方式在ECS上另外部署一套dev环境，就可以解决网络访问的问题。<br>但这个解决方案不完美：</p>
+<ul>
+<li>没有解决个人配置的问题</li>
+<li>在基于容器的持续集成方案之外，多维护了一套持续集成方案</li>
+<li>需要多部署一套环境，消耗硬件资源</li>
+</ul>
+<h2 id="4-2-【推荐】解决方案二：不使用name方式访问，使用域名-ip方式"><a href="#4-2-【推荐】解决方案二：不使用name方式访问，使用域名-ip方式" class="headerlink" title="4.2 【推荐】解决方案二：不使用name方式访问，使用域名&#x2F;ip方式"></a>4.2 【推荐】解决方案二：不使用name方式访问，使用域名&#x2F;ip方式</h2><p>需要同时避免串服务和个人配置这两个看起来互相冲突的问题，看起来只有放弃通过服务name方式调用，改为url调用。<br>通过Feign可以简化调用的代码。只要在<code>@FeignClient</code>的参数里配置了url，就会优先使用url。范例如下：  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@FeignClient(name = &quot;jsonPlaceHolderClient&quot;, url = &quot;$&#123;feign-client.json-place-holder.url&#125;&quot;</span></span><br><span class="line"><span class="meta">        , contextId = &quot;JsonPlaceHolderClient&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">JsonPlaceHolderClient</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/posts&quot;)</span></span><br><span class="line">    List&lt;Post&gt; <span class="title function_">getPosts</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/posts/&#123;postId&#125;&quot;)</span></span><br><span class="line">    Post <span class="title function_">getPostById</span><span class="params">(<span class="meta">@PathVariable(&quot;postId&quot;)</span> Long postId)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>application-dev.yml</code>配置文件中，<code>feign-client.json-place-holder.url</code>可以默认填写为sit测试环境的地址。这样如果只是作为基础服务来调用（例如用户服务），就不需要在本地启动了。同样以办公网段ent-dev调用um-sit服务的流程作为范例：</p>
+<ul>
+<li>um-sit服务启动，将自己的service ip（172.0.0.1）注册到Nacos服务端</li>
+<li>本地开发机的ent-dev启动</li>
+<li>ent-dev通过域名http:&#x2F;&#x2F;域名&#x2F;api&#x2F;um-sit，对um的某个接口发起请求</li>
+<li>Zuul收到请求，向Nacos查询um-sit的地址，得到ip：172.0.0.1。这个是um-sit的service内部ip</li>
+<li>Zuul将请求转给um-sit的service，Pod里的um-sit容器中的应用接收到请求，开始处理</li>
+<li>um-sit容器中的应用处理请求完毕，返回结果给Zuul</li>
+<li>Zuul将结果转给本地开发机<br>和K8S的Service不同，Ingress是可以被容器外访问到的，所以网络连通性上也没有任何问题。</li>
+</ul>
+<p>如果是需要本机服务联调或与其他开发进行联调，只需要将url改为localhost或其他开发的ip即可。这样就等同于不涉及服务注册的直连。<br>提交的时候把这个临时改动revert回来，就不会将个人配置提交到代码仓库了。  </p>
+<h1 id="5-Feign配置中的name和url"><a href="#5-Feign配置中的name和url" class="headerlink" title="5. Feign配置中的name和url"></a>5. Feign配置中的name和url</h1><p>在最新版的Spring Cloud OpenFeign中，<code>@FeignClient</code>的<code>name</code>属性是必需的。参见<a href="https://cloud.spring.io/spring-cloud-openfeign/reference/html/">Spring Cloud OpenFeign</a>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Previously, using the url attribute, did not require the name attribute. Using name is now required.</span><br></pre></td></tr></table></figure>
+<p>上文提到了如果同时配置了name和url，会优先使用url，而不是通过name访问服务。原理我们可以通过源代码来说明。这段是<a href="https://github.com/spring-cloud/spring-cloud-openfeign/blob/master/spring-cloud-openfeign-core/src/main/java/org/springframework/cloud/openfeign/FeignClientFactoryBean.java">FeignClientFactoryBean</a>的源代码片段：  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> &lt;T&gt; the target type of the Feign client</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> a &#123;<span class="doctag">@link</span> Feign&#125; client created with the specified data and the context</span></span><br><span class="line"><span class="comment">	 * information</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	&lt;T&gt; T <span class="title function_">getTarget</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">//FeignContext在FeignAutoConfiguration中自动注册，FeignContext用于客户端配置类独立注册</span></span><br><span class="line">		<span class="type">FeignContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="built_in">this</span>.applicationContext.getBean(FeignContext.class);</span><br><span class="line">    <span class="comment">//创建Feign.Builder</span></span><br><span class="line">		Feign.<span class="type">Builder</span> <span class="variable">builder</span> <span class="operator">=</span> feign(context);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//如果@FeignClient注解没有设置url参数</span></span><br><span class="line">		<span class="keyword">if</span> (!StringUtils.hasText(<span class="built_in">this</span>.url)) &#123;</span><br><span class="line">      <span class="comment">//url为@FeignClient注解的name参数</span></span><br><span class="line">			<span class="keyword">if</span> (!<span class="built_in">this</span>.name.startsWith(<span class="string">&quot;http&quot;</span>)) &#123;</span><br><span class="line">				<span class="built_in">this</span>.url = <span class="string">&quot;http://&quot;</span> + <span class="built_in">this</span>.name;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="built_in">this</span>.url = <span class="built_in">this</span>.name;</span><br><span class="line">			&#125;</span><br><span class="line">      <span class="comment">//加上path</span></span><br><span class="line">			<span class="built_in">this</span>.url += cleanPath();</span><br><span class="line">      <span class="comment">//返回loadBalance客户端，也就是ribbon+eureka/Nacos的客户端</span></span><br><span class="line">			<span class="keyword">return</span> (T) loadBalance(builder, context,</span><br><span class="line">					<span class="keyword">new</span> <span class="title class_">HardCodedTarget</span>&lt;&gt;(<span class="built_in">this</span>.type, <span class="built_in">this</span>.name, <span class="built_in">this</span>.url));</span><br><span class="line">		&#125;</span><br><span class="line">    <span class="comment">//@FeignClient设置了url参数，不走服务注册的负载均衡</span></span><br><span class="line">		<span class="keyword">if</span> (StringUtils.hasText(<span class="built_in">this</span>.url) &amp;&amp; !<span class="built_in">this</span>.url.startsWith(<span class="string">&quot;http&quot;</span>)) &#123;</span><br><span class="line">			<span class="built_in">this</span>.url = <span class="string">&quot;http://&quot;</span> + <span class="built_in">this</span>.url;</span><br><span class="line">		&#125;</span><br><span class="line">    <span class="comment">//加上path</span></span><br><span class="line">		<span class="type">String</span> <span class="variable">url</span> <span class="operator">=</span> <span class="built_in">this</span>.url + cleanPath();</span><br><span class="line">    <span class="comment">//从FeignContext中获取client</span></span><br><span class="line">		<span class="type">Client</span> <span class="variable">client</span> <span class="operator">=</span> getOptional(context, Client.class);</span><br><span class="line">		<span class="keyword">if</span> (client != <span class="literal">null</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (client <span class="keyword">instanceof</span> LoadBalancerFeignClient) &#123;</span><br><span class="line">				<span class="comment">// not load balancing because we have a url,</span></span><br><span class="line">				<span class="comment">// but ribbon is on the classpath, so unwrap</span></span><br><span class="line">				client = ((LoadBalancerFeignClient) client).getDelegate();</span><br><span class="line">			&#125;</span><br><span class="line">			builder.client(client);</span><br><span class="line">		&#125;</span><br><span class="line">    <span class="comment">//从FeignContext中获取Targeter</span></span><br><span class="line">		<span class="type">Targeter</span> <span class="variable">targeter</span> <span class="operator">=</span> get(context, Targeter.class);</span><br><span class="line">    <span class="comment">//生成客户端代理</span></span><br><span class="line">		<span class="keyword">return</span> (T) targeter.target(<span class="built_in">this</span>, builder, context,</span><br><span class="line">				<span class="keyword">new</span> <span class="title class_">HardCodedTarget</span>&lt;&gt;(<span class="built_in">this</span>.type, <span class="built_in">this</span>.name, url));</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>从代码可以看到，只有没有设置url的情况下，才会通过loadBalance方法生成Ribbon的动态代理。<br>更多关于Spring Cloud OpenFeign的源代码分析，可以参见本文最后的参考资料。  </p>
+<h1 id="6-一些想法"><a href="#6-一些想法" class="headerlink" title="6. 一些想法"></a>6. 一些想法</h1><p>实际调用过程中会发现第一次通过域名调用会较慢（2-3秒），但第二次就很快了。这是由于Zuul会通过SpringMVC对请求进行缓存。<br>但其实Zuul的路由功能Ingress本身已经实现得很好了。多引入一个Zuul会增加运维架构的复杂度，也会带来潜在的性能瓶颈。不过这个目前不在我们的控制范围。。。Zuul除了路由之外也可以做一些通用的token校验等，也并不是完全冗余，只是我们目前没有这么使用。  </p>
+<h1 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7. 参考资料"></a>7. 参考资料</h1><p><a href="http://techblog.ppdai.com/2018/05/28/20180528/">spring-cloud-openfeign原理分析 | 拍拍贷基础框架团队博客</a>  </p>
+]]></content>
+      <tags>
+        <tag>Java</tag>
+        <tag>Spring Cloud</tag>
+        <tag>Feign</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java-从FeignClient的Ambiguous mapping报错,重温RequestMapping原理</title>
+    <url>/2019/12/23/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h1 id="1-微服务的公共API模块"><a href="#1-微服务的公共API模块" class="headerlink" title="1. 微服务的公共API模块"></a>1. 微服务的公共API模块</h1><p>微服务之间调用进程会出现DTO实体类的重复定义。比如服务A的接口返回User实体，服务B接收的时候，也需要定义一个同样的User实体。<br>在引入了Feign后，就有了一个避免项目间重复定义实体类的简单方案：我们可以在服务A开发的时候专门抽出来一个API模块。  </p>
+<p><img src="/images/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/java-project-dependency.jpg" alt="API公共模块">  </p>
+<p>这个API模块可以包含接口方法定义，URI以及和对外实体类定义（DTO），可以认为是A和B之间互通的约定。<br>一个最简单的API模块代码如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoDto</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String text;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/demo&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">DemoApiService</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/hello&quot;)</span></span><br><span class="line">    DemoDto <span class="title function_">hello</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>服务A的Controller负责对接口定义进行实现：  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoProducerController</span> <span class="keyword">implements</span> <span class="title class_">DemoApiService</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> DemoDto <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">DemoDto</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>服务A项目将API模块发布到Maven私服上。服务B项目只需要对API模块添加依赖：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.galaxy.demo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>feign-demo-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>并且扩展一下该接口并添加<code>@FeignClient</code>注解：  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@FeignClient(name = &quot;demo&quot;, contextId = &quot;demoSpiService&quot;, url = &quot;http://localhost:8080/&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">DemoSpiService</span> <span class="keyword">extends</span> <span class="title class_">DemoApiService</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>就可以很轻松地像调用本地方法一样调用A应用的接口了。  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Resource</span></span><br><span class="line"><span class="keyword">private</span> DemoSpiService demoSpiService;</span><br><span class="line"></span><br><span class="line"><span class="meta">@GetMapping(&quot;/hello&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> demoSpiService.hello().toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-Ambiguous-mapping报错"><a href="#2-Ambiguous-mapping报错" class="headerlink" title="2. Ambiguous mapping报错"></a>2. Ambiguous mapping报错</h1><p>如果你像我上面描述的那样实现，就会在消费者服务B启动的时候遇到如下的报错信息：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Caused by: java.lang.IllegalStateException: Ambiguous mapping. Cannot map &#x27;com.galaxy.demo.feign.consumer.spi.DemoSpiService&#x27; method </span><br><span class="line">com.galaxy.demo.feign.consumer.spi.DemoSpiService#hello()</span><br><span class="line">to &#123;GET /demo/hello&#125;: There is already &#x27;demoConsumerController&#x27; bean method</span><br></pre></td></tr></table></figure>
+<p>报错信息很直白：同一个URI被重复映射了两次。一次是在DemoConsumerController，一次是在DemoSpiService。<br><strong>But Why?</strong> DemoSpiService里只是一个FeignClient，不是RestController啊？</p>
+<h1 id="3-RestController，-Controller，-RequestMapping原理重温"><a href="#3-RestController，-Controller，-RequestMapping原理重温" class="headerlink" title="3. @RestController，@Controller，@RequestMapping原理重温"></a>3. @RestController，@Controller，@RequestMapping原理重温</h1><p>我们通过这个问题，正好来重温一下@RestController，@Controller和@RequestMapping几个Spring中的经典概念。  </p>
+<h2 id="3-1-RestController"><a href="#3-1-RestController" class="headerlink" title="3.1 @RestController"></a>3.1 @RestController</h2><p>我们先来看一下@RestController的原代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Target(&#123;ElementType.TYPE&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> RestController &#123;</span><br><span class="line">    <span class="meta">@AliasFor(</span></span><br><span class="line"><span class="meta">        annotation = Controller.class</span></span><br><span class="line"><span class="meta">    )</span></span><br><span class="line">    String <span class="title function_">value</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到@RestController&#x3D;@Controller+@ResponseBody  </p>
+<p><img src="/images/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/spring-mvc-flow.png" alt="Spring MVC流"><br>上图是一个Spring MVC从接收请求到返回响应的完整流程。我理解对于SpringBoot的RestController来说，在第四步没有返回ModelAndView，而是直接返回了Json，并通过@ResponseBody将Json直接写到了响应Body，略过了第5步和第6步。  </p>
+<h2 id="3-2-Controller和-RequestMapping"><a href="#3-2-Controller和-RequestMapping" class="headerlink" title="3.2 @Controller和@RequestMapping"></a>3.2 @Controller和@RequestMapping</h2><p>如果只从@Controller的源代码来看，@Controller只是@Component的一个别名。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Target(&#123;ElementType.TYPE&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Controller &#123;</span><br><span class="line">    <span class="meta">@AliasFor(</span></span><br><span class="line"><span class="meta">        annotation = Component.class</span></span><br><span class="line"><span class="meta">    )</span></span><br><span class="line">    String <span class="title function_">value</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但注解怎么用不是看定义的。从Spring的AbstractHandlerMethodMapping.java的<a href="https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/handler/AbstractHandlerMethodMapping.java">源代码</a>，我们可以看到Spring会根据一个名为isHandler方法的判断结果，对Handler处理器里的方法进行扫描，获得URL映射。  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">		<span class="keyword">if</span> (beanType != <span class="literal">null</span> &amp;&amp; isHandler(beanType)) &#123;</span><br><span class="line">			detectHandlerMethods(beanName);</span><br><span class="line">		&#125;</span><br><span class="line"><span class="comment">// 省略部分</span></span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">detectHandlerMethods</span><span class="params">(Object handler)</span> &#123;</span><br><span class="line">		Class&lt;?&gt; handlerType = (handler <span class="keyword">instanceof</span> String ?</span><br><span class="line">				obtainApplicationContext().getType((String) handler) : handler.getClass());</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (handlerType != <span class="literal">null</span>) &#123;</span><br><span class="line">			Class&lt;?&gt; userType = ClassUtils.getUserClass(handlerType);</span><br><span class="line">			Map&lt;Method, T&gt; methods = MethodIntrospector.selectMethods(userType,</span><br><span class="line">					(MethodIntrospector.MetadataLookup&lt;T&gt;) method -&gt; &#123;</span><br><span class="line">						<span class="keyword">try</span> &#123;</span><br><span class="line">							<span class="keyword">return</span> getMappingForMethod(method, userType);</span><br></pre></td></tr></table></figure>
+<p>而isHandler的逻辑很简单，就是看Bean上是否有@Controller注解或@RequestMapping注解。参见<a href="https://github.com/spring-projects/spring-framework/blob/master/spring-webmvc/src/main/java/org/springframework/web/servlet/mvc/method/annotation/RequestMappingHandlerMapping.java">源代码</a>：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="type">boolean</span> <span class="title function_">isHandler</span><span class="params">(Class&lt;?&gt; beanType)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> (AnnotatedElementUtils.hasAnnotation(beanType, Controller.class) ||</span><br><span class="line">			AnnotatedElementUtils.hasAnnotation(beanType, RequestMapping.class));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-Ambiguous-mapping报错原因总结和解决方案"><a href="#4-Ambiguous-mapping报错原因总结和解决方案" class="headerlink" title="4. Ambiguous mapping报错原因总结和解决方案"></a>4. Ambiguous mapping报错原因总结和解决方案</h1><p>归根到底，Ambiguous mapping报错原因在于上面的那个逻辑中使用的是“或”（||），而不是“和”（&amp;&amp;）。<br>由于我们的DemoSpiService扩展了DemoApiService，而DemoApiService的接口定义上有@RequestMapping注解，于是DemoSpiService也被Spring MVC扫描Handler了。而偏生对于DemoSpiService和DemoConsumerController的URL路径都是“&#x2F;demo”，于是就产生了冲突。<br>知道了原因后，解决方案也就很简单了：修改一下DemoConsumerController的@RequestMapping的URL，例如改为<code>@RequestMapping(&quot;/consumer/demo&quot;)</code>，就可以成功启动了。  </p>
+<p>你可能会担心@FeignClient+API模块是否会暴露不该暴露的接口？直接访问的话会返回404：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;timestamp&quot;: &quot;2019-12-23T12:51:05.376+0000&quot;,</span><br><span class="line">    &quot;status&quot;: 404,</span><br><span class="line">    &quot;error&quot;: &quot;Not Found&quot;,</span><br><span class="line">    &quot;message&quot;: &quot;No message available&quot;,</span><br><span class="line">    &quot;path&quot;: &quot;/demo/hello&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也很容易理解：请求在找RequestMapping对应的View：”&#x2F;demo&#x2F;hello”。但View不存在，就只能返回404了。只有在DemoSpiService上主动添加@ResponseBody注解，才能对外暴露。  </p>
+<h1 id="5-参考资料"><a href="#5-参考资料" class="headerlink" title="5. 参考资料"></a>5. 参考资料</h1><p>这篇是主要参考资料。作者认为这是Spring MVC的锅。我理解指的是“或”的那个逻辑。但我觉得当初Spring这么写肯定是有原因的。。。虽然我没找到相关文章。<br><a href="https://blog.ahao.moe/posts/FeignClient_and_Ambiguous_mapping.html">FeignClient 出现 Ambiguous mapping 重复映射 | Japari Park</a>  </p>
+<p>另外是两篇Spring原理解析参考<br><a href="https://www.cnblogs.com/forwrader/p/6886581.html">SpringMVC在@RequestMapping配置两个相同路径 - Text_Dexter - 博客园</a>  </p>
+<p><a href="https://blog.csdn.net/J080624/article/details/56278461">Spring MVC — @RequestMapping原理讲解-1 - 小小默：进无止境</a>  </p>
+]]></content>
+      <tags>
+        <tag>Java</tag>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>容器-14-国内Windows10环境安装Minikube</title>
+    <url>/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/</url>
+    <content><![CDATA[<p>上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。<br>只靠Docker Desktop，平时开发的时候起个数据库或redis是足够用了，但像service mesh之类的就玩不了了。趁年前有空，搭了一套Minikube，把步骤顺便记录一下。原本想合并到之前kubeadm安装的<a href="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/">那篇</a>里，但可能会翻起来不方便，还是单独另开一篇吧。<br>后续“Kubernetes实战”系列都会基于minikube环境来搭建。  </p>
+<h2 id="1-软硬件条件"><a href="#1-软硬件条件" class="headerlink" title="1. 软硬件条件"></a>1. 软硬件条件</h2><p>现在内存也不值钱了，插个16G足够玩了。<br>操作系统上，虽然Windows 10家庭版+VirtualBox&#x2F;VMWare也可以，但从硬件利用率角度，还是用Windows 10企业版&#x2F;专业版&#x2F;教育版+Hyper-V比较好。<br>在控制面板-&gt;程序-&gt;启动或关闭Windows 功能 里面打开所有Hyper-V选项然后重启。<br>重启后运行systeminfo，看到如下内容，说明操作系统层面已经ok了：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Hyper-V 要求:     已检测到虚拟机监控程序。将不显示 Hyper-V 所需的功能。</span><br></pre></td></tr></table></figure>
+
+<p>Docker Desktop是否安装不影响，但在安装Minikube的过程中最好不要启动。在安装过程中报过一个<code>create: precreate: no External vswitch nor Default Switch found</code>的报错，不确定是不是相关。<br>顺带提一句，如果装了Docker Desktop，可以在Settings-&gt;Daemon-&gt;Registry mirrors里填写：<code>https://dockerhub.azk8s.cn</code>、<code>http://hub-mirror.c.163.com</code>和<code>https://docker.mirrors.ustc.edu.cn</code><br>另外感谢这篇<a href="https://xuxinkun.github.io/2019/06/11/cn-registry/">docker&#x2F;kubernetes国内源&#x2F;镜像源解决方式 - xinkun的博客 | Xinkun Blog</a>的整理，我也复制一下备忘：  </p>
+<table>
+<thead>
+<tr>
+<th>global</th>
+<th>proxy in China</th>
+<th>format</th>
+<th>example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>dockerhub (docker.io)</td>
+<td>dockerhub.azk8s.cn</td>
+<td><code>dockerhub.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
+<td>dockerhub.azk8s.cn&#x2F;microsoft&#x2F;azure-cli:2.0.61 dockerhub.azk8s.cn&#x2F;library&#x2F;nginx:1.15</td>
+</tr>
+<tr>
+<td>gcr.io</td>
+<td>gcr.azk8s.cn</td>
+<td><code>gcr.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
+<td>gcr.azk8s.cn&#x2F;google_containers&#x2F;hyperkube-amd64:v1.13.5</td>
+</tr>
+<tr>
+<td>quay.io</td>
+<td>quay.azk8s.cn</td>
+<td><code>quay.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
+<td>quay.azk8s.cn&#x2F;deis&#x2F;go-dev:v1.10.0</td>
+</tr>
+</tbody></table>
+<h2 id="2-网络条件"><a href="#2-网络条件" class="headerlink" title="2. 网络条件"></a>2. 网络条件</h2><p>以防万一请先关闭Windows防火墙。<br>因为你懂的那个原因，需要本地搞个SS的梯子。如果哪个步骤因为网络原因卡住了，可以切成代理再试一次。  </p>
+<h2 id="3-安装步骤"><a href="#3-安装步骤" class="headerlink" title="3. 安装步骤"></a>3. 安装步骤</h2><h3 id="3-1-安装Minikube"><a href="#3-1-安装Minikube" class="headerlink" title="3.1 安装Minikube"></a>3.1 安装Minikube</h3><p>首先注意一下，后续的步骤都需要用管理员权限的命令行来执行。Powershell应该也行。<br>安装步骤在<a href="https://minikube.sigs.k8s.io/docs/start/windows/">官方文档</a>里有详细描述，但似乎遗漏了需要先安装Kubernetes Cli的提示。<br>所以最彻底的方法是通过Chocolatey来安装，它会帮忙把该装的都装好：  </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">choco install minikube</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-Minikube初始启动"><a href="#3-2-Minikube初始启动" class="headerlink" title="3.2 Minikube初始启动"></a>3.2 Minikube初始启动</h3><p>接下来就可以通过start命令来启动了。第一次启动可能会因为kubeadm和kubelet镜像下载失败而失败。不过不用担心，可以反复执行的，大不了用minikube delete重置重来。第一次启动主要是看个版本号。  </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">minikube start --vm-driver=hyperv --cpus=2 --memory=6g --image-repository=&quot;registry.cn-hangzhou.aliyuncs.com/google_containers&quot;</span><br></pre></td></tr></table></figure>
+
+<p>PS1. memory参数建议在start的时候就加上。通过<code>minikube config set memory 4096</code>来调整，需要delete了重新start。<br>PS2. 有些步骤里会加上一个<code>--registry-mirror=https://registry.docker-cn.com</code>的参数。但实际Docker的国内站已经挂了（公司都快撑不下去了，有点惨），加个image-repository的参数就足够了。这里image-repository用的是阿里的镜像。<br>PS3. 如果怀疑是网络问题想通过代理下载，可以添加HTTP_PROXY等参数，例如：  </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">minikube start --vm-driver=hyperv --cpus=2 --memory=6g --image-repository=&quot;registry.cn-hangzhou.aliyuncs.com/google_containers&quot; --docker-env HTTP_PROXY=http://127.0.0.1:1080 --docker-env HTTPS_PROXY=http://127.0.0.1:1080 --docker-env NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-手动下载kubeadm和kubelet"><a href="#3-3-手动下载kubeadm和kubelet" class="headerlink" title="3.3 手动下载kubeadm和kubelet"></a>3.3 手动下载kubeadm和kubelet</h3><p>第一次启动可能会非常花时间（视你的网络而定）。如果失败的话，可以根据kubeadm和kubelet下载失败报错信息，来确定k8s的版本。我安装的minikube使用的版本是v1.17.0。<br>然后可以手动从googleapis网站下载（Windows机器默认没有curl，也可以通过Chocolatey安装，参考<a href="https://chocolatey.org/packages/curl">这篇</a>：  </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -Lo kubeadm http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubeadm</span><br><span class="line">curl -Lo kubelet http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubelet</span><br></pre></td></tr></table></figure>
+
+<p>下载后扔到<code>C:\Users\用户名\.minikube\cache\版本号</code>的目录里。<br>如果其他K8S的组件下载失败，也可以使用类似的方式下载后扔到<code>C:\Users\用户名\.minikube\cache\images\registry.cn-hangzhou.aliyuncs.com\google_containers</code>的目录里。例如kube-proxy：  </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -Lo kube-proxy_v1.17.0 http://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kube-proxy</span><br></pre></td></tr></table></figure>
+
+<p>但这招对版本号不一样的例如etcd没用。这个我是靠重试多次硬抗的。<br>对于国内网络来说，这个步骤很花时间，不要急慢慢等。  </p>
+<h3 id="3-4-更新minikube-kubectl"><a href="#3-4-更新minikube-kubectl" class="headerlink" title="3.4 更新minikube kubectl"></a>3.4 更新minikube kubectl</h3><p>如果同时装了Docker Desktop和minkube，会提示Docker下的kubectl.exe的版本不够高。  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">* 完成！kubectl 已经配置至 &quot;minikube&quot;</span><br><span class="line">! C:\Program Files\Docker\Docker\Resources\bin\kubectl.exe is version 1.14.0, and is incompatible with Kubernetes 1.17.0. You will need to update C:\Program Files\Docker\Docker\Resources\bin\kubectl.exe or use &#x27;minikube kubectl&#x27; to connect with this cluster</span><br></pre></td></tr></table></figure>
+
+<p>接下来先用<code>minikube stop</code>停止，然后用<code>minikube kubectl options</code>的命令，会提示下载最新版本的kubectl：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ minikube kubectl options</span><br><span class="line">* 正在下载 kubectl.exe v1.17.0</span><br></pre></td></tr></table></figure>
+
+<p>最新版的kubectl会下载到<code>C:\Users\用户\.minikube\cache\v版本</code>的目录里，然后复制到Docker的bin目录（例如C:\Program Files\Docker\Docker\Resources\bin\）里覆盖即可。  </p>
+<h2 id="4-验证"><a href="#4-验证" class="headerlink" title="4. 验证"></a>4. 验证</h2><p>安装好后就可以验证了。先看看是不是所有系统容器都启动了：  </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">kubectl get pod -A</span></span><br><span class="line">NAMESPACE              NAME                                         READY   STATUS    RESTARTS   AGE</span><br><span class="line">kube-system            coredns-7f9c544f75-j6cfj                     1/1     Running   1          6h10m</span><br><span class="line">kube-system            coredns-7f9c544f75-wpcn7                     1/1     Running   1          6h10m</span><br><span class="line">kube-system            etcd-minikube                                1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-addon-manager-minikube                  1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-apiserver-minikube                      1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-controller-manager-minikube             1/1     Running   2          6h10m</span><br><span class="line">kube-system            kube-proxy-kbnsr                             1/1     Running   1          6h10m</span><br><span class="line">kube-system            kube-scheduler-minikube                      1/1     Running   1          6h10m</span><br><span class="line">kube-system            storage-provisioner                          1/1     Running   1          6h10m</span><br><span class="line">kubernetes-dashboard   dashboard-metrics-scraper-7b64584c5c-6k8f8   1/1     Running   1          6h4m</span><br><span class="line">kubernetes-dashboard   kubernetes-dashboard-79d9cd965-565j6         1/1     Running   2          6h4m</span><br></pre></td></tr></table></figure>
+
+<p>然后可以看看dashboard。本机就是好不用token：  </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">minikube dashboard</span><br></pre></td></tr></table></figure>
+
+<p>然后也可以照<a href="https://minikube.sigs.k8s.io/docs/examples/">官方的Example</a>里的，创建个echo server来验证。需要注意image里的<code>k8s.gcr.io</code>需要替换为<code>registry.cn-hangzhou.aliyuncs.com/google_containers</code>：  </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create deployment hello-minikube --image=registry.cn-hangzhou.aliyuncs.com/google_containers/echoserver:1.4</span><br><span class="line">kubectl expose deployment hello-minikube --type=NodePort --port=8080</span><br><span class="line">minikube service hello-minikube</span><br></pre></td></tr></table></figure>
+
+<p>最后一句<code>minikube service &lt;service名&gt;</code>的作用是获取本地集群中指定服务的kubernetes URL。对于以NodePort对外暴露的服务，会自动打开浏览器并跳转到对应的ip+端口。注意对应的ip是Hyper-V管理器中的“vEthernet (Default Switch)”。  </p>
+<h2 id="5-启用ingress"><a href="#5-启用ingress" class="headerlink" title="5. 启用ingress"></a>5. 启用ingress</h2><p>minikube启用ingress还是挺简单的，可以参考<a href="https://kubernetes.github.io/ingress-nginx/deploy/">Installation Guide - NGINX Ingress Controller</a>，一句命令启动：  </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">minikube addons enable ingress</span><br></pre></td></tr></table></figure>
+
+<p>但有可能会遇到<code>Back-off pulling image</code>的报错信息。看到image的名字里包含&lt;quay.io&gt;就可以知道又是被墙拦住了。对于类似的问题，可以采用以下的步骤，从Azure拉取后打tag。对于ingress，命令如下：  </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">minikube ssh</span><br><span class="line">docker pull quay.azk8s.cn/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1</span><br><span class="line">docker tag quay.azk8s.cn/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1 quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1</span><br></pre></td></tr></table></figure>
+
+<p>部署完成后可以通过<code>kubectl get pod -n kube-system</code>的命令来确认ingress是否有安装成功。如果失败的话，最坏结果有可能需要minikube delete后重新start。  </p>
+<h2 id="6-常见问题"><a href="#6-常见问题" class="headerlink" title="6. 常见问题"></a>6. 常见问题</h2><h3 id="6-1-minikube-delete失败"><a href="#6-1-minikube-delete失败" class="headerlink" title="6.1 minikube delete失败"></a>6.1 minikube delete失败</h3><p>遇到过一次minikube delete失败，报的是C:\Users\用户名.minikube\machines下某个conf文件找不到。尝试手动删除该目录会报文件被锁定，无法删除。重启后文件夹依然被锁定。<br>这个时候打开services.msc，停止“Hyper-V 虚拟机管理”服务后，就可以删除了。删除完把这个服务重新启用即可。  </p>
+<h3 id="6-2-Unable-to-connect-to-the-server"><a href="#6-2-Unable-to-connect-to-the-server" class="headerlink" title="6.2 Unable to connect to the server"></a>6.2 Unable to connect to the server</h3><p>在kubectl apply命令的时候有些时候会出现<code>Unable to connect to the server</code>的报错。这种情况下<code>kubectl get node</code>的命令也会失败。电脑重启后问题解决。原因暂不明。。。可能是minikube的bug。  </p>
+<h2 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7. 参考资料"></a>7. 参考资料</h2><p>常用操作可以参考这个官方文档：<br><a href="https://kubernetes.io/zh/docs/setup/learning-environment/minikube/">使用 Minikube 安装 Kubernetes - Kubernetes</a>  </p>
+]]></content>
+      <tags>
+        <tag>容器</tag>
+        <tag>kubernetes</tag>
+        <tag>k8s</tag>
       </tags>
   </entry>
   <entry>
@@ -2332,36 +2332,6 @@
       </tags>
   </entry>
   <entry>
-    <title>大数据的因果性和相关性</title>
-    <url>/2024/08/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%80%A7%E5%92%8C%E7%9B%B8%E5%85%B3%E6%80%A7/</url>
-    <content><![CDATA[<h2 id="大数据的相关性特性"><a href="#大数据的相关性特性" class="headerlink" title="大数据的相关性特性"></a>大数据的相关性特性</h2><p>挺巧的是，最近从不同来源听到了这个理论两次。</p>
-<p>第一次是ACE题库里的一道题：“美国海军军官莫里通过对前人航海日志的分析，绘制了新的航海日志图，表明了大风与洋流可能发生的地点，这体现了大数据分析理念中的：”<br>这道题的标准答案是：在分析方法上，更注重相关分析而不是因果分析。</p>
-<p>第二次是听播客“纵横四海”，讲瑞幸数字化。瑞幸除了把甜度、浓稠度等饮料的指标做了数字化之外，也将其和销量的反馈结合起来。但在结合的时候，并不会试图推断出甜度与销量的因果关系，而是相信数据给出的指引。<br>播客里还举了几个典型的案例，比如沃尔玛发现飓风前人们喜欢屯蛋挞。至于为什么是蛋挞，而不是薯片，也不是可乐，从因果性没法给出很好的解释。<br>还有亚马逊的案例中书籍推荐之间的相关性，医疗保险方面买车与遵医嘱信用分的相关性。<br>这时候就要反人类的本能，放弃对因果性的追究，去全身心拥抱大数据。</p>
-<p>从某个角度，LLM中对Few Shot有效性的解释，也可以从这个角度来理解。Few Shot本身并没有改变模型，但得到的结果就是更好了。即Few Shot与结果的有效性之间存在相关性。但当前的理论模型只能给出一些猜测，还无法完美证明。</p>
-<h2 id="个人对因果性与相关性的看法"><a href="#个人对因果性与相关性的看法" class="headerlink" title="个人对因果性与相关性的看法"></a>个人对因果性与相关性的看法</h2><p>对于这个现象，我的个人看法分为两点：</p>
-<ul>
-<li>接受这个事实，从实用性角度先利用起来。</li>
-<li>关注业界对于其背后原理的研究进展。</li>
-</ul>
-<p>背后的逻辑是：</p>
-<ol>
-<li>承认人类对于现实世界的理解是有限的。的确存在只发现了现象，但暂时无法完全探明其原理的事务。</li>
-<li>时间是有限的，机会是稍纵即逝的。很多时候如果一定要掌握因果性才做决策，机会点就丢失了。务实为先。</li>
-<li>但不盲信，不将现象宗教化。坚信其中被后的原理早晚是会被人类解答的。</li>
-</ol>
-<p>舍恩伯格在《大数据时代》中的观点是放弃对因果性的理解：我们没有必要非得知道现象背后的原因，而是要让数据自己发声；<br>其译者周涛的观点是不能放弃：放弃了对因果的追求，就是放弃了人凌驾计算机之上的智力优势，是人类自身的放纵和堕落。</p>
-<p>我个人还是认同不能放弃对因果性追求的观点。即使是从实用性角度，了解数据之间的因果关系，也有利于建立起更好的模型，避免明显的伪相关性。<br>典型的案例就是“冰淇淋销售量和溺水次数”的相关性，与“降雨和骑自行车的人数”的相关性。溺水预测模型明显应该排除冰激凌销量的数据，而降雨预测模型也应该排除骑自行车人数。</p>
-<p>在搜索相关观点的过程中，甚至看到了一些比较极端的观点，比如：“世界可能根本没有因果性”。对这种观点就不予置评了。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对这个topic也只是在听完播客后的理解巩固。在工作中暂时没有实际的运用场景。<br>就先推荐一下相关的不错的深入阅读文章吧。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>7.8 相关关系、因果关系和预测 | 预测：方法与实践（第三版）<br><a href="https://otexts.com/fpp3cn/causality-cn.html">https://otexts.com/fpp3cn/causality-cn.html</a><br>这本书在澳大利亚莫纳什大学用作商学本科三年级的课程教材，还贴心地有中文翻译，值得后续进一步详细阅读。在B站上还有教师英文讲课视频可以锻炼英语听力。</p>
-<p>相关性不一定等于因果性：从 Yule-Simpson’s Paradox 讲起 - 郑瀚Andrew - 博客园<br><a href="https://www.cnblogs.com/LittleHann/p/11992311.html">https://www.cnblogs.com/LittleHann/p/11992311.html</a><br>这篇文章对相关性与因果性的相关理论总结得很不错，详略得当，并加入了自己对于安全领域实践的理解。看了下作者，是阿里云安全团队的。对我司的人员能力还真的是可以信任的。</p>
-<p>EP06 瑞幸：数字化重生之路，一切无关于咖啡 - 纵横四海丨Ready Go | 小宇宙 - 听播客，上小宇宙<br><a href="https://www.xiaoyuzhoufm.com/episode/66b97c3733591c27be654491">https://www.xiaoyuzhoufm.com/episode/66b97c3733591c27be654491</a></p>
-]]></content>
-      <tags>
-        <tag>大数据</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Terraform IaC 学习Tips</title>
     <url>/2024/08/07/Terraform-IaC-%E5%AD%A6%E4%B9%A0Tips/</url>
     <content><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在之前参与资产市场产品迭代的时候，就资产市场与研发平台的打通，研发团队就提出过使用IaC，实现“一键下行”。一键下行，指的是在下行复用组件资产的时候，将组件所依赖的资源也同时自动化开通，然后自动将组件部署在新开通的资源上。<br>举个例子：假设4A组件需要依赖RDS、Redis、OSS，就在后台配置的云资源环境自动申请RDS、Redis、OSS。站在研发的视角，隐藏了资源申请的复杂性，加速了复用流程，提升了研发体验。<br>但在资产市场对外输出时，对接的云资源往往没有那么理想，必定是阿里云公共云资源，所以但是考虑过使用IaC，以适配不同的云环境。</p>
@@ -2490,6 +2460,36 @@
 ]]></content>
       <tags>
         <tag>IaC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>大数据的因果性和相关性</title>
+    <url>/2024/08/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%80%A7%E5%92%8C%E7%9B%B8%E5%85%B3%E6%80%A7/</url>
+    <content><![CDATA[<h2 id="大数据的相关性特性"><a href="#大数据的相关性特性" class="headerlink" title="大数据的相关性特性"></a>大数据的相关性特性</h2><p>挺巧的是，最近从不同来源听到了这个理论两次。</p>
+<p>第一次是ACE题库里的一道题：“美国海军军官莫里通过对前人航海日志的分析，绘制了新的航海日志图，表明了大风与洋流可能发生的地点，这体现了大数据分析理念中的：”<br>这道题的标准答案是：在分析方法上，更注重相关分析而不是因果分析。</p>
+<p>第二次是听播客“纵横四海”，讲瑞幸数字化。瑞幸除了把甜度、浓稠度等饮料的指标做了数字化之外，也将其和销量的反馈结合起来。但在结合的时候，并不会试图推断出甜度与销量的因果关系，而是相信数据给出的指引。<br>播客里还举了几个典型的案例，比如沃尔玛发现飓风前人们喜欢屯蛋挞。至于为什么是蛋挞，而不是薯片，也不是可乐，从因果性没法给出很好的解释。<br>还有亚马逊的案例中书籍推荐之间的相关性，医疗保险方面买车与遵医嘱信用分的相关性。<br>这时候就要反人类的本能，放弃对因果性的追究，去全身心拥抱大数据。</p>
+<p>从某个角度，LLM中对Few Shot有效性的解释，也可以从这个角度来理解。Few Shot本身并没有改变模型，但得到的结果就是更好了。即Few Shot与结果的有效性之间存在相关性。但当前的理论模型只能给出一些猜测，还无法完美证明。</p>
+<h2 id="个人对因果性与相关性的看法"><a href="#个人对因果性与相关性的看法" class="headerlink" title="个人对因果性与相关性的看法"></a>个人对因果性与相关性的看法</h2><p>对于这个现象，我的个人看法分为两点：</p>
+<ul>
+<li>接受这个事实，从实用性角度先利用起来。</li>
+<li>关注业界对于其背后原理的研究进展。</li>
+</ul>
+<p>背后的逻辑是：</p>
+<ol>
+<li>承认人类对于现实世界的理解是有限的。的确存在只发现了现象，但暂时无法完全探明其原理的事务。</li>
+<li>时间是有限的，机会是稍纵即逝的。很多时候如果一定要掌握因果性才做决策，机会点就丢失了。务实为先。</li>
+<li>但不盲信，不将现象宗教化。坚信其中被后的原理早晚是会被人类解答的。</li>
+</ol>
+<p>舍恩伯格在《大数据时代》中的观点是放弃对因果性的理解：我们没有必要非得知道现象背后的原因，而是要让数据自己发声；<br>其译者周涛的观点是不能放弃：放弃了对因果的追求，就是放弃了人凌驾计算机之上的智力优势，是人类自身的放纵和堕落。</p>
+<p>我个人还是认同不能放弃对因果性追求的观点。即使是从实用性角度，了解数据之间的因果关系，也有利于建立起更好的模型，避免明显的伪相关性。<br>典型的案例就是“冰淇淋销售量和溺水次数”的相关性，与“降雨和骑自行车的人数”的相关性。溺水预测模型明显应该排除冰激凌销量的数据，而降雨预测模型也应该排除骑自行车人数。</p>
+<p>在搜索相关观点的过程中，甚至看到了一些比较极端的观点，比如：“世界可能根本没有因果性”。对这种观点就不予置评了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对这个topic也只是在听完播客后的理解巩固。在工作中暂时没有实际的运用场景。<br>就先推荐一下相关的不错的深入阅读文章吧。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>7.8 相关关系、因果关系和预测 | 预测：方法与实践（第三版）<br><a href="https://otexts.com/fpp3cn/causality-cn.html">https://otexts.com/fpp3cn/causality-cn.html</a><br>这本书在澳大利亚莫纳什大学用作商学本科三年级的课程教材，还贴心地有中文翻译，值得后续进一步详细阅读。在B站上还有教师英文讲课视频可以锻炼英语听力。</p>
+<p>相关性不一定等于因果性：从 Yule-Simpson’s Paradox 讲起 - 郑瀚Andrew - 博客园<br><a href="https://www.cnblogs.com/LittleHann/p/11992311.html">https://www.cnblogs.com/LittleHann/p/11992311.html</a><br>这篇文章对相关性与因果性的相关理论总结得很不错，详略得当，并加入了自己对于安全领域实践的理解。看了下作者，是阿里云安全团队的。对我司的人员能力还真的是可以信任的。</p>
+<p>EP06 瑞幸：数字化重生之路，一切无关于咖啡 - 纵横四海丨Ready Go | 小宇宙 - 听播客，上小宇宙<br><a href="https://www.xiaoyuzhoufm.com/episode/66b97c3733591c27be654491">https://www.xiaoyuzhoufm.com/episode/66b97c3733591c27be654491</a></p>
+]]></content>
+      <tags>
+        <tag>大数据</tag>
       </tags>
   </entry>
 </search>
