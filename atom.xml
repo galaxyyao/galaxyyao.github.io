@@ -6,7 +6,7 @@
   <link href="https://galaxyyao.github.io/atom.xml" rel="self"/>
   
   <link href="https://galaxyyao.github.io/"/>
-  <updated>2024-08-23T03:06:24.467Z</updated>
+  <updated>2024-08-30T05:56:30.006Z</updated>
   <id>https://galaxyyao.github.io/</id>
   
   <author>
@@ -17,6 +17,29 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Review/Share-2024-08技术文章汇总</title>
+    <link href="https://galaxyyao.github.io/2024/08/30/Review-Share-2024-08%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0%E6%B1%87%E6%80%BB/"/>
+    <id>https://galaxyyao.github.io/2024/08/30/Review-Share-2024-08%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0%E6%B1%87%E6%80%BB/</id>
+    <published>2024-08-30T05:56:30.000Z</published>
+    <updated>2024-08-30T05:56:30.006Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;ARTS中的 Review英文技术文章点评 和 Share技术文章分享，先试点按照月为单位，每月发一篇汇总吧。每篇写一小段感想。&lt;br&gt;关于英文技术文章来源，从v2ex的推荐，找到了&lt;a href=&quot;https://devurls.com/&quot;&gt;DevURLs – A neat developer news aggregator&lt;/a&gt;的文章聚合网站。但感觉这些文章大多很短，看得不太过瘾。所以在尝试了两周后，改为根据本周关注的技术点，用英文关键字Google，选择搜索结果中质量比较高的。&lt;/p&gt;
+&lt;h2 id=&quot;Review&quot;&gt;&lt;a href=&quot;#Review&quot; class=&quot;headerlink&quot; title=&quot;Review&quot;&gt;&lt;/a&gt;Review&lt;/h2&gt;&lt;h3 id=&quot;eBPF-for-Cloud-Computing-DZone&quot;&gt;&lt;a href=&quot;#eBPF-for-Cloud-Computing-DZone&quot; class=&quot;headerlink&quot; title=&quot;eBPF for Cloud Computing - DZone&quot;&gt;&lt;/a&gt;eBPF for Cloud Computing - DZone&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://dzone.com/articles/ebpf-for-cloud-computing&quot;&gt;https://dzone.com/articles/ebpf-for-cloud-computing&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;eBPF这个术语看到过好几次，找了一篇入门介绍。主要是针对eBPF和K8S结合的场景，包括网络可观测性、安全、性能监控等用途。&lt;br&gt;eBPF的主要优势在于不用开发Linux内核模块，也能在内核执行。这点使其很适合K8S，用于包含Calico、Cilium在内的开源项目。&lt;/p&gt;
+&lt;h3 id=&quot;Improving-language-understanding-by-generative-pre-training-J&quot;&gt;&lt;a href=&quot;#Improving-language-understanding-by-generative-pre-training-J&quot; class=&quot;headerlink&quot; title=&quot;Improving language understanding by generative pre-training[J].&quot;&gt;&lt;/a&gt;Improving language understanding by generative pre-training[J].&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf&quot;&gt;https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;在B站李沐视频和内网解读文章的辅助下，读了GPT-1的论文。除了论文本身的知识点外，有2个感受：&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="review" scheme="https://galaxyyao.github.io/tags/review/"/>
+    
+    <category term="share" scheme="https://galaxyyao.github.io/tags/share/"/>
+    
+  </entry>
+  
+  <entry>
     <title>大数据的因果性和相关性</title>
     <link href="https://galaxyyao.github.io/2024/08/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%80%A7%E5%92%8C%E7%9B%B8%E5%85%B3%E6%80%A7/"/>
     <id>https://galaxyyao.github.io/2024/08/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%80%A7%E5%92%8C%E7%9B%B8%E5%85%B3%E6%80%A7/</id>
@@ -24,13 +47,15 @@
     <updated>2024-08-23T03:06:24.467Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;h2 id=&quot;大数据的相关性特性&quot;&gt;&lt;a href=&quot;#大数据的相关性特性&quot; class=&quot;headerlink&quot; title=&quot;大数据的相关性特性&quot;&gt;&lt;/a&gt;大数据的相关性特性&lt;/h2&gt;&lt;p&gt;挺巧的是，最近从不同来源听到了这个理论两次。&lt;/p&gt;
+&lt;p&gt;第一次是ACE题库里的一道题：“美国海军军官莫里通过对前人航海日志的分析，绘制了新的航海日志图，表明了大风与洋流可能发生的地点，这体现了大数据分析理念中的：”&lt;br&gt;这道题的标准答案是：在分析方法上，更注重相关分析而不是因果分析。&lt;/p&gt;
+&lt;p&gt;第二次是听播客“纵横四海”，讲瑞幸数字化。瑞幸除了把甜度、浓稠度等饮料的指标做了数字化之外，也将其和销量的反馈结合起来。但在结合的时候，并不会试图推断出甜度与销量的因果关系，而是相信数据给出的指引。&lt;br&gt;播客里还举了几个典型的案例，比如沃尔玛发现飓风前人们喜欢屯蛋挞。至于为什么是蛋挞，而不是薯片，也不是可乐，从因果性没法给出很好的解释。&lt;br&gt;还有亚马逊的案例中书籍推荐之间的相关性，医疗保险方面买车与遵医嘱信用分的相关性。&lt;br&gt;这时候就要反人类的本能，放弃对因果性的追究，去全身心拥抱大数据。&lt;/p&gt;
+&lt;p&gt;从某个角度，LLM中对Few Shot有效性的解释，也可以从这个角度来理解。Few Shot本身并没有改变模型，但得到的结果就是更好了。即Few Shot与结果的有效性之间存在相关性。但当前的理论模型只能给出一些猜测，还无法完美证明。&lt;/p&gt;
+&lt;h2 id=&quot;个人对因果性与相关性的看法&quot;&gt;&lt;a href=&quot;#个人对因果性与相关性的看法&quot; class=&quot;headerlink&quot; title=&quot;个人对因果性与相关性的看法&quot;&gt;&lt;/a&gt;个人对因果性与相关性的看法&lt;/h2&gt;&lt;p&gt;对于这个现象，我的个人看法分为两点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;接受这个事实，从实用性角度先利用起来。&lt;/li&gt;
+&lt;li&gt;关注业界对于其背后原理的研究进展。&lt;/li&gt;
+&lt;/ul&gt;</summary>
     
     
     
@@ -47,13 +72,11 @@
     <updated>2024-08-23T09:48:43.621Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;在之前参与资产市场产品迭代的时候，就资产市场与研发平台的打通，研发团队就提出过使用IaC，实现“一键下行”。一键下行，指的是在下行复用组件资产的时候，将组件所依赖的资源也同时自动化开通，然后自动将组件部署在新开通的资源上。&lt;br&gt;举个例子：假设4A组件需要依赖RDS、Redis、OSS，就在后台配置的云资源环境自动申请RDS、Redis、OSS。站在研发的视角，隐藏了资源申请的复杂性，加速了复用流程，提升了研发体验。&lt;br&gt;但在资产市场对外输出时，对接的云资源往往没有那么理想，必定是阿里云公共云资源，所以但是考虑过使用IaC，以适配不同的云环境。&lt;/p&gt;
+&lt;p&gt;接下来即将开始的工作，可能也会涉及大量而频繁的云资源开通。最近在做Demo的时候，就深感开通和销毁云资源这个繁琐的事情有多浪费时间。&lt;br&gt;以程序员的偷懒本性，自然想到了使用IaC来提升效率。&lt;/p&gt;
+&lt;p&gt;概念和快速入门指引可以直接查阅&lt;a href=&quot;#ref&quot;&gt;参考资料&lt;/a&gt;，就不copy &amp;amp; paste了。只记录一些个人觉得实践时需要关注的点。&lt;br&gt;由于自家的关系，以下云资源默认为阿里公共云。&lt;/p&gt;
+&lt;h3 id=&quot;Terraform-vs-阿里云ROS&quot;&gt;&lt;a href=&quot;#Terraform-vs-阿里云ROS&quot; class=&quot;headerlink&quot; title=&quot;Terraform vs. 阿里云ROS&quot;&gt;&lt;/a&gt;Terraform vs. 阿里云ROS&lt;/h3&gt;&lt;p&gt;对于个人而言，暂时没精力掌握两种IaC语法。考虑到跨云平台的资源编排和管理，优先选择了Terraform。&lt;/p&gt;
+&lt;h2 id=&quot;业务场景&quot;&gt;&lt;a href=&quot;#业务场景&quot; class=&quot;headerlink&quot; title=&quot;业务场景&quot;&gt;&lt;/a&gt;业务场景&lt;/h2&gt;&lt;p&gt;IaC核心是版本控制和可重复，实现提效、降低误操作、一致性与合规安全。&lt;br&gt;适合IaC的业务场景是什么？企业上云、环境复制、环境重建、合规管控等。&lt;/p&gt;</summary>
     
     
     
@@ -70,13 +93,16 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;h2 id=&quot;1-保理的概念&quot;&gt;&lt;a href=&quot;#1-保理的概念&quot; class=&quot;headerlink&quot; title=&quot;1.保理的概念&quot;&gt;&lt;/a&gt;1.保理的概念&lt;/h2&gt;&lt;p&gt;保理，从本质上来说，就是应收账款的融资服务。&lt;br&gt;举个场景:某桂园向某混凝土公司A采购了2000吨水泥，应收账款100万。但由于账期原因，应收账款是按照季度结算。但公司A因为款项没有即时结清，产生了资金周转问题。于是公司A就将应收账款以折扣价转让给了保理商B。保理商B给供应公司A提供了融资，并通知某桂园回款后续不再打给公司A，而是打给保理商自己。季末某桂园将回款打给了保理商B。保理商B在融资和回款的差价里赚到了收益。&lt;br&gt;整个流程可以参见下图&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/%E9%87%91%E8%9E%8D%E4%B8%9A%E5%8A%A1-%E4%B8%8D%E5%8A%A8%E4%BA%A7%E4%BF%9D%E7%90%86%E4%B8%9A%E5%8A%A1%E5%85%A5%E9%97%A8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/factoring-process.jpeg&quot; alt=&quot;保理业务流程&quot;&gt;  &lt;/p&gt;
+&lt;p&gt;在这个最基础的流程中，有三方：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;卖方:某混凝公司A，也可以称为债权方、上游&lt;/li&gt;
+&lt;li&gt;买方:某桂园，也可以称为债务方、下游&lt;/li&gt;
+&lt;li&gt;保理商:分为商业机构进行的商业保理和银行保理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;1-1-正向保理和反向保理&quot;&gt;&lt;a href=&quot;#1-1-正向保理和反向保理&quot; class=&quot;headerlink&quot; title=&quot;1.1 正向保理和反向保理&quot;&gt;&lt;/a&gt;1.1 正向保理和反向保理&lt;/h3&gt;&lt;p&gt;保理这个概念产生的时候，都是由拥有融资需要的卖方主动发起的。但卖方拿到融资却不供货转身跑路的情况，也不是不会发生。这种情况下，买方当然也不会为没有收到的货而白白付钱。保理为了尽量避坏账，会对卖方的资质和规模进行要求。&lt;br&gt;但现实中很常见的情况是：上游的卖方是中小企业，无法达成资质规模要求，尽调难度也很大；而下游买方是龙头企业，拥有较高的资信程度。为了在这种场景下也能让保理商放心融资，会由卖方（混凝土公司A）找买方（某桂园）做担保，由买方主动发起保理申请。买方为了保证上游供应链的稳定，出面找保理商做担保：公司A确实是我的上游供应商，我们有商务合作。如果你能信得过我的话（大企业的授信担保），就给公司A融资，然后在一定时间段后到我这里兑回款。保理商相信了A的资信，给公司A提供了融资。&lt;br&gt;在这里出现了一个&lt;strong&gt;核心企业&lt;/strong&gt;的概念。核心企业是供应链中的概念,是供应链中的关键节点，资信程度较高（AA＋是基本门槛）。  &lt;/p&gt;
+&lt;p&gt;在保理流程中，核心企业是保理的发起方。核心企业的类型也是区分正向保理和反向保理的关键判断因素。核心企业是卖家，就是正向保理；核心企业是买家，就是反向保理。这里的“正”和“反”指的是相关交易链的方向。  &lt;/p&gt;</summary>
     
     
     
@@ -93,13 +119,19 @@
     <updated>2021-05-21T05:43:19.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;p&gt;本文是极客时间&lt;a href=&quot;https://time.geekbang.org/column/intro/63&quot;&gt;《赵成的运维体系管理课》&lt;/a&gt;的读后体会之二 。  &lt;/p&gt;
+&lt;h2 id=&quot;1-对故障的认识&quot;&gt;&lt;a href=&quot;#1-对故障的认识&quot; class=&quot;headerlink&quot; title=&quot;1.对故障的认识&quot;&gt;&lt;/a&gt;1.对故障的认识&lt;/h2&gt;&lt;p&gt;ITIL的10个重要的IT管理关键模块之一就是故障管理。&lt;br&gt;&lt;strong&gt;故障永远只是表面现象，其背后技术和管理上的问题才是根因&lt;/strong&gt;  &lt;/p&gt;
+&lt;p&gt;即当技术和管理上的问题积累到一定程度后，就会以故障的形式爆发出来。所以不能仅将眼光限于故障本身和直接责任人。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;管理者要先自我反省:员工只是执行者，管理者的责任永远大于执行者&lt;/li&gt;
+&lt;li&gt;强调用技术解决问题，而不是单纯地靠增加管理流程和检查环节来解决问题&lt;ul&gt;
+&lt;li&gt;短期可以辅以一些管理措施，比如靠宣传学习必要的Double Check&amp;#x2F;制定复杂操作的Checklist等。但是这些只能作为辅助手段，一定不能是常态&lt;/li&gt;
+&lt;li&gt;随着系统复杂度越来越高，迟早有一天会超出单纯人力的认知范围和掌控能力，各种人力的管理成本也会随之上升，所以最终必须将这些人为动作转化到技术平台中去&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;2-故障的定级&quot;&gt;&lt;a href=&quot;#2-故障的定级&quot; class=&quot;headerlink&quot; title=&quot;2.故障的定级&quot;&gt;&lt;/a&gt;2.故障的定级&lt;/h2&gt;&lt;p&gt;故障需要有标准化的流程来指导我们的处理过程。  &lt;/p&gt;
+&lt;p&gt;这里有个关键组织:故障应急小组。这个组织有4个职责：  &lt;/p&gt;</summary>
     
     
     
@@ -116,13 +148,19 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;p&gt;本文是极客时间&lt;a href=&quot;https://time.geekbang.org/column/intro/63&quot;&gt;《赵成的运维体系管理课》&lt;/a&gt;的读后体会之一。  &lt;/p&gt;
+&lt;h2 id=&quot;运维配置管理实践中一些混乱现象&quot;&gt;&lt;a href=&quot;#运维配置管理实践中一些混乱现象&quot; class=&quot;headerlink&quot; title=&quot;运维配置管理实践中一些混乱现象&quot;&gt;&lt;/a&gt;运维配置管理实践中一些混乱现象&lt;/h2&gt;&lt;p&gt;在公司的运维配置管理实践中，存在一些混乱的现象：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;信息安全收到fastjson的安全问题报告，但报告中的服务器对应的系统却有错位&lt;/li&gt;
+&lt;li&gt;信息安全收到了报告，发现tomcat的某个版本出现了漏洞需要升级，但不知道到底影响到哪些系统，只能逐个请每个系统的负责人判断&lt;/li&gt;
+&lt;li&gt;部分服务器（特别是开发坏境服务器）已经基本可以确认不再被使用，但服务器资源没有回收，每月持续占用硬件预算&lt;/li&gt;
+&lt;li&gt;某系统上线后发现中漏配置了一个域名，导致部分用户打开首页报错&lt;/li&gt;
+&lt;li&gt;redis缺少规划，多个系统公用一个redis集群的情况下，无法根据键（key）来区分每个系统占用了多少缓存。遇到内存不足的情况很难深入排查是哪个系统导致&lt;/li&gt;
+&lt;li&gt;生产消息队列中不少queue堆积着大量消息，但不知道是否还在用，不敢随意删除&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这些情况很可能短期甚至长期内不会直接导致什么问题。可能就是让信息安全整理材料多费一点时间，开发排查多绕一点弯路，或多花一些硬件维持或扩容费用。但有些时候这些问题就是给未来出现的生产问题埋下隐患。&lt;br&gt;硬件的归属，服务器的使用情况，应用域名管理，软件版本，应用与中间件的关联等等，都属于广义上的配置管理。所以归根到底，是配置管理的混乱。  &lt;/p&gt;
+&lt;h2 id=&quot;ITIL和配置管理CMDB&quot;&gt;&lt;a href=&quot;#ITIL和配置管理CMDB&quot; class=&quot;headerlink&quot; title=&quot;ITIL和配置管理CMDB&quot;&gt;&lt;/a&gt;ITIL和配置管理CMDB&lt;/h2&gt;&lt;p&gt;在ITIL（Information Technology Infrastrueture Library）中，有10个重要的IT管理关键模块。其中配置管理（CMDB）通常被认为是其他IT流程的基础。&lt;br&gt;CMDB（Configuration Managoment DataBase），配置管理数据库，是与IT系统所有组件相关的信息库。它包含IT基础架构配置项的详细信息。&lt;br&gt;在传统运维时代，CMDB的核心对象是资源，即网络和硬件设备。但在云计算和互联网运维时代，CMB的核心已经转变为了“应用”。随着微服务架构的推广，以应用为核心的注册中心、缓存、消息队列、数据库等都需要纳入配置管理的管理范畴。  &lt;/p&gt;
+&lt;p&gt;以应用为核心的配置管理标准化可以包括：  &lt;/p&gt;</summary>
     
     
     
@@ -139,13 +177,15 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;p&gt;疫情期间积累了一些远程办公条件下的项目管理经验，稍微整理一下。我司从企业文化到网络硬件，不太具备远程办公的基因，要补课的地方就额外多。  &lt;/p&gt;
+&lt;h2 id=&quot;1-按小团队划分并设定第一责任人&quot;&gt;&lt;a href=&quot;#1-按小团队划分并设定第一责任人&quot; class=&quot;headerlink&quot; title=&quot;1. 按小团队划分并设定第一责任人&quot;&gt;&lt;/a&gt;1. 按小团队划分并设定第一责任人&lt;/h2&gt;&lt;p&gt;亚马逊CEO贝索斯提到过一个原则：如果两个披萨饼都喂不饱一个团队，那么这个团队可能就太大了。按照这个逻辑，我的团队可能只能容纳两个人。。。&lt;br&gt;玩笑开完了。但事实就是，对于一般人来说，能较好管理5~6个就已经是不错了。当团队人数超过这个规模，需要将团队拆分为6-10人的小团队规模，增加汇报层级，才能管得过来。&lt;br&gt;每个小团队可以包含前端、后端和测试，而数据库、UI等共享资源单独一个团队。  &lt;/p&gt;
+&lt;p&gt;对每个小团队需要指定一个第一责任人（以下简称“责任人”）。这个责任人需要有以下的素质：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对小团队成员知根知底&lt;/li&gt;
+&lt;li&gt;快速响应的执行力和跟进能力&lt;/li&gt;
+&lt;li&gt;对任务目标有充分的理解&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;2-通知走大群，信息收集走小群&quot;&gt;&lt;a href=&quot;#2-通知走大群，信息收集走小群&quot; class=&quot;headerlink&quot; title=&quot;2. 通知走大群，信息收集走小群&quot;&gt;&lt;/a&gt;2. 通知走大群，信息收集走小群&lt;/h2&gt;&lt;h3 id=&quot;2-1-通知&quot;&gt;&lt;a href=&quot;#2-1-通知&quot; class=&quot;headerlink&quot; title=&quot;2.1 通知&quot;&gt;&lt;/a&gt;2.1 通知&lt;/h3&gt;&lt;p&gt;远程办公期间的通知事项会比较多。邮件通知方式不能确保所有人都会在第一时间查看邮件。&lt;br&gt;通过即时通信的群通知，可以确保绝大部分人都能第一时间看到并响应。&lt;br&gt;即时通信大群的注意点：  &lt;/p&gt;</summary>
     
     
     
@@ -162,13 +202,10 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;p&gt;春节期间看完了极客时间的《说透中台》的课程，顺便也读了《企业IT架构转型之道-阿里巴巴中台战略思想与架构实战》一书。这篇从实际项目的角度来想象一下，如果让我来负责公司的中台，应该怎么做。&lt;br&gt;首先说下评价：这个课程符合我对ThoughtWorks的刻板印象：有点滥用理论术语，干货不多；问题题了不少，解决方案不落地。可能是都是给其他公司做的项目，有保密协议的缘故。能理解，但还是不推荐。阿里的那本中台书更加实在。  &lt;/p&gt;
+&lt;h2 id=&quot;1-中台概念整理&quot;&gt;&lt;a href=&quot;#1-中台概念整理&quot; class=&quot;headerlink&quot; title=&quot;1. 中台概念整理&quot;&gt;&lt;/a&gt;1. 中台概念整理&lt;/h2&gt;&lt;h3 id=&quot;1-1-中台的目的&quot;&gt;&lt;a href=&quot;#1-1-中台的目的&quot; class=&quot;headerlink&quot; title=&quot;1.1 中台的目的&quot;&gt;&lt;/a&gt;1.1 中台的目的&lt;/h3&gt;&lt;p&gt;中台的目的就是企业能力复用。  &lt;/p&gt;
+&lt;h3 id=&quot;1-2-中台的分类&quot;&gt;&lt;a href=&quot;#1-2-中台的分类&quot; class=&quot;headerlink&quot; title=&quot;1.2 中台的分类&quot;&gt;&lt;/a&gt;1.2 中台的分类&lt;/h3&gt;&lt;p&gt;中台主流分为两大类：业务中台&amp;#x2F;数据中台。业务中台产生数据，数据中台做数据的二次加工，并将结果再服务于业务中台。&lt;br&gt;也有“技术中台”的概念，可以理解为一些技术中间件的整合和封装，但我倾向于不将其认定为中台。&lt;br&gt;中台强调一个复用。如果根本没有系统从零开始建设，一上来就搞中台很容易会过度设计。  &lt;/p&gt;
+&lt;h2 id=&quot;2-中台的抓手&quot;&gt;&lt;a href=&quot;#2-中台的抓手&quot; class=&quot;headerlink&quot; title=&quot;2. 中台的抓手&quot;&gt;&lt;/a&gt;2. 中台的抓手&lt;/h2&gt;&lt;p&gt;中台会面对所有业务线的需求。虽然中台有企业级的属性，但不代表建设中台的时候必须梳理企业的全业务线。中台的愿景是能力复用，那么最好有具体的新业务作为抓手。  &lt;/p&gt;</summary>
     
     
     
@@ -185,13 +222,40 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;p&gt;上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。&lt;br&gt;只靠Docker Desktop，平时开发的时候起个数据库或redis是足够用了，但像service mesh之类的就玩不了了。趁年前有空，搭了一套Minikube，把步骤顺便记录一下。原本想合并到之前kubeadm安装的&lt;a href=&quot;https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/&quot;&gt;那篇&lt;/a&gt;里，但可能会翻起来不方便，还是单独另开一篇吧。&lt;br&gt;后续“Kubernetes实战”系列都会基于minikube环境来搭建。  &lt;/p&gt;
+&lt;h2 id=&quot;1-软硬件条件&quot;&gt;&lt;a href=&quot;#1-软硬件条件&quot; class=&quot;headerlink&quot; title=&quot;1. 软硬件条件&quot;&gt;&lt;/a&gt;1. 软硬件条件&lt;/h2&gt;&lt;p&gt;现在内存也不值钱了，插个16G足够玩了。&lt;br&gt;操作系统上，虽然Windows 10家庭版+VirtualBox&amp;#x2F;VMWare也可以，但从硬件利用率角度，还是用Windows 10企业版&amp;#x2F;专业版&amp;#x2F;教育版+Hyper-V比较好。&lt;br&gt;在控制面板-&amp;gt;程序-&amp;gt;启动或关闭Windows 功能 里面打开所有Hyper-V选项然后重启。&lt;br&gt;重启后运行systeminfo，看到如下内容，说明操作系统层面已经ok了：  &lt;/p&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Hyper-V 要求:     已检测到虚拟机监控程序。将不显示 Hyper-V 所需的功能。&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;Docker Desktop是否安装不影响，但在安装Minikube的过程中最好不要启动。在安装过程中报过一个&lt;code&gt;create: precreate: no External vswitch nor Default Switch found&lt;/code&gt;的报错，不确定是不是相关。&lt;br&gt;顺带提一句，如果装了Docker Desktop，可以在Settings-&amp;gt;Daemon-&amp;gt;Registry mirrors里填写：&lt;code&gt;https://dockerhub.azk8s.cn&lt;/code&gt;、&lt;code&gt;http://hub-mirror.c.163.com&lt;/code&gt;和&lt;code&gt;https://docker.mirrors.ustc.edu.cn&lt;/code&gt;&lt;br&gt;另外感谢这篇&lt;a href=&quot;https://xuxinkun.github.io/2019/06/11/cn-registry/&quot;&gt;docker&amp;#x2F;kubernetes国内源&amp;#x2F;镜像源解决方式 - xinkun的博客 | Xinkun Blog&lt;/a&gt;的整理，我也复制一下备忘：  &lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;global&lt;/th&gt;
+&lt;th&gt;proxy in China&lt;/th&gt;
+&lt;th&gt;format&lt;/th&gt;
+&lt;th&gt;example&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;dockerhub (docker.io)&lt;/td&gt;
+&lt;td&gt;dockerhub.azk8s.cn&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;dockerhub.azk8s.cn/&amp;lt;repo-name&amp;gt;/&amp;lt;image-name&amp;gt;:&amp;lt;version&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;dockerhub.azk8s.cn&amp;#x2F;microsoft&amp;#x2F;azure-cli:2.0.61 dockerhub.azk8s.cn&amp;#x2F;library&amp;#x2F;nginx:1.15&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;gcr.io&lt;/td&gt;
+&lt;td&gt;gcr.azk8s.cn&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;gcr.azk8s.cn/&amp;lt;repo-name&amp;gt;/&amp;lt;image-name&amp;gt;:&amp;lt;version&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;gcr.azk8s.cn&amp;#x2F;google_containers&amp;#x2F;hyperkube-amd64:v1.13.5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;quay.io&lt;/td&gt;
+&lt;td&gt;quay.azk8s.cn&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;quay.azk8s.cn/&amp;lt;repo-name&amp;gt;/&amp;lt;image-name&amp;gt;:&amp;lt;version&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;quay.azk8s.cn&amp;#x2F;deis&amp;#x2F;go-dev:v1.10.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2 id=&quot;2-网络条件&quot;&gt;&lt;a href=&quot;#2-网络条件&quot; class=&quot;headerlink&quot; title=&quot;2. 网络条件&quot;&gt;&lt;/a&gt;2. 网络条件&lt;/h2&gt;&lt;p&gt;以防万一请先关闭Windows防火墙。&lt;br&gt;因为你懂的那个原因，需要本地搞个SS的梯子。如果哪个步骤因为网络原因卡住了，可以切成代理再试一次。  &lt;/p&gt;</summary>
     
     
     
@@ -212,13 +276,15 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;h1 id=&quot;1-微服务的公共API模块&quot;&gt;&lt;a href=&quot;#1-微服务的公共API模块&quot; class=&quot;headerlink&quot; title=&quot;1. 微服务的公共API模块&quot;&gt;&lt;/a&gt;1. 微服务的公共API模块&lt;/h1&gt;&lt;p&gt;微服务之间调用进程会出现DTO实体类的重复定义。比如服务A的接口返回User实体，服务B接收的时候，也需要定义一个同样的User实体。&lt;br&gt;在引入了Feign后，就有了一个避免项目间重复定义实体类的简单方案：我们可以在服务A开发的时候专门抽出来一个API模块。  &lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/java-project-dependency.jpg&quot; alt=&quot;API公共模块&quot;&gt;  &lt;/p&gt;
+&lt;p&gt;这个API模块可以包含接口方法定义，URI以及和对外实体类定义（DTO），可以认为是A和B之间互通的约定。&lt;br&gt;一个最简单的API模块代码如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Data&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@AllArgsConstructor&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@NoArgsConstructor&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title class_&quot;&gt;DemoDto&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;title class_&quot;&gt;Serializable&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String text;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@RequestMapping(&amp;quot;/demo&amp;quot;)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title class_&quot;&gt;DemoApiService&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;meta&quot;&gt;@GetMapping(&amp;quot;/hello&amp;quot;)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    DemoDto &lt;span class=&quot;title function_&quot;&gt;hello&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;服务A的Controller负责对接口定义进行实现：  &lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@RestController&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title class_&quot;&gt;DemoProducerController&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;title class_&quot;&gt;DemoApiService&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;meta&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; DemoDto &lt;span class=&quot;title function_&quot;&gt;hello&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;title class_&quot;&gt;DemoDto&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&amp;quot;hello&amp;quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;服务A项目将API模块发布到Maven私服上。服务B项目只需要对API模块添加依赖：&lt;/p&gt;</summary>
     
     
     
@@ -237,13 +303,28 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;p&gt;微服务的开发模式下，联调和服务注册一旦涉及多个环境（开发&amp;#x2F;SIT&amp;#x2F;UAT），就会变得有些复杂。本文总结一下我们在此问题上尝试过的几个workaround，以及最终推荐的方案。&lt;/p&gt;
+&lt;h1 id=&quot;1-背景&quot;&gt;&lt;a href=&quot;#1-背景&quot; class=&quot;headerlink&quot; title=&quot;1. 背景&quot;&gt;&lt;/a&gt;1. 背景&lt;/h1&gt;&lt;p&gt;以下描述的案例中，将我们所拥有的服务精简为三个：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;um：用户微服务&lt;/li&gt;
+&lt;li&gt;ent：企业微服务&lt;/li&gt;
+&lt;li&gt;bi：BI微服务&lt;br&gt;ent会调用um；bi会调用ent和um。&lt;br&gt;网络环境分成办公网段和开发环境网段。办公网段可以访问开发环境网段，但开发环境网段无法访问办公网段。&lt;br&gt;三个微服务都被打包成镜像，以单副本Pod的形式部署在K8S云的开发环境节点上。&lt;br&gt;服务注册使用Nacos，网关路由使用的是Zuul。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-1.jpg&quot; alt=&quot;部署环境&quot;&gt;  &lt;/p&gt;
+&lt;h1 id=&quot;2-单环境内部请求流程&quot;&gt;&lt;a href=&quot;#2-单环境内部请求流程&quot; class=&quot;headerlink&quot; title=&quot;2. 单环境内部请求流程&quot;&gt;&lt;/a&gt;2. 单环境内部请求流程&lt;/h1&gt;&lt;p&gt;如果只考虑SIT环境，整个服务注册+请求的处理流程可以简单描述如下：  &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;um-sit服务（um的sit环境，下同）启动，将自己的service ip注册到Nacos服务端&lt;/li&gt;
+&lt;li&gt;ent-sit服务启动，将自己的service ip注册到Nacos服务端&lt;/li&gt;
+&lt;li&gt;前端web对http:&amp;#x2F;&amp;#x2F;域名&amp;#x2F;api&amp;#x2F;ent-sit 的某个接口发起请求&lt;/li&gt;
+&lt;li&gt;通过K8S Ingress的域名映射，找到了Zuul应用&lt;/li&gt;
+&lt;li&gt;Zuul向Nacos查询ent-sit的地址，得到ip：172.0.0.2。这个是ent-sit的service内部ip&lt;/li&gt;
+&lt;li&gt;Zuul将请求转给ent-sit的service，Pod里的ent-sit容器中的应用接收到请求，开始处理&lt;/li&gt;
+&lt;li&gt;ent-sit容器在处理过程中需要解析token，于是向Zuul请求um-sit&lt;/li&gt;
+&lt;li&gt;Zuul向Nacos查询um-sit的地址，得到ip：172.0.0.1。这个是um-sit的service内部ip&lt;/li&gt;
+&lt;li&gt;Zuul将请求转给um-sit。um处理完token，返回用户信息&lt;/li&gt;
+&lt;li&gt;ent-sit处理结束，将结果返回给Zuul&lt;/li&gt;
+&lt;li&gt;Zuul将结果转给前端web，流程结束&lt;/li&gt;
+&lt;/ol&gt;</summary>
     
     
     
@@ -264,13 +345,15 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;p&gt;从Oracle或MySQL切换到PostgreSQL（以下简称pgsql）后，多少有些不一样的地方需要适应。这里就将和开发相关的一些区别挂一漏万地列举一下。  &lt;/p&gt;
+&lt;h2 id=&quot;1-Schema模式&quot;&gt;&lt;a href=&quot;#1-Schema模式&quot; class=&quot;headerlink&quot; title=&quot;1. Schema模式&quot;&gt;&lt;/a&gt;1. Schema模式&lt;/h2&gt;&lt;p&gt;和Oracle与MySQL一样，pgsql中也有TableSpace（表空间），用于定义用来存放表示数据库对象的文件的位置。&lt;br&gt;但在Schema（模式）的定义上，三者有很大的差别。&lt;br&gt;对于MySQL，模式与数据库同义。甚至可以用&lt;code&gt;CREATE SCHEMA&lt;/code&gt;来创建数据库，效果和&lt;code&gt;CREATE DATABASE&lt;/code&gt;一样。&lt;br&gt;对于Oracle，schema与数据库用户密切相关：  &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A schema is a collection of logical structures of data, or schema objects. A schema is owned by a database user and has the same name as that user. Each user owns a single schema.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;而pgsql中，层次结果如下：&lt;br&gt;&lt;img src=&quot;/images/%E6%95%B0%E6%8D%AE%E5%BA%93-%E8%BD%AC%E5%88%B0PostgreSQL%E7%9A%84%E6%96%B0%E6%89%8BTips/pgsql-hierarchy.png&quot; alt=&quot;PostgreSQL Hierachy&quot;&gt;   &lt;/p&gt;
+&lt;p&gt;从图中可以看到，schema是database与table中间的一层。可以理解为命名空间类似的概念。当新创建一个数据库时，pgsql会默认创建一个public schema。如果没有指定的话，就是以public schema来操作各种数据对象。  例如：&lt;code&gt;CREATE TABLE products ( ... )&lt;/code&gt; 等同于 &lt;code&gt;CREATE TABLE public.products ( ... ) &lt;/code&gt;&lt;br&gt;schema不能互相嵌套。同一个schema下不能有重复的对象名字，但在不同schema下可以重复。&lt;br&gt;schema与database的差别在于schema不是严格分离的：一个用户可以访问他所连接的数据库中的任意模式中的对象。  &lt;/p&gt;
+&lt;p&gt;对于数据库管理人员来说，还需要了解一下授权相关的差别，但在本文中就略过了。更多可以参考这篇：&lt;a href=&quot;http://mysql.taobao.org/monthly/2016/05/03/&quot;&gt;PostgreSQL · 特性分析 · 逻辑结构和权限体系&lt;/a&gt;  &lt;/p&gt;
+&lt;h3 id=&quot;1-1-Schema与开发相关&quot;&gt;&lt;a href=&quot;#1-1-Schema与开发相关&quot; class=&quot;headerlink&quot; title=&quot;1.1 Schema与开发相关&quot;&gt;&lt;/a&gt;1.1 Schema与开发相关&lt;/h3&gt;</summary>
     
     
     
@@ -291,13 +374,12 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;p&gt;搜了一下中文技术博客上似乎没有相关的文章，就简要翻译一下。  &lt;/p&gt;
+&lt;h1 id=&quot;需求&quot;&gt;&lt;a href=&quot;#需求&quot; class=&quot;headerlink&quot; title=&quot;需求&quot;&gt;&lt;/a&gt;需求&lt;/h1&gt;&lt;p&gt;假设公司内部有非常多Maven项目，需要deploy到一个内部maven私有仓库中。&lt;br&gt;如果希望&lt;code&gt;maven deploy&lt;/code&gt;命令可以成功执行，一般需要在&lt;code&gt;pom.xml&lt;/code&gt;中添加：  &lt;/p&gt;
+&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;distributionManagement&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;repository&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;id&lt;/span&gt;&amp;gt;&lt;/span&gt;nexus-site&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;id&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;url&lt;/span&gt;&amp;gt;&lt;/span&gt;http://central_nexus/server&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;url&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;repository&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;distributionManagement&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;但需要deploy的项目很多的情况下，我们肯定不希望在每个项目的pom文件中都重复添加这个配置。  &lt;/p&gt;
+&lt;h1 id=&quot;方案一&quot;&gt;&lt;a href=&quot;#方案一&quot; class=&quot;headerlink&quot; title=&quot;方案一&quot;&gt;&lt;/a&gt;方案一&lt;/h1&gt;&lt;p&gt;为所有项目增加一个公共的parent pom项目。那么只需要在这个项目的pom文件中添加：  &lt;/p&gt;
+&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;&amp;lt;?xml version=&lt;span class=&quot;string&quot;&gt;&amp;quot;1.0&amp;quot;&lt;/span&gt; encoding=&lt;span class=&quot;string&quot;&gt;&amp;quot;UTF-8&amp;quot;&lt;/span&gt;?&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;project&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;xmlns&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&amp;quot;http://maven.apache.org/POM/4.0.0&amp;quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;xmlns:xsi&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;     &lt;span class=&quot;attr&quot;&gt;xsi:schemaLocation&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&amp;quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&amp;quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;modelVersion&lt;/span&gt;&amp;gt;&lt;/span&gt;4.0.0&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;modelVersion&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;your.company&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;company-parent&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;1.0.0-SNAPSHOT&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;packaging&lt;/span&gt;&amp;gt;&lt;/span&gt;pom&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;packaging&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;distributionManagement&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;repository&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;id&lt;/span&gt;&amp;gt;&lt;/span&gt;nexus-site&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;id&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;url&lt;/span&gt;&amp;gt;&lt;/span&gt;http://central_nexus/server&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;url&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;repository&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;distributionManagement&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;project&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
     
     
     
@@ -314,13 +396,12 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;p&gt;本篇主要针对的是Jenkins服务器处在局域网中，无法连上互联网的情况下如何做自动化部署。&lt;br&gt;本文对网络的架设是：有内部的git服务器，yum私有仓库，nexus Repository OSS私有仓库和npm私有仓库。如果这些条件都没有，可能你们还是本地开发机上打包稍微快一些。  &lt;/p&gt;
+&lt;h3 id=&quot;1-安装&quot;&gt;&lt;a href=&quot;#1-安装&quot; class=&quot;headerlink&quot; title=&quot;1. 安装&quot;&gt;&lt;/a&gt;1. 安装&lt;/h3&gt;&lt;h4 id=&quot;1-1-安装必要依赖&quot;&gt;&lt;a href=&quot;#1-1-安装必要依赖&quot; class=&quot;headerlink&quot; title=&quot;1.1 安装必要依赖&quot;&gt;&lt;/a&gt;1.1 安装必要依赖&lt;/h4&gt;&lt;p&gt;Jenkins的必要依赖是JDK。后续自动化部署的必要依赖是git，Maven和Node.js。&lt;br&gt;具体的安装步骤就不详述了。rpm安装（针对JDK）或私有YUM仓库安装都可以。&lt;br&gt;例如私有YUM仓库中openjdk，直接运行&lt;code&gt;yum install java-1.8.0-openjdk.x86_64&lt;/code&gt; 即可。  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Maven私有仓库配置&lt;/strong&gt;&lt;br&gt;Maven打包的时候默认会从公网的仓库拉取依赖的第三方库。我们需要将其改为指向私有仓库。&lt;br&gt;首先可以通过如下两条命令之一获得配置文件地址： &lt;/p&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;mvn --version&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;mvn -e -X&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;假设&lt;code&gt;settings.xml&lt;/code&gt;文件的位置在&lt;code&gt;/etc/maven/&lt;/code&gt;路径下。&lt;br&gt;编辑该文件内容：  &lt;/p&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;vi /etc/maven/settings.xml&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
     
     
     
@@ -341,13 +422,16 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;h1 id=&quot;起因&quot;&gt;&lt;a href=&quot;#起因&quot; class=&quot;headerlink&quot; title=&quot;起因&quot;&gt;&lt;/a&gt;起因&lt;/h1&gt;&lt;p&gt;最近在整理代码规范，按照之前oracle的习惯，定了以下的字段长度设定规范：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;名称字段：varchar(200)&lt;/li&gt;
+&lt;li&gt;较长的名称字段&amp;#x2F;简介字段：varchar(500)&lt;/li&gt;
+&lt;li&gt;特别长的描述字段： varchar(2000)&lt;/li&gt;
+&lt;li&gt;超过2000中文字的字段：text&lt;br&gt;为什么是200长度，而不是100或300，也是拍脑袋想的，类似DND里的房规。&lt;br&gt;但在被问起为什么不设置为经常见到的varchar(255)时，一时回答不上来。趁这个机会，把字段长度这块的知识汇总梳理一下。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;为什么会经常被设置为varchar-255&quot;&gt;&lt;a href=&quot;#为什么会经常被设置为varchar-255&quot; class=&quot;headerlink&quot; title=&quot;为什么会经常被设置为varchar(255)&quot;&gt;&lt;/a&gt;为什么会经常被设置为varchar(255)&lt;/h1&gt;&lt;p&gt;MySQL 4.1版本之前，varchar的最大长度是255 byte字节（也有一说是5.0.3版本之前）。查了下这个版本发布都是2004年的事情了。惯性真恐怖，我可不相信还有多少系统是从2004年升级过来的。  &lt;/p&gt;
+&lt;h1 id=&quot;varchar-50-和varchar-255-有性能上的差别么？&quot;&gt;&lt;a href=&quot;#varchar-50-和varchar-255-有性能上的差别么？&quot; class=&quot;headerlink&quot; title=&quot;varchar(50)和varchar(255)有性能上的差别么？&quot;&gt;&lt;/a&gt;varchar(50)和varchar(255)有性能上的差别么？&lt;/h1&gt;&lt;p&gt;对于INNODB，&lt;code&gt;varchar(50)&lt;/code&gt;和&lt;code&gt;varchar(255)&lt;/code&gt;这两者在存放方式上完全一样：1-2 byte保存长度，实际的字符串存放在另外的位置，每个字符1 byte到4 byte不定（视编码和实际存储的字符而定）。所以将一个字段从varchar(50)长度改成varchar(100)长度不会导致表的重建。但如果把长度从varchar(50)改成varchar(256)就不一样了，表示长度会需要用到2 byte或更多。  &lt;/p&gt;
+&lt;p&gt;既然255长度以下对INNODB都一样，而且我们平时基本上也不太会使用到MYISAM，那么是不是为了省心，我们就可以把255长度以下的字段的类型都设置成varchar(255)了呢？&lt;br&gt;非也。&lt;br&gt;因为内存表介意。&lt;br&gt;虽然我们不会明文创建内存表，但所有的中间结果都会被数据库引擎存放在内存表。我们可以通过EXPLAIN或者SHOW STATUS可以查看MYSQL是否使用了内存表用来帮助完成某个操作。&lt;br&gt;而内存表会按照固定长度来保存。以utf-8编码为例，对于varchar(255)，每一行所占用的内存就是长度的2 byte + 3 * 255 byte。对于100条数据，光一个varchar字段就占约1GB内存。如果我们该用varchar(50)，就可以剩下来约80%的内存空间。&lt;br&gt;除此之外，255长度也可能会对索引造成坑。MySQL在5.6版本及之前的最大长度是767 byte。但MySQL 5.5版本后开始支持4个byte的字符集utf8mb4（沙雕表情用到的字符太多，长度不够用）。255 * 4 &amp;gt; 767，所以索引就放不下varchar(255)长度的字段了。虽然MySQL在5.7版本后将限制改成了3072 byte，但如果是多字段的联合索引还是有可能会超过这个限制。  &lt;/p&gt;</summary>
     
     
     
@@ -366,13 +450,13 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;p&gt;有部分老Web系统只有在IE下才能正常打开。其中有一部分是即使polyfill也没法搞定的兼容性原因，另一部分就是因为使用到了ActiveX。后者中我接触到的就有金格控件和泛微OA的。&lt;br&gt;对于新开发的Portal系统，没有余力为了迁就IE，对每个功能还额外做兼容性测试。于是剩下的方案就是在单点登录跳转到相应的页面的时候，指定使用IE打开。&lt;br&gt;其实这个功能并不罕见。比如腾讯的网站上经常有点击图标打开QQ，而淘宝网页上也有很多点击打开阿里旺旺。从原理上，这是利用到了Windows自定义协议URI Scheme。  &lt;/p&gt;
+&lt;h1 id=&quot;URI-Scheme&quot;&gt;&lt;a href=&quot;#URI-Scheme&quot; class=&quot;headerlink&quot; title=&quot;URI Scheme&quot;&gt;&lt;/a&gt;URI Scheme&lt;/h1&gt;&lt;p&gt;自定义协议从本质上就是修改注册表。官方资料可以参考这篇&lt;a href=&quot;https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa767914(v=vs.85)&quot;&gt;Registering an Application to a URI Scheme (Windows) | Microsoft Docs&lt;/a&gt;&lt;br&gt;官方给了一个范例，注册一个alert:&amp;#x2F;&amp;#x2F;的协议，点击后打开自定义的alert.exe。  &lt;/p&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;HKEY_CLASSES_ROOT&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   alert&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      (Default) = &amp;quot;URL:Alert Protocol&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      URL Protocol = &amp;quot;&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      DefaultIcon&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;         (Default) = &amp;quot;alert.exe,1&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      shell&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;         open&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            command&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;               (Default) = &amp;quot;C:&#92;Program Files&#92;Alert&#92;alert.exe&amp;quot; &amp;quot;%1&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;h1 id=&quot;方案1&quot;&gt;&lt;a href=&quot;#方案1&quot; class=&quot;headerlink&quot; title=&quot;方案1&quot;&gt;&lt;/a&gt;方案1&lt;/h1&gt;&lt;p&gt;能看出这是一种比较通用的方案。能打开自定义的alert.exe，自然也能打开IE。所以只要将以下内容保存为test.reg，点击运行后就能将注册表项导入：  &lt;/p&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Windows Registry Editor Version 5.00  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[HKEY_CLASSES_ROOT&#92;openIE]  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@=&amp;quot;URL:OpenIE Protocol&amp;quot;  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;quot;URL Protocol&amp;quot;=&amp;quot;&amp;quot;  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[HKEY_CLASSES_ROOT&#92;openIE&#92;DefaultIcon]  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@=&amp;quot;iexplore.exe,1&amp;quot;  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[HKEY_CLASSES_ROOT&#92;openIE&#92;shell]  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[HKEY_CLASSES_ROOT&#92;openIE&#92;shell&#92;open]  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[HKEY_CLASSES_ROOT&#92;openIE&#92;shell&#92;open&#92;command]  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;@=&amp;quot;cmd /c set m=%1 &amp;amp; call set m=%%m:openIE:=%% &amp;amp; call &#92;&amp;quot;C:&#92;&#92;Program Files&#92;&#92;Internet Explorer&#92;&#92;iexplore.exe&#92;&amp;quot; %%m%% &amp;amp; exit&amp;quot;  &lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;与微软官方范例的差别在于将协议改为了openIE:&amp;#x2F;&amp;#x2F;（这个不重要），以及最后的命令改为了一串很长的：  &lt;/p&gt;</summary>
     
     
     
@@ -391,13 +475,15 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;p&gt;我们在上一篇已经将Dockerfile精简为了：  &lt;/p&gt;
+&lt;figure class=&quot;highlight dockerfile&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;FROM&lt;/span&gt; nginx:alpine&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;language-bash&quot;&gt; ./dist /usr/share/nginx/html&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;但相信你也发现了，内容中还是对web服务器有着强依赖。当我们想换成其他版本的Nginx镜像，或换成其他Web服务器，就必须修改源代码中的Dockerfile，重新制作镜像。&lt;br&gt;这种情况并非不可能。典型的场景之一：我们镜像所依赖的Nginx或tomcat版本出现了某个安全事故，而该问题可以通过将web服务器或web容器版本升级到最新版本解决。&lt;br&gt;所以我们希望能在Dockerfile中将Nginx的痕迹彻底抹除，只在Kubernetes的YAML中指定web服务器。  &lt;/p&gt;
+&lt;p&gt;一个很自然的想法就是：我们使用一个默认的web服务器镜像。在使用该镜像的容器启动之前，将静态网站的文件拷贝到相应目录，就像在前一篇从ConfigMap获取配置文件一样。&lt;br&gt;这就是initContainer的作用。  &lt;/p&gt;
+&lt;h2 id=&quot;1-initContainer&quot;&gt;&lt;a href=&quot;#1-initContainer&quot; class=&quot;headerlink&quot; title=&quot;1. initContainer&quot;&gt;&lt;/a&gt;1. initContainer&lt;/h2&gt;&lt;p&gt;我们首先将镜像改为alpine，并修改COPY的路径：  &lt;/p&gt;
+&lt;figure class=&quot;highlight dockerfile&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;FROM&lt;/span&gt; alpine:latest&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;language-bash&quot;&gt; ./dist /html&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;重新编译为latest版本（这是为了强制每次重新拉取镜像）：  &lt;/p&gt;</summary>
     
     
     
@@ -418,13 +504,15 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;p&gt;虽然我们已经成功地将一个静态网站成功地在Kubernetes里部署起来了，但还有很多细节可以完善。我们就在这一节里逐步优化。  &lt;/p&gt;
+&lt;h2 id=&quot;1-ConfigMap&quot;&gt;&lt;a href=&quot;#1-ConfigMap&quot; class=&quot;headerlink&quot; title=&quot;1. ConfigMap&quot;&gt;&lt;/a&gt;1. ConfigMap&lt;/h2&gt;&lt;p&gt;问题最明显的是。重温一下我们静态网站之前使用的Dockerfile：  &lt;/p&gt;
+&lt;figure class=&quot;highlight dockerfile&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;FROM&lt;/span&gt; nginx:alpine&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;language-bash&quot;&gt; default.conf /etc/nginx/conf.d/default.conf&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;language-bash&quot;&gt; ./dist /usr/share/nginx/html&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;首先是Nginx配置default.conf。&lt;br&gt;网站的源代码不应该干涉网站怎么部署。到底部署在Apache，Nginx还是Node.js，是否要在部署的时候添加自定义Header，都不该是开发者关注的事情。我们也不希望修改网站的timeout配置还需要动到源代码。从耦合性的角度来看，这个Nginx网站的配置文件不应该放到源代码中。&lt;br&gt;对于这类配置文件，Kubernetes里有专门的对象ConfigMap来保存。  &lt;/p&gt;
+&lt;p&gt;从ConfigMap这个名字就可以猜得到，它存储的是配置信息，存储的格式是Map类型，即键值对。&lt;br&gt;配置信息可以是像本篇中的Nginx config配置，可以设置环境变量，可以是Java的properties和application.yml配置文件，可以是Redis和MySQL的配置文件。它很适合需要在一套Kubernetes集群上部署多个环境（例如特性分支&amp;#x2F;sit&amp;#x2F;uat）的情况。（当然我们的Java应用将使用Spring Cloud Config配置中心，所以目前不会用ConfigMap管理配置）&lt;br&gt;本篇POC的ConfigMap如下：  &lt;/p&gt;
+&lt;figure class=&quot;highlight yaml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;apiVersion:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;v1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;kind:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;ConfigMap&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;metadata:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;poc-web-config&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;labels:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;app:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;poc-web&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;data:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;default.conf:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;|&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;    server &amp;#123;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;        listen       80;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;        server_name  localhost;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;string&quot;&gt;charset&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;utf-8;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;#access_log  /var/log/nginx/log/host.access.log  main;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;string&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;/&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;string&quot;&gt;root&lt;/span&gt;   &lt;span class=&quot;string&quot;&gt;/usr/share/nginx/html;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;string&quot;&gt;index&lt;/span&gt;  &lt;span class=&quot;string&quot;&gt;index.html&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;index.htm;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;#error_page  404              /404.html;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;# redirect server error pages to the static page /50x.html&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;#&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;string&quot;&gt;error_page&lt;/span&gt;   &lt;span class=&quot;number&quot;&gt;500&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;502&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;503&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;504&lt;/span&gt;  &lt;span class=&quot;string&quot;&gt;/50x.html;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;string&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;/50x.html&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;string&quot;&gt;root&lt;/span&gt;   &lt;span class=&quot;string&quot;&gt;/usr/share/nginx/html;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;default.conf为key（键），下面的内容为value（值）。结构非常简单。&lt;br&gt;在Kubernetes中，ConfigMap是一种特殊的Volume（卷）：Projected Volume。可以认为ConfigMap是Kubernetes中的数据被投射（Project）到容器中的。&lt;br&gt;关于Volume我们会在后续展开讨论，这里只是先提一下：要在容器中使用volume，需要先在spec中定义，然后mount到容器中。所以添加了ConfigMap后的Deployment定义YAML如下：  &lt;/p&gt;</summary>
     
     
     
@@ -445,13 +533,17 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;p&gt;在上一篇中，通过NodePort模式，其实我们已经可以将一系列Pod暴露给集群外。但Service最多只能做好OSI 4层的负载均衡。而OSI 7层的负载均衡需要交给Ingress。&lt;br&gt;简单解释一下，2层的负载均衡就是虚拟MAC地址接收请求；3层的负载均衡就是虚拟IP地址；4层就是基于IP + 端口；7层就涉及URI等应用层。&lt;br&gt;以下文会提到的Traefik官方的一张图来说明，Ingress的作用就是根据不同的域名，正确找到对应的后台的Service：&lt;br&gt;&lt;img src=&quot;/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/traefik-architecture.png&quot; alt=&quot;Traefik作用&quot;&gt;&lt;br&gt;在Service接到请求后，再负责转交给Pod：&lt;br&gt;&lt;img src=&quot;/images/%E5%AE%B9%E5%99%A8-11-Kubernetes%E5%AE%9E%E6%88%98-Ingress%E4%B8%8ETraefik/k8s-ingress-service.png&quot; alt=&quot;Kubernetes Service与Deployment&quot;&gt;  &lt;/p&gt;
+&lt;p&gt;要使用Ingress需要先安装一个Ingress Controller。一般比较常用的有两个：Nginx Ingress Controller和Traefik Ingress Controller。在我做POC的过程中一开始选择Nginx Ingress Controller，但总是curl调不通，于是最终选择了Traefik。Traefik还多带了一个UI不错的后台管理admin dashboard。而Nginx的不少功能需要用Nginx Plus版的才有。虽然也很理解，毕竟Nginx也是要恰饭的。。。&lt;br&gt;需要说明一点：虽然Nginx本身可以同时担任静态网站web server和反向代理两种职责，但Nginx Ingress Controller只负责反向代理。&lt;br&gt;Ingress Controller除了这两个之外，还是有F5的、Kong的和Voyager等等。从这里就可以看到Kubernetes的一大特点：指定了方向，让各厂家和开源开发者发挥自己的特长来做实现。  &lt;/p&gt;
+&lt;h2 id=&quot;1-Traefik-Ingress安装&quot;&gt;&lt;a href=&quot;#1-Traefik-Ingress安装&quot; class=&quot;headerlink&quot; title=&quot;1. Traefik Ingress安装&quot;&gt;&lt;/a&gt;1. Traefik Ingress安装&lt;/h2&gt;&lt;p&gt;安装按照&lt;a href=&quot;https://docs.traefik.io/v1.7/user-guide/kubernetes/&quot;&gt;官方文档&lt;/a&gt;一步步做就行了。&lt;br&gt;先配置RBAC（关于RBAC我们之后详细介绍）：  &lt;/p&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;kubectl apply -f https://raw.githubusercontent.com/containous/traefik/v1.7/examples/k8s/traefik-rbac.yaml&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;然后配置Ingress Controller和对应的Service，对外暴露http的80端口和admin的8080端口。&lt;br&gt;Ingress Controller有两种部署方式：Deployment和DaemonSet。DaemonSet是一种特殊的Pod：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在每个节点上有且仅有一个Pod实例&lt;/li&gt;
+&lt;li&gt;当有新Worker节点加入时，自动在新节点上创建；旧节点被删除后，上面的DaemonSet Pod会被自动回收&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;两种方式各有各的好处。官方文档上都有详细比较，并在最后很贴心地对选择困难症给了建议：遇事不决先用DaemonSet试试。那么作为POC我就却之不恭选择DaemonSet了。反正要吃后悔药也就是几个命令的事情。  &lt;/p&gt;</summary>
     
     
     
@@ -472,40 +564,15 @@
     <updated>2021-04-30T05:34:34.000Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
-    
-    
-    
-    
-    <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
-    
-    <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
-    
-    <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为</title>
-    <link href="https://galaxyyao.github.io/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/"/>
-    <id>https://galaxyyao.github.io/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/</id>
-    <published>2019-06-24T16:00:00.000Z</published>
-    <updated>2021-04-30T05:34:34.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;p&gt;Deployment只是保证了支撑服务的Pod的数量，但是没有解决如何访问这些服务的问题。一个Pod只是一个运行服务的实例，随时可能在一个节点上停止，在另一个节点以一个新的IP启动一个新的Pod。因此不能以确定的IP和端口号提供服务。&lt;br&gt;要稳定地提供服务，需要服务发现和负载均衡能力。服务发现是一个微服务中很基础的概念，即当服务提供者网络发生变化时，服务消费者能及时获得最新的位置信息。对于k8s来说，服务提供者就是Pod，提供服务发现能力的是Service。Deployment和Service分别负责Pod的部署和访问策略，互不相关。&lt;br&gt;所以从下面这张图也可以看出来，Service和Deployment并不是上下层级的关系。  &lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/k8s-deployment-service.png&quot; alt=&quot;Kubernetes Service与Deployment&quot;&gt;  &lt;/p&gt;
+&lt;h2 id=&quot;1-Service-YAML&quot;&gt;&lt;a href=&quot;#1-Service-YAML&quot; class=&quot;headerlink&quot; title=&quot;1. Service YAML&quot;&gt;&lt;/a&gt;1. Service YAML&lt;/h2&gt;&lt;p&gt;一个简单的Service YAML模板如下：  &lt;/p&gt;
+&lt;figure class=&quot;highlight yaml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;apiVersion:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;v1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;kind:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;Service&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;metadata:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;lt;endpoint-name&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;spec:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;ports:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;bullet&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;port:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;lt;port&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;lt;port-name&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;targetPort:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;lt;target-port-number&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;selector:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;app:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;lt;app-name&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;可以看到它是由selector.app来选择需要暴露的Pod。spec.ports.port是service对外暴露的端口，而targetPort是Pod的端口。默认使用TCP协议。&lt;br&gt;对于我们的POC的网站，service YAML定义如下：  &lt;/p&gt;
+&lt;figure class=&quot;highlight yaml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;apiVersion:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;v1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;kind:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;Service&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;metadata:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;poc-web-service&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;spec:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;ports:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;bullet&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;port:&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;80&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;web&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;targetPort:&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;80&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;selector:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;app:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;poc-web&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;当我们查看已部署的service的时候，可以看到该service对应的ip：  &lt;/p&gt;</summary>
     
     
     

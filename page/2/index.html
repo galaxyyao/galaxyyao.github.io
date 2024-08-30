@@ -188,6 +188,99 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/12/09/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="姚皓(Hao Yao)">
+      <meta itemprop="description" content="姚皓的技术博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Galaxy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/09/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/" class="post-title-link" itemprop="url">Java-Feign+服务注册的多环境方案</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-09 00:00:00" itemprop="dateCreated datePublished" datetime="2019-12-09T00:00:00+08:00">2019-12-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-30 13:34:34" itemprop="dateModified" datetime="2021-04-30T13:34:34+08:00">2021-04-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>微服务的开发模式下，联调和服务注册一旦涉及多个环境（开发&#x2F;SIT&#x2F;UAT），就会变得有些复杂。本文总结一下我们在此问题上尝试过的几个workaround，以及最终推荐的方案。</p>
+<h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h1><p>以下描述的案例中，将我们所拥有的服务精简为三个：</p>
+<ul>
+<li>um：用户微服务</li>
+<li>ent：企业微服务</li>
+<li>bi：BI微服务<br>ent会调用um；bi会调用ent和um。<br>网络环境分成办公网段和开发环境网段。办公网段可以访问开发环境网段，但开发环境网段无法访问办公网段。<br>三个微服务都被打包成镜像，以单副本Pod的形式部署在K8S云的开发环境节点上。<br>服务注册使用Nacos，网关路由使用的是Zuul。</li>
+</ul>
+<p><img src="/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-1.jpg" alt="部署环境">  </p>
+<h1 id="2-单环境内部请求流程"><a href="#2-单环境内部请求流程" class="headerlink" title="2. 单环境内部请求流程"></a>2. 单环境内部请求流程</h1><p>如果只考虑SIT环境，整个服务注册+请求的处理流程可以简单描述如下：  </p>
+<ol>
+<li>um-sit服务（um的sit环境，下同）启动，将自己的service ip注册到Nacos服务端</li>
+<li>ent-sit服务启动，将自己的service ip注册到Nacos服务端</li>
+<li>前端web对http:&#x2F;&#x2F;域名&#x2F;api&#x2F;ent-sit 的某个接口发起请求</li>
+<li>通过K8S Ingress的域名映射，找到了Zuul应用</li>
+<li>Zuul向Nacos查询ent-sit的地址，得到ip：172.0.0.2。这个是ent-sit的service内部ip</li>
+<li>Zuul将请求转给ent-sit的service，Pod里的ent-sit容器中的应用接收到请求，开始处理</li>
+<li>ent-sit容器在处理过程中需要解析token，于是向Zuul请求um-sit</li>
+<li>Zuul向Nacos查询um-sit的地址，得到ip：172.0.0.1。这个是um-sit的service内部ip</li>
+<li>Zuul将请求转给um-sit。um处理完token，返回用户信息</li>
+<li>ent-sit处理结束，将结果返回给Zuul</li>
+<li>Zuul将结果转给前端web，流程结束</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/12/09/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/09/22/%E6%95%B0%E6%8D%AE%E5%BA%93-%E8%BD%AC%E5%88%B0PostgreSQL%E7%9A%84%E6%96%B0%E6%89%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -899,84 +992,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="姚皓(Hao Yao)">
-      <meta itemprop="description" content="姚皓的技术博客">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Galaxy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/" class="post-title-link" itemprop="url">容器-9-Kubernetes实战-当你拍下kubectl命令背后的行为</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2019-06-25T00:00:00+08:00">2019-06-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-30 13:34:34" itemprop="dateModified" datetime="2021-04-30T13:34:34+08:00">2021-04-30</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>我们上一章部署都是通过神奇的kubectl命令。我们这章就探寻一下，当我们拍下kubectl命令到Pod成功启动之间，Kubernetes究竟做了一些什么事情。<br>先上一张总的架构图，下面提到每个组件的时候可以在这张架构图上找位置，以及和其他组件间的关联关系：<br><img src="/images/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/k8s-architecture.png" alt="Kubernetes component architecture">  </p>
-<h2 id="1-全流程"><a href="#1-全流程" class="headerlink" title="1. 全流程"></a>1. 全流程</h2><h3 id="1-1-Kubectl"><a href="#1-1-Kubectl" class="headerlink" title="1.1 Kubectl"></a>1.1 Kubectl</h3><p>kubectl是用于针对Kubernetes集群运行命令的命令行接口。<br>虽然我们是在Master节点上执行运行的kubectl，但其实kubectl也可以在本地安装，与k8s的api server远程通信交互。<br>kubectl在接到apply命令后，会先做一个基本的验证。如果要创建的资源不合法，或YAML格式错误，就会快速失败。<br>除了通过kubectl之外，也可以直接调用api，或通过dashboard UI等多种方式与api server通信。  </p>
-<p>在通信之前，kubectl需要先进行身份认证。认证信息保存在$HOME&#x2F;.kube&#x2F;config文件里，大致内容如下：  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@docker-4 .kube]# pwd</span><br><span class="line">/root/.kube</span><br><span class="line">[root@docker-4 .kube]# cat config</span><br><span class="line">apiVersion: v1</span><br><span class="line">clusters:</span><br><span class="line">- cluster:</span><br><span class="line">    certificate-authority-data: &lt;证书授权信息&gt;</span><br><span class="line">    server: https://10.16.34.54:6443</span><br><span class="line">  name: kubernetes</span><br><span class="line">contexts:</span><br><span class="line">- context:</span><br><span class="line">    cluster: kubernetes</span><br><span class="line">    user: kubernetes-admin</span><br><span class="line">  name: kubernetes-admin@kubernetes</span><br><span class="line">current-context: kubernetes-admin@kubernetes</span><br><span class="line">kind: Config</span><br><span class="line">preferences: &#123;&#125;</span><br><span class="line">users:</span><br><span class="line">- name: kubernetes-admin</span><br><span class="line">  user:</span><br><span class="line">    client-certificate-data: &lt;客户端证书数据&gt;</span><br></pre></td></tr></table></figure>
-
-<p>config文件中的clusters.cluster.server就是要访问的api server的地址</p>
-<h3 id="1-2-kube-apiserver"><a href="#1-2-kube-apiserver" class="headerlink" title="1.2 kube-apiserver"></a>1.2 kube-apiserver</h3>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/06/25/%E5%AE%B9%E5%99%A8-9-Kubernetes%E5%AE%9E%E6%88%98-%E5%BD%93%E4%BD%A0%E6%8B%8D%E4%B8%8Bkubectl%E5%91%BD%E4%BB%A4%E8%83%8C%E5%90%8E%E7%9A%84%E8%A1%8C%E4%B8%BA/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1046,14 +1061,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-count">36</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
