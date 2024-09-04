@@ -17,13 +17,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"galaxyyao.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"galaxyyao.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="问题症状与解决方法Oracle服务器由于无法上外网，所以做了个crontab的定时任务，每天定时和内部的一台ntp服务器同步。但没过两周，时间又不准了，差了近10秒。首先排除了这个时间差是在凌晨同步完后的几小时内造成的。以“ntpdate crontab”作为关键字搜索，很容易找到了原因：坑爹的crontab重置了PATH环境变量，所以执行ntpdate命令的时候报“command not fou">
 <meta property="og:type" content="article">
 <meta property="og:title" content="crontab ntpdate同步失败与Linux环境变量">
-<meta property="og:url" content="https://galaxyyao.github.io/2019/05/23/crontab-ntpdate%E5%90%8C%E6%AD%A5%E5%A4%B1%E8%B4%A5%E4%B8%8ELinux%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/index.html">
+<meta property="og:url" content="https://galaxyyao.top/2019/05/23/crontab-ntpdate%E5%90%8C%E6%AD%A5%E5%A4%B1%E8%B4%A5%E4%B8%8ELinux%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/index.html">
 <meta property="og:site_name" content="Galaxy">
 <meta property="og:description" content="问题症状与解决方法Oracle服务器由于无法上外网，所以做了个crontab的定时任务，每天定时和内部的一台ntp服务器同步。但没过两周，时间又不准了，差了近10秒。首先排除了这个时间差是在凌晨同步完后的几小时内造成的。以“ntpdate crontab”作为关键字搜索，很容易找到了原因：坑爹的crontab重置了PATH环境变量，所以执行ntpdate命令的时候报“command not fou">
 <meta property="og:locale" content="zh_CN">
@@ -33,7 +33,7 @@
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://galaxyyao.github.io/2019/05/23/crontab-ntpdate%E5%90%8C%E6%AD%A5%E5%A4%B1%E8%B4%A5%E4%B8%8ELinux%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/">
+<link rel="canonical" href="https://galaxyyao.top/2019/05/23/crontab-ntpdate%E5%90%8C%E6%AD%A5%E5%A4%B1%E8%B4%A5%E4%B8%8ELinux%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/">
 
 
 <script id="page-configurations">
@@ -191,7 +191,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/05/23/crontab-ntpdate%E5%90%8C%E6%AD%A5%E5%A4%B1%E8%B4%A5%E4%B8%8ELinux%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.top/2019/05/23/crontab-ntpdate%E5%90%8C%E6%AD%A5%E5%A4%B1%E8%B4%A5%E4%B8%8ELinux%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">

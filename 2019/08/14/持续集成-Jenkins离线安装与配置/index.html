@@ -17,13 +17,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"galaxyyao.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"galaxyyao.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="本篇主要针对的是Jenkins服务器处在局域网中，无法连上互联网的情况下如何做自动化部署。本文对网络的架设是：有内部的git服务器，yum私有仓库，nexus Repository OSS私有仓库和npm私有仓库。如果这些条件都没有，可能你们还是本地开发机上打包稍微快一些。   1. 安装1.1 安装必要依赖Jenkins的必要依赖是JDK。后续自动化部署的必要依赖是git，Maven和Node.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="持续集成-Jenkins离线安装与配置">
-<meta property="og:url" content="https://galaxyyao.github.io/2019/08/14/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:url" content="https://galaxyyao.top/2019/08/14/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="Galaxy">
 <meta property="og:description" content="本篇主要针对的是Jenkins服务器处在局域网中，无法连上互联网的情况下如何做自动化部署。本文对网络的架设是：有内部的git服务器，yum私有仓库，nexus Repository OSS私有仓库和npm私有仓库。如果这些条件都没有，可能你们还是本地开发机上打包稍微快一些。   1. 安装1.1 安装必要依赖Jenkins的必要依赖是JDK。后续自动化部署的必要依赖是git，Maven和Node.">
 <meta property="og:locale" content="zh_CN">
@@ -35,7 +35,7 @@
 <meta property="article:tag" content="Jenkins">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://galaxyyao.github.io/2019/08/14/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">
+<link rel="canonical" href="https://galaxyyao.top/2019/08/14/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">
 
 
 <script id="page-configurations">
@@ -193,7 +193,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/08/14/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.top/2019/08/14/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-Jenkins%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">

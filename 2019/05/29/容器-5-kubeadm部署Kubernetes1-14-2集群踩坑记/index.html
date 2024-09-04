@@ -17,13 +17,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"galaxyyao.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"galaxyyao.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="一般情况下我不喜欢把部署手册放到blog里。绝大多数情况下官网已经足够详尽，而且blog很可能因为版本陈旧误人子弟。曾经我写过Nginx的二进制部署手册，早就被轻松愉快的yum安装扫进了废纸堆。而使用了Docker和K8s后yum安装方式也被迅速淘汰。Hadoop的部署也被Cloudera全自动化部署替代了。但kubernetes的部署由于涉及科学上网的问题，把原本几个命令就能解决的问题搞得相当复">
 <meta property="og:type" content="article">
 <meta property="og:title" content="容器-5-kubeadm部署Kubernetes1.14.2集群踩坑记">
-<meta property="og:url" content="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/index.html">
+<meta property="og:url" content="https://galaxyyao.top/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Galaxy">
 <meta property="og:description" content="一般情况下我不喜欢把部署手册放到blog里。绝大多数情况下官网已经足够详尽，而且blog很可能因为版本陈旧误人子弟。曾经我写过Nginx的二进制部署手册，早就被轻松愉快的yum安装扫进了废纸堆。而使用了Docker和K8s后yum安装方式也被迅速淘汰。Hadoop的部署也被Cloudera全自动化部署替代了。但kubernetes的部署由于涉及科学上网的问题，把原本几个命令就能解决的问题搞得相当复">
 <meta property="og:locale" content="zh_CN">
@@ -35,7 +35,7 @@
 <meta property="article:tag" content="k8s">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/">
+<link rel="canonical" href="https://galaxyyao.top/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/">
 
 
 <script id="page-configurations">
@@ -193,7 +193,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.top/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">

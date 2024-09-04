@@ -17,13 +17,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"galaxyyao.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"galaxyyao.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="起因最近在整理代码规范，按照之前oracle的习惯，定了以下的字段长度设定规范：    名称字段：varchar(200) 较长的名称字段&#x2F;简介字段：varchar(500) 特别长的描述字段： varchar(2000) 超过2000中文字的字段：text为什么是200长度，而不是100或300，也是拍脑袋想的，类似DND里的房规。但在被问起为什么不设置为经常见到的varchar(25">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL-没有必要的varchar(255)长度及存储汉字问题汇总">
-<meta property="og:url" content="https://galaxyyao.github.io/2019/07/30/MySQL-%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E7%9A%84varchar-255-%E9%95%BF%E5%BA%A6%E5%8F%8A%E5%AD%98%E5%82%A8%E6%B1%89%E5%AD%97%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:url" content="https://galaxyyao.top/2019/07/30/MySQL-%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E7%9A%84varchar-255-%E9%95%BF%E5%BA%A6%E5%8F%8A%E5%AD%98%E5%82%A8%E6%B1%89%E5%AD%97%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/index.html">
 <meta property="og:site_name" content="Galaxy">
 <meta property="og:description" content="起因最近在整理代码规范，按照之前oracle的习惯，定了以下的字段长度设定规范：    名称字段：varchar(200) 较长的名称字段&#x2F;简介字段：varchar(500) 特别长的描述字段： varchar(2000) 超过2000中文字的字段：text为什么是200长度，而不是100或300，也是拍脑袋想的，类似DND里的房规。但在被问起为什么不设置为经常见到的varchar(25">
 <meta property="og:locale" content="zh_CN">
@@ -34,7 +34,7 @@
 <meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://galaxyyao.github.io/2019/07/30/MySQL-%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E7%9A%84varchar-255-%E9%95%BF%E5%BA%A6%E5%8F%8A%E5%AD%98%E5%82%A8%E6%B1%89%E5%AD%97%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/">
+<link rel="canonical" href="https://galaxyyao.top/2019/07/30/MySQL-%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E7%9A%84varchar-255-%E9%95%BF%E5%BA%A6%E5%8F%8A%E5%AD%98%E5%82%A8%E6%B1%89%E5%AD%97%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/">
 
 
 <script id="page-configurations">
@@ -192,7 +192,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/07/30/MySQL-%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E7%9A%84varchar-255-%E9%95%BF%E5%BA%A6%E5%8F%8A%E5%AD%98%E5%82%A8%E6%B1%89%E5%AD%97%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.top/2019/07/30/MySQL-%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E7%9A%84varchar-255-%E9%95%BF%E5%BA%A6%E5%8F%8A%E5%AD%98%E5%82%A8%E6%B1%89%E5%AD%97%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">

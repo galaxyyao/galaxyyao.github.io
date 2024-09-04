@@ -17,20 +17,20 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"galaxyyao.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"galaxyyao.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="微服务的开发模式下，联调和服务注册一旦涉及多个环境（开发&#x2F;SIT&#x2F;UAT），就会变得有些复杂。本文总结一下我们在此问题上尝试过的几个workaround，以及最终推荐的方案。 1. 背景以下描述的案例中，将我们所拥有的服务精简为三个：  um：用户微服务 ent：企业微服务 bi：BI微服务ent会调用um；bi会调用ent和um。网络环境分成办公网段和开发环境网段。办公网段可">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java-Feign+服务注册的多环境方案">
-<meta property="og:url" content="https://galaxyyao.github.io/2019/12/09/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:url" content="https://galaxyyao.top/2019/12/09/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/index.html">
 <meta property="og:site_name" content="Galaxy">
 <meta property="og:description" content="微服务的开发模式下，联调和服务注册一旦涉及多个环境（开发&#x2F;SIT&#x2F;UAT），就会变得有些复杂。本文总结一下我们在此问题上尝试过的几个workaround，以及最终推荐的方案。 1. 背景以下描述的案例中，将我们所拥有的服务精简为三个：  um：用户微服务 ent：企业微服务 bi：BI微服务ent会调用um；bi会调用ent和um。网络环境分成办公网段和开发环境网段。办公网段可">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://galaxyyao.github.io/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-1.jpg">
-<meta property="og:image" content="https://galaxyyao.github.io/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-2.jpg">
-<meta property="og:image" content="https://galaxyyao.github.io/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/service-registration-workaround-1.jpg">
-<meta property="og:image" content="https://galaxyyao.github.io/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-probem.jpg">
+<meta property="og:image" content="https://galaxyyao.top/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-1.jpg">
+<meta property="og:image" content="https://galaxyyao.top/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-2.jpg">
+<meta property="og:image" content="https://galaxyyao.top/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/service-registration-workaround-1.jpg">
+<meta property="og:image" content="https://galaxyyao.top/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-probem.jpg">
 <meta property="article:published_time" content="2019-12-08T16:00:00.000Z">
 <meta property="article:modified_time" content="2021-04-30T05:34:34.000Z">
 <meta property="article:author" content="姚皓(Galaxy Yao)">
@@ -38,9 +38,9 @@
 <meta property="article:tag" content="Spring Cloud">
 <meta property="article:tag" content="Feign">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://galaxyyao.github.io/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-1.jpg">
+<meta name="twitter:image" content="https://galaxyyao.top/images/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/sevice-registration-1.jpg">
 
-<link rel="canonical" href="https://galaxyyao.github.io/2019/12/09/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/">
+<link rel="canonical" href="https://galaxyyao.top/2019/12/09/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/">
 
 
 <script id="page-configurations">
@@ -198,7 +198,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/12/09/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.top/2019/12/09/Java-Feign-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E7%9A%84%E5%A4%9A%E7%8E%AF%E5%A2%83%E6%96%B9%E6%A1%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">

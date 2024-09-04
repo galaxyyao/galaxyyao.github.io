@@ -17,13 +17,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"galaxyyao.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"galaxyyao.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。只靠Docker Desktop，平时开发的时候起个数据库或re">
 <meta property="og:type" content="article">
 <meta property="og:title" content="容器-14-国内Windows10环境安装Minikube">
-<meta property="og:url" content="https://galaxyyao.github.io/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/index.html">
+<meta property="og:url" content="https://galaxyyao.top/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/index.html">
 <meta property="og:site_name" content="Galaxy">
 <meta property="og:description" content="上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。只靠Docker Desktop，平时开发的时候起个数据库或re">
 <meta property="og:locale" content="zh_CN">
@@ -35,7 +35,7 @@
 <meta property="article:tag" content="k8s">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://galaxyyao.github.io/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/">
+<link rel="canonical" href="https://galaxyyao.top/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/">
 
 
 <script id="page-configurations">
@@ -193,7 +193,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.top/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -237,7 +237,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。<br>只靠Docker Desktop，平时开发的时候起个数据库或redis是足够用了，但像service mesh之类的就玩不了了。趁年前有空，搭了一套Minikube，把步骤顺便记录一下。原本想合并到之前kubeadm安装的<a href="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/">那篇</a>里，但可能会翻起来不方便，还是单独另开一篇吧。<br>后续“Kubernetes实战”系列都会基于minikube环境来搭建。  </p>
+        <p>上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。<br>只靠Docker Desktop，平时开发的时候起个数据库或redis是足够用了，但像service mesh之类的就玩不了了。趁年前有空，搭了一套Minikube，把步骤顺便记录一下。原本想合并到之前kubeadm安装的<a target="_blank" rel="noopener" href="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/">那篇</a>里，但可能会翻起来不方便，还是单独另开一篇吧。<br>后续“Kubernetes实战”系列都会基于minikube环境来搭建。  </p>
 <h2 id="1-软硬件条件"><a href="#1-软硬件条件" class="headerlink" title="1. 软硬件条件"></a>1. 软硬件条件</h2><p>现在内存也不值钱了，插个16G足够玩了。<br>操作系统上，虽然Windows 10家庭版+VirtualBox&#x2F;VMWare也可以，但从硬件利用率角度，还是用Windows 10企业版&#x2F;专业版&#x2F;教育版+Hyper-V比较好。<br>在控制面板-&gt;程序-&gt;启动或关闭Windows 功能 里面打开所有Hyper-V选项然后重启。<br>重启后运行systeminfo，看到如下内容，说明操作系统层面已经ok了：  </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hyper-V 要求:     已检测到虚拟机监控程序。将不显示 Hyper-V 所需的功能。</span><br></pre></td></tr></table></figure>
 
