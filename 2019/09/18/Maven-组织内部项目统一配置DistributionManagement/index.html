@@ -17,13 +17,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"galaxyyao.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"galaxyyao.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="搜了一下中文技术博客上似乎没有相关的文章，就简要翻译一下。   需求假设公司内部有非常多Maven项目，需要deploy到一个内部maven私有仓库中。如果希望maven deploy命令可以成功执行，一般需要在pom.xml中添加：   123456&lt;distributionManagement&gt;   &lt;repository&gt;      &lt;id&gt;nexus-s">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Maven-组织内部项目统一配置DistributionManagement">
-<meta property="og:url" content="https://galaxyyao.top/2019/09/18/Maven-%E7%BB%84%E7%BB%87%E5%86%85%E9%83%A8%E9%A1%B9%E7%9B%AE%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AEDistributionManagement/index.html">
+<meta property="og:url" content="https://galaxyyao.github.io/2019/09/18/Maven-%E7%BB%84%E7%BB%87%E5%86%85%E9%83%A8%E9%A1%B9%E7%9B%AE%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AEDistributionManagement/index.html">
 <meta property="og:site_name" content="Galaxy">
 <meta property="og:description" content="搜了一下中文技术博客上似乎没有相关的文章，就简要翻译一下。   需求假设公司内部有非常多Maven项目，需要deploy到一个内部maven私有仓库中。如果希望maven deploy命令可以成功执行，一般需要在pom.xml中添加：   123456&lt;distributionManagement&gt;   &lt;repository&gt;      &lt;id&gt;nexus-s">
 <meta property="og:locale" content="zh_CN">
@@ -33,7 +33,7 @@
 <meta property="article:tag" content="Maven">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://galaxyyao.top/2019/09/18/Maven-%E7%BB%84%E7%BB%87%E5%86%85%E9%83%A8%E9%A1%B9%E7%9B%AE%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AEDistributionManagement/">
+<link rel="canonical" href="https://galaxyyao.github.io/2019/09/18/Maven-%E7%BB%84%E7%BB%87%E5%86%85%E9%83%A8%E9%A1%B9%E7%9B%AE%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AEDistributionManagement/">
 
 
 <script id="page-configurations">
@@ -191,7 +191,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://galaxyyao.top/2019/09/18/Maven-%E7%BB%84%E7%BB%87%E5%86%85%E9%83%A8%E9%A1%B9%E7%9B%AE%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AEDistributionManagement/">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/09/18/Maven-%E7%BB%84%E7%BB%87%E5%86%85%E9%83%A8%E9%A1%B9%E7%9B%AE%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AEDistributionManagement/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -391,6 +391,7 @@
 
         
   <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备2024090169号-1 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010402333958" rel="noopener" target="_blank">沪公网安备31010402333958号 </a>
   </div>
 
 <div class="copyright">

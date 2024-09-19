@@ -17,28 +17,28 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"galaxyyao.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"galaxyyao.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="1. 问题起因Java应用的某个功能里有个循环，每个循环中调用MyBatis的SQL来获取Oracle的序列Sequence，然后把序列值填充到实体中，调用jpa的save方法将实体保存到数据库。取序列号的sql没啥特殊的： 1select seq_name.nextval from dual 但实际保存到数据库的时候，发现所有循环保存的实体的序列值都相同。   2. 问题分析首先排除了Oracl">
 <meta property="og:type" content="article">
 <meta property="og:title" content="重复的Sequence序列和MyBatis缓存">
-<meta property="og:url" content="https://galaxyyao.top/2019/05/13/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/index.html">
+<meta property="og:url" content="https://galaxyyao.github.io/2019/05/13/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/index.html">
 <meta property="og:site_name" content="Galaxy">
 <meta property="og:description" content="1. 问题起因Java应用的某个功能里有个循环，每个循环中调用MyBatis的SQL来获取Oracle的序列Sequence，然后把序列值填充到实体中，调用jpa的save方法将实体保存到数据库。取序列号的sql没啥特殊的： 1select seq_name.nextval from dual 但实际保存到数据库的时候，发现所有循环保存的实体的序列值都相同。   2. 问题分析首先排除了Oracl">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://galaxyyao.top/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/mybatis-cache.png">
-<meta property="og:image" content="https://galaxyyao.top/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/Relationship-of-MyBatis3-components.png">
-<meta property="og:image" content="https://galaxyyao.top/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/Relationship-of-MyBatis-Spring-components.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/mybatis-cache.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/Relationship-of-MyBatis3-components.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/Relationship-of-MyBatis-Spring-components.png">
 <meta property="article:published_time" content="2019-05-12T16:00:00.000Z">
 <meta property="article:modified_time" content="2021-04-30T05:34:34.000Z">
 <meta property="article:author" content="姚皓(Galaxy Yao)">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="MyBatis">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://galaxyyao.top/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/mybatis-cache.png">
+<meta name="twitter:image" content="https://galaxyyao.github.io/images/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/mybatis-cache.png">
 
-<link rel="canonical" href="https://galaxyyao.top/2019/05/13/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/">
+<link rel="canonical" href="https://galaxyyao.github.io/2019/05/13/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/">
 
 
 <script id="page-configurations">
@@ -196,7 +196,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://galaxyyao.top/2019/05/13/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/05/13/Java-%E9%87%8D%E5%A4%8D%E7%9A%84Sequence%E5%BA%8F%E5%88%97%E5%92%8CMyBatis%E7%BC%93%E5%AD%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -425,6 +425,7 @@
 
         
   <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备2024090169号-1 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010402333958" rel="noopener" target="_blank">沪公网安备31010402333958号 </a>
   </div>
 
 <div class="copyright">

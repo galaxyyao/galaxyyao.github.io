@@ -17,13 +17,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"galaxyyao.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"galaxyyao.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="有部分老Web系统只有在IE下才能正常打开。其中有一部分是即使polyfill也没法搞定的兼容性原因，另一部分就是因为使用到了ActiveX。后者中我接触到的就有金格控件和泛微OA的。对于新开发的Portal系统，没有余力为了迁就IE，对每个功能还额外做兼容性测试。于是剩下的方案就是在单点登录跳转到相应的页面的时候，指定使用IE打开。其实这个功能并不罕见。比如腾讯的网站上经常有点击图标打开QQ，而">
 <meta property="og:type" content="article">
 <meta property="og:title" content="前端-通过自定义协议URI Scheme,点击Chrome中的链接打开IE">
-<meta property="og:url" content="https://galaxyyao.top/2019/07/11/%E5%89%8D%E7%AB%AF-%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AEURI-Scheme-%E7%82%B9%E5%87%BBChrome%E4%B8%AD%E7%9A%84%E9%93%BE%E6%8E%A5%E6%89%93%E5%BC%80IE/index.html">
+<meta property="og:url" content="https://galaxyyao.github.io/2019/07/11/%E5%89%8D%E7%AB%AF-%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AEURI-Scheme-%E7%82%B9%E5%87%BBChrome%E4%B8%AD%E7%9A%84%E9%93%BE%E6%8E%A5%E6%89%93%E5%BC%80IE/index.html">
 <meta property="og:site_name" content="Galaxy">
 <meta property="og:description" content="有部分老Web系统只有在IE下才能正常打开。其中有一部分是即使polyfill也没法搞定的兼容性原因，另一部分就是因为使用到了ActiveX。后者中我接触到的就有金格控件和泛微OA的。对于新开发的Portal系统，没有余力为了迁就IE，对每个功能还额外做兼容性测试。于是剩下的方案就是在单点登录跳转到相应的页面的时候，指定使用IE打开。其实这个功能并不罕见。比如腾讯的网站上经常有点击图标打开QQ，而">
 <meta property="og:locale" content="zh_CN">
@@ -34,7 +34,7 @@
 <meta property="article:tag" content="Windows">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://galaxyyao.top/2019/07/11/%E5%89%8D%E7%AB%AF-%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AEURI-Scheme-%E7%82%B9%E5%87%BBChrome%E4%B8%AD%E7%9A%84%E9%93%BE%E6%8E%A5%E6%89%93%E5%BC%80IE/">
+<link rel="canonical" href="https://galaxyyao.github.io/2019/07/11/%E5%89%8D%E7%AB%AF-%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AEURI-Scheme-%E7%82%B9%E5%87%BBChrome%E4%B8%AD%E7%9A%84%E9%93%BE%E6%8E%A5%E6%89%93%E5%BC%80IE/">
 
 
 <script id="page-configurations">
@@ -192,7 +192,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://galaxyyao.top/2019/07/11/%E5%89%8D%E7%AB%AF-%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AEURI-Scheme-%E7%82%B9%E5%87%BBChrome%E4%B8%AD%E7%9A%84%E9%93%BE%E6%8E%A5%E6%89%93%E5%BC%80IE/">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/07/11/%E5%89%8D%E7%AB%AF-%E9%80%9A%E8%BF%87%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8D%8F%E8%AE%AEURI-Scheme-%E7%82%B9%E5%87%BBChrome%E4%B8%AD%E7%9A%84%E9%93%BE%E6%8E%A5%E6%89%93%E5%BC%80IE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -395,6 +395,7 @@
 
         
   <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备2024090169号-1 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010402333958" rel="noopener" target="_blank">沪公网安备31010402333958号 </a>
   </div>
 
 <div class="copyright">

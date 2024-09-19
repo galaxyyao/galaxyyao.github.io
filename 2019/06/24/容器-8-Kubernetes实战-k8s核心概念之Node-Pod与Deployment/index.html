@@ -17,23 +17,23 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"galaxyyao.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"galaxyyao.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="本篇我们开始用k8s的方式部署静态网站镜像，并通过这个过程了解k8s为什么会抽象出那么多概念。   1. Nodek8s首先需要选定在哪一台或哪几台服务器上部署。如我们在kubeadm部署k8s集群的时候就已知的，k8s集群是由1-N台Master节点和N个Worker节点组成的。   k8s的设计原则之一就是不挑Worker节点的硬件配置。毕竟当初Google搭Borg集群的时候淘到的服务器硬件">
 <meta property="og:type" content="article">
 <meta property="og:title" content="容器-8-Kubernetes实战-k8s核心概念之Node,Pod与Deployment">
-<meta property="og:url" content="https://galaxyyao.top/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/index.html">
+<meta property="og:url" content="https://galaxyyao.github.io/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/index.html">
 <meta property="og:site_name" content="Galaxy">
 <meta property="og:description" content="本篇我们开始用k8s的方式部署静态网站镜像，并通过这个过程了解k8s为什么会抽象出那么多概念。   1. Nodek8s首先需要选定在哪一台或哪几台服务器上部署。如我们在kubeadm部署k8s集群的时候就已知的，k8s集群是由1-N台Master节点和N个Worker节点组成的。   k8s的设计原则之一就是不挑Worker节点的硬件配置。毕竟当初Google搭Borg集群的时候淘到的服务器硬件">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://galaxyyao.top/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-physics-architecture.jpeg">
-<meta property="og:image" content="https://galaxyyao.top/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-nodes-1.png">
-<meta property="og:image" content="https://galaxyyao.top/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-nodes-2.png">
-<meta property="og:image" content="https://galaxyyao.top/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-pod.png">
-<meta property="og:image" content="https://galaxyyao.top/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-infra-container.png">
-<meta property="og:image" content="https://galaxyyao.top/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-deployment.png">
-<meta property="og:image" content="https://galaxyyao.top/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-deployment-pod-yaml.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-physics-architecture.jpeg">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-nodes-1.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-nodes-2.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-pod.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-infra-container.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-deployment.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-deployment-pod-yaml.png">
 <meta property="article:published_time" content="2019-06-23T16:00:00.000Z">
 <meta property="article:modified_time" content="2021-04-30T05:34:34.000Z">
 <meta property="article:author" content="姚皓(Galaxy Yao)">
@@ -41,9 +41,9 @@
 <meta property="article:tag" content="kubernetes">
 <meta property="article:tag" content="k8s">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://galaxyyao.top/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-physics-architecture.jpeg">
+<meta name="twitter:image" content="https://galaxyyao.github.io/images/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/k8s-physics-architecture.jpeg">
 
-<link rel="canonical" href="https://galaxyyao.top/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/">
+<link rel="canonical" href="https://galaxyyao.github.io/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/">
 
 
 <script id="page-configurations">
@@ -201,7 +201,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://galaxyyao.top/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/06/24/%E5%AE%B9%E5%99%A8-8-Kubernetes%E5%AE%9E%E6%88%98-k8s%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B9%8BNode-Pod%E4%B8%8EDeployment/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -327,7 +327,7 @@
 <h3 id="3-3-部署POC-Nginx镜像"><a href="#3-3-部署POC-Nginx镜像" class="headerlink" title="3.3 部署POC Nginx镜像"></a>3.3 部署POC Nginx镜像</h3><p>要部署POC的Nginx镜像，只需要将image修改为私有仓库的镜像即可：  </p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">poc-web</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">poc-web</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">poc-web</span></span><br><span class="line">        <span class="attr">image:</span> <span class="number">10.16</span><span class="number">.34</span><span class="number">.197</span><span class="string">:5000/staticsite:1.0</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">web</span></span><br></pre></td></tr></table></figure>
 
-<p>如果使用Docker Hub作为Docker Registry，则首先创建secret（什么是secret会在<a target="_blank" rel="noopener" href="https://galaxyyao.github.io/2019/07/03/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/">容器-12-Kubernetes实战-静态网站部署优化1:ConfigMap,Secret与TLS | Galaxy</a> 中详细说明）：  </p>
+<p>如果使用Docker Hub作为Docker Registry，则首先创建secret（什么是secret会在<a href="https://galaxyyao.github.io/2019/07/03/%E5%AE%B9%E5%99%A8-12-Kubernetes%E5%AE%9E%E6%88%98-%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2%E4%BC%98%E5%8C%961-ConfigMap-Secret%E4%B8%8ETLS/">容器-12-Kubernetes实战-静态网站部署优化1:ConfigMap,Secret与TLS | Galaxy</a> 中详细说明）：  </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret docker-registry regcred --docker-username=账号 --docker-password=密码 --docker-email=Docker邮箱 -n 命名空间默认default</span><br></pre></td></tr></table></figure>
 
 <p>然后在pod定义的同一级加上imagePullSecrets，例如：  </p>
@@ -477,6 +477,7 @@
 
         
   <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备2024090169号-1 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010402333958" rel="noopener" target="_blank">沪公网安备31010402333958号 </a>
   </div>
 
 <div class="copyright">
