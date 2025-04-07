@@ -188,6 +188,255 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2025/04/07/GTC2025%E4%BF%A1%E6%81%AF%E8%84%91%E5%9B%BE%E5%8F%8A%E8%A7%82%E5%90%8E%E6%84%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="姚皓(Galaxy Yao)">
+      <meta itemprop="description" content="姚皓的技术博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Galaxy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/07/GTC2025%E4%BF%A1%E6%81%AF%E8%84%91%E5%9B%BE%E5%8F%8A%E8%A7%82%E5%90%8E%E6%84%9F/" class="post-title-link" itemprop="url">GTC2025信息脑图及观后感</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-04-07 09:29:28" itemprop="dateCreated datePublished" datetime="2025-04-07T09:29:28+08:00">2025-04-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>来源：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1a5QRYCE5j/">NVIDIA CEO 黄仁勋主题演讲 | GTC 2025</a></p>
+</blockquote>
+<h1 id="GTC2025信息脑图"><a href="#GTC2025信息脑图" class="headerlink" title="GTC2025信息脑图"></a>GTC2025信息脑图</h1><ul>
+<li>片头<ul>
+<li>Token开拓了新边界：突出了token与物理世界的联系</li>
+</ul>
+</li>
+<li>Geforce 5090显卡开场<ul>
+<li>GTC的渊源从Geforce开始：Geforce带来CUDA，CUDA促进AI，AI反过来促进计算机图形学</li>
+<li>AI促进计算机图形学的范例：对每个像素预测15个像素，并保持时间稳定性</li>
+</ul>
+</li>
+<li>AI的历史<ul>
+<li>感知式AI：计算机视觉、语音识别</li>
+<li>生成式AI：在多模态之间转换<ul>
+<li>除了文本、图像、视频，还包含氨基酸到蛋白质、特性到化学物质</li>
+<li>从检索式计算模型，转变为生成式计算模型。以前都是预先创建多个版本的内容。现在不再检索数据而是生成答案，根本上改变了计算方式</li>
+</ul>
+</li>
+<li>自主智能AI：具备自主性（has agency）的AI<ul>
+<li>能推理如何解决，并能采取行动。</li>
+</ul>
+</li>
+<li>物理AI：能理解物理世界，如摩擦、惯性、因果</li>
+<li>对于Nvidia合作方的意义：每个阶段都开启了更多机遇，更大的图景诞生了更多的合作方</li>
+</ul>
+</li>
+<li>贯穿AI每个阶段的三个基本问题<ul>
+<li>问题1：数据问题<ul>
+<li>人类历史已经积累了数百问题空间，生成数百万个不同示例。如勾股定律、数独、益智游戏。这些会生成万亿个token</li>
+</ul>
+</li>
+<li>问题2：训练问题<ul>
+<li>无需人工干预，借助强化学习生成</li>
+</ul>
+</li>
+<li>问题3：规模化问题<ul>
+<li>投入的资源更多，AI越聪明。</li>
+<li>今年预估的资源比去年这时候预期的要多至少100倍</li>
+<li>为什么需要更多资源的逻辑<ul>
+<li>过去：ChatGPT采取了“一击即中（One Shot）”的方式，所以回答问题很可能会出错，效果不佳</li>
+<li>token数增加：现在不仅生成一个个token或单词，而是生成代表推理步骤的单词序列，生成token数大幅增加</li>
+<li>步骤增加：推理，可能会尝试多种方法后选择最佳方法，可能会用多种方法解决后做一致性检查，可能得出答案后将答案代回方程验证正确性。</li>
+<li>计算时效性要求不变，因此计算速度需要提高</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>数据证明：四大云服务运营商的Blackwell和Hooper出货量对比</li>
+</ul>
+</li>
+<li>AI工厂<ul>
+<li>变化趋势：增长加速、软件的未来需要资本投入</li>
+<li>手工编码的通用计算到了尽头。计算机成为了软件token生成器，而非文件检索工具。</li>
+<li>将生成的token重构为音乐、文字、视频、研究成果、蛋白质</li>
+<li>软件栈：各行各业的900多个CUDA-X库，实现计算加速<ul>
+<li>在CUDA上还有各行各业的AI库（物理学、生物学、光刻）来搭建AI框架，提供感知、学习、推理能力</li>
+<li>每个工厂需要两个“工厂”。例如一个工厂制造晶圆，另一个工厂制造晶圆所需的信息</li>
+<li>行业1举例：光刻</li>
+<li>行业2举例：无线网络通信（5G）</li>
+<li>行业3举例：基因测序分析</li>
+<li>行业4举例：计算机辅助工程（CAE）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>AI对于各行业<ul>
+<li>云服务商（CSP）：GPU云，托管GPU</li>
+<li>边缘计算：6G无线网络 AI-RAN<ul>
+<li>价值：通过上下文和先验知识，改善不同环境下的大规模MIMO（多输入多输出）。（原理类似前文的像素点预测）</li>
+</ul>
+</li>
+<li>自动驾驶<ul>
+<li>制造3种计算机：训练、仿真、自动驾驶</li>
+<li>HALOS：汽车安全。对每一行代码安全评估。</li>
+<li>Cosmos + Omniverse：AI创造AI，包括模型蒸馏、闭环训练（由Cosmos评分）、合成数据生成（Omniverse神经重建技术，将日志转为4D驾驶环境，并创建变体）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>数据中心<ul>
+<li>前提：未来每个数据中心都会受到电力限制</li>
+<li>向上扩展（Scale Up）<ul>
+<li>在横向扩展（Scale Out）之前，先需要向上扩展（Scale Up）<ul>
+<li>难点：无法使用类似Hadoop的方式复用现有服务器，电力成本会过高。</li>
+</ul>
+</li>
+<li>Blackwell的硬件设计<ul>
+<li>Blackwell源于Range。</li>
+<li>上一代Scale Up的极限：HGX。8个GPU，连接到NVLink 8交换机。然后通过PCI Express连接到CPU机架，最终形成AI超级计算机。</li>
+<li>Range在HGX的基础上扩展了4倍，对接NVLink 32。Range证明方向正确，但规模过大。于是进行了重新设计。重构方式：解构了NVLink，放在机箱中心</li>
+</ul>
+</li>
+<li>强大的计算能力是用于解决看似简单的终极问题：推理<ul>
+<li>为什么推理是终极问题：工厂所依赖的推理的效率决定了工厂的盈亏。工厂生成的token越多，AI越能给出聪明的答案；但时间过长会贻误时机。</li>
+<li>token数与响应时间依赖大量计算能力，所以就需要Blackwell</li>
+<li>数据证明：安排婚礼座位，传统LLM采用one shot，消耗了439个token，得到了错误的答案（白白浪费了token）；DeepSeek R1会尝试不同场景，返回检验答案，最终消耗了8559个token，得到争取到的答案。即20多倍的token数，150多倍的计算量</li>
+</ul>
+</li>
+<li>NVLink的价值：为什么推理需要NVLink：<ul>
+<li>DS R1运行时，需要将工作负载（数万亿个参数和模型）分布到整个GPU系统中。Blackwell的NVLink 72架构的优势在于每个GPU都可以执行推理所需的批处理和聚合。</li>
+<li>预填充阶段：推理模型需要进行思考、进行阅读网站和看视频以消化信息，这些信息消化和上下文处理非常依赖浮点运算。</li>
+<li>解码阶段：需要浮点运算更需要巨大带宽。数万亿个参数输入，每秒TB级的数据仅仅为了生成一个token。</li>
+</ul>
+</li>
+<li>Dynamo（直译为发电机）：AI工厂的操作系统<ul>
+<li>需求：支持动态分配不同的GPU数量给预填充和解码，动态适应思考（更需要预填充）和聊天（更需要解码）等不同场景的需求</li>
+<li>为什么称之为操作系统：以前操作系统是协调应用程序运行。未来是协调Agents智能体</li>
+</ul>
+</li>
+<li>Blackwell对AI工厂的价值估算<ul>
+<li>Blackwell + Dynamo + NVL72 +  FP4：在最大吞吐率和最高质量之间寻找平衡点。</li>
+<li>Blackwell方案的ISO功耗是Hooper的25倍。对于一个数据中心，Blackwell的token生产效率是Hooper的40倍，每秒生成12,000,000,000个token</li>
+</ul>
+</li>
+<li>未来规划：Blackwell Ultra、Vera Rubin（2026）、Rubin Ultra（2027）</li>
+</ul>
+</li>
+<li>横向扩展（Scale Out）<ul>
+<li>挑战：收发器会消耗大量能源，将电信号转换为光信号<ul>
+<li>25万个GPU中的每一个都需要6个收发器，使每个GPU增加180瓦的能耗</li>
+</ul>
+</li>
+<li>解决方案：共封装光学（CPO）<ul>
+<li>基于微环谐振器调制器（MRM），解决如何扩展到数百万个GPU的问题</li>
+</ul>
+</li>
+<li>最终方案：将硅光和光电一体化封装方案结合，不再需要收发器，光纤直接连入512端口交换机，节省数十兆瓦的能量。</li>
+<li>未来规划：下一代产品命名为Feynman</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>企业计算<ul>
+<li>AI与机器学习重塑了计算机技术栈：处理器、操作系统、应用程序、应用的运行方式、编排方式都不再相同<ul>
+<li>范例：对数据将不再精确检索，而是阅读并尝试理解，直接给出答案</li>
+</ul>
+</li>
+<li>未来的个人电脑：DGX Station工作站<ul>
+<li>计算机三大支柱：计算、网络、存储</li>
+<li>重新设计存储：不再是基于检索的存储系统，而是基于语义。只需要与之交互。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>机器人技术<ul>
+<li>背景：全世界缺少5000万个工人</li>
+<li>三大基础问题同样适用<ul>
+<li>数据问题：互联网规模的数据提供了常识和推理能力。基于Cosmos + Omniverse生成海量合成行动和控制数据。<ul>
+<li>Omniverse：物理AI操作系统</li>
+<li>Cosmos：理解物理世界。用Omniverse调节Cosmos，用Cosmos生成无限数量的环境</li>
+</ul>
+</li>
+<li>训练问题：<ul>
+<li>Newton：能训练触觉反馈、精细动作的物理引擎。将物理定律作为可验证奖励。</li>
+</ul>
+</li>
+<li>规模化问题：<ul>
+<li>Nvidia Isaac Groot N1：人形机器人通才基础模型<ul>
+<li>双系统架构，用于快思考和慢思考。<ul>
+<li>慢思考用于感知和推理，规划行动</li>
+<li>快思考转化为精确而连续的动作</li>
+</ul>
+</li>
+<li>泛化能力：操作常见物体、协同执行多步骤</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="感受"><a href="#感受" class="headerlink" title="感受"></a>感受</h1><h2 id="GTC2025演讲内容的逻辑性"><a href="#GTC2025演讲内容的逻辑性" class="headerlink" title="GTC2025演讲内容的逻辑性"></a>GTC2025演讲内容的逻辑性</h2><p>老黄的演讲中的确不乏画饼的成分，以部分抵消DeepSeek对于Scaling Law的挑战。不过对于我们有价值的，还是他是如何从逻辑上说圆自洽。</p>
+<ul>
+<li>为什么投资者还应该继续看好Nvidia：我们处于时代拐点</li>
+<li>什么时代拐点：已经从生成式AI进入了自主能推理的AI，并向物理AI时代进发</li>
+<li>自主推理AI与Nvidia有什么关系：推理产生更多的token，要求更高的计算速度</li>
+<li>自主推理AI带来的革新：计算机将变成token生成器，token与物理世界关联</li>
+<li>为什么token能与物理世界关联的基础：各行各业的CUDA-X</li>
+<li>Nvidia如何支撑产生更多的token：新技术Blackwell和CPO</li>
+</ul>
+<h2 id="reinvent-computer"><a href="#reinvent-computer" class="headerlink" title="reinvent computer"></a>reinvent computer</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/04/07/GTC2025%E4%BF%A1%E6%81%AF%E8%84%91%E5%9B%BE%E5%8F%8A%E8%A7%82%E5%90%8E%E6%84%9F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2024/08/30/Review-Share-2024-08%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0%E5%88%86%E4%BA%AB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -913,86 +1162,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/12/23/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="姚皓(Galaxy Yao)">
-      <meta itemprop="description" content="姚皓的技术博客">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Galaxy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/23/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">Java-从FeignClient的Ambiguous mapping报错,重温RequestMapping原理</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-12-23 00:00:00" itemprop="dateCreated datePublished" datetime="2019-12-23T00:00:00+08:00">2019-12-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-30 13:34:34" itemprop="dateModified" datetime="2021-04-30T13:34:34+08:00">2021-04-30</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-微服务的公共API模块"><a href="#1-微服务的公共API模块" class="headerlink" title="1. 微服务的公共API模块"></a>1. 微服务的公共API模块</h1><p>微服务之间调用进程会出现DTO实体类的重复定义。比如服务A的接口返回User实体，服务B接收的时候，也需要定义一个同样的User实体。<br>在引入了Feign后，就有了一个避免项目间重复定义实体类的简单方案：我们可以在服务A开发的时候专门抽出来一个API模块。  </p>
-<p><img src="/images/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/java-project-dependency.jpg" alt="API公共模块">  </p>
-<p>这个API模块可以包含接口方法定义，URI以及和对外实体类定义（DTO），可以认为是A和B之间互通的约定。<br>一个最简单的API模块代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoDto</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String text;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/demo&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">DemoApiService</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/hello&quot;)</span></span><br><span class="line">    DemoDto <span class="title function_">hello</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>服务A的Controller负责对接口定义进行实现：  </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoProducerController</span> <span class="keyword">implements</span> <span class="title class_">DemoApiService</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> DemoDto <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">DemoDto</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>服务A项目将API模块发布到Maven私服上。服务B项目只需要对API模块添加依赖：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/12/23/Java-%E4%BB%8EFeignClient%E7%9A%84Ambiguous-mapping%E6%8A%A5%E9%94%99-%E9%87%8D%E6%B8%A9RequestMapping%E5%8E%9F%E7%90%86/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1062,14 +1231,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1107,7 +1276,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

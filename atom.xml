@@ -6,7 +6,7 @@
   <link href="https://galaxyyao.github.io/atom.xml" rel="self"/>
   
   <link href="https://galaxyyao.github.io/"/>
-  <updated>2024-08-30T06:01:47.432Z</updated>
+  <updated>2025-04-07T01:29:28.234Z</updated>
   <id>https://galaxyyao.github.io/</id>
   
   <author>
@@ -15,6 +15,209 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>GTC2025信息脑图及观后感</title>
+    <link href="https://galaxyyao.github.io/2025/04/07/GTC2025%E4%BF%A1%E6%81%AF%E8%84%91%E5%9B%BE%E5%8F%8A%E8%A7%82%E5%90%8E%E6%84%9F/"/>
+    <id>https://galaxyyao.github.io/2025/04/07/GTC2025%E4%BF%A1%E6%81%AF%E8%84%91%E5%9B%BE%E5%8F%8A%E8%A7%82%E5%90%8E%E6%84%9F/</id>
+    <published>2025-04-07T01:29:28.000Z</published>
+    <updated>2025-04-07T01:29:28.234Z</updated>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;来源：&lt;a href=&quot;https://www.bilibili.com/video/BV1a5QRYCE5j/&quot;&gt;NVIDIA CEO 黄仁勋主题演讲 | GTC 2025&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;GTC2025信息脑图&quot;&gt;&lt;a href=&quot;#GTC2025信息脑图&quot; class=&quot;headerlink&quot; title=&quot;GTC2025信息脑图&quot;&gt;&lt;/a&gt;GTC2025信息脑图&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;片头&lt;ul&gt;
+&lt;li&gt;Token开拓了新边界：突出了token与物理世界的联系&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Geforce 5090显卡开场&lt;ul&gt;
+&lt;li&gt;GTC的渊源从Geforce开始：Geforce带来CUDA，CUDA促进AI，AI反过来促进计算机图形学&lt;/li&gt;
+&lt;li&gt;AI促进计算机图形学的范例：对每个像素预测15个像素，并保持时间稳定性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;AI的历史&lt;ul&gt;
+&lt;li&gt;感知式AI：计算机视觉、语音识别&lt;/li&gt;
+&lt;li&gt;生成式AI：在多模态之间转换&lt;ul&gt;
+&lt;li&gt;除了文本、图像、视频，还包含氨基酸到蛋白质、特性到化学物质&lt;/li&gt;
+&lt;li&gt;从检索式计算模型，转变为生成式计算模型。以前都是预先创建多个版本的内容。现在不再检索数据而是生成答案，根本上改变了计算方式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;自主智能AI：具备自主性（has agency）的AI&lt;ul&gt;
+&lt;li&gt;能推理如何解决，并能采取行动。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;物理AI：能理解物理世界，如摩擦、惯性、因果&lt;/li&gt;
+&lt;li&gt;对于Nvidia合作方的意义：每个阶段都开启了更多机遇，更大的图景诞生了更多的合作方&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;贯穿AI每个阶段的三个基本问题&lt;ul&gt;
+&lt;li&gt;问题1：数据问题&lt;ul&gt;
+&lt;li&gt;人类历史已经积累了数百问题空间，生成数百万个不同示例。如勾股定律、数独、益智游戏。这些会生成万亿个token&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;问题2：训练问题&lt;ul&gt;
+&lt;li&gt;无需人工干预，借助强化学习生成&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;问题3：规模化问题&lt;ul&gt;
+&lt;li&gt;投入的资源更多，AI越聪明。&lt;/li&gt;
+&lt;li&gt;今年预估的资源比去年这时候预期的要多至少100倍&lt;/li&gt;
+&lt;li&gt;为什么需要更多资源的逻辑&lt;ul&gt;
+&lt;li&gt;过去：ChatGPT采取了“一击即中（One Shot）”的方式，所以回答问题很可能会出错，效果不佳&lt;/li&gt;
+&lt;li&gt;token数增加：现在不仅生成一个个token或单词，而是生成代表推理步骤的单词序列，生成token数大幅增加&lt;/li&gt;
+&lt;li&gt;步骤增加：推理，可能会尝试多种方法后选择最佳方法，可能会用多种方法解决后做一致性检查，可能得出答案后将答案代回方程验证正确性。&lt;/li&gt;
+&lt;li&gt;计算时效性要求不变，因此计算速度需要提高&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;数据证明：四大云服务运营商的Blackwell和Hooper出货量对比&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;AI工厂&lt;ul&gt;
+&lt;li&gt;变化趋势：增长加速、软件的未来需要资本投入&lt;/li&gt;
+&lt;li&gt;手工编码的通用计算到了尽头。计算机成为了软件token生成器，而非文件检索工具。&lt;/li&gt;
+&lt;li&gt;将生成的token重构为音乐、文字、视频、研究成果、蛋白质&lt;/li&gt;
+&lt;li&gt;软件栈：各行各业的900多个CUDA-X库，实现计算加速&lt;ul&gt;
+&lt;li&gt;在CUDA上还有各行各业的AI库（物理学、生物学、光刻）来搭建AI框架，提供感知、学习、推理能力&lt;/li&gt;
+&lt;li&gt;每个工厂需要两个“工厂”。例如一个工厂制造晶圆，另一个工厂制造晶圆所需的信息&lt;/li&gt;
+&lt;li&gt;行业1举例：光刻&lt;/li&gt;
+&lt;li&gt;行业2举例：无线网络通信（5G）&lt;/li&gt;
+&lt;li&gt;行业3举例：基因测序分析&lt;/li&gt;
+&lt;li&gt;行业4举例：计算机辅助工程（CAE）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;AI对于各行业&lt;ul&gt;
+&lt;li&gt;云服务商（CSP）：GPU云，托管GPU&lt;/li&gt;
+&lt;li&gt;边缘计算：6G无线网络 AI-RAN&lt;ul&gt;
+&lt;li&gt;价值：通过上下文和先验知识，改善不同环境下的大规模MIMO（多输入多输出）。（原理类似前文的像素点预测）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;自动驾驶&lt;ul&gt;
+&lt;li&gt;制造3种计算机：训练、仿真、自动驾驶&lt;/li&gt;
+&lt;li&gt;HALOS：汽车安全。对每一行代码安全评估。&lt;/li&gt;
+&lt;li&gt;Cosmos + Omniverse：AI创造AI，包括模型蒸馏、闭环训练（由Cosmos评分）、合成数据生成（Omniverse神经重建技术，将日志转为4D驾驶环境，并创建变体）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;数据中心&lt;ul&gt;
+&lt;li&gt;前提：未来每个数据中心都会受到电力限制&lt;/li&gt;
+&lt;li&gt;向上扩展（Scale Up）&lt;ul&gt;
+&lt;li&gt;在横向扩展（Scale Out）之前，先需要向上扩展（Scale Up）&lt;ul&gt;
+&lt;li&gt;难点：无法使用类似Hadoop的方式复用现有服务器，电力成本会过高。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Blackwell的硬件设计&lt;ul&gt;
+&lt;li&gt;Blackwell源于Range。&lt;/li&gt;
+&lt;li&gt;上一代Scale Up的极限：HGX。8个GPU，连接到NVLink 8交换机。然后通过PCI Express连接到CPU机架，最终形成AI超级计算机。&lt;/li&gt;
+&lt;li&gt;Range在HGX的基础上扩展了4倍，对接NVLink 32。Range证明方向正确，但规模过大。于是进行了重新设计。重构方式：解构了NVLink，放在机箱中心&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;强大的计算能力是用于解决看似简单的终极问题：推理&lt;ul&gt;
+&lt;li&gt;为什么推理是终极问题：工厂所依赖的推理的效率决定了工厂的盈亏。工厂生成的token越多，AI越能给出聪明的答案；但时间过长会贻误时机。&lt;/li&gt;
+&lt;li&gt;token数与响应时间依赖大量计算能力，所以就需要Blackwell&lt;/li&gt;
+&lt;li&gt;数据证明：安排婚礼座位，传统LLM采用one shot，消耗了439个token，得到了错误的答案（白白浪费了token）；DeepSeek R1会尝试不同场景，返回检验答案，最终消耗了8559个token，得到争取到的答案。即20多倍的token数，150多倍的计算量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;NVLink的价值：为什么推理需要NVLink：&lt;ul&gt;
+&lt;li&gt;DS R1运行时，需要将工作负载（数万亿个参数和模型）分布到整个GPU系统中。Blackwell的NVLink 72架构的优势在于每个GPU都可以执行推理所需的批处理和聚合。&lt;/li&gt;
+&lt;li&gt;预填充阶段：推理模型需要进行思考、进行阅读网站和看视频以消化信息，这些信息消化和上下文处理非常依赖浮点运算。&lt;/li&gt;
+&lt;li&gt;解码阶段：需要浮点运算更需要巨大带宽。数万亿个参数输入，每秒TB级的数据仅仅为了生成一个token。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Dynamo（直译为发电机）：AI工厂的操作系统&lt;ul&gt;
+&lt;li&gt;需求：支持动态分配不同的GPU数量给预填充和解码，动态适应思考（更需要预填充）和聊天（更需要解码）等不同场景的需求&lt;/li&gt;
+&lt;li&gt;为什么称之为操作系统：以前操作系统是协调应用程序运行。未来是协调Agents智能体&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Blackwell对AI工厂的价值估算&lt;ul&gt;
+&lt;li&gt;Blackwell + Dynamo + NVL72 +  FP4：在最大吞吐率和最高质量之间寻找平衡点。&lt;/li&gt;
+&lt;li&gt;Blackwell方案的ISO功耗是Hooper的25倍。对于一个数据中心，Blackwell的token生产效率是Hooper的40倍，每秒生成12,000,000,000个token&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;未来规划：Blackwell Ultra、Vera Rubin（2026）、Rubin Ultra（2027）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;横向扩展（Scale Out）&lt;ul&gt;
+&lt;li&gt;挑战：收发器会消耗大量能源，将电信号转换为光信号&lt;ul&gt;
+&lt;li&gt;25万个GPU中的每一个都需要6个收发器，使每个GPU增加180瓦的能耗&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;解决方案：共封装光学（CPO）&lt;ul&gt;
+&lt;li&gt;基于微环谐振器调制器（MRM），解决如何扩展到数百万个GPU的问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;最终方案：将硅光和光电一体化封装方案结合，不再需要收发器，光纤直接连入512端口交换机，节省数十兆瓦的能量。&lt;/li&gt;
+&lt;li&gt;未来规划：下一代产品命名为Feynman&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;企业计算&lt;ul&gt;
+&lt;li&gt;AI与机器学习重塑了计算机技术栈：处理器、操作系统、应用程序、应用的运行方式、编排方式都不再相同&lt;ul&gt;
+&lt;li&gt;范例：对数据将不再精确检索，而是阅读并尝试理解，直接给出答案&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;未来的个人电脑：DGX Station工作站&lt;ul&gt;
+&lt;li&gt;计算机三大支柱：计算、网络、存储&lt;/li&gt;
+&lt;li&gt;重新设计存储：不再是基于检索的存储系统，而是基于语义。只需要与之交互。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;机器人技术&lt;ul&gt;
+&lt;li&gt;背景：全世界缺少5000万个工人&lt;/li&gt;
+&lt;li&gt;三大基础问题同样适用&lt;ul&gt;
+&lt;li&gt;数据问题：互联网规模的数据提供了常识和推理能力。基于Cosmos + Omniverse生成海量合成行动和控制数据。&lt;ul&gt;
+&lt;li&gt;Omniverse：物理AI操作系统&lt;/li&gt;
+&lt;li&gt;Cosmos：理解物理世界。用Omniverse调节Cosmos，用Cosmos生成无限数量的环境&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;训练问题：&lt;ul&gt;
+&lt;li&gt;Newton：能训练触觉反馈、精细动作的物理引擎。将物理定律作为可验证奖励。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;规模化问题：&lt;ul&gt;
+&lt;li&gt;Nvidia Isaac Groot N1：人形机器人通才基础模型&lt;ul&gt;
+&lt;li&gt;双系统架构，用于快思考和慢思考。&lt;ul&gt;
+&lt;li&gt;慢思考用于感知和推理，规划行动&lt;/li&gt;
+&lt;li&gt;快思考转化为精确而连续的动作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;泛化能力：操作常见物体、协同执行多步骤&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;感受&quot;&gt;&lt;a href=&quot;#感受&quot; class=&quot;headerlink&quot; title=&quot;感受&quot;&gt;&lt;/a&gt;感受&lt;/h1&gt;&lt;h2 id=&quot;GTC2025演讲内容的逻辑性&quot;&gt;&lt;a href=&quot;#GTC2025演讲内容的逻辑性&quot; class=&quot;headerlink&quot; title=&quot;GTC2025演讲内容的逻辑性&quot;&gt;&lt;/a&gt;GTC2025演讲内容的逻辑性&lt;/h2&gt;&lt;p&gt;老黄的演讲中的确不乏画饼的成分，以部分抵消DeepSeek对于Scaling Law的挑战。不过对于我们有价值的，还是他是如何从逻辑上说圆自洽。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;为什么投资者还应该继续看好Nvidia：我们处于时代拐点&lt;/li&gt;
+&lt;li&gt;什么时代拐点：已经从生成式AI进入了自主能推理的AI，并向物理AI时代进发&lt;/li&gt;
+&lt;li&gt;自主推理AI与Nvidia有什么关系：推理产生更多的token，要求更高的计算速度&lt;/li&gt;
+&lt;li&gt;自主推理AI带来的革新：计算机将变成token生成器，token与物理世界关联&lt;/li&gt;
+&lt;li&gt;为什么token能与物理世界关联的基础：各行各业的CUDA-X&lt;/li&gt;
+&lt;li&gt;Nvidia如何支撑产生更多的token：新技术Blackwell和CPO&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;reinvent-computer&quot;&gt;&lt;a href=&quot;#reinvent-computer&quot; class=&quot;headerlink&quot; title=&quot;reinvent computer&quot;&gt;&lt;/a&gt;reinvent computer&lt;/h2&gt;</summary>
+    
+    
+    
+    
+    <category term="ai" scheme="https://galaxyyao.github.io/tags/ai/"/>
+    
+    <category term="hardware" scheme="https://galaxyyao.github.io/tags/hardware/"/>
+    
+  </entry>
   
   <entry>
     <title>Review/Share-2024-08技术文章分享</title>
@@ -544,35 +747,6 @@
 &lt;li&gt;当有新Worker节点加入时，自动在新节点上创建；旧节点被删除后，上面的DaemonSet Pod会被自动回收&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;两种方式各有各的好处。官方文档上都有详细比较，并在最后很贴心地对选择困难症给了建议：遇事不决先用DaemonSet试试。那么作为POC我就却之不恭选择DaemonSet了。反正要吃后悔药也就是几个命令的事情。  &lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="容器" scheme="https://galaxyyao.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
-    
-    <category term="kubernetes" scheme="https://galaxyyao.github.io/tags/kubernetes/"/>
-    
-    <category term="k8s" scheme="https://galaxyyao.github.io/tags/k8s/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>容器-10-Kubernetes实战-Service</title>
-    <link href="https://galaxyyao.github.io/2019/06/26/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/"/>
-    <id>https://galaxyyao.github.io/2019/06/26/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/</id>
-    <published>2019-06-25T16:00:00.000Z</published>
-    <updated>2021-04-30T05:34:34.000Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;Deployment只是保证了支撑服务的Pod的数量，但是没有解决如何访问这些服务的问题。一个Pod只是一个运行服务的实例，随时可能在一个节点上停止，在另一个节点以一个新的IP启动一个新的Pod。因此不能以确定的IP和端口号提供服务。&lt;br&gt;要稳定地提供服务，需要服务发现和负载均衡能力。服务发现是一个微服务中很基础的概念，即当服务提供者网络发生变化时，服务消费者能及时获得最新的位置信息。对于k8s来说，服务提供者就是Pod，提供服务发现能力的是Service。Deployment和Service分别负责Pod的部署和访问策略，互不相关。&lt;br&gt;所以从下面这张图也可以看出来，Service和Deployment并不是上下层级的关系。  &lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/%E5%AE%B9%E5%99%A8-10-Kubernetes%E5%AE%9E%E6%88%98-Service/k8s-deployment-service.png&quot; alt=&quot;Kubernetes Service与Deployment&quot;&gt;  &lt;/p&gt;
-&lt;h2 id=&quot;1-Service-YAML&quot;&gt;&lt;a href=&quot;#1-Service-YAML&quot; class=&quot;headerlink&quot; title=&quot;1. Service YAML&quot;&gt;&lt;/a&gt;1. Service YAML&lt;/h2&gt;&lt;p&gt;一个简单的Service YAML模板如下：  &lt;/p&gt;
-&lt;figure class=&quot;highlight yaml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;apiVersion:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;v1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;kind:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;Service&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;metadata:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;lt;endpoint-name&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;spec:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;ports:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;bullet&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;port:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;lt;port&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;lt;port-name&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;targetPort:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;lt;target-port-number&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;selector:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;app:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;lt;app-name&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;p&gt;可以看到它是由selector.app来选择需要暴露的Pod。spec.ports.port是service对外暴露的端口，而targetPort是Pod的端口。默认使用TCP协议。&lt;br&gt;对于我们的POC的网站，service YAML定义如下：  &lt;/p&gt;
-&lt;figure class=&quot;highlight yaml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;apiVersion:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;v1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;kind:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;Service&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;metadata:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;poc-web-service&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;spec:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;ports:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;bullet&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;port:&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;80&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;name:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;web&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;targetPort:&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;80&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;attr&quot;&gt;selector:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;app:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;poc-web&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;p&gt;当我们查看已部署的service的时候，可以看到该service对应的ip：  &lt;/p&gt;</summary>
     
     
     
