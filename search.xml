@@ -1640,8 +1640,8 @@
 <h2 id="4-常用函数与语法差异"><a href="#4-常用函数与语法差异" class="headerlink" title="4. 常用函数与语法差异"></a>4. 常用函数与语法差异</h2><h3 id="4-1-DUAL"><a href="#4-1-DUAL" class="headerlink" title="4.1 DUAL"></a>4.1 DUAL</h3><p>pgsql中的select可以省略from，所以不再需要强制加一个<code>from dual</code>。  </p>
 <h3 id="4-2-日期和时间"><a href="#4-2-日期和时间" class="headerlink" title="4.2 日期和时间"></a>4.2 日期和时间</h3><ul>
 <li>当前时间：<code>now()</code>  </li>
-<li>日期转字符串：<code>select to_char(current_date,&#39;yyyy-MM-dd&#39;);</code></li>
-<li>时间转字符串：<code>select to_char(now(),&#39;yyyy-MM-dd HH24:MI:SS&#39;);</code></li>
+<li>日期转字符串：<code>select to_char(current_date,&#39;YYYY-MM-dd&#39;);</code></li>
+<li>时间转字符串：<code>select to_char(now(),&#39;YYYY-MM-dd HH24:MI:SS&#39;);</code></li>
 </ul>
 <h3 id="4-3-字符串"><a href="#4-3-字符串" class="headerlink" title="4.3 字符串"></a>4.3 字符串</h3><ul>
 <li>拼接：<code>select &#39;a&#39;||&#39;b&#39; as col1;</code></li>

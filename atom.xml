@@ -603,7 +603,7 @@
     <link href="https://galaxyyao.github.io/2019/09/22/%E6%95%B0%E6%8D%AE%E5%BA%93-%E8%BD%AC%E5%88%B0PostgreSQL%E7%9A%84%E6%96%B0%E6%89%8B/"/>
     <id>https://galaxyyao.github.io/2019/09/22/%E6%95%B0%E6%8D%AE%E5%BA%93-%E8%BD%AC%E5%88%B0PostgreSQL%E7%9A%84%E6%96%B0%E6%89%8B/</id>
     <published>2019-09-21T16:00:00.000Z</published>
-    <updated>2025-06-11T01:17:08.526Z</updated>
+    <updated>2025-06-11T15:54:07.157Z</updated>
     
     
     <summary type="html">&lt;p&gt;从Oracle或MySQL切换到PostgreSQL（以下简称pgsql）后，多少有些不一样的地方需要适应。这里就将和开发相关的一些区别挂一漏万地列举一下。  &lt;/p&gt;
