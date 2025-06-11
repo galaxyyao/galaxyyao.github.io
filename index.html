@@ -188,6 +188,87 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2025/06/11/DNS%E5%B8%B8%E7%94%A8%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="姚皓(Galaxy Yao)">
+      <meta itemprop="description" content="姚皓的技术博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Galaxy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/06/11/DNS%E5%B8%B8%E7%94%A8%E7%9F%A5%E8%AF%86%E7%82%B9/" class="post-title-link" itemprop="url">DNS常用知识点</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-06-11 22:03:38" itemprop="dateCreated datePublished" datetime="2025-06-11T22:03:38+08:00">2025-06-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-层级划分"><a href="#1-层级划分" class="headerlink" title="1. 层级划分"></a>1. 层级划分</h1><ul>
+<li>com：顶级域名</li>
+<li>aliyuncs.com：二级域名</li>
+<li>oss-cn-shanghai.aliyuncs.com：三级域名</li>
+<li>xxx.oss-cn-shanghai.aliyuncs.com：四级域名</li>
+</ul>
+<h2 id="1-1-本章节Q-A"><a href="#1-1-本章节Q-A" class="headerlink" title="1.1 本章节Q&amp;A"></a>1.1 本章节Q&amp;A</h2><p>Q：是否可以有五级或更多层级域名？<br>A：<br>DNS 协议本身不限制域名层级数量。理论上可以无限添加子域名层级。但有限制：</p>
+<ul>
+<li>ICANN 规定：域名的总长度不能超过 253 个字符。</li>
+<li>兼容性考量：需考虑客户端和服务器的兼容性</li>
+<li>管理复杂性：多级域名需要逐层配置 DNS 记录（如 A、CNAME 等），管理成本高</li>
+<li>缓存与性能：每增加一层域名，DNS 查询次数可能增加，影响解析效率。</li>
+</ul>
+<p>Q：多级域名如何配置<br>A：<br>配置多级域名：为每一层级的域名单独配置 DNS 记录（如 A、CNAME）。如：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">level1.com.             IN  A    192.0.2.1</span><br><span class="line">level2.level1.com.      IN  CNAME level1.com.</span><br><span class="line">level3.level2.level1.com. IN  A    192.0.2.2</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-分布式系统"><a href="#2-分布式系统" class="headerlink" title="2. 分布式系统"></a>2. 分布式系统</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/06/11/DNS%E5%B8%B8%E7%94%A8%E7%9F%A5%E8%AF%86%E7%82%B9/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2025/06/11/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%A5%E9%97%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -211,8 +292,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2025-06-11 09:14:18" itemprop="dateCreated datePublished" datetime="2025-06-11T09:14:18+08:00">2025-06-11</time>
+              <time title="创建时间：2025-06-11 09:14:18 / 修改时间：13:16:20" itemprop="dateCreated datePublished" datetime="2025-06-11T09:14:18+08:00">2025-06-11</time>
             </span>
 
           
@@ -1055,81 +1137,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2020/02/05/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="姚皓(Galaxy Yao)">
-      <meta itemprop="description" content="姚皓的技术博客">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Galaxy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/05/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/" class="post-title-link" itemprop="url">中台-读《说透中台》和《企业IT架构转型之道》有感</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-05 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-05T00:00:00+08:00">2020-02-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-30 13:34:34" itemprop="dateModified" datetime="2021-04-30T13:34:34+08:00">2021-04-30</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>春节期间看完了极客时间的《说透中台》的课程，顺便也读了《企业IT架构转型之道-阿里巴巴中台战略思想与架构实战》一书。这篇从实际项目的角度来想象一下，如果让我来负责公司的中台，应该怎么做。<br>首先说下评价：这个课程符合我对ThoughtWorks的刻板印象：有点滥用理论术语，干货不多；问题题了不少，解决方案不落地。可能是都是给其他公司做的项目，有保密协议的缘故。能理解，但还是不推荐。阿里的那本中台书更加实在。  </p>
-<h2 id="1-中台概念整理"><a href="#1-中台概念整理" class="headerlink" title="1. 中台概念整理"></a>1. 中台概念整理</h2><h3 id="1-1-中台的目的"><a href="#1-1-中台的目的" class="headerlink" title="1.1 中台的目的"></a>1.1 中台的目的</h3><p>中台的目的就是企业能力复用。  </p>
-<h3 id="1-2-中台的分类"><a href="#1-2-中台的分类" class="headerlink" title="1.2 中台的分类"></a>1.2 中台的分类</h3><p>中台主流分为两大类：业务中台&#x2F;数据中台。业务中台产生数据，数据中台做数据的二次加工，并将结果再服务于业务中台。<br>也有“技术中台”的概念，可以理解为一些技术中间件的整合和封装，但我倾向于不将其认定为中台。<br>中台强调一个复用。如果根本没有系统从零开始建设，一上来就搞中台很容易会过度设计。  </p>
-<h2 id="2-中台的抓手"><a href="#2-中台的抓手" class="headerlink" title="2. 中台的抓手"></a>2. 中台的抓手</h2><p>中台会面对所有业务线的需求。虽然中台有企业级的属性，但不代表建设中台的时候必须梳理企业的全业务线。中台的愿景是能力复用，那么最好有具体的新业务作为抓手。  </p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/02/05/%E4%B8%AD%E5%8F%B0-%E8%AF%BB%E8%AF%B4%E9%80%8F%E4%B8%AD%E5%8F%B0%E5%92%8C%E4%BC%81%E4%B8%9AIT%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E4%B9%8B%E9%81%93%E6%9C%89%E6%84%9F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1199,14 +1206,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

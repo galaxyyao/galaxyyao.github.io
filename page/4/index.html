@@ -188,6 +188,93 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/05/25/%E5%AE%B9%E5%99%A8-3-Cgroups%E7%9A%84%E8%AE%A1%E5%88%92%E7%BB%8F%E6%B5%8E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="姚皓(Galaxy Yao)">
+      <meta itemprop="description" content="姚皓的技术博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Galaxy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/25/%E5%AE%B9%E5%99%A8-3-Cgroups%E7%9A%84%E8%AE%A1%E5%88%92%E7%BB%8F%E6%B5%8E/" class="post-title-link" itemprop="url">容器-3-Cgroups的计划经济</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-25 00:00:00" itemprop="dateCreated datePublished" datetime="2019-05-25T00:00:00+08:00">2019-05-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-30 13:34:34" itemprop="dateModified" datetime="2021-04-30T13:34:34+08:00">2021-04-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Cgroups-限制可用资源"><a href="#Cgroups-限制可用资源" class="headerlink" title="Cgroups-限制可用资源"></a>Cgroups-限制可用资源</h1><p>如果应用优化得不够好，直接把CPU或内存吃光也完全不是新鲜事。但我们肯定不能容忍容器无限制地挤占宿主机的资源，甚至把宿主机搞down掉。<br>所以我们可以通过Linux的Cgroups（Control Groups，控制组）对某个容器可以使用的各种硬件资源设置配额。</p>
+<p><img src="/images/%E5%AE%B9%E5%99%A8-3-Cgroups%E7%9A%84%E8%AE%A1%E5%88%92%E7%BB%8F%E6%B5%8E/docker-cgroups.png" alt="cgroup">  </p>
+<p>根据<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cgroups">wiki</a>，Cgroups的功能包括：</p>
+<ul>
+<li>资源限制（Resource Limitation）：进程组使用的内存的上限，也包括文件系统与物理内存交换用的页缓存（Page Cache）</li>
+<li>优先级分配（Prioritization）：控制分配的CPU时间片数量及硬盘IO吞吐，实际上就相当于控制了进程运行的优先级</li>
+<li>资源统计（Accounting）：统计资源使用量，如CPU使用时长、内存用量等，主要用于计费</li>
+<li>进程控制（Control）：执行挂起、恢复进程组的操作</li>
+</ul>
+<p>Cgroups的设置一般分为三个主要步骤：</p>
+<ol>
+<li>创建cgroup</li>
+<li>设置cgroup配额（将cpu&#x2F;内存等各种子系统添加到该cgroup中）</li>
+<li>将进程添加为cgroup的任务</li>
+</ol>
+<p>Docker容器在启动时候会动态创建Cgroup，并在容器终止的时候删除。  </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/05/25/%E5%AE%B9%E5%99%A8-3-Cgroups%E7%9A%84%E8%AE%A1%E5%88%92%E7%BB%8F%E6%B5%8E/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/05/24/%E5%AE%B9%E5%99%A8-2-Docker%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -883,14 +970,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

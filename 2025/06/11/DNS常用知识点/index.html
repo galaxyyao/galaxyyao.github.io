@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"galaxyyao.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. 层级划分 com：顶级域名 aliyuncs.com：二级域名 oss-cn-shanghai.aliyuncs.com：三级域名 xxx.oss-cn-shanghai.aliyuncs.com：四级域名  1.1 本章节Q&amp;AQ：是否可以有五级或更多层级域名？A：DNS 协议本身不限制域名层级数量。理论上可以无限添加子域名层级。但有限制：  ICANN 规定：域名的总长度不能超过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DNS常用知识点">
+<meta property="og:url" content="https://galaxyyao.github.io/2025/06/11/DNS%E5%B8%B8%E7%94%A8%E7%9F%A5%E8%AF%86%E7%82%B9/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="1. 层级划分 com：顶级域名 aliyuncs.com：二级域名 oss-cn-shanghai.aliyuncs.com：三级域名 xxx.oss-cn-shanghai.aliyuncs.com：四级域名  1.1 本章节Q&amp;AQ：是否可以有五级或更多层级域名？A：DNS 协议本身不限制域名层级数量。理论上可以无限添加子域名层级。但有限制：  ICANN 规定：域名的总长度不能超过">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://galaxyyao.github.io/images/DNS%E5%B8%B8%E7%94%A8%E7%9F%A5%E8%AF%86%E7%82%B9/dns-server.jpg">
+<meta property="article:published_time" content="2025-06-11T14:03:38.000Z">
+<meta property="article:modified_time" content="2025-06-11T14:03:38.124Z">
+<meta property="article:author" content="姚皓(Galaxy Yao)">
+<meta property="article:tag" content="网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://galaxyyao.github.io/images/DNS%E5%B8%B8%E7%94%A8%E7%9F%A5%E8%AF%86%E7%82%B9/dns-server.jpg">
+
+<link rel="canonical" href="https://galaxyyao.github.io/2025/06/11/DNS%E5%B8%B8%E7%94%A8%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>DNS常用知识点 | Galaxy</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Galaxy</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2025/06/11/DNS%E5%B8%B8%E7%94%A8%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="姚皓(Galaxy Yao)">
+      <meta itemprop="description" content="姚皓的技术博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Galaxy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DNS常用知识点
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-06-11 22:03:38" itemprop="dateCreated datePublished" datetime="2025-06-11T22:03:38+08:00">2025-06-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-层级划分"><a href="#1-层级划分" class="headerlink" title="1. 层级划分"></a>1. 层级划分</h1><ul>
+<li>com：顶级域名</li>
+<li>aliyuncs.com：二级域名</li>
+<li>oss-cn-shanghai.aliyuncs.com：三级域名</li>
+<li>xxx.oss-cn-shanghai.aliyuncs.com：四级域名</li>
+</ul>
+<h2 id="1-1-本章节Q-A"><a href="#1-1-本章节Q-A" class="headerlink" title="1.1 本章节Q&amp;A"></a>1.1 本章节Q&amp;A</h2><p>Q：是否可以有五级或更多层级域名？<br>A：<br>DNS 协议本身不限制域名层级数量。理论上可以无限添加子域名层级。但有限制：</p>
+<ul>
+<li>ICANN 规定：域名的总长度不能超过 253 个字符。</li>
+<li>兼容性考量：需考虑客户端和服务器的兼容性</li>
+<li>管理复杂性：多级域名需要逐层配置 DNS 记录（如 A、CNAME 等），管理成本高</li>
+<li>缓存与性能：每增加一层域名，DNS 查询次数可能增加，影响解析效率。</li>
+</ul>
+<p>Q：多级域名如何配置<br>A：<br>配置多级域名：为每一层级的域名单独配置 DNS 记录（如 A、CNAME）。如：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">level1.com.             IN  A    192.0.2.1</span><br><span class="line">level2.level1.com.      IN  CNAME level1.com.</span><br><span class="line">level3.level2.level1.com. IN  A    192.0.2.2</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-分布式系统"><a href="#2-分布式系统" class="headerlink" title="2. 分布式系统"></a>2. 分布式系统</h1><p>单台服务器承受不了全网的带宽，所以DNS使用分布在各地的域名服务器分区委派。</p>
+<ul>
+<li>根域名服务器：13组IPV4根域名服务器（A~M）</li>
+<li>顶级域名服务器：负责管理在该顶级域名服务器注册的二级域名</li>
+<li>权威域名服务器：负责管理某个区的域名</li>
+</ul>
+<h2 id="2-1-LocalDNS"><a href="#2-1-LocalDNS" class="headerlink" title="2.1 LocalDNS"></a>2.1 LocalDNS</h2><p>不属于上述等级结构：</p>
+<ul>
+<li>本地域名服务器LocalDNS（简称LDNS）：起到代理作用，转发DNS请求报文。需要直接配置在需要域名解析的主机中。</li>
+</ul>
+<p>LDNS通常是由用户的网络服务提供商或者所在网络的管理员来管理和配置的：</p>
+<ul>
+<li>在企业内部网络中，LocalDNS服务器可能由企业自身的IT部门维护</li>
+<li>在家庭网络环境中，LocalDNS服务器地址通常由ISP分配，一般都是通过DHCP协议动态分配给用户的路由器或直接分配给用户的计算机。ISP分配时通常为本地运营商的LDNS，同时也支持手动设置。</li>
+</ul>
+<p>假设LDNS配置错误或者与CIP相距较远，就会存在访问失败或者访问时间长的问题。</p>
+<h2 id="2-2-根域名服务器分布"><a href="#2-2-根域名服务器分布" class="headerlink" title="2.2 根域名服务器分布"></a>2.2 根域名服务器分布</h2><ul>
+<li>美国主导：8组，A、B、C、D、E、F、H、J 根服务器由美国机构运营。</li>
+<li>欧洲参与：3组，G、I、K 根服务器由德国、英国、荷兰运营。</li>
+<li>亚洲和中立国：2组，M 根服务器位于日本，L 根服务器位于瑞士（由 ICANN 管理）。</li>
+</ul>
+<h2 id="2-3-相关机构"><a href="#2-3-相关机构" class="headerlink" title="2.3 相关机构"></a>2.3 相关机构</h2><ul>
+<li>IANA（互联网数字分配机构）：负责管理根服务器的 IP 地址分配和协调。</li>
+<li>ICANN（互联网名称与数字地址分配机构）：制定域名系统规则，并授权Verisign和 CNNIC等注册局管理特定顶级域名。</li>
+<li>注册局：顶级域管理者，注册局主要有VeriSign(负责.com .net .cc等) 和 CNNIC(负责.cn)。</li>
+</ul>
+<h2 id="2-4-顶级域名服务器的所有者"><a href="#2-4-顶级域名服务器的所有者" class="headerlink" title="2.4 顶级域名服务器的所有者"></a>2.4 顶级域名服务器的所有者</h2><p>大部分顶级域名由盈利性公司运营，通过域名注册和续费盈利。</p>
+<ul>
+<li>.com&#x2F;.net：Verisign，商业公司</li>
+<li>.org：Public Interest Registry (PIR)，非营利组织</li>
+<li>.cn：CNNIC（中国互联网络信息中心），政府自主的非营利组织</li>
+<li>.top：由江苏邦宁科技有限公司负责运营管理的一个新通用顶级域名</li>
+</ul>
+<h2 id="2-5-知名公共LDNS"><a href="#2-5-知名公共LDNS" class="headerlink" title="2.5 知名公共LDNS"></a>2.5 知名公共LDNS</h2><ul>
+<li>阿里 AIiDNS：223.5.5.5, 223.6.6.6</li>
+<li>Google DNS：8.8.8.8, 8.8.4.4</li>
+<li>Cloudflare：1.1.1.1</li>
+<li>114 DNS：114.114.114.114, 114.114.115.115</li>
+<li>百度 BaiduDNS：180.76.76.76</li>
+<li>DNSPod DNS+：119.29.29.29, 182.254.116.116</li>
+<li>CNNIC SDNS：1.2.4.8, 210.2.4.8</li>
+<li>oneDNS：112.124.47.27, 114.215.126.16</li>
+<li>DNS派电信&#x2F;移动&#x2F;铁通：101.226.4.6,218.30.118.6</li>
+<li>DNS派联通：123.125.81.6,140.207.198.6</li>
+<li>OpenDNS：208.67.222.222, 208.67.220.220</li>
+</ul>
+<h2 id="2-6-本章节Q-A"><a href="#2-6-本章节Q-A" class="headerlink" title="2.6 本章节Q&amp;A"></a>2.6 本章节Q&amp;A</h2><p>Q：根节点服务器都在国外，会不会访问很慢？<br>A：每组根服务器通过 Anycast 技术 全球部署多个镜像站点，实现高可用性和低延迟。<br>Anycast指的是每个根服务器的镜像站点共享相同的 IP 地址，客户端会自动连接到最近的镜像节点。<br>中国没有运营根服务器，但通过 Anycast 镜像 接入全球根服务器网络。境内设有多个根服务器镜像节点（如 A、F、J 根服务器的镜像）。</p>
+<p>Q：根域名服务器能不能扩更多？<br>A：<br>不能。源于早期 DNS 协议设计时的技术约束和历史背景。<br>DNS 响应数据包的大小不能超过 512 字节（除非启用 EDNS0 扩展）。<br>根服务器的 IP 地址需要通过 DNS 响应返回给客户端。每个根服务器的信息需要占用一定字节数。</p>
+<p>A 记录格式（IPv4 地址）：</p>
+<ul>
+<li>域名（如 a.root-servers.net）：压缩后约 2 字节。</li>
+<li>类型（A 记录）：2 字节。</li>
+<li>类（IN）：2 字节。</li>
+<li>TTL（生存时间）：4 字节。</li>
+<li>数据长度（4 字节的 IPv4 地址）：2 字节。</li>
+<li>IPv4 地址：4 字节。<br>总长度：约 16 字节&#x2F;条。<br>512 字节 &#x2F; 16 字节 ≈ 32 条记录。由于需要包含其他信息（如 NS 记录、额外字段），实际最多只能容纳 13 条 A 记录。</li>
+</ul>
+<h1 id="3-DNS信息"><a href="#3-DNS信息" class="headerlink" title="3. DNS信息"></a>3. DNS信息</h1><h2 id="3-1-DNS常用记录"><a href="#3-1-DNS常用记录" class="headerlink" title="3.1 DNS常用记录"></a>3.1 DNS常用记录</h2><ul>
+<li>A记录：IPV4</li>
+<li>AAAA记录：IPV6</li>
+<li>CNAME：创建域名别名</li>
+<li>NS记录：指定该域名的权威DNS服务器，说明哪些DNS服务器负责解析该域名的DNS记录</li>
+<li>TXT记录：证明域名所有权</li>
+</ul>
+<h2 id="3-2-CNAME记录的常用场景"><a href="#3-2-CNAME记录的常用场景" class="headerlink" title="3.2 CNAME记录的常用场景"></a>3.2 CNAME记录的常用场景</h2><ul>
+<li>多域名&#x2F;子域管理：CNAME记录允许将多个域名或子域指向同一目标域名，简化管理。例如，将<a target="_blank" rel="noopener" href="http://www.example.com、blog.example.com等子域统一指向主域名example.com/">www.example.com、blog.example.com等子域统一指向主域名example.com</a></li>
+<li>CDN加速：CDN中，CNAME记录用于将用户域名（如cdn.example.com）指向CDN服务商分配的加速域名（如cdn.provider.com）</li>
+<li>流量管理与负载均衡：CNAME记录可用于分发流量至不同服务器集群，实现负载均衡。</li>
+<li>A&#x2F;B测试与灰度发布:通过CNAME记录将特定流量段指向不同版本的网站（如test.example.com和prod.example.com），支持A&#x2F;B测试或逐步发布新功能</li>
+<li>灾备：在服务器故障时，CNAME记录可快速将流量重定向至备份服务器，确保高可用性。例如，将api.example.com指向主服务器域名，故障时切换至备用域名</li>
+</ul>
+<h2 id="3-3-域名的DNS服务器"><a href="#3-3-域名的DNS服务器" class="headerlink" title="3.3 域名的DNS服务器"></a>3.3 域名的DNS服务器</h2><p>通常指的是权威域名服务器。<br>通常会配置2条或2条以上。<br>域名注册人可以自行修改。<br><img src="/images/DNS%E5%B8%B8%E7%94%A8%E7%9F%A5%E8%AF%86%E7%82%B9/dns-server.jpg" alt="dns-server"></p>
+<h1 id="4-DNS扩展协议–EDNS"><a href="#4-DNS扩展协议–EDNS" class="headerlink" title="4. DNS扩展协议–EDNS"></a>4. DNS扩展协议–EDNS</h1><p>EDNS（Extension Mechanisms for DNS,DNS扩展机制）是一种扩展DNS协议的方法，解决了一些DNS协议的限制，RFC2671首次提出，RFC6891更新。<br>目前大多数CDN厂商都支持了EDNS Client Subnet，但是运营商的LDNS都不支持，所以现在还未正式被广泛使用。</p>
+<h1 id="5-DNS相关操作"><a href="#5-DNS相关操作" class="headerlink" title="5. DNS相关操作"></a>5. DNS相关操作</h1><h2 id="5-1-本地查看DNS解析"><a href="#5-1-本地查看DNS解析" class="headerlink" title="5.1 本地查看DNS解析"></a>5.1 本地查看DNS解析</h2><ul>
+<li>dig（Windows默认不支持）</li>
+<li>nslookup</li>
+</ul>
+<h2 id="5-2-修改LocalDNS"><a href="#5-2-修改LocalDNS" class="headerlink" title="5.2 修改LocalDNS"></a>5.2 修改LocalDNS</h2><p>Windows：<br>步骤1:打开网络设置 1.右键点击任务栏的网络图标(Wi-Fi或以太网),选择”打开网络和共享中心”。 或通过控制面板进入: 控制面板&gt;网络和 Internet&gt;网络和共享中心。<br>步骤2:进入网络适配器属性 1.点击当前连接的网络名称(如”以太网”或”Wi-Fi”)。 2.在弹出的窗口中点击”属性”。 若需要管理员权限,点击”继续”。<br>步骤3:修改IPv4 DNS 设置 在列表中选择”Internet协议版本4(TCP&#x2F;IPv4)“,点击”属性”。<br>选择”使用下面的DNS服务器地址”,输入: ꔷ 首选DNS服务器:223.5.5.5 ꔷ 备用DNS服务器(可选):223.6.6.6<br>勾选”退出时验证设置”,点击”确定”保存。</p>
+<p>MacOS：<br>步骤1:打开系统偏好设置 点击屏幕左上角苹果菜单,选择”系统偏好设置”&gt;“网络”。<br>步骤2:选择网络连接类型 在左侧选择当前连接的网络(如Wi-Fi或以太网)),点击右下角”高级”。<br>步骤3:配置DNS服务器 1.切换到”DNS”选项卡。 2.点击”+“添加DNS服务器, 输入: 223.5.5.5。 可添加备用DNS(如223.6.6.6)。 3.点击”确定”&gt;“应用”保存设置。</p>
+<p>更多其他系统可参考<a target="_blank" rel="noopener" href="https://www.alidns.com/knowledge?type=SETTING_DOCS">https://www.alidns.com/knowledge?type=SETTING_DOCS</a></p>
+<h2 id="5-2-修改hosts文件"><a href="#5-2-修改hosts文件" class="headerlink" title="5.2 修改hosts文件"></a>5.2 修改hosts文件</h2><ul>
+<li>Linux&#x2F;MacOS：&#x2F;etc&#x2F;hosts</li>
+<li>Windows：C:\Windows\System32\drivers\etc\hosts</li>
+</ul>
+<h2 id="5-3-本地刷新DNS缓存"><a href="#5-3-本地刷新DNS缓存" class="headerlink" title="5.3 本地刷新DNS缓存"></a>5.3 本地刷新DNS缓存</h2><ul>
+<li>Windows：<code>ipconfig /flushdns</code></li>
+<li>MacOS：<code>sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder</code></li>
+<li>Linux：<code>sudo nscd -i hosts</code><br>Linux系统上的DNS缓存服务可能因发行版和配置而异，使用不同服务作为DNS缓存守护进程的命令不同，取决于所使用的网络管理工具或DNS解析器。</li>
+</ul>
+<h2 id="5-4-查看全局DNS解析"><a href="#5-4-查看全局DNS解析" class="headerlink" title="5.4 查看全局DNS解析"></a>5.4 查看全局DNS解析</h2><p>拨测工具<br><a target="_blank" rel="noopener" href="https://boce.aliyun.com/detect/dns">https://boce.aliyun.com/detect/DNS</a></p>
+<h1 id="6-DNS劫持"><a href="#6-DNS劫持" class="headerlink" title="6. DNS劫持"></a>6. DNS劫持</h1><p>DNS劫持是指在域名解析过程中，通过技术手段篡改或干扰正常的DNS解析结果，使域名指向一个未经授权或错误的IP地址的行为。这通常会导致用户尝试访问一个网站时，被重定向到另一个未预期的网站，可能涉及恶意目的，如广告展示、钓鱼攻击或数据窃取等。</p>
+<h2 id="6-1-形式1：个别LocalDNS劫持"><a href="#6-1-形式1：个别LocalDNS劫持" class="headerlink" title="6.1 形式1：个别LocalDNS劫持"></a>6.1 形式1：个别LocalDNS劫持</h2><p>通常情况为，该LocalDNS的解析结果与NS不一致，与全局其他LocalDNS解析也不一致。<br>例如：客户已经将域名CNAME到阿里CDN，但是某个LocalDNS没有CNAME到阿里。</p>
+<p>解决思路：</p>
+<ol>
+<li>定位问题LDNS，通过客户反馈的情况和拨测，找到对应解析出错的LDNS；</li>
+<li>客户与对应ISP报障或修改DNS记录，如果不配合可联系通信管理局进行申诉。</li>
+</ol>
+<h2 id="6-2-形式2：全局大面积解析异常"><a href="#6-2-形式2：全局大面积解析异常" class="headerlink" title="6.2 形式2：全局大面积解析异常"></a>6.2 形式2：全局大面积解析异常</h2><p>可能是因为客户业务违规，被XX了。<br>以<a target="_blank" rel="noopener" href="http://www.fxxxbook.com为例,海外地区会正常解析,cname到star-mini.c10r.fxxxbook.com,并且给出a记录./">www.fxxxbook.com为例，海外地区会正常解析，CNAME到star-mini.c10r.fxxxbook.com，并且给出A记录。</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag"># 网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/06/11/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%A5%E9%97%A8/" rel="prev" title="向量化与向量数据库入门">
+      <i class="fa fa-chevron-left"></i> 向量化与向量数据库入门
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%B1%82%E7%BA%A7%E5%88%92%E5%88%86"><span class="nav-number">1.</span> <span class="nav-text">1. 层级划分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%9C%AC%E7%AB%A0%E8%8A%82Q-A"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 本章节Q&amp;A</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.</span> <span class="nav-text">2. 分布式系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-LocalDNS"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 LocalDNS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E6%A0%B9%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%88%86%E5%B8%83"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 根域名服务器分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E7%9B%B8%E5%85%B3%E6%9C%BA%E6%9E%84"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 相关机构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E9%A1%B6%E7%BA%A7%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%89%80%E6%9C%89%E8%80%85"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 顶级域名服务器的所有者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E7%9F%A5%E5%90%8D%E5%85%AC%E5%85%B1LDNS"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 知名公共LDNS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-%E6%9C%AC%E7%AB%A0%E8%8A%82Q-A"><span class="nav-number">2.6.</span> <span class="nav-text">2.6 本章节Q&amp;A</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-DNS%E4%BF%A1%E6%81%AF"><span class="nav-number">3.</span> <span class="nav-text">3. DNS信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-DNS%E5%B8%B8%E7%94%A8%E8%AE%B0%E5%BD%95"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 DNS常用记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-CNAME%E8%AE%B0%E5%BD%95%E7%9A%84%E5%B8%B8%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 CNAME记录的常用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E5%9F%9F%E5%90%8D%E7%9A%84DNS%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 域名的DNS服务器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-DNS%E6%89%A9%E5%B1%95%E5%8D%8F%E8%AE%AE%E2%80%93EDNS"><span class="nav-number">4.</span> <span class="nav-text">4. DNS扩展协议–EDNS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-DNS%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C"><span class="nav-number">5.</span> <span class="nav-text">5. DNS相关操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8BDNS%E8%A7%A3%E6%9E%90"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 本地查看DNS解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E4%BF%AE%E6%94%B9LocalDNS"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 修改LocalDNS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E4%BF%AE%E6%94%B9hosts%E6%96%87%E4%BB%B6"><span class="nav-number">5.3.</span> <span class="nav-text">5.2 修改hosts文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-%E6%9C%AC%E5%9C%B0%E5%88%B7%E6%96%B0DNS%E7%BC%93%E5%AD%98"><span class="nav-number">5.4.</span> <span class="nav-text">5.3 本地刷新DNS缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-%E6%9F%A5%E7%9C%8B%E5%85%A8%E5%B1%80DNS%E8%A7%A3%E6%9E%90"><span class="nav-number">5.5.</span> <span class="nav-text">5.4 查看全局DNS解析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-DNS%E5%8A%AB%E6%8C%81"><span class="nav-number">6.</span> <span class="nav-text">6. DNS劫持</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-%E5%BD%A2%E5%BC%8F1%EF%BC%9A%E4%B8%AA%E5%88%ABLocalDNS%E5%8A%AB%E6%8C%81"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 形式1：个别LocalDNS劫持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-%E5%BD%A2%E5%BC%8F2%EF%BC%9A%E5%85%A8%E5%B1%80%E5%A4%A7%E9%9D%A2%E7%A7%AF%E8%A7%A3%E6%9E%90%E5%BC%82%E5%B8%B8"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 形式2：全局大面积解析异常</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">姚皓(Galaxy Yao)</p>
+  <div class="site-description" itemprop="description">姚皓的技术博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/galaxyyao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;galaxyyao" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:galaxyyao@live.com" title="E-Mail → mailto:galaxyyao@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备2024090169号-1 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010402333958" rel="noopener" target="_blank">沪公网安备31010402333958号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">姚皓(Galaxy Yao)</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
