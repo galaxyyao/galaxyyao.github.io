@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"galaxyyao.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. 引子近10年，开发过一个很简陋的舆情监控平台。大致的架构就是用爬虫从新浪新闻、微博、微信公众号等平台爬取新闻，存储到ElasticSearch中。对于每一条新闻的内容，基于一个负面词库（比如“爆雷”、“下跌”等词），一个公司名+公司高管名字的词库，根据一个自创的算法计算在新闻中的出现次数和关联性，由此判断这篇新闻是否是公司相关的负面舆情新闻。现在想来，其实就是用稀疏向量检索的方式，企图模拟稠">
+<meta property="og:type" content="article">
+<meta property="og:title" content="向量化与向量数据库入门">
+<meta property="og:url" content="https://galaxyyao.github.io/2025/06/11/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Galaxy">
+<meta property="og:description" content="1. 引子近10年，开发过一个很简陋的舆情监控平台。大致的架构就是用爬虫从新浪新闻、微博、微信公众号等平台爬取新闻，存储到ElasticSearch中。对于每一条新闻的内容，基于一个负面词库（比如“爆雷”、“下跌”等词），一个公司名+公司高管名字的词库，根据一个自创的算法计算在新闻中的出现次数和关联性，由此判断这篇新闻是否是公司相关的负面舆情新闻。现在想来，其实就是用稀疏向量检索的方式，企图模拟稠">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/sparse-vector.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/bm25.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/dense-vector.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/euclidean.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/euclidean2.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/cosine.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/dot-product.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/ann.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/nsw.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/hnsw.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/vector-search.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/milvus.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/multimodal-retrieval.png">
+<meta property="og:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/rag.png">
+<meta property="article:published_time" content="2025-06-11T01:14:18.000Z">
+<meta property="article:modified_time" content="2025-06-11T01:14:18.645Z">
+<meta property="article:author" content="姚皓(Galaxy Yao)">
+<meta property="article:tag" content="galaxyyao,姚皓">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://galaxyyao.github.io/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/sparse-vector.png">
+
+<link rel="canonical" href="https://galaxyyao.github.io/2025/06/11/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%A5%E9%97%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>向量化与向量数据库入门 | Galaxy</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Galaxy" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Galaxy</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">姚皓的技术博客-一杯咖啡，一首音乐，一台电脑，编程</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2025/06/11/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="姚皓(Galaxy Yao)">
+      <meta itemprop="description" content="姚皓的技术博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Galaxy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          向量化与向量数据库入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-06-11 09:14:18" itemprop="dateCreated datePublished" datetime="2025-06-11T09:14:18+08:00">2025-06-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-引子"><a href="#1-引子" class="headerlink" title="1. 引子"></a>1. 引子</h1><p>近10年，开发过一个很简陋的舆情监控平台。大致的架构就是用爬虫从新浪新闻、微博、微信公众号等平台爬取新闻，存储到ElasticSearch中。对于每一条新闻的内容，基于一个负面词库（比如“爆雷”、“下跌”等词），一个公司名+公司高管名字的词库，根据一个自创的算法计算在新闻中的出现次数和关联性，由此判断这篇新闻是否是公司相关的负面舆情新闻。<br>现在想来，其实就是用稀疏向量检索的方式，企图模拟稠密向量检索的语义识别效果。当时实测下来整体效果还不错。但对于包含了否定词，以及讽刺、反话的内容，识别效果不佳。</p>
+<p>本文先比较稀疏向量和稠密向量的差别，然后介绍稠密向量的生成、相似度比较，以及检索方式。然后介绍了阿里云上的向量数据库。</p>
+<h1 id="2-传统关键词检索与稀疏向量"><a href="#2-传统关键词检索与稀疏向量" class="headerlink" title="2. 传统关键词检索与稀疏向量"></a>2. 传统关键词检索与稀疏向量</h1><h2 id="2-1-传统检索方式"><a href="#2-1-传统检索方式" class="headerlink" title="2.1 传统检索方式"></a>2.1 传统检索方式</h2><p>在信息检索领域，“传统”方式是通过关键词进行信息检索，其大致过程为：</p>
+<ol>
+<li>对原始语料（如网页）进行关键词抽取。</li>
+<li>建立关键词和原始语料的映射关系。常见的方法有倒排索引、TF-IDF、BM25等方法，其中TF-IDF、BM25通常用稀疏向量（Sparse Vector）来表示词频。</li>
+<li>检索时，对检索语句进行关键词抽取，并通过步骤2中建立的映射关系召回关联度最高的TopK原始语料。<br><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/sparse-vector.png" alt="稀疏检索"></li>
+</ol>
+<h2 id="2-2-常见稀疏向量算法"><a href="#2-2-常见稀疏向量算法" class="headerlink" title="2.2 常见稀疏向量算法"></a>2.2 常见稀疏向量算法</h2><h3 id="2-2-1-词袋（BOW）模型"><a href="#2-2-1-词袋（BOW）模型" class="headerlink" title="2.2.1 词袋（BOW）模型"></a>2.2.1 词袋（BOW）模型</h3><p>词袋模型(Bag-of-words model，BOW)，BOW模型假定对于一个文档，忽略它的单词顺序和语法、句法等要素，将其仅仅看作是若干个词汇的集合，文档中每个单词的出现都是独立的，不依赖于其它单词是否出现。<br>以下面的句子为例：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">John likes to watch movies. Mary likes too</span><br><span class="line">John also likes to watch football games.</span><br></pre></td></tr></table></figure>
+<p>将上面的两句话中看作一个文档集，列出文档中出现的所有单词（忽略大小写与标点符号），构造一个字典：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;John&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span> <span class="attr">&quot;likes&quot;</span><span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span> <span class="attr">&quot;to&quot;</span><span class="punctuation">:</span> <span class="number">3</span><span class="punctuation">,</span> <span class="attr">&quot;watch&quot;</span><span class="punctuation">:</span> <span class="number">4</span><span class="punctuation">,</span> <span class="attr">&quot;movies&quot;</span><span class="punctuation">:</span> <span class="number">5</span><span class="punctuation">,</span> <span class="attr">&quot;also&quot;</span><span class="punctuation">:</span> <span class="number">6</span><span class="punctuation">,</span> <span class="attr">&quot;football&quot;</span><span class="punctuation">:</span> <span class="number">7</span><span class="punctuation">,</span> <span class="attr">&quot;games&quot;</span><span class="punctuation">:</span> <span class="number">8</span><span class="punctuation">,</span> <span class="attr">&quot;Mary&quot;</span><span class="punctuation">:</span> <span class="number">9</span><span class="punctuation">,</span> <span class="attr">&quot;too&quot;</span><span class="punctuation">:</span> <span class="number">10</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>将句子向量化，维数和字典大小一致，第 ii 维上的 数值 代表 ID 为 ii 的词语在这个句子里出现的频次：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># 第一个文本</span></span><br><span class="line">[1, 2, 1, 1, 1, 0, 0, 0, 1, 1]</span><br><span class="line"><span class="section"># 第二个文本</span></span><br><span class="line">[1, 1, 1, 1, 0, 1, 1, 1, 0, 0]</span><br></pre></td></tr></table></figure>
+<p>缺点：</p>
+<ul>
+<li>不能保留语义：不能保留词语在句子中的位置信息，“你爱我” 和 “我爱你” 在这种方式下的向量化结果依然没有区别。“我喜欢北京” 和 “我不喜欢北京” 这两个文本语义相反，利用这个模型得到的结果却能认为它们是相似的文本。</li>
+<li>维数高和稀疏性：当语料增加时，那么维数也会不可避免的增大，一个文本里不出现的词语就会增多，导致矩阵稀疏</li>
+</ul>
+<h3 id="2-2-2-TF-IDF"><a href="#2-2-2-TF-IDF" class="headerlink" title="2.2.2 TF-IDF"></a>2.2.2 TF-IDF</h3><p>TF-IDF（term frequency–inverse document frequency）是一种用于信息检索与数据挖掘的常用加权技术。TF意思是词频(Term Frequency)，IDF意思是逆文本频率指数(Inverse Document Frequency)。<br>字词的重要性随着它在文件中出现的次数成正比增加，但同时会随着它在语料库中出现的频率成反比下降。一个词语在一篇文章中出现次数越多, 同时在所有文档中出现次数越少, 越能够代表该文章。<br>公式：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TF-IDF(t,d)=TF(t,d)×IDF(t)</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>TF（词频）：词 tt 在文档 dd 中出现的频率。</li>
+<li>IDF（逆文档频率）：衡量词 tt 的普遍重要性（越少文档包含该词，IDF 越高）。</li>
+</ul>
+<h3 id="2-2-3-BM25"><a href="#2-2-3-BM25" class="headerlink" title="2.2.3 BM25"></a>2.2.3 BM25</h3><p>BM25（Best Matching 25）是一种基于统计学的文本相似度评分算法，用于计算查询和文档之间的相关性。<br>在早期研究中，研究人员尝试了多种参数组合和模型变体，并为不同版本赋予了编号（如 BM11、BM24、BM25 等）。BM25 是其中表现最优的版本之一，因此被广泛采用并成为标准算法名称。</p>
+<p><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/bm25.png" alt="BM25"></p>
+<p>参数：</p>
+<ul>
+<li>f(t,d)：词 tt 在文档 dd 中的频率。</li>
+<li>∣d∣：文档 dd 的长度。</li>
+<li>avgdl：文档集合的平均长度。</li>
+<li>k1​,b：可调参数（通常 k1​≈1.2−2.0，b≈0.75）。</li>
+</ul>
+<p>BM25 对 TF-IDF 的改进：</p>
+<ul>
+<li>文档长度归一化：BM25 通过 b 参数控制长文档的惩罚（避免长文档因词多而被误判为更相关）。</li>
+<li>词频饱和：BM25 通过 k1​ 参数限制词频的权重增长（避免高频词过度影响结果）。</li>
+<li>动态调整：BM25 的参数 k1​、b 允许针对不同数据集优化，而 TF-IDF 固定不变。<br>BM25 是对 TF-IDF 的扩展，针对检索排序问题进行了优化，是现代搜索引擎（如 Elasticsearch）的基础算法之一。</li>
+</ul>
+<h2 id="2-3-稀疏向量的存储方式"><a href="#2-3-稀疏向量的存储方式" class="headerlink" title="2.3 稀疏向量的存储方式"></a>2.3 稀疏向量的存储方式</h2><p>稀疏向量只存储非零元素及其维度的索引，通常以{ index: value} 的键值对表示。<br>如：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="number">2</span><span class="punctuation">:</span> <span class="number">0.2</span><span class="punctuation">&#125;</span><span class="punctuation">,</span> ...<span class="punctuation">,</span> <span class="punctuation">&#123;</span><span class="number">9997</span><span class="punctuation">:</span> <span class="number">0.5</span><span class="punctuation">&#125;</span><span class="punctuation">,</span> <span class="punctuation">&#123;</span><span class="number">9999</span><span class="punctuation">:</span> <span class="number">0.7</span><span class="punctuation">&#125;</span><span class="punctuation">]</span> </span><br></pre></td></tr></table></figure>
+
+<h2 id="2-4-稀疏向量特征总结"><a href="#2-4-稀疏向量特征总结" class="headerlink" title="2.4 稀疏向量特征总结"></a>2.4 稀疏向量特征总结</h2><ul>
+<li>原理：映射成一个高维（维度一般就是 vocabulary 空间大小）向量</li>
+<li>数据特征：向量的大部分元素都是 0</li>
+<li>检索机制：只为那些输入文本中出现过的 token 计算权重。非零值表明 token 在特定文档中的相对重要性。</li>
+<li>检索特征：检索速度快</li>
+<li>适用场景：需要精确匹配关键词或短语</li>
+<li>局限性：无法对语义进行理解。例如，检索语句为“浙一医院”，经过分词后成为“浙一”和“医院”，这两个关键词都无法有效的命中用户预期中的“浙江大学医学院附属第一医院”这个目标。</li>
+</ul>
+<h1 id="3-稠密向量"><a href="#3-稠密向量" class="headerlink" title="3. 稠密向量"></a>3. 稠密向量</h1><h2 id="3-1-Embedding模型与稠密向量"><a href="#3-1-Embedding模型与稠密向量" class="headerlink" title="3.1 Embedding模型与稠密向量"></a>3.1 Embedding模型与稠密向量</h2><p>Embedding模型的核心，是在将高维数据（如文本、图像、音频等）映射到低维的连续向量空间中。</p>
+<p>举一个简单的例子：可以将狗的品种按照平均大小、毛色，毛发量、听话程度等，都以数值形式打个分。这样每个狗品种就可以形成一个数组，如：拉布拉多：[0.9, 0.8, -0.5,0.7]<br>相近品种的狗特征相近，那么在多维空间的距离也就接近。<br><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/dense-vector.png" alt="dense vector"></p>
+<p>vector embedding，或称向量表示&#x2F;向量嵌入，通过 Embedding 模型生成的数据表示。狭义上特指 稠密（Dense） 向量。vector embedding通常还包含作为后续任务（如分类、聚类、检索）用途的含义。<br>关键特征：</p>
+<ul>
+<li>高维空间：一个维度能代表一个特征或属性，高维意味着分辨率高，能区分细微的语义差异；</li>
+<li>数值表示：一个 embedding 一般就是一个浮点数数组，所以方便计算。</li>
+</ul>
+<h2 id="3-2-稠密向量特征总结"><a href="#3-2-稠密向量特征总结" class="headerlink" title="3.2 稠密向量特征总结"></a>3.2 稠密向量特征总结</h2><ul>
+<li>数据特征：embedding 向量的大部分字段都非零</li>
+<li>维度特征：相比 sparse embedding 维度要低很多<br>在这个多维空间中，意义相关的词被放置得更近。</li>
+</ul>
+<p>稠密向量本质上是对语义的压缩，具有语义理解能力。</p>
+<h2 id="3-3-稠密向量生成模型原理：BERT-OpenAI-text-embedding-3"><a href="#3-3-稠密向量生成模型原理：BERT-OpenAI-text-embedding-3" class="headerlink" title="3.3 稠密向量生成模型原理：BERT &amp; OpenAI text-embedding-3"></a>3.3 稠密向量生成模型原理：BERT &amp; OpenAI text-embedding-3</h2><p>从稠密向量模型的训练方法，可以大致理解为什么稠密向量具有语义理解能力。<br>BERT（Bidirectional Encoder Representations from Transformers）是一种基于Transformer架构的预训练语言模型，通过双向上下文建模和自监督学习，能够生成高质量的文本嵌入。其训练过程分为两个主要阶段：预训练（Pre-training） 和 微调（Fine-tuning）。</p>
+<p>其中的预训练部分中，BERT通过两个自监督任务在大规模无标签语料上进行预训练，目标是让模型学习语言的通用表示。<br>Masked Language Model (MLM)</p>
+<ul>
+<li>目标：预测被随机遮蔽的词。</li>
+<li>实现方式：输入句子中随机遮蔽15%的词（例如，将“the cat is on the mat”变成“the [MASK] is on the mat”）。模型根据上下文预测被遮蔽词的原始内容。</li>
+<li>被遮蔽词中有80%替换为[MASK]，10%保留原词，10%替换为随机词（防止模型过度依赖[MASK]标记）。</li>
+</ul>
+<p>Next Sentence Prediction (NSP)</p>
+<ul>
+<li>目标：判断两段文本是否连续。（50% 正例，50% 负例）。</li>
+<li>实现方式：输入句子对（Sentence A, Sentence B），其中50%的时间B是A的下一句，50%是随机句子。模型通过[CLS]标记的输出判断两段是否连续。</li>
+</ul>
+<p>OpenAI的text-embedding-3还增加了对比学习任务、多任务学习等，更注重语义对齐和推理效率，无需微调。</p>
+<h2 id="3-4-百炼text-embedding-v3"><a href="#3-4-百炼text-embedding-v3" class="headerlink" title="3.4 百炼text-embedding-v3"></a>3.4 百炼text-embedding-v3</h2><p><a target="_blank" rel="noopener" href="https://help.aliyun.com/zh/model-studio/embedding%EF%BC%8C%E6%98%AF%E9%80%9A%E4%B9%89%E5%AE%9E%E9%AA%8C%E5%AE%A4%E5%9F%BA%E4%BA%8ELLM%E5%BA%95%E5%BA%A7%E7%9A%84%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%96%87%E6%9C%AC%E7%BB%9F%E4%B8%80%E5%90%91%E9%87%8F%E6%A8%A1%E5%9E%8B%E3%80%82%E7%81%B5%E6%B4%BB%E7%9A%84%E5%90%91%E9%87%8F%E7%BB%B4%E5%BA%A6%E9%80%89%E6%8B%A9%EF%BC%9A%E6%8F%90%E4%BE%9B">https://help.aliyun.com/zh/model-studio/embedding，是通义实验室基于LLM底座的多语言文本统一向量模型。灵活的向量维度选择：提供</a> 1024、768、512、256、128和64六种维度选择，维度越高，语义表达精度越高。支持稠密向量（dense）和离散向量（sparse）。</p>
+<p>Java SDK调用范例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Float&gt; <span class="title function_">textEmbed</span><span class="params">(String text)</span> &#123;</span><br><span class="line">    <span class="type">TextEmbeddingParam</span> <span class="variable">param</span> <span class="operator">=</span> TextEmbeddingParam</span><br><span class="line">            .builder()</span><br><span class="line">            .model(TextEmbedding.Models.TEXT_EMBEDDING_V3)</span><br><span class="line">            .texts(Collections.singletonList(text)).build();</span><br><span class="line">    <span class="type">TextEmbedding</span> <span class="variable">textEmbedding</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TextEmbedding</span>();</span><br><span class="line">    TextEmbeddingResult result;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        result = textEmbedding.call(param);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoApiKeyException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">    List&lt;Double&gt; doubleList =  result.getOutput().getEmbeddings().get(<span class="number">0</span>).getEmbedding();</span><br><span class="line">    <span class="keyword">return</span> doubleList.stream().map(Double::floatValue).toList();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-5-其他文本向量化模型"><a href="#3-5-其他文本向量化模型" class="headerlink" title="3.5 其他文本向量化模型"></a>3.5 其他文本向量化模型</h2><h3 id="魔搭社区-CoROM文本向量"><a href="#魔搭社区-CoROM文本向量" class="headerlink" title="魔搭社区-CoROM文本向量"></a>魔搭社区-CoROM文本向量</h3><p>模型ID：damo&#x2F;nlp_corom_sentence-embedding_chinese-base<br>维度：768<br>度量方式：Cosine<br>适用领域：中文-通用领域-base<br>更多信息参考：<a target="_blank" rel="noopener" href="https://modelscope.cn/models/iic/nlp_corom_sentence-embedding_chinese-base">https://modelscope.cn/models/iic/nlp_corom_sentence-embedding_chinese-base</a></p>
+<h3 id="魔搭社区-GTE文本向量"><a href="#魔搭社区-GTE文本向量" class="headerlink" title="魔搭社区-GTE文本向量"></a>魔搭社区-GTE文本向量</h3><p>模型ID：damo&#x2F;nlp_corom_sentence-embedding_chinese-base<br>维度：768<br>度量方式：Cosine<br>适用领域：中文-通用领域-base<br>更多信息参考：<a target="_blank" rel="noopener" href="https://modelscope.cn/models/iic/gte_sentence-embedding_multilingual-base">https://modelscope.cn/models/iic/gte_sentence-embedding_multilingual-base</a><br>范例在上一章已提供，可参考。</p>
+<h3 id="魔搭社区-Undever多语言通用文本表示模型"><a href="#魔搭社区-Undever多语言通用文本表示模型" class="headerlink" title="魔搭社区-Undever多语言通用文本表示模型"></a>魔搭社区-Undever多语言通用文本表示模型</h3><p>模型ID：damo&#x2F;udever-bloom-560m<br>维度：1024<br>度量方式：Cosine<br>更多信息参考：<a target="_blank" rel="noopener" href="https://modelscope.cn/models/iic/udever-bloom-560m">https://modelscope.cn/models/iic/udever-bloom-560m</a></p>
+<h3 id="魔搭社区-StructBERT-FAQ问答"><a href="#魔搭社区-StructBERT-FAQ问答" class="headerlink" title="魔搭社区-StructBERT FAQ问答"></a>魔搭社区-StructBERT FAQ问答</h3><p>模型ID：damo&#x2F;nlp_structbert_faq-question-answering_chinese-base<br>维度：768<br>度量方式：Cosine<br>适用领域：中文-通用领域-base<br>更多信息参考：<a target="_blank" rel="noopener" href="https://modelscope.cn/models/iic/nlp_structbert_faq-question-answering_chinese-base">https://modelscope.cn/models/iic/nlp_structbert_faq-question-answering_chinese-base</a></p>
+<h3 id="Jina-Embeddings-v2模型"><a href="#Jina-Embeddings-v2模型" class="headerlink" title="Jina Embeddings v2模型"></a>Jina Embeddings v2模型</h3><p>模型名称：jina-embeddings-v2-small-en<br>维度：768<br>度量方式：Cosine<br><a target="_blank" rel="noopener" href="https://jina.ai/embeddings/">https://jina.ai/embeddings/</a></p>
+<h2 id="3-6-多模态向量化模型"><a href="#3-6-多模态向量化模型" class="headerlink" title="3.6 多模态向量化模型"></a>3.6 多模态向量化模型</h2><p>此外，也有多模态也可以使用multimodal-embedding-v1。详情参考：<a target="_blank" rel="noopener" href="https://help.aliyun.com/zh/model-studio/developer-reference/multimodal-embedding-api-reference">https://help.aliyun.com/zh/model-studio/developer-reference/multimodal-embedding-api-reference</a></p>
+<p>文本语义识别体验<br>下面的代码是使用GTE文本向量化模型生成向量，归一化后进行相似度打分。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">from</span> modelscope <span class="keyword">import</span> AutoModel, AutoTokenizer</span><br><span class="line"></span><br><span class="line">input_texts = [</span><br><span class="line">    <span class="string">&quot;吃完海鲜可以喝牛奶吗？&quot;</span>,</span><br><span class="line">    <span class="string">&quot;牛奶&quot;</span>,</span><br><span class="line">    <span class="string">&quot;海鲜&quot;</span>,</span><br><span class="line">    <span class="string">&quot;常识&quot;</span>,</span><br><span class="line">    <span class="string">&quot;吃完苹果可以吃香蕉吗？&quot;</span>,</span><br><span class="line">    <span class="string">&quot;可以喝牛奶&quot;</span>,</span><br><span class="line">    <span class="string">&quot;不可以喝牛奶&quot;</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">model_name_or_path = <span class="string">&#x27;iic/gte_sentence-embedding_multilingual-base&#x27;</span></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)</span><br><span class="line">model = AutoModel.from_pretrained(model_name_or_path, trust_remote_code=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Tokenize the input texts</span></span><br><span class="line">batch_dict = tokenizer(input_texts, max_length=<span class="number">8192</span>, padding=<span class="literal">True</span>, truncation=<span class="literal">True</span>, return_tensors=<span class="string">&#x27;pt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">outputs = model(**batch_dict)</span><br><span class="line"></span><br><span class="line">dimension = <span class="number">768</span></span><br><span class="line">embeddings = outputs.last_hidden_state[:, <span class="number">0</span>][:dimension]</span><br><span class="line">embeddings = F.normalize(embeddings, p=<span class="number">2</span>, dim=<span class="number">1</span>)</span><br><span class="line">scores = (embeddings[:<span class="number">1</span>] @ embeddings[<span class="number">1</span>:].T)</span><br><span class="line"><span class="built_in">print</span>(scores.tolist())</span><br></pre></td></tr></table></figure>
+<p>结果是：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span><span class="punctuation">[</span><span class="number">0.6987984776496887</span><span class="punctuation">,</span> <span class="number">0.694797933101654</span><span class="punctuation">,</span> <span class="number">0.47736865282058716</span><span class="punctuation">,</span> <span class="number">0.6109740734100342</span><span class="punctuation">,</span> <span class="number">0.7921578288078308</span><span class="punctuation">,</span> <span class="number">0.7704585790634155</span><span class="punctuation">]</span><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+<p>我们将结果从低到高排个序：</p>
+<ul>
+<li>常识：0.47736865282058716</li>
+<li>吃完苹果可以吃香蕉吗？：0.6109740734100342</li>
+<li>海鲜：0.694797933101654</li>
+<li>牛奶：0.6987984776496887</li>
+<li>不可以喝牛奶：0.7704585790634155</li>
+<li>可以喝牛奶：0.7921578288078308<br>从结果可以看到，对原始问题的回答得到了高分，并且符合生活常识的回答得到了最高分。</li>
+</ul>
+<h1 id="4-向量相似度度量"><a href="#4-向量相似度度量" class="headerlink" title="4. 向量相似度度量"></a>4. 向量相似度度量</h1><p>相似度量用于衡量向量之间的相似性。<br>主要的度量方式为3种：</p>
+<ul>
+<li>余弦相似度</li>
+<li>欧式距离</li>
+<li>点积相似度</li>
+</ul>
+<h2 id="4-1-欧式距离（Euclidean-Distance）"><a href="#4-1-欧式距离（Euclidean-Distance）" class="headerlink" title="4.1 欧式距离（Euclidean Distance）"></a>4.1 欧式距离（Euclidean Distance）</h2><p><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/euclidean.png" alt="euclidean"><br>欧式距离可解释为连接两个点的线段的长度。欧式距离公式非常简单，使用勾股定理从这些点的笛卡尔坐标计算距离。<br><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/euclidean2.png" alt="euclidean2"></p>
+<h2 id="4-2-余弦相似度（Cosine-Similarity）"><a href="#4-2-余弦相似度（Cosine-Similarity）" class="headerlink" title="4.2 余弦相似度（Cosine Similarity）"></a>4.2 余弦相似度（Cosine Similarity）</h2><p><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/cosine.png" alt="cosine"><br>余弦相似度是指两个向量夹角的余弦。<br>特点：如果将向量归一化为长度均为 1 的向量，则向量的点积也相同。余弦相似度经常被用作抵消高维欧式距离问题。当我们对高维数据向量的大小不关注时，可以使用余弦相似度。<br>场景：对于文本分析，当数据以单词计数表示时，经常使用此度量。适用于不同长度的文本计算语义相似性。</p>
+<h2 id="4-3-点积相似度"><a href="#4-3-点积相似度" class="headerlink" title="4.3 点积相似度"></a>4.3 点积相似度</h2><p><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/dot-product.png" alt="dot-product"><br>通过将两个向量的对应分量相乘后，将每个计算值相加求和得出结果，从而进行相似度检验。<br>向量a和b的点积计算公式如下：</p>
+<p>点积会受到向量长度和方向的影响。当两个向量长度相同但方向不同时：如果两个向量方向相同，则点积计算结果较大；如果两个向量方向相反，则点积计算结果较小。</p>
+<h2 id="4-4-Milvus中的度量类型"><a href="#4-4-Milvus中的度量类型" class="headerlink" title="4.4 Milvus中的度量类型"></a>4.4 Milvus中的度量类型</h2><p>Milvus 以上几种度量类型都支持，但名称有些不同：</p>
+<ul>
+<li>欧氏距离：L2</li>
+<li>内积&#x2F;点积相似度：IP</li>
+<li>余弦相似度：COSINE<br>可以在搜索的时候设置search_params来指定度量类型：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">search_params = &#123;</span><br><span class="line">    <span class="string">&quot;metric_type&quot;</span>: <span class="string">&quot;L2&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">result = milvus_client.search(</span><br><span class="line">    collection_name=collection_name,</span><br><span class="line">    data=[vectors_to_search],</span><br><span class="line">    limit=<span class="number">1</span>,</span><br><span class="line">    search_params=search_params,</span><br><span class="line">    output_fields=[<span class="string">&quot;id&quot;</span>, <span class="string">&quot;text&quot;</span>])</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="5-检索算法与向量索引"><a href="#5-检索算法与向量索引" class="headerlink" title="5. 检索算法与向量索引"></a>5. 检索算法与向量索引</h1><h2 id="5-1-KNN"><a href="#5-1-KNN" class="headerlink" title="5.1 KNN"></a>5.1 KNN</h2><p>k近邻算法全称是 k-nearest neighbors algorithm，简称kNN。<br>KNN是一种暴力检索算法。按距离排序，选取前 K 个。<br>优点：</p>
+<ul>
+<li>绝对最近<br>缺点：</li>
+<li>计算复杂度高：需遍历所有训练样本，时间复杂度为 O(n)。</li>
+<li>内存消耗大：需存储整个训练集。</li>
+</ul>
+<p>在人脸识别的场景中经常要求100%的召回率，这种情况下一般直接暴力计算。</p>
+<h2 id="5-2-ANN"><a href="#5-2-ANN" class="headerlink" title="5.2 ANN"></a>5.2 ANN</h2><p>与通常非常耗时的精确检索相比，ANNS 的核心理念不再局限于返回最精确的结果，而是只搜索目标的近邻。ANNS 通过在可接受的范围内牺牲精确度来提高检索效率。</p>
+<p>以其中常见的基于图的检索方法为例。<br><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/ann.png" alt="ann"></p>
+<p>已有的向量数据库内容就是图中的点，ANN的任务就是对给定一个点找到距离最近的点。那么如果每个点都知道离自己近的点，那么是不是就可以沿着这个连接线找到相近的点了。这样就避免了与所有数据计算距离。这就是基于图算法出发点。</p>
+<p>NSW（navigate small world）,漫游小世界算法。对于每个新的传入元素，我们从结构中找到其最近邻居的集合（近似的 Delaunay 图， 就是上面的右图）。该集合连接到元素。随着越来越多的元素被插入到结构中，以前用作短距离边现在变成长距离边，形成可导航的小世界。<br><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/nsw.png" alt="nsw"><br>圆（顶点）是度量空间中的数据，黑边是近似的 Delaunay 图，红边是用于对数缩放的长距离边。箭头显示从入口点到查询的贪心算法的示例路径（显示为绿色）。</p>
+<p>HNSW（Hierarchical Navigable Small World）是对 NSW 的一种改进。HNSW 借鉴了跳表的思想，根据连接的长度（距离）将连接划分为不同的层，然后就可以在多层图中进行搜索。在这种结构中，搜索从较长的连接（上层）开始，贪婪地遍历所有元素直到达到局部最小值，之后再切换到较短的连接（下层），然后重复该过程，如下图所示：<br><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/hnsw.png" alt="hnsw"></p>
+<h2 id="5-3-Milvus支持的索引"><a href="#5-3-Milvus支持的索引" class="headerlink" title="5.3 Milvus支持的索引"></a>5.3 Milvus支持的索引</h2><ul>
+<li>平面: 数据集相对较小，需要 100% 的召回率</li>
+<li>IVF_FLAT: 高速查询，要求尽可能高的召回率</li>
+<li>IVF_SQ8: 极高速查询，内存资源有限，可接受召回率略有下降</li>
+<li>IVF_PQ: 高速查询，内存资源有限，可略微降低召回率</li>
+<li>HNSW: 极高速查询，要求尽可能高的召回率，内存资源大</li>
+<li>HNSW_SQ: 非常高速的查询，内存资源有限，可略微降低召回率</li>
+<li>HNSW_PQ: 中速查询，内存资源非常有限，在召回率方面略有妥协</li>
+<li>HNSW_PRQ: 中速查询，内存资源非常有限，召回率略有下降</li>
+<li>SCANN: 极高速查询，要求尽可能高的召回率，内存资源大</li>
+</ul>
+<h1 id="6-向量数据库主要概念"><a href="#6-向量数据库主要概念" class="headerlink" title="6. 向量数据库主要概念"></a>6. 向量数据库主要概念</h1><h2 id="6-1-基于稠密向量的语义检索"><a href="#6-1-基于稠密向量的语义检索" class="headerlink" title="6.1 基于稠密向量的语义检索"></a>6.1 基于稠密向量的语义检索</h2><p><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/vector-search.png" alt="vector-search"></p>
+<h2 id="6-2-向量数据库与传统关系性数据库概念对比"><a href="#6-2-向量数据库与传统关系性数据库概念对比" class="headerlink" title="6.2 向量数据库与传统关系性数据库概念对比"></a>6.2 向量数据库与传统关系性数据库概念对比</h2><p>无论DashVector，还是Milvus，本质上更接近数据库。主要能力包含几项：</p>
+<ol>
+<li>创建实例&#x2F;DB</li>
+<li>创建表（Collection）</li>
+<li>插入数据（实体&#x2F;Doc），支持分区</li>
+<li>创建索引加速查询</li>
+<li>搜索，支持标量字段过滤</li>
+</ol>
+<ul>
+<li>DB: DB</li>
+<li>Collection: 表（Table）, Collection 是一个二维表，具有固定的列和变化的行。每列代表一个字段，每行代表一个实体。</li>
+<li>Partition: 分区表（Partitioned Table）, 将 Collection 分割为多个子集，便于管理和查询性能优化（如按时间或业务逻辑分区）。</li>
+<li>Field: 列（Column）, Milvus的Field包括标量字段（如字符串、整数）和向量字段。</li>
+<li>Document: 行（Row）, 表中的一条记录，对应 Milvus 中的一组向量字段值+标量字段值。</li>
+<li>Vector Index: B-Tree 索引, 用于加速向量相似性搜索的索引结构（如 HNSW、IVF-PQ）；</li>
+</ul>
+<h1 id="7-向量检索服务比较"><a href="#7-向量检索服务比较" class="headerlink" title="7. 向量检索服务比较"></a>7. 向量检索服务比较</h1><h2 id="7-1-自建Milvus-vs-云Milvus"><a href="#7-1-自建Milvus-vs-云Milvus" class="headerlink" title="7.1 自建Milvus vs 云Milvus"></a>7.1 自建Milvus vs 云Milvus</h2><p>Milvus架构：<br><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/milvus.png" alt="milvus"><br>对于自建Milvus和云Milvus，官方的比较参考：[<a target="_blank" rel="noopener" href="https://help.aliyun.com/zh/milvus/product-overview/comparison-between-alibaba-cloud-milvus-and-ecs-self-built-milvus]">https://help.aliyun.com/zh/milvus/product-overview/comparison-between-alibaba-cloud-milvus-and-ecs-self-built-milvus]</a></p>
+<p>其实也和云数据的优点类似：</p>
+<ul>
+<li>开箱即用，拉起方便</li>
+<li>弹性伸缩</li>
+<li>白屏化运维和管控</li>
+<li>稳定性</li>
+<li>产研支持</li>
+</ul>
+<h2 id="7-2-云Milvus-vs-DashVector"><a href="#7-2-云Milvus-vs-DashVector" class="headerlink" title="7.2 云Milvus vs DashVector"></a>7.2 云Milvus vs DashVector</h2><p>DashVector相比Milvus：</p>
+<ul>
+<li>简化概念，包括Schema、索引等</li>
+<li>面向用户：做快速PoC，数据量小，性能要求不特别高</li>
+<li>灵活度: 低。没有索引方式选择。</li>
+<li>上手难度: 低<br>之前DashVector还有一个优势：除了包年包月之外，支持按量付费。而之前云Milvus只有包年包月，最低规格每个月约5K，对开发者上手还是有些门槛和肉疼的。不过当前云Milvus也支持按量付费了。</li>
+</ul>
+<h1 id="8-主要场景"><a href="#8-主要场景" class="headerlink" title="8. 主要场景"></a>8. 主要场景</h1><h2 id="8-1-简单语义匹配"><a href="#8-1-简单语义匹配" class="headerlink" title="8.1 简单语义匹配"></a>8.1 简单语义匹配</h2><p>将用户输入的文字和数据库里的文字进行语义匹配，寻找最接近的匹配结果的场景。</p>
+<h2 id="8-2-多模态检索"><a href="#8-2-多模态检索" class="headerlink" title="8.2 多模态检索"></a>8.2 多模态检索</h2><ul>
+<li>以文搜图：输入文本查询，搜索最相似的图片。</li>
+<li>以文搜文：输入文本查询，搜索最相似的图片描述。</li>
+<li>以图搜图：输入图片查询，搜索最相似的图片。</li>
+<li>以图搜文：输入图片查询，搜索最相似的图片描述。</li>
+</ul>
+<p><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/multimodal-retrieval.png" alt="multimodal-retrieval"><br>更多参见：[<a target="_blank" rel="noopener" href="https://help.aliyun.com/zh/milvus/use-cases/multi-modal-search-through-alibaba-cloud-milvus-and-tongyi-qianwen]">https://help.aliyun.com/zh/milvus/use-cases/multi-modal-search-through-alibaba-cloud-milvus-and-tongyi-qianwen]</a></p>
+<h2 id="8-3-RAG智能问答"><a href="#8-3-RAG智能问答" class="headerlink" title="8.3 RAG智能问答"></a>8.3 RAG智能问答</h2><p>向量化的最通用业务场景之一，就是RAG知识库。先将文档切分为文本块，然后将文本块生成Embedding模型。<br><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/rag.png" alt="rag"></p>
+<ul>
+<li>知识库预处理：您可以借助LangChain SDK对文本进行分割，作为Embedding模型的输入数据。</li>
+<li>知识库存储：选定的Embedding模型（DashScope）负责将输入文本转换为向量，并将这些向量存入阿里云Milvus的向量数据库中。</li>
+<li>向量相似性检索：Embedding模型处理用户的查询输入，并将其向量化。随后，利用阿里云Milvus的索引功能来识别出相应的Retrieved文档集。</li>
+<li>RAG（Retrieval-Augmented Generation）对话验证：您使用LangChain SDK，并将相似性检索的结果作为上下文，将问题导入到LLM模型（本例中用的是阿里云PAI EAS），以产生最终的回答。此外，结果可以通过将问题直接查询LLM模型得到的答案进行核实。</li>
+</ul>
+<p>提示词范例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> dashscope <span class="keyword">import</span> Generation</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">answer_question</span>(<span class="params">question, context</span>):</span><br><span class="line">    prompt = <span class="string">f&#x27;&#x27;&#x27;请基于```内的内容回答问题。&quot;</span></span><br></pre></td></tr></table></figure>
+<pre><code>&#123;context&#125;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">我的问题是：&#123;question&#125;。</span><br><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line"></span><br><span class="line">rsp = Generation.call(model=&#x27;qwen-turbo&#x27;, prompt=prompt)</span><br><span class="line">return rsp.output.text</span><br></pre></td></tr></table></figure>
+</code></pre>
+<p>适用场景：</p>
+<ul>
+<li>客户希望更多把控全链路</li>
+<li>客户希望进一步降低响应RT</li>
+</ul>
+<h2 id="8-4-更多场景想象"><a href="#8-4-更多场景想象" class="headerlink" title="8.4 更多场景想象"></a>8.4 更多场景想象</h2><ul>
+<li>加速药物发现：在制药行业，向量嵌入可以编码化合物的化学结构，通过测量其与目标蛋白质的相似性来识别有前景的药物候选物。这加速了药物发现过程，通过专注于最有可能的线索来节省时间和资源。</li>
+<li>异常检测：在欺诈检测、网络安全和工业监控等领域，向量嵌入在识别异常模式方面起着重要作用。通过将数据点表示为嵌入，可以通过计算距离或不相似性来检测异常，从而实现对潜在问题的早期识别和预防措施。</li>
+</ul>
+<h1 id="9-参考资料"><a href="#9-参考资料" class="headerlink" title="9. 参考资料"></a>9. 参考资料</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://help.aliyun.com/zh/milvus/product-overview/what-is-the-vector-retrieval-milvus-version">云Milvus官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/2510225.html">DashVector官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://milvus.io/docs/zh/overview.md">Milvus官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/dogecheng/p/11470196.html">文本向量化（理论篇）</a></li>
+<li><a target="_blank" rel="noopener" href="http://arthurchiao.art/blog/rag-basis-bge-zh/">大模型 RAG 基础：信息检索、文本向量化及 BGE-M3 embedding 实践</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV11zf6YyEnT/">20分钟速成 RAG &amp; 向量数据库核心概念</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV11a4y1c7SW/">【上集】向量数据库技术鉴赏_哔哩哔哩_bilibili</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1BM4y177Dk/">【下集】向量数据库技术鉴赏_哔哩哔哩_bilibili</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/04/07/GTC2025%E4%BF%A1%E6%81%AF%E8%84%91%E5%9B%BE%E5%8F%8A%E8%A7%82%E5%90%8E%E6%84%9F/" rel="prev" title="GTC2025信息脑图及观后感">
+      <i class="fa fa-chevron-left"></i> GTC2025信息脑图及观后感
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%BC%95%E5%AD%90"><span class="nav-number">1.</span> <span class="nav-text">1. 引子</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E4%BC%A0%E7%BB%9F%E5%85%B3%E9%94%AE%E8%AF%8D%E6%A3%80%E7%B4%A2%E4%B8%8E%E7%A8%80%E7%96%8F%E5%90%91%E9%87%8F"><span class="nav-number">2.</span> <span class="nav-text">2. 传统关键词检索与稀疏向量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E4%BC%A0%E7%BB%9F%E6%A3%80%E7%B4%A2%E6%96%B9%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 传统检索方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%B8%B8%E8%A7%81%E7%A8%80%E7%96%8F%E5%90%91%E9%87%8F%E7%AE%97%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 常见稀疏向量算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-%E8%AF%8D%E8%A2%8B%EF%BC%88BOW%EF%BC%89%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 词袋（BOW）模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-TF-IDF"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 TF-IDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-BM25"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.2.3 BM25</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E7%A8%80%E7%96%8F%E5%90%91%E9%87%8F%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 稀疏向量的存储方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E7%A8%80%E7%96%8F%E5%90%91%E9%87%8F%E7%89%B9%E5%BE%81%E6%80%BB%E7%BB%93"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 稀疏向量特征总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E7%A8%A0%E5%AF%86%E5%90%91%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">3. 稠密向量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-Embedding%E6%A8%A1%E5%9E%8B%E4%B8%8E%E7%A8%A0%E5%AF%86%E5%90%91%E9%87%8F"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 Embedding模型与稠密向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E7%A8%A0%E5%AF%86%E5%90%91%E9%87%8F%E7%89%B9%E5%BE%81%E6%80%BB%E7%BB%93"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 稠密向量特征总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E7%A8%A0%E5%AF%86%E5%90%91%E9%87%8F%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%EF%BC%9ABERT-OpenAI-text-embedding-3"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 稠密向量生成模型原理：BERT &amp; OpenAI text-embedding-3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E7%99%BE%E7%82%BCtext-embedding-v3"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 百炼text-embedding-v3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E5%85%B6%E4%BB%96%E6%96%87%E6%9C%AC%E5%90%91%E9%87%8F%E5%8C%96%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 其他文本向量化模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AD%94%E6%90%AD%E7%A4%BE%E5%8C%BA-CoROM%E6%96%87%E6%9C%AC%E5%90%91%E9%87%8F"><span class="nav-number">3.5.1.</span> <span class="nav-text">魔搭社区-CoROM文本向量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AD%94%E6%90%AD%E7%A4%BE%E5%8C%BA-GTE%E6%96%87%E6%9C%AC%E5%90%91%E9%87%8F"><span class="nav-number">3.5.2.</span> <span class="nav-text">魔搭社区-GTE文本向量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AD%94%E6%90%AD%E7%A4%BE%E5%8C%BA-Undever%E5%A4%9A%E8%AF%AD%E8%A8%80%E9%80%9A%E7%94%A8%E6%96%87%E6%9C%AC%E8%A1%A8%E7%A4%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.5.3.</span> <span class="nav-text">魔搭社区-Undever多语言通用文本表示模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AD%94%E6%90%AD%E7%A4%BE%E5%8C%BA-StructBERT-FAQ%E9%97%AE%E7%AD%94"><span class="nav-number">3.5.4.</span> <span class="nav-text">魔搭社区-StructBERT FAQ问答</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jina-Embeddings-v2%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.5.5.</span> <span class="nav-text">Jina Embeddings v2模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-%E5%A4%9A%E6%A8%A1%E6%80%81%E5%90%91%E9%87%8F%E5%8C%96%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.6.</span> <span class="nav-text">3.6 多模态向量化模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%90%91%E9%87%8F%E7%9B%B8%E4%BC%BC%E5%BA%A6%E5%BA%A6%E9%87%8F"><span class="nav-number">4.</span> <span class="nav-text">4. 向量相似度度量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E6%AC%A7%E5%BC%8F%E8%B7%9D%E7%A6%BB%EF%BC%88Euclidean-Distance%EF%BC%89"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 欧式距离（Euclidean Distance）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E4%BD%99%E5%BC%A6%E7%9B%B8%E4%BC%BC%E5%BA%A6%EF%BC%88Cosine-Similarity%EF%BC%89"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 余弦相似度（Cosine Similarity）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E7%82%B9%E7%A7%AF%E7%9B%B8%E4%BC%BC%E5%BA%A6"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 点积相似度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-Milvus%E4%B8%AD%E7%9A%84%E5%BA%A6%E9%87%8F%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 Milvus中的度量类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E6%A3%80%E7%B4%A2%E7%AE%97%E6%B3%95%E4%B8%8E%E5%90%91%E9%87%8F%E7%B4%A2%E5%BC%95"><span class="nav-number">5.</span> <span class="nav-text">5. 检索算法与向量索引</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-KNN"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 KNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-ANN"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 ANN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-Milvus%E6%94%AF%E6%8C%81%E7%9A%84%E7%B4%A2%E5%BC%95"><span class="nav-number">5.3.</span> <span class="nav-text">5.3 Milvus支持的索引</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%BB%E8%A6%81%E6%A6%82%E5%BF%B5"><span class="nav-number">6.</span> <span class="nav-text">6. 向量数据库主要概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-%E5%9F%BA%E4%BA%8E%E7%A8%A0%E5%AF%86%E5%90%91%E9%87%8F%E7%9A%84%E8%AF%AD%E4%B9%89%E6%A3%80%E7%B4%A2"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 基于稠密向量的语义检索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E4%BC%A0%E7%BB%9F%E5%85%B3%E7%B3%BB%E6%80%A7%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A6%82%E5%BF%B5%E5%AF%B9%E6%AF%94"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 向量数据库与传统关系性数据库概念对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2%E6%9C%8D%E5%8A%A1%E6%AF%94%E8%BE%83"><span class="nav-number">7.</span> <span class="nav-text">7. 向量检索服务比较</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-%E8%87%AA%E5%BB%BAMilvus-vs-%E4%BA%91Milvus"><span class="nav-number">7.1.</span> <span class="nav-text">7.1 自建Milvus vs 云Milvus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-%E4%BA%91Milvus-vs-DashVector"><span class="nav-number">7.2.</span> <span class="nav-text">7.2 云Milvus vs DashVector</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-%E4%B8%BB%E8%A6%81%E5%9C%BA%E6%99%AF"><span class="nav-number">8.</span> <span class="nav-text">8. 主要场景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-1-%E7%AE%80%E5%8D%95%E8%AF%AD%E4%B9%89%E5%8C%B9%E9%85%8D"><span class="nav-number">8.1.</span> <span class="nav-text">8.1 简单语义匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2-%E5%A4%9A%E6%A8%A1%E6%80%81%E6%A3%80%E7%B4%A2"><span class="nav-number">8.2.</span> <span class="nav-text">8.2 多模态检索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-3-RAG%E6%99%BA%E8%83%BD%E9%97%AE%E7%AD%94"><span class="nav-number">8.3.</span> <span class="nav-text">8.3 RAG智能问答</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-4-%E6%9B%B4%E5%A4%9A%E5%9C%BA%E6%99%AF%E6%83%B3%E8%B1%A1"><span class="nav-number">8.4.</span> <span class="nav-text">8.4 更多场景想象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">9.</span> <span class="nav-text">9. 参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">姚皓(Galaxy Yao)</p>
+  <div class="site-description" itemprop="description">姚皓的技术博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/galaxyyao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;galaxyyao" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:galaxyyao@live.com" title="E-Mail → mailto:galaxyyao@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备2024090169号-1 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010402333958" rel="noopener" target="_blank">沪公网安备31010402333958号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">姚皓(Galaxy Yao)</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

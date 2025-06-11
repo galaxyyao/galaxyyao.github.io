@@ -188,6 +188,79 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2025/06/11/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="姚皓(Galaxy Yao)">
+      <meta itemprop="description" content="姚皓的技术博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Galaxy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/06/11/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">向量化与向量数据库入门</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-06-11 09:14:18" itemprop="dateCreated datePublished" datetime="2025-06-11T09:14:18+08:00">2025-06-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-引子"><a href="#1-引子" class="headerlink" title="1. 引子"></a>1. 引子</h1><p>近10年，开发过一个很简陋的舆情监控平台。大致的架构就是用爬虫从新浪新闻、微博、微信公众号等平台爬取新闻，存储到ElasticSearch中。对于每一条新闻的内容，基于一个负面词库（比如“爆雷”、“下跌”等词），一个公司名+公司高管名字的词库，根据一个自创的算法计算在新闻中的出现次数和关联性，由此判断这篇新闻是否是公司相关的负面舆情新闻。<br>现在想来，其实就是用稀疏向量检索的方式，企图模拟稠密向量检索的语义识别效果。当时实测下来整体效果还不错。但对于包含了否定词，以及讽刺、反话的内容，识别效果不佳。</p>
+<p>本文先比较稀疏向量和稠密向量的差别，然后介绍稠密向量的生成、相似度比较，以及检索方式。然后介绍了阿里云上的向量数据库。</p>
+<h1 id="2-传统关键词检索与稀疏向量"><a href="#2-传统关键词检索与稀疏向量" class="headerlink" title="2. 传统关键词检索与稀疏向量"></a>2. 传统关键词检索与稀疏向量</h1><h2 id="2-1-传统检索方式"><a href="#2-1-传统检索方式" class="headerlink" title="2.1 传统检索方式"></a>2.1 传统检索方式</h2><p>在信息检索领域，“传统”方式是通过关键词进行信息检索，其大致过程为：</p>
+<ol>
+<li>对原始语料（如网页）进行关键词抽取。</li>
+<li>建立关键词和原始语料的映射关系。常见的方法有倒排索引、TF-IDF、BM25等方法，其中TF-IDF、BM25通常用稀疏向量（Sparse Vector）来表示词频。</li>
+<li>检索时，对检索语句进行关键词抽取，并通过步骤2中建立的映射关系召回关联度最高的TopK原始语料。<br><img src="/images/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/sparse-vector.png" alt="稀疏检索"></li>
+</ol>
+<h2 id="2-2-常见稀疏向量算法"><a href="#2-2-常见稀疏向量算法" class="headerlink" title="2.2 常见稀疏向量算法"></a>2.2 常见稀疏向量算法</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/06/11/%E5%90%91%E9%87%8F%E5%8C%96%E4%B8%8E%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%A5%E9%97%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2025/04/07/GTC2025%E4%BF%A1%E6%81%AF%E8%84%91%E5%9B%BE%E5%8F%8A%E8%A7%82%E5%90%8E%E6%84%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1057,111 +1130,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="姚皓(Galaxy Yao)">
-      <meta itemprop="description" content="姚皓的技术博客">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Galaxy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/" class="post-title-link" itemprop="url">容器-14-国内Windows10环境安装Minikube</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-22 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-22T00:00:00+08:00">2020-01-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-30 13:34:34" itemprop="dateModified" datetime="2021-04-30T13:34:34+08:00">2021-04-30</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>上家公司虽然有这样那样的问题，但在能让我掌控的服务器资源自由度上，也不是随便在哪家公司就能有的。能随便申请个半打一打的4核8G的虚机来搞事情什么的。。。跳槽后就只有自己的Windows工作机了。Docker Desktop搞了半天也没法启用Kubernetes，这也是为什么之前的“Kubernetes实战”系列到7月就戛然而止的原因。<br>只靠Docker Desktop，平时开发的时候起个数据库或redis是足够用了，但像service mesh之类的就玩不了了。趁年前有空，搭了一套Minikube，把步骤顺便记录一下。原本想合并到之前kubeadm安装的<a href="https://galaxyyao.github.io/2019/05/29/%E5%AE%B9%E5%99%A8-5-kubeadm%E9%83%A8%E7%BD%B2Kubernetes1-14-2%E9%9B%86%E7%BE%A4%E8%B8%A9%E5%9D%91%E8%AE%B0/">那篇</a>里，但可能会翻起来不方便，还是单独另开一篇吧。<br>后续“Kubernetes实战”系列都会基于minikube环境来搭建。  </p>
-<h2 id="1-软硬件条件"><a href="#1-软硬件条件" class="headerlink" title="1. 软硬件条件"></a>1. 软硬件条件</h2><p>现在内存也不值钱了，插个16G足够玩了。<br>操作系统上，虽然Windows 10家庭版+VirtualBox&#x2F;VMWare也可以，但从硬件利用率角度，还是用Windows 10企业版&#x2F;专业版&#x2F;教育版+Hyper-V比较好。<br>在控制面板-&gt;程序-&gt;启动或关闭Windows 功能 里面打开所有Hyper-V选项然后重启。<br>重启后运行systeminfo，看到如下内容，说明操作系统层面已经ok了：  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hyper-V 要求:     已检测到虚拟机监控程序。将不显示 Hyper-V 所需的功能。</span><br></pre></td></tr></table></figure>
-
-<p>Docker Desktop是否安装不影响，但在安装Minikube的过程中最好不要启动。在安装过程中报过一个<code>create: precreate: no External vswitch nor Default Switch found</code>的报错，不确定是不是相关。<br>顺带提一句，如果装了Docker Desktop，可以在Settings-&gt;Daemon-&gt;Registry mirrors里填写：<code>https://dockerhub.azk8s.cn</code>、<code>http://hub-mirror.c.163.com</code>和<code>https://docker.mirrors.ustc.edu.cn</code><br>另外感谢这篇<a target="_blank" rel="noopener" href="https://xuxinkun.github.io/2019/06/11/cn-registry/">docker&#x2F;kubernetes国内源&#x2F;镜像源解决方式 - xinkun的博客 | Xinkun Blog</a>的整理，我也复制一下备忘：  </p>
-<table>
-<thead>
-<tr>
-<th>global</th>
-<th>proxy in China</th>
-<th>format</th>
-<th>example</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>dockerhub (docker.io)</td>
-<td>dockerhub.azk8s.cn</td>
-<td><code>dockerhub.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
-<td>dockerhub.azk8s.cn&#x2F;microsoft&#x2F;azure-cli:2.0.61 dockerhub.azk8s.cn&#x2F;library&#x2F;nginx:1.15</td>
-</tr>
-<tr>
-<td>gcr.io</td>
-<td>gcr.azk8s.cn</td>
-<td><code>gcr.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
-<td>gcr.azk8s.cn&#x2F;google_containers&#x2F;hyperkube-amd64:v1.13.5</td>
-</tr>
-<tr>
-<td>quay.io</td>
-<td>quay.azk8s.cn</td>
-<td><code>quay.azk8s.cn/&lt;repo-name&gt;/&lt;image-name&gt;:&lt;version&gt;</code></td>
-<td>quay.azk8s.cn&#x2F;deis&#x2F;go-dev:v1.10.0</td>
-</tr>
-</tbody></table>
-<h2 id="2-网络条件"><a href="#2-网络条件" class="headerlink" title="2. 网络条件"></a>2. 网络条件</h2><p>以防万一请先关闭Windows防火墙。<br>因为你懂的那个原因，需要本地搞个SS的梯子。如果哪个步骤因为网络原因卡住了，可以切成代理再试一次。  </p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/22/%E5%AE%B9%E5%99%A8-14-%E5%9B%BD%E5%86%85Windows10%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85Minikube/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1231,7 +1199,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">38</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -188,6 +188,85 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/05/24/%E5%AE%B9%E5%99%A8-2-Docker%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="姚皓(Galaxy Yao)">
+      <meta itemprop="description" content="姚皓的技术博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Galaxy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/24/%E5%AE%B9%E5%99%A8-2-Docker%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" class="post-title-link" itemprop="url">容器-2-Docker存储引擎</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-24 00:00:00" itemprop="dateCreated datePublished" datetime="2019-05-24T00:00:00+08:00">2019-05-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-30 13:34:34" itemprop="dateModified" datetime="2021-04-30T13:34:34+08:00">2021-04-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>容器与容器间的文件系统必须相互隔离。如果一个容器能不受限制地访问到宿主机或另一个容器里的文件，那必定会引起严重的安全风险。所以对于docker中的进程，必须限制其能够访问的文件系统。<br>我们先来看一种简易版的实现方式：chroot。  </p>
+<h1 id="chroot-监狱"><a href="#chroot-监狱" class="headerlink" title="chroot-监狱"></a>chroot-监狱</h1><p>chroot，即change root的缩写。它是一个 UNIX 操作系统上的系统调用，用于将一个进程及其子进程的根目录改变到文件系统中的一个新位置。<br>我们知道root根目录（&#x2F;）是Linux的顶层目录。这里的顶层，换句话说就是没有办法访问比根目录更高一层级的目录。但对每个进程，可以通过chroot来“欺骗”，将指定的目录骗他们认定为根目录。  </p>
+<p>chroot经常和一个单词结合在一起说：jail（监狱）。可以很形象地理解为chroot就是给每个docker容器划了一个监狱房间。<br>Docker在每个监狱里配套放置了一套文件系统。  </p>
+<p><img src="/images/%E5%AE%B9%E5%99%A8-2-Docker%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/docker-chroot.jpg" alt="chroot">  </p>
+<p>chroot的基本语法如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将某个进程</span></span><br><span class="line">chroot /path/to/new/root command</span><br></pre></td></tr></table></figure>
+
+<p>chroot看起来挺不错，但也存在两个问题：  </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/05/24/%E5%AE%B9%E5%99%A8-2-Docker%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://galaxyyao.github.io/2019/05/23/crontab-ntpdate%E5%90%8C%E6%AD%A5%E5%A4%B1%E8%B4%A5%E4%B8%8ELinux%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -804,7 +883,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">38</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
